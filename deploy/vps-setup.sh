@@ -120,8 +120,9 @@ log "Nginx installed and running"
 
 # ─── 5. Create app directory ─────────────────────────────────────────────────
 step "5/9 — Setting up app directory"
-mkdir -p "$APP_DIR/logs"
-log "Created $APP_DIR"
+# Directory is created by git clone below — just ensure parent exists
+mkdir -p "$(dirname "$APP_DIR")"
+log "Ready to clone into $APP_DIR"
 
 # ─── 6. Clone repo and build ─────────────────────────────────────────────────
 step "6/9 — Cloning repository and building"
@@ -137,8 +138,11 @@ else
     log "Repo exists — pulling latest"
     git -C "$APP_DIR" pull origin main
   else
+    # Remove directory if empty (leftover from a previous failed run)
+    rmdir "$APP_DIR" 2>/dev/null || true
     git clone "$GIT_REPO" "$APP_DIR"
   fi
+  mkdir -p "$APP_DIR/logs"
 
   cd "$APP_DIR"
 
