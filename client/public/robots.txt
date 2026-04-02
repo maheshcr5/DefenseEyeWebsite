@@ -28,4 +28,4 @@ Allow: /
 # GET /api/cmmc-content/topics
 
 Sitemap: https://defenseeye.ai/sitemap.xml
-LLMs: https://defenseeye.ai/llms.txt
+# LLMs.txt: https://defenseeye.ai/llms.txt

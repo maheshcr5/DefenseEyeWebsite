@@ -37,7 +37,7 @@ CMMC is being phased into all new DoD contracts starting in 2025. Over 300,000 o
 
 CMMC Lens is DefenseEye's AI-powered compliance automation platform. Capabilities:
 
-- **Automated Evidence Collection** — Connects to AWS, Azure, GCC High, Microsoft 365 to collect and organize compliance evidence mapped to NIST 800-171 controls.
+- **Automated Evidence Collection** — Connects to Microsoft Azure Commercial, Azure GCC, Microsoft 365 Commercial, and M365 GCC High to collect and organize compliance evidence mapped to NIST 800-171 controls.
 - **NIST 800-171 Control Mapping** — Automatically maps security configurations to all 110 NIST SP 800-171 Rev 2 controls, identifying gaps with prioritized remediation guidance.
 - **SSP and POA&M Generation** — Automatically generates System Security Plans and Plans of Action & Milestones required for CMMC certification.
 - **Real-Time SPRS Score Tracking** — Continuously monitors and calculates the organization's SPRS score, showing which controls impact the score most.
@@ -65,7 +65,7 @@ Organizations must submit their SPRS score via the PIEE portal and maintain it u
 - Real-time SPRS score tracking with gap-by-gap remediation guidance
 - Continuous 365-day compliance monitoring
 - Supports CMMC Level 1 (17 practices) and Level 2 (110 controls)
-- Integrates with AWS, Azure, GCC High, Microsoft 365
+- Integrates with Azure Commercial, Azure GCC, M365 Commercial, and M365 GCC High
 
 ---
 
