@@ -110,6 +110,71 @@ function Section({ children, className = "", id }: { children: React.ReactNode; 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // ─── Structured Data for LLMs / AI Agents / SEO ───
+  useEffect(() => {
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "What is CMMC 2.0 and why do DoD contractors need it?",
+          acceptedAnswer: { "@type": "Answer", text: "CMMC 2.0 (Cybersecurity Maturity Model Certification) is a Department of Defense framework that requires all defense contractors to demonstrate specific cybersecurity practices to protect Controlled Unclassified Information (CUI) and Federal Contract Information (FCI). Starting in 2025, CMMC certification is being phased into all new DoD contracts, making compliance mandatory for contractors who want to continue working with the Department of Defense." },
+        },
+        {
+          "@type": "Question",
+          name: "How does CMMC Lens automate CMMC compliance?",
+          acceptedAnswer: { "@type": "Answer", text: "CMMC Lens uses AI-governed automation to streamline the entire CMMC readiness process. It automatically collects evidence from cloud environments (AWS, Azure, GCC High), maps that evidence to all 110 NIST 800-171 controls, generates your System Security Plan (SSP) and Plan of Action & Milestones (POA&M), and continuously monitors your SPRS score — reducing manual documentation and preparation work by up to 80%." },
+        },
+        {
+          "@type": "Question",
+          name: "What is the difference between CMMC Level 1 and Level 2?",
+          acceptedAnswer: { "@type": "Answer", text: "CMMC Level 1 requires 17 basic cybersecurity practices for protecting Federal Contract Information (FCI) and allows annual self-assessment. CMMC Level 2 requires all 110 security controls from NIST SP 800-171 to protect Controlled Unclassified Information (CUI) and mandates a third-party C3PAO assessment. CMMC Lens supports both levels with automated evidence mapping and compliance tracking." },
+        },
+        {
+          "@type": "Question",
+          name: "How long does it take to achieve CMMC readiness with DefenseEye?",
+          acceptedAnswer: { "@type": "Answer", text: "With CMMC Lens, most organizations can achieve audit readiness in days rather than the typical 6–12 months required for manual processes. The AI-driven platform automates evidence collection, NIST 800-171 control mapping, and documentation generation, reducing documentation and preparation time by up to 80%." },
+        },
+        {
+          "@type": "Question",
+          name: "What is an SPRS score and how does DefenseEye improve it?",
+          acceptedAnswer: { "@type": "Answer", text: "The Supplier Performance Risk System (SPRS) score is a numerical representation of your NIST 800-171 compliance, ranging from -203 to 110. DefenseEye's CMMC Lens continuously monitors your security posture, provides real-time SPRS score tracking, and identifies specific controls that need remediation to maximize your score before C3PAO assessment." },
+        },
+      ],
+    };
+
+    const videoSchema = {
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      name: "What Is CMMC 2.0? CMMC Compliance Explained for DoD Contractors",
+      description: "A plain-English overview of CMMC 2.0 — what DoD prime and subcontractors need to know about CMMC Level 2, NIST 800-171, C3PAO assessments, and how to achieve certification faster with AI automation.",
+      thumbnailUrl: "https://img.youtube.com/vi/g3Yhk1nUb7s/maxresdefault.jpg",
+      embedUrl: "https://www.youtube.com/embed/g3Yhk1nUb7s",
+      url: "https://www.youtube.com/watch?v=g3Yhk1nUb7s",
+      publisher: { "@type": "Organization", name: "DefenseEye", url: "https://defenseeye.ai" },
+    };
+
+    const orgSchema = {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "DefenseEye",
+      url: "https://defenseeye.ai",
+      description: "AI-powered CMMC 2.0 compliance automation for Department of Defense contractors. Protecting Controlled Unclassified Information with intelligent automation.",
+      knowsAbout: ["CMMC 2.0", "NIST 800-171", "DFARS 252.204-7012", "SPRS score", "C3PAO assessment", "CUI protection", "DoD cybersecurity"],
+    };
+
+    const scriptId = "defenseeye-schema";
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement("script");
+      script.id = scriptId;
+      script.type = "application/ld+json";
+      script.text = JSON.stringify([faqSchema, videoSchema, orgSchema]);
+      document.head.appendChild(script);
+    }
+    return () => { document.getElementById(scriptId)?.remove(); };
+  }, []);
+
   const navLinks = [
     { label: "Features", href: "#features" },
     { label: "How It Works", href: "#how-it-works" },
@@ -580,6 +645,59 @@ export default function Home() {
                 )}
               </motion.div>
             ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          VIDEO — CMMC Explained
+      ═══════════════════════════════════════════════════════════════ */}
+      <Section id="cmmc-overview-video" className="py-20 lg:py-28">
+        <div className="container">
+          <div className="max-w-2xl mx-auto text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/5 mb-4">
+              <span className="text-xs font-medium text-primary tracking-wide uppercase">CMMC Explained</span>
+            </div>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4">
+              Watch: <span className="text-primary">What Is CMMC 2.0</span> and Why It Matters for DoD Contractors
+            </h2>
+            <p className="text-muted-foreground leading-relaxed">
+              A plain-English breakdown of the Cybersecurity Maturity Model Certification — CMMC Level 2 requirements, NIST 800-171 controls, C3PAO assessments, and how AI automation accelerates your path to certification.
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            {/* 16:9 responsive embed */}
+            <div className="relative w-full overflow-hidden rounded-sm border border-border/40 shadow-2xl mb-8" style={{ paddingBottom: "56.25%" }}>
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src="https://www.youtube.com/embed/g3Yhk1nUb7s"
+                title="What Is CMMC 2.0? CMMC Compliance Explained for DoD Contractors | DefenseEye"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
+            </div>
+
+            {/* Key takeaways */}
+            <div className="bg-card/60 border border-border/40 p-8">
+              <h3 className="font-heading text-lg font-semibold mb-5 text-foreground">Key Takeaways</h3>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {[
+                  "CMMC 2.0 is mandatory for all DoD prime and subcontractors handling CUI",
+                  "CMMC Level 2 requires all 110 NIST SP 800-171 controls — not optional",
+                  "C3PAO third-party assessments required for most Level 2 contractors",
+                  "SPRS scores must be submitted to the government before contract awards",
+                  "Manual CMMC preparation typically takes 6–12 months and $50K–$150K+",
+                  "AI-driven automation reduces readiness documentation time by up to 80%",
+                ].map((point) => (
+                  <div key={point} className="flex items-start gap-3">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span className="text-sm text-muted-foreground">{point}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </Section>
