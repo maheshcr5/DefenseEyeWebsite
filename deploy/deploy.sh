@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # deploy.sh — DefenseEye.ai Full VPS Initial Setup & Deploy
-# Run once on a fresh Hostinger VPS (Ubuntu 22.04 LTS)
+# Run once on a fresh Hostinger VPS (Ubuntu 25.04)
 #
 # Usage:
 #   chmod +x deploy.sh
@@ -22,7 +22,7 @@ set -euo pipefail
 
 # ── Config — EDIT THESE before running ────────────────────────────────────────
 DOMAIN="defenseeye.ai"
-GIT_REPO="https://github.com/YOUR_ORG/YOUR_REPO.git"   # ← change this
+GIT_REPO="https://github.com/maheshcr5/DefenseEyeWebsite.git"
 APP_DIR="/var/www/defenseeye"
 APP_USER="defenseeye"
 EMAIL="admin@defenseeye.ai"                             # ← for Let's Encrypt
