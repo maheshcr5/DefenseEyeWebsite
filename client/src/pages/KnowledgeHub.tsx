@@ -56,8 +56,8 @@ function Nav() {
           ))}
         </div>
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="outline" size="sm" className="border-primary/40 text-primary hover:bg-primary/10">Book a Demo</Button>
-          <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">Start Free Trial</Button>
+          <Link href="/#contact"><Button variant="outline" size="sm" className="border-primary/40 text-primary hover:bg-primary/10">Book a Demo</Button></Link>
+          <Link href="/#contact"><Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">Start Free Trial</Button></Link>
         </div>
         <button className="md:hidden text-foreground" onClick={() => setOpen(!open)} aria-label="Toggle menu">
           {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -70,8 +70,8 @@ function Nav() {
               <Link key={l.href} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-primary py-2" onClick={() => setOpen(false)}>{l.label}</Link>
             ))}
             <div className="flex flex-col gap-2 pt-2 border-t border-border/50">
-              <Button variant="outline" size="sm" className="border-primary/40 text-primary w-full">Book a Demo</Button>
-              <Button size="sm" className="bg-accent text-accent-foreground w-full font-semibold">Start Free Trial</Button>
+              <Link href="/#contact"><Button variant="outline" size="sm" className="border-primary/40 text-primary w-full">Book a Demo</Button></Link>
+              <Link href="/#contact"><Button size="sm" className="bg-accent text-accent-foreground w-full font-semibold">Start Free Trial</Button></Link>
             </div>
           </div>
         </div>
@@ -162,6 +162,14 @@ export default function KnowledgeHub() {
 
   useEffect(() => {
     document.title = "CMMC Knowledge Hub — Authoritative Guides for DoD Contractors | DefenseEye.ai";
+    // Inject meta description
+    let metaDesc = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement("meta");
+      metaDesc.setAttribute("name", "description");
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = "Free CMMC 2.0 compliance guides for DoD contractors — NIST 800-171 controls, SPRS score improvement, C3PAO assessment prep, SSP/POA&M templates, and evidence mapping. Authoritative resources from DefenseEye.";
     // Inject WebPage schema
     const script = document.createElement("script");
     script.type = "application/ld+json";
@@ -354,9 +362,11 @@ export default function KnowledgeHub() {
                 <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
                   Let CMMC Lens handle evidence collection, NIST mapping, and SSP generation automatically.
                 </p>
-                <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
-                  Start Free Trial <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
-                </Button>
+                <Link href="/#contact">
+                  <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
+                    Start Free Trial <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                  </Button>
+                </Link>
               </div>
             </aside>
           </div>

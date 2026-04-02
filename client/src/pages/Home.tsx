@@ -29,6 +29,7 @@ import {
   DollarSign,
 } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useSeo } from "@/hooks/useSeo";
 
 // ─── Image URLs ───
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310419663028771419/EuH9Png2HimpzgUP2fBtWN/hero-bg-pattern-iega5H83gpAZQ7MY3Y2dWm.webp";
@@ -332,6 +333,11 @@ function Section({ children, className = "", id }: { children: React.ReactNode; 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+
+  useSeo(
+    "DefenseEye.ai — AI-Powered CMMC 2.0 Compliance Automation | CMMC Lens",
+    "DefenseEye CMMC Lens automates CMMC 2.0 compliance for DoD contractors — evidence collection, NIST 800-171 mapping, SSP/POA&M generation, and SPRS score monitoring. Reduce documentation time by 80%."
+  );
 
   // ─── Structured Data for LLMs / AI Agents / SEO ───
   useEffect(() => {
@@ -1313,8 +1319,8 @@ export default function Home() {
                   { label: "About DefenseEye", href: "#contact" },
                   { label: "Careers", href: "#contact" },
                   { label: "Contact Us", href: "#contact" },
-                  { label: "Privacy Policy", href: "/privacy-policy" },
-                  { label: "Terms of Service", href: "/terms" },
+                  { label: "Privacy Policy", href: "#contact" },
+                  { label: "Terms of Service", href: "#contact" },
                 ].map((item) => (
                   <li key={item.label}>
                     <a href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200">{item.label}</a>

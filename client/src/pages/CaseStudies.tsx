@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useSeo } from "@/hooks/useSeo";
 import {
   ArrowRight,
   Building2,
@@ -384,7 +385,7 @@ function ProfileCard({ profile, index }: { profile: ContractorProfile; index: nu
           <span className="text-foreground font-medium">This profile matches your company?</span>{" "}
           Book a 30-minute discovery call to see how CMMC Lens would work for your specific environment.
         </p>
-        <Link href="/#demo">
+        <Link href="/#contact">
           <Button
             size="sm"
             className="w-full bg-primary text-background hover:bg-primary/90 font-heading font-semibold group/btn"
@@ -555,9 +556,10 @@ function EarlyAccessForm() {
 // ─── Main CaseStudies Page ──────────────────────────────────────────────────
 
 export default function CaseStudies() {
-  useEffect(() => {
-    document.title = "Contractor Profiles — Who We're Building For | DefenseEye.ai";
-  }, []);
+  useSeo(
+    "CMMC Compliance Scenarios — Who CMMC Lens Is Built For | DefenseEye.ai",
+    "See how DefenseEye CMMC Lens solves real compliance challenges for DoD prime contractors, defense subcontractors, and MSSPs handling CUI under DFARS 252.204-7012."
+  );
 
   // Schema.org FAQ JSON-LD
   useEffect(() => {
@@ -627,7 +629,7 @@ export default function CaseStudies() {
               <span className="text-primary font-semibold cursor-pointer">Case Studies</span>
             </Link>
           </nav>
-          <Link href="/#demo">
+          <Link href="/#contact">
             <Button size="sm" className="bg-primary text-background hover:bg-primary/90 font-heading font-semibold">
               Start Free Trial
             </Button>
@@ -888,7 +890,7 @@ export default function CaseStudies() {
             remediation roadmap — in your first session with CMMC Lens.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/#demo">
+            <Link href="/#contact">
               <Button className="bg-accent text-background hover:bg-accent/90 font-heading font-bold text-base px-8 py-3">
                 Start Free Trial — CMMC Lens
                 <ArrowRight className="w-4 h-4 ml-2" />

@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useSeo } from "@/hooks/useSeo";
 import {
   ArrowRight,
   Search,
@@ -304,10 +305,10 @@ export default function Blog() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
-  // Page title
-  useEffect(() => {
-    document.title = "CMMC Blog & Resource Center | DefenseEye.ai";
-  }, []);
+  useSeo(
+    "CMMC Blog & Resource Center | DefenseEye.ai",
+    "Expert CMMC 2.0 guides, compliance checklists, and actionable advice for DoD contractors. Topics: SPRS scoring, C3PAO assessments, NIST 800-171, SSP/POA&M, and CUI protection."
+  );
 
   // Schema.org Blog JSON-LD
   useEffect(() => {
@@ -386,7 +387,7 @@ export default function Blog() {
               <span className="hover:text-primary transition-colors cursor-pointer">Case Studies</span>
             </Link>
           </nav>
-          <Link href="/#demo">
+          <Link href="/#contact">
             <Button size="sm" className="bg-primary text-background hover:bg-primary/90 font-heading font-semibold">
               Start Free Trial
             </Button>
@@ -512,7 +513,7 @@ export default function Blog() {
             CMMC Lens maps your controls to all 110 NIST 800-171 practices, calculates your live
             SPRS score, and generates your SSP automatically.
           </p>
-          <Link href="/#demo">
+          <Link href="/#contact">
             <Button className="bg-accent text-background hover:bg-accent/90 font-heading font-bold text-base px-8 py-3">
               Start Free Trial with CMMC Lens
               <ArrowRight className="w-4 h-4 ml-2" />

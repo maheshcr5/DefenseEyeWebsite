@@ -1,31 +1,26 @@
-User-agent: GPTBot
-Allow: /
-Allow: /api/cmmc-content
-
-User-agent: Claude-Bot
-Allow: /
-Allow: /api/cmmc-content
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
+# defenseeye.ai — robots.txt
+# All crawlers are welcome. Nothing is disallowed.
 
 User-agent: *
-Allow: /
+Disallow:
 
-# AI bot ingestion endpoint — returns structured CMMC knowledge chunks
-# GET /api/cmmc-content?page=1
-# GET /api/cmmc-content?topic=SPRS+Score
-# GET /api/cmmc-content?q=CMMC+Level+2
-# GET /api/cmmc-content/topics
+# AI training and LLM crawlers — explicitly permitted
+User-agent: GPTBot
+Disallow:
+
+User-agent: Claude-Bot
+Disallow:
+
+User-agent: Google-Extended
+Disallow:
+
+User-agent: PerplexityBot
+Disallow:
+
+User-agent: Googlebot
+Disallow:
+
+User-agent: Bingbot
+Disallow:
 
 Sitemap: https://defenseeye.ai/sitemap.xml
-# LLMs.txt: https://defenseeye.ai/llms.txt

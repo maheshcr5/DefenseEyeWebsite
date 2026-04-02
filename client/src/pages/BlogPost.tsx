@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "wouter";
 import { motion, useInView, useScroll, useSpring } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useSeo } from "@/hooks/useSeo";
 import {
   ArrowRight,
   ArrowLeft,
@@ -164,7 +165,7 @@ function CTABox({ variant = "inline" }: { variant?: "inline" | "bottom" }) {
             controls to your environment, calculates your live SPRS score, generates your SSP,
             and tracks POA&M items — all in one platform built for defense contractors.
           </p>
-          <Link href="/#demo">
+          <Link href="/#contact">
             <Button className="bg-accent text-background hover:bg-accent/90 font-heading font-bold">
               Start Free Trial — CMMC Lens
               <ArrowRight className="w-4 h-4 ml-1.5" />
@@ -302,14 +303,11 @@ export default function BlogPostPage() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Page title
-  useEffect(() => {
-    if (post) {
-      document.title = `${post.title} | DefenseEye.ai`;
-    } else {
-      document.title = "Article Not Found | DefenseEye.ai";
-    }
-  }, [post]);
+  // Page title + meta description
+  useSeo(
+    post ? `${post.title} | DefenseEye.ai` : "Article Not Found | DefenseEye.ai",
+    post?.metaDescription ?? "Expert CMMC 2.0 compliance guides for DoD contractors — NIST 800-171, SPRS scores, C3PAO assessments, and more. Free resources from DefenseEye."
+  );
 
   // Schema.org BlogPosting JSON-LD
   useEffect(() => {
@@ -342,8 +340,14 @@ export default function BlogPostPage() {
         "@type": "WebPage",
         "@id": `https://defenseeye.ai/blog/${post.slug}`,
       },
-      keywords: post.tags.join(", "),
+      keyword: post.tags.join(", "),
       articleSection: post.category,
+      image: {
+        "@type": "ImageObject",
+        url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028771419/EuH9Png2HimpzgUP2fBtWN/hero-dashboard-MRfN7kPE4hmjGfzaoj2jb9.png",
+        width: 1200,
+        height: 630,
+      },
     });
     const existing = document.getElementById("blogpost-schema");
     if (existing) existing.remove();
@@ -393,7 +397,7 @@ export default function BlogPostPage() {
               <span className="hover:text-primary transition-colors cursor-pointer">Case Studies</span>
             </Link>
           </nav>
-          <Link href="/#demo">
+          <Link href="/#contact">
             <Button size="sm" className="bg-primary text-background hover:bg-primary/90 font-heading font-semibold">
               Start Free Trial
             </Button>

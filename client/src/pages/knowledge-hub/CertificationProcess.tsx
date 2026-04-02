@@ -3,7 +3,6 @@
  * Route: /knowledge-hub/certification-process
  */
 
-import { useEffect } from "react";
 import { Link } from "wouter";
 import KnowledgeHubLayout from "@/components/KnowledgeHubLayout";
 import { CheckCircle2, ArrowRight, AlertTriangle } from "lucide-react";
@@ -156,10 +155,6 @@ const STEPS = [
 ];
 
 export default function CertificationProcess() {
-  useEffect(() => {
-    document.title = "CMMC Certification Process Step-by-Step (2025) | DefenseEye.ai Knowledge Hub";
-  }, []);
-
   return (
     <KnowledgeHubLayout
       title="CMMC Certification Process Step-by-Step (2025)"
@@ -169,6 +164,10 @@ export default function CertificationProcess() {
       relatedArticles={RELATED}
       schemaType="Article"
     >
+      <h1 className="font-heading text-3xl sm:text-4xl font-bold text-foreground leading-tight mb-6">
+        CMMC Certification Process Step-by-Step (2025)
+      </h1>
+
       {/* Quick Answer */}
       <div className="bg-primary/5 border border-primary/20 p-5 mb-8">
         <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">Quick Answer</p>

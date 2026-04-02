@@ -71,6 +71,15 @@ export default function KnowledgeHubLayout({
   useEffect(() => {
     document.title = `${title} | DefenseEye CMMC Knowledge Hub`;
 
+    // Inject meta description
+    let metaDesc = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement("meta");
+      metaDesc.setAttribute("name", "description");
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = description;
+
     // Build JSON-LD
     const schema = {
       "@context": "https://schema.org",
