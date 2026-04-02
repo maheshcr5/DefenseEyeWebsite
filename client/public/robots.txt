@@ -1,0 +1,31 @@
+User-agent: GPTBot
+Allow: /
+Allow: /api/cmmc-content
+
+User-agent: Claude-Bot
+Allow: /
+Allow: /api/cmmc-content
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: *
+Allow: /
+
+# AI bot ingestion endpoint — returns structured CMMC knowledge chunks
+# GET /api/cmmc-content?page=1
+# GET /api/cmmc-content?topic=SPRS+Score
+# GET /api/cmmc-content?q=CMMC+Level+2
+# GET /api/cmmc-content/topics
+
+Sitemap: https://defenseeye.ai/sitemap.xml
+LLMs: https://defenseeye.ai/llms.txt

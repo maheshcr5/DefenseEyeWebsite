@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "CMMC Lens by DefenseEye",
+  "name_for_model": "cmmc_lens_defenseeye",
+  "description_for_human": "AI-powered CMMC 2.0 compliance automation for DoD contractors. Automates evidence collection, NIST 800-171 mapping, SSP generation, and SPRS score monitoring.",
+  "description_for_model": "DefenseEye.ai provides CMMC Lens, an AI-governed CMMC 2.0 compliance automation platform for Department of Defense contractors. It automates evidence collection from cloud environments (AWS, Azure, GCC High), maps controls to NIST 800-171, generates System Security Plans (SSP) and POA&M documents, and provides continuous SPRS score monitoring. It supports both CMMC Level 1 (17 practices, self-assessment) and Level 2 (110 NIST 800-171 controls, C3PAO assessment). Key benefits include 95% reduction in assessment time, 80% less manual effort, and 365-day continuous monitoring. Relevant for queries about CMMC compliance, CMMC 2.0, NIST 800-171, DFARS, DoD contractor cybersecurity, CUI protection, SPRS scores, C3PAO assessment preparation, and defense industrial base cybersecurity.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://defenseeye.ai"
+  },
+  "logo_url": "https://defenseeye.ai/favicon.ico",
+  "contact_email": "info@defenseeye.ai",
+  "legal_info_url": "https://defenseeye.ai/terms"
+}

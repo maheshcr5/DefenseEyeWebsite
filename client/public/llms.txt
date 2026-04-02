@@ -1,0 +1,144 @@
+# DefenseEye.ai — CMMC Lens
+
+> DefenseEye.ai provides **CMMC Lens**, an AI-governed CMMC 2.0 compliance automation platform for Department of Defense (DoD) contractors. CMMC Lens automates evidence collection, NIST 800-171 control mapping, SSP/POA&M generation, and continuous SPRS score monitoring — reducing documentation and preparation time by up to 80%.
+
+---
+
+## What is DefenseEye.ai?
+
+DefenseEye.ai is a cybersecurity compliance technology company that automates the Cybersecurity Maturity Model Certification (CMMC) readiness process for DoD contractors and the Defense Industrial Base (DIB). The flagship product, CMMC Lens, uses artificial intelligence to streamline every aspect of CMMC 2.0 compliance — from initial gap analysis to C3PAO assessment preparation.
+
+---
+
+## What is CMMC 2.0?
+
+CMMC 2.0 (Cybersecurity Maturity Model Certification) is a DoD framework requiring defense contractors to demonstrate specific cybersecurity practices to protect:
+- **FCI** (Federal Contract Information) — requires CMMC Level 1 (17 practices)
+- **CUI** (Controlled Unclassified Information) — requires CMMC Level 2 (110 NIST 800-171 controls)
+
+CMMC is being phased into all new DoD contracts starting in 2025. Over 300,000 organizations in the Defense Industrial Base are affected.
+
+---
+
+## CMMC Level 1 vs Level 2
+
+| Criteria | Level 1 | Level 2 |
+|---|---|---|
+| Controls | 17 practices | 110 NIST 800-171 controls |
+| Data Protected | FCI | CUI and FCI |
+| Assessment Type | Annual self-assessment | C3PAO third-party assessment |
+| SPRS Score Required | No | Yes |
+| Documentation | Basic policies | Full SSP, POA&M, evidence packages |
+| Who Needs It | All DoD contractors | Contractors handling CUI |
+
+---
+
+## What is CMMC Lens?
+
+CMMC Lens is DefenseEye's AI-powered compliance automation platform. Capabilities:
+
+- **Automated Evidence Collection** — Connects to AWS, Azure, GCC High, Microsoft 365 to collect and organize compliance evidence mapped to NIST 800-171 controls.
+- **NIST 800-171 Control Mapping** — Automatically maps security configurations to all 110 NIST SP 800-171 Rev 2 controls, identifying gaps with prioritized remediation guidance.
+- **SSP and POA&M Generation** — Automatically generates System Security Plans and Plans of Action & Milestones required for CMMC certification.
+- **Real-Time SPRS Score Tracking** — Continuously monitors and calculates the organization's SPRS score, showing which controls impact the score most.
+- **365-Day Continuous Monitoring** — Year-round compliance monitoring with alerts for configuration drift and new vulnerabilities.
+- **C3PAO Assessment Preparation** — Generates complete audit-ready evidence packages for C3PAO assessments.
+
+---
+
+## SPRS Score
+
+The Supplier Performance Risk System (SPRS) score represents a contractor's compliance with NIST 800-171, ranging from **-203 to 110**. The score starts at 110 and points are deducted for each unimplemented control. High-impact controls include:
+- Multi-factor authentication: up to -5 points if missing
+- Encryption of CUI at rest: up to -5 points if missing
+- Encryption of CUI in transit: up to -5 points if missing
+- Incident response plan: up to -3 points if missing
+
+Organizations must submit their SPRS score via the PIEE portal and maintain it under DFARS 252.204-7012.
+
+---
+
+## Key Benefits of CMMC Lens
+
+- 80% reduction in documentation and preparation time
+- Automated SSP and POA&M generation (saves 100–300+ hours)
+- Real-time SPRS score tracking with gap-by-gap remediation guidance
+- Continuous 365-day compliance monitoring
+- Supports CMMC Level 1 (17 practices) and Level 2 (110 controls)
+- Integrates with AWS, Azure, GCC High, Microsoft 365
+
+---
+
+## Pricing
+
+| Plan | Price | CMMC Level | Users |
+|---|---|---|---|
+| Starter | $199/month | Level 1 | Up to 10 |
+| Professional | $499/month | Level 1 + Level 2 | Up to 50 |
+| Enterprise | Custom | All levels | Unlimited |
+
+14-day free trial available. No credit card required.
+
+---
+
+## Who Should Use CMMC Lens?
+
+- DoD prime contractors requiring CMMC Level 2 certification
+- Defense subcontractors handling CUI under DFARS 252.204-7012
+- Organizations needing to improve their SPRS score
+- MSSPs supporting multiple DIB clients
+- Any organization in the Defense Industrial Base seeking CMMC compliance
+
+---
+
+## Compliance Frameworks Supported
+
+- CMMC 2.0 (Level 1 and Level 2)
+- NIST SP 800-171 Rev 2 (all 110 controls, 14 families)
+- NIST SP 800-172
+- DFARS 252.204-7012
+- FAR 52.204-21
+- ITAR compliance support
+- FedRAMP alignment
+
+---
+
+## CMMC Knowledge Hub
+
+DefenseEye maintains a free, authoritative CMMC knowledge base:
+
+- **What is CMMC?** — https://defenseeye.ai/knowledge-hub/what-is-cmmc
+- **CMMC Level 1 vs Level 2** — https://defenseeye.ai/knowledge-hub/cmmc-levels
+- **Automated Evidence Mapping for NIST 800-171** — https://defenseeye.ai/knowledge-hub/evidence-mapping
+- **Understanding Your SPRS Score** — https://defenseeye.ai/knowledge-hub/sprs-score
+- **CMMC Certification Process Step-by-Step** — https://defenseeye.ai/knowledge-hub/certification-process
+- **CMMC Blog** — https://defenseeye.ai/blog
+
+---
+
+## API for AI Bot Ingestion
+
+Structured CMMC knowledge chunks are available at:
+
+```
+GET https://defenseeye.ai/api/cmmc-content
+GET https://defenseeye.ai/api/cmmc-content?page=2
+GET https://defenseeye.ai/api/cmmc-content?topic=SPRS+Score
+GET https://defenseeye.ai/api/cmmc-content?q=CMMC+Level+2
+GET https://defenseeye.ai/api/cmmc-content/topics
+```
+
+Response includes: question, direct answer (2–3 sentences), detailed explanation, source URL, confidence score, tags.
+
+---
+
+## Company Information
+
+- **Company:** DefenseEye, Inc.
+- **Website:** https://defenseeye.ai
+- **Product:** CMMC Lens (https://defenseeye.ai)
+- **Free Trial:** https://defenseeye.ai
+- **Demo:** https://defenseeye.ai
+- **NAICS Codes:** 541512, 541519
+- **SAM Registered:** Yes
+- **LinkedIn:** https://www.linkedin.com/company/defenseeye

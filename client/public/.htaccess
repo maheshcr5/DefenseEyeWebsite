@@ -1,0 +1,72 @@
+# ─── DefenseEye.ai — Apache SPA Routing (.htaccess) ─────────────────────────
+# Only needed for Hostinger Shared Hosting (Apache).
+# For VPS/Nginx this file is irrelevant — Nginx handles routing.
+#
+# What this does:
+# - Forces HTTPS
+# - Redirects www → non-www
+# - Serves static assets directly (JS, CSS, images) with long cache headers
+# - Falls back to index.html for all other routes (SPA client-side routing)
+
+Options -Indexes
+
+# ── Force HTTPS ───────────────────────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Redirect HTTP → HTTPS
+  RewriteCond %{HTTPS} off
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # Redirect www → non-www
+  RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+  # Serve existing files/directories directly (assets, robots.txt, etc.)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # SPA fallback: all other routes → index.html
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# ── Cache headers ─────────────────────────────────────────────────────────────
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Vite-hashed assets — cache forever (filename changes on each build)
+  <FilesMatch "\.(js|css|woff2?|ttf|eot|otf|ico|png|jpg|jpeg|gif|svg|webp|avif)$">
+    ExpiresDefault "access plus 1 year"
+    Header set Cache-Control "public, immutable"
+  </FilesMatch>
+
+  # HTML — never cache (must always be fresh for SPA routing)
+  <FilesMatch "\.html$">
+    ExpiresDefault "access plus 0 seconds"
+    Header set Cache-Control "no-store, no-cache, must-revalidate"
+  </FilesMatch>
+
+  # SEO / AI files — short cache
+  <FilesMatch "(robots\.txt|sitemap\.xml|llms\.txt)$">
+    ExpiresDefault "access plus 1 hour"
+    Header set Cache-Control "public"
+  </FilesMatch>
+</IfModule>
+
+# ── Gzip compression ─────────────────────────────────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml font/woff font/woff2
+</IfModule>
+
+# ── Security headers ─────────────────────────────────────────────────────────
+<IfModule mod_headers.c>
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+</IfModule>
