@@ -336,7 +336,7 @@ export default function Home() {
 
   useSeo(
     "DefenseEye.ai — AI-Powered CMMC 2.0 Compliance Automation | CMMC Lens",
-    "DefenseEye CMMC Lens automates CMMC 2.0 compliance for DoD contractors — evidence collection, NIST 800-171 mapping, SSP/POA&M generation, and SPRS score monitoring. Reduce documentation time by 80%."
+    "DefenseEye CMMC Lens automates CMMC 2.0 compliance for DoD contractors — AI-driven evidence collection, NIST 800-171 mapping, SSP/POA&M generation, SPRS score monitoring, and expert CMMC advisory consulting. Reduce documentation time by 80%."
   );
 
   // ─── Structured Data for LLMs / AI Agents / SEO ───
@@ -406,6 +406,7 @@ export default function Home() {
 
   const navLinks = [
     { label: "Features", href: "#features" },
+    { label: "Services", href: "#services" },
     { label: "How It Works", href: "#how-it-works" },
     { label: "Knowledge Hub", href: "/knowledge-hub" },
     { label: "Blog", href: "/blog" },
@@ -853,6 +854,124 @@ export default function Home() {
                 )}
               </motion.div>
             ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          CMMC ADVISORY & CONSULTING SERVICES
+      ═══════════════════════════════════════════════════════════════ */}
+      <Section id="services" className="py-20 lg:py-28 bg-card/20 border-y border-border/20">
+        <div className="container">
+          <div className="max-w-2xl mx-auto text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/30 bg-accent/5 mb-4">
+              <span className="text-xs font-medium text-accent tracking-wide uppercase">Full-Service CMMC Support</span>
+            </div>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4">
+              Software <span className="text-primary">+</span> Expert Advisory — Everything You Need
+            </h2>
+            <p className="text-muted-foreground text-lg leading-relaxed">
+              CMMC Lens automates the heavy lifting. Our certified CMMC advisors handle the strategy, scoping, and expert guidance your team can't do alone.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Target,
+                label: "CMMC Scoping",
+                color: "text-primary",
+                border: "border-primary/20",
+                bg: "bg-primary/5",
+                description:
+                  "We define your exact CMMC boundary — which systems, assets, users, and data flows are in scope for CUI. Proper scoping reduces cost and audit risk before you start.",
+                bullets: ["CUI flow mapping", "System boundary definition", "Asset inventory & classification"],
+              },
+              {
+                icon: Users,
+                label: "CMMC Advisory & Consulting",
+                color: "text-accent",
+                border: "border-accent/20",
+                bg: "bg-accent/5",
+                description:
+                  "Our CMMC Registered Practitioners guide you through every decision — from choosing Level 1 vs Level 2 to preparing your team for C3PAO assessment.",
+                bullets: ["1-on-1 advisor sessions", "CMMC level strategy", "C3PAO selection guidance"],
+              },
+              {
+                icon: FileCheck,
+                label: "SSP, Policies & Procedures",
+                color: "text-primary",
+                border: "border-primary/20",
+                bg: "bg-primary/5",
+                description:
+                  "AI-generated System Security Plans, policies, and procedures mapped to all 110 NIST 800-171 controls. Reviewed and stamped by our compliance team.",
+                bullets: ["Full SSP generation", "110 control policies", "POA&M documentation"],
+              },
+              {
+                icon: Zap,
+                label: "Automated Risk Remediation",
+                color: "text-accent",
+                border: "border-accent/20",
+                bg: "bg-accent/5",
+                description:
+                  "Real-time gap detection with AI-prioritized remediation guidance. When a control fails, CMMC Lens tells you exactly what to fix and how — instantly.",
+                bullets: ["Real-time gap alerts", "Prioritized fix queue", "Step-by-step remediation"],
+              },
+              {
+                icon: Eye,
+                label: "Continuous Monitoring",
+                color: "text-primary",
+                border: "border-primary/20",
+                bg: "bg-primary/5",
+                description:
+                  "365-day posture monitoring across your Azure Commercial, Azure GCC, and M365 environments. Catch drift before it becomes a finding.",
+                bullets: ["24/7 control monitoring", "Drift alerts", "Audit trail & evidence log"],
+              },
+              {
+                icon: BarChart3,
+                label: "Detailed Assessment Reports",
+                color: "text-accent",
+                border: "border-accent/20",
+                bg: "bg-accent/5",
+                description:
+                  "C3PAO-ready assessment reports with per-control findings, evidence artifacts, SPRS delta analysis, and executive summaries for leadership.",
+                bullets: ["Per-control findings", "SPRS delta analysis", "C3PAO evidence packages"],
+              },
+            ].map(({ icon: Icon, label, color, border, bg, description, bullets }) => (
+              <motion.div
+                key={label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5 }}
+                className={`relative rounded-xl border ${border} bg-card/60 p-6 hover:bg-card/90 transition-colors duration-300`}
+              >
+                <div className={`w-10 h-10 rounded-lg ${bg} border ${border} flex items-center justify-center mb-4`}>
+                  <Icon className={`w-5 h-5 ${color}`} />
+                </div>
+                <h3 className="font-heading font-semibold text-lg text-foreground mb-2">{label}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-4">{description}</p>
+                <ul className="space-y-1">
+                  {bullets.map((b) => (
+                    <li key={b} className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <CheckCircle2 className={`w-3.5 h-3.5 ${color} shrink-0`} />
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <button
+              onClick={() => setModalOpen(true)}
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg bg-accent text-accent-foreground font-semibold text-base hover:bg-accent/90 transition-colors glow-amber"
+            >
+              Talk to a CMMC Advisor
+              <ArrowRight className="w-4 h-4" />
+            </button>
+            <p className="mt-3 text-xs text-muted-foreground">Free 30-minute scoping consultation — no commitment required</p>
           </div>
         </div>
       </Section>

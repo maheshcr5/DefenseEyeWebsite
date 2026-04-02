@@ -2,6 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 import nodemailer from "nodemailer";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -308,9 +309,75 @@ async function startServer() {
 
   app.use(express.static(staticPath));
 
-  // Handle client-side routing — serve index.html for all non-API routes
-  app.get("*", (_req, res) => {
-    res.sendFile(path.join(staticPath, "index.html"));
+  // ─── Per-route meta for server-side injection (fixes duplicate meta / text ratio) ─
+  const ROUTE_META: Record<string, { title: string; description: string }> = {
+    "/": {
+      title: "DefenseEye.ai — AI-Powered CMMC 2.0 Compliance Automation | CMMC Lens",
+      description: "DefenseEye CMMC Lens automates CMMC 2.0 compliance for DoD contractors — AI-driven evidence collection, NIST 800-171 mapping, SSP/POA&M generation, SPRS score monitoring, and expert CMMC advisory consulting. Reduce documentation time by 80%.",
+    },
+    "/blog": {
+      title: "CMMC Compliance Blog — Expert Guides for Defense Contractors | DefenseEye.ai",
+      description: "Expert CMMC compliance guides, NIST 800-171 tutorials, SPRS score improvement tips, and C3PAO assessment advice for DoD contractors. Free resources to achieve CMMC Level 2 certification.",
+    },
+    "/case-studies": {
+      title: "CMMC Contractor Profiles — DoD Compliance Scenarios | DefenseEye.ai",
+      description: "See how DoD contractors use DefenseEye CMMC Lens to achieve audit readiness. Real-world scenarios covering CMMC Level 2, CUI handling, SPRS score improvement, and C3PAO assessment preparation.",
+    },
+    "/knowledge-hub": {
+      title: "CMMC Knowledge Hub — Authoritative Guides for DoD Contractors | DefenseEye.ai",
+      description: "Free CMMC 2.0 knowledge base for DoD contractors. Authoritative guides on CMMC levels, NIST 800-171 controls, SPRS scores, C3PAO assessments, and the full certification process.",
+    },
+    "/knowledge-hub/what-is-cmmc": {
+      title: "What is CMMC 2.0? Complete Guide for DoD Contractors (2025) | DefenseEye.ai",
+      description: "What is CMMC 2.0? Complete guide covering CMMC levels 1 and 2, FCI vs CUI protection, self-assessment vs C3PAO requirements, and how CMMC certification affects Defense Industrial Base contracts.",
+    },
+    "/knowledge-hub/cmmc-levels": {
+      title: "CMMC Level 1 vs Level 2: Which Do You Need? (2025) | DefenseEye.ai",
+      description: "CMMC Level 1 vs Level 2 fully explained. Compare 17 basic cybersecurity practices vs 110 NIST 800-171 controls, self-assessment vs C3PAO requirements, and who needs each certification level.",
+    },
+    "/knowledge-hub/evidence-mapping": {
+      title: "Automated NIST 800-171 Evidence Mapping for CMMC | DefenseEye.ai",
+      description: "How to automate NIST 800-171 evidence mapping for CMMC Level 2. CMMC Lens collects and maps compliance evidence from Azure Commercial, Azure GCC, M365 Commercial, and M365 GCC High.",
+    },
+    "/knowledge-hub/sprs-score": {
+      title: "SPRS Score Explained: How to Calculate, Submit & Improve | DefenseEye.ai",
+      description: "What is an SPRS score? Learn how to calculate your score (-203 to 110), submit via PIEE, and improve your Supplier Performance Risk System score for DFARS 252.204-7012 and CMMC Level 2.",
+    },
+    "/knowledge-hub/certification-process": {
+      title: "CMMC Certification Process Step-by-Step (2025) | DefenseEye.ai",
+      description: "Complete CMMC certification roadmap for 2025: gap assessment, SSP creation, POA&M, C3PAO selection, pre-assessment preparation, the assessment itself, and maintaining compliance post-certification.",
+    },
+  };
+
+  function getRouteMeta(routePath: string) {
+    if (ROUTE_META[routePath]) return ROUTE_META[routePath];
+    if (routePath.startsWith("/blog/")) {
+      return {
+        title: "CMMC Compliance Guide | DefenseEye.ai",
+        description: "Expert CMMC compliance guidance for DoD contractors — NIST 800-171 controls, SPRS score improvement, CUI protection, C3PAO assessment preparation, and SSP documentation.",
+      };
+    }
+    return ROUTE_META["/"];
+  }
+
+  // ─── SPA fallback — serve index.html with injected route-specific meta ────────
+  app.get("*", (req, res) => {
+    const indexPath = path.join(staticPath, "index.html");
+    try {
+      let html = fs.readFileSync(indexPath, "utf-8");
+      const meta = getRouteMeta(req.path);
+      // Replace <title>
+      html = html.replace(/<title>[^<]*<\/title>/, `<title>${meta.title}</title>`);
+      // Replace static meta description
+      html = html.replace(
+        /<meta name="description" content="[^"]*"/,
+        `<meta name="description" content="${meta.description.replace(/"/g, "&quot;")}"`
+      );
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      res.send(html);
+    } catch {
+      res.sendFile(path.join(staticPath, "index.html"));
+    }
   });
 
   const port = process.env.PORT || 3000;
