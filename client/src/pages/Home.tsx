@@ -8,7 +8,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Shield,
   Zap,
   BarChart3,
   FileCheck,
@@ -32,7 +31,6 @@ import {
 import { motion, useInView, AnimatePresence } from "framer-motion";
 
 // ─── Image URLs ───
-const HERO_DASHBOARD = "https://d2xsxph8kpxj0f.cloudfront.net/310419663028771419/EuH9Png2HimpzgUP2fBtWN/hero-dashboard-j54sqsSTsp5DE5ZQ49aRch.webp";
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310419663028771419/EuH9Png2HimpzgUP2fBtWN/hero-bg-pattern-iega5H83gpAZQ7MY3Y2dWm.webp";
 const FEATURE_EVIDENCE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663028771419/EuH9Png2HimpzgUP2fBtWN/feature-evidence-ZzfobMQwYhy9eGaaH7uYxP.webp";
 const FEATURE_MONITORING = "https://d2xsxph8kpxj0f.cloudfront.net/310419663028771419/EuH9Png2HimpzgUP2fBtWN/feature-monitoring-7m8CSn8qMd6ychfXsmM3xY.webp";
@@ -57,6 +55,212 @@ function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; s
   }, [isInView, end, duration]);
 
   return <span ref={ref}>{count}{suffix}</span>;
+}
+
+// ─── DefenseEye Logo SVG ───
+function DefenseEyeLogo({ className = "w-8 h-8" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 48 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="DefenseEye logo">
+      {/* Outer eye shape */}
+      <path d="M2 18 C10 4 38 4 46 18 C38 32 10 32 2 18Z" stroke="#00D4FF" strokeWidth="2.2" fill="none" strokeLinejoin="round"/>
+      {/* Iris ring */}
+      <circle cx="24" cy="18" r="7.5" stroke="#00D4FF" strokeWidth="1.8" fill="none"/>
+      {/* Pupil fill */}
+      <circle cx="24" cy="18" r="4" fill="#00D4FF" opacity="0.15"/>
+      {/* Flame / wing — amber accent */}
+      <path d="M24 11.5 C21 14 20 17 22 19.5 C23.2 21 24 21.5 24 21.5 C24 21.5 24.8 21 26 19.5 C28 17 27 14 24 11.5Z" fill="#FFB547"/>
+      {/* Inner pupil dot */}
+      <circle cx="24" cy="18" r="2" fill="#FFB547"/>
+      {/* Top eyelid line accent */}
+      <path d="M14 11 Q24 6 34 11" stroke="#00D4FF" strokeWidth="1" strokeLinecap="round" opacity="0.5"/>
+    </svg>
+  );
+}
+
+// ─── Lead Capture Modal ───
+function TrialFormModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({
+    firstName: "", lastName: "", email: "", company: "", title: "",
+    companySize: "", cmmcLevel: "", challenge: "", timeline: "", message: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: wire to CRM / email — for now log and show confirmation
+    console.log("Lead captured:", form);
+    setSubmitted(true);
+  };
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+
+          {/* Modal */}
+          <motion.div
+            className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-card border border-border/60 shadow-2xl rounded-sm z-10"
+            initial={{ opacity: 0, y: 30, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.97 }}
+            transition={{ duration: 0.25 }}
+          >
+            {/* Header */}
+            <div className="flex items-start justify-between p-6 border-b border-border/40">
+              <div>
+                <h2 className="font-heading text-xl font-bold text-foreground">Start Your Free CMMC Trial</h2>
+                <p className="text-sm text-muted-foreground mt-1">Tell us about your compliance needs — our CMMC advisory team will reach out within 24 hours.</p>
+              </div>
+              <button onClick={onClose} className="text-muted-foreground hover:text-foreground ml-4 mt-0.5 shrink-0"><X className="w-5 h-5" /></button>
+            </div>
+
+            {submitted ? (
+              <div className="p-10 text-center">
+                <CheckCircle2 className="w-14 h-14 text-primary mx-auto mb-4" />
+                <h3 className="font-heading text-xl font-bold text-foreground mb-2">You're on the list!</h3>
+                <p className="text-muted-foreground leading-relaxed max-w-sm mx-auto">
+                  Our CMMC advisory team will contact you at <strong className="text-foreground">{form.email}</strong> within 24 hours to discuss your compliance roadmap.
+                </p>
+                <Button className="mt-6 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold" onClick={onClose}>Close</Button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="p-6 space-y-5">
+                {/* Name row */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">First Name *</label>
+                    <input required name="firstName" value={form.firstName} onChange={handleChange}
+                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
+                      placeholder="Jane" />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Last Name *</label>
+                    <input required name="lastName" value={form.lastName} onChange={handleChange}
+                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
+                      placeholder="Smith" />
+                  </div>
+                </div>
+
+                {/* Email + Company */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Work Email *</label>
+                    <input required type="email" name="email" value={form.email} onChange={handleChange}
+                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
+                      placeholder="jane@company.com" />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Company Name *</label>
+                    <input required name="company" value={form.company} onChange={handleChange}
+                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
+                      placeholder="Acme Defense LLC" />
+                  </div>
+                </div>
+
+                {/* Title + Size */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Your Role *</label>
+                    <select required name="title" value={form.title} onChange={handleChange}
+                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30">
+                      <option value="">Select role…</option>
+                      <option>CEO / Owner</option>
+                      <option>CISO / Security Director</option>
+                      <option>IT Manager / Director</option>
+                      <option>Compliance Officer</option>
+                      <option>Program / Contracts Manager</option>
+                      <option>MSSP / Consultant</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Company Size *</label>
+                    <select required name="companySize" value={form.companySize} onChange={handleChange}
+                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30">
+                      <option value="">Select size…</option>
+                      <option>1–10 employees</option>
+                      <option>11–50 employees</option>
+                      <option>51–200 employees</option>
+                      <option>201–1,000 employees</option>
+                      <option>1,000+ employees</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* CMMC Level + Timeline */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Target CMMC Level *</label>
+                    <select required name="cmmcLevel" value={form.cmmcLevel} onChange={handleChange}
+                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30">
+                      <option value="">Select level…</option>
+                      <option>CMMC Level 1 (17 practices)</option>
+                      <option>CMMC Level 2 (110 controls)</option>
+                      <option>Not sure yet</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Compliance Timeline *</label>
+                    <select required name="timeline" value={form.timeline} onChange={handleChange}
+                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30">
+                      <option value="">Select timeline…</option>
+                      <option>ASAP — contract at risk</option>
+                      <option>Within 3 months</option>
+                      <option>Within 6 months</option>
+                      <option>6–12 months</option>
+                      <option>Just exploring options</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Biggest challenge */}
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Biggest CMMC Challenge *</label>
+                  <select required name="challenge" value={form.challenge} onChange={handleChange}
+                    className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30">
+                    <option value="">Select challenge…</option>
+                    <option>Don't know where to start</option>
+                    <option>Documentation & evidence collection burden</option>
+                    <option>Understanding NIST 800-171 control requirements</option>
+                    <option>Cost of traditional consulting ($50K–$150K+)</option>
+                    <option>Time & internal bandwidth</option>
+                    <option>SPRS score improvement</option>
+                    <option>Preparing for C3PAO assessment</option>
+                    <option>Managing multiple subcontractors / supply chain</option>
+                  </select>
+                </div>
+
+                {/* Optional message */}
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Additional Context <span className="normal-case font-normal">(optional)</span></label>
+                  <textarea name="message" value={form.message} onChange={handleChange} rows={3}
+                    className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 resize-none"
+                    placeholder="Tell us about your current security posture, upcoming contract requirements, or any specific questions…" />
+                </div>
+
+                <div className="flex items-center justify-between pt-1">
+                  <p className="text-xs text-muted-foreground">No credit card required. 14-day full access.</p>
+                  <Button type="submit" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 glow-amber">
+                    Get Started <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </div>
+              </form>
+            )}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }
 
 // ─── FAQ Item ───
@@ -109,6 +313,7 @@ function Section({ children, className = "", id }: { children: React.ReactNode; 
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   // ─── Structured Data for LLMs / AI Agents / SEO ───
   useEffect(() => {
@@ -186,6 +391,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <TrialFormModal open={modalOpen} onClose={() => setModalOpen(false)} />
       {/* ─── Scan Line Effect ─── */}
       <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
         <div className="scan-line absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
@@ -198,9 +404,7 @@ export default function Home() {
         <div className="container flex items-center justify-between h-16">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2.5 group" aria-label="DefenseEye.ai Home">
-            <div className="w-8 h-8 rounded bg-primary/20 border border-primary/40 flex items-center justify-center group-hover:glow-cyan transition-all duration-300">
-              <Shield className="w-4.5 h-4.5 text-primary" />
-            </div>
+            <DefenseEyeLogo className="w-9 h-7" />
             <span className="font-heading font-bold text-lg tracking-tight text-foreground">
               Defense<span className="text-primary">Eye</span>
             </span>
@@ -221,10 +425,10 @@ export default function Home() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
-            <Button variant="outline" size="sm" className="border-primary/40 text-primary hover:bg-primary/10">
+            <Button variant="outline" size="sm" className="border-primary/40 text-primary hover:bg-primary/10" onClick={() => setModalOpen(true)}>
               Book a Demo
             </Button>
-            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold glow-amber">
+            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold glow-amber" onClick={() => setModalOpen(true)}>
               Start Free Trial
             </Button>
           </div>
@@ -260,10 +464,10 @@ export default function Home() {
                   </a>
                 ))}
                 <div className="flex flex-col gap-2 pt-2 border-t border-border/50">
-                  <Button variant="outline" size="sm" className="border-primary/40 text-primary w-full">
+                  <Button variant="outline" size="sm" className="border-primary/40 text-primary w-full" onClick={() => { setMobileMenuOpen(false); setModalOpen(true); }}>
                     Book a Demo
                   </Button>
-                  <Button size="sm" className="bg-accent text-accent-foreground w-full font-semibold">
+                  <Button size="sm" className="bg-accent text-accent-foreground w-full font-semibold" onClick={() => { setMobileMenuOpen(false); setModalOpen(true); }}>
                     Start Free Trial
                   </Button>
                 </div>
@@ -312,11 +516,11 @@ export default function Home() {
 
               {/* CTA Buttons */}
               <div className="flex flex-wrap gap-4 mb-10">
-                <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-8 glow-amber">
+                <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-8 glow-amber" onClick={() => setModalOpen(true)}>
                   Start Free Trial
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
-                <Button variant="outline" size="lg" className="border-primary/40 text-primary hover:bg-primary/10 text-base px-8">
+                <Button variant="outline" size="lg" className="border-primary/40 text-primary hover:bg-primary/10 text-base px-8" onClick={() => setModalOpen(true)}>
                   Book a Demo
                 </Button>
               </div>
@@ -338,28 +542,67 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Right: Dashboard Image */}
+            {/* Right: CMMC Readiness Dashboard */}
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               className="relative"
             >
-              <div className="bracket-decoration p-1">
-                <img
-                  src={HERO_DASHBOARD}
-                  alt="CMMC Lens compliance dashboard showing real-time CMMC 2.0 readiness metrics, NIST 800-171 control mapping, and SPRS score monitoring"
-                  className="w-full rounded-sm border border-border/30 shadow-2xl"
-                  loading="eager"
-                  width={1376}
-                  height={768}
-                />
-              </div>
-              {/* Floating status badge */}
-              <div className="absolute -bottom-4 -left-4 bg-card border border-primary/30 rounded px-4 py-2.5 shadow-xl glow-cyan">
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse" />
-                  <span className="text-xs font-medium text-foreground">Compliance Status: Active</span>
+              <div className="bracket-decoration bg-card/80 border border-primary/20 p-6 shadow-2xl">
+                {/* Dashboard header */}
+                <div className="flex items-center justify-between mb-5">
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">CMMC Lens — Live Dashboard</p>
+                    <h3 className="font-heading font-semibold text-foreground">Readiness Overview</h3>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 bg-green-500/10 border border-green-500/30 rounded-full">
+                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                    <span className="text-xs font-medium text-green-400">Monitoring Active</span>
+                  </div>
+                </div>
+
+                {/* SPRS Score */}
+                <div className="bg-background/60 border border-border/30 rounded-sm p-4 mb-4">
+                  <div className="flex items-end justify-between mb-2">
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-1">SPRS Score</p>
+                      <p className="font-heading text-3xl font-bold text-primary">87<span className="text-base font-normal text-muted-foreground">/110</span></p>
+                    </div>
+                    <p className="text-xs text-green-400 font-medium">↑ +23 this month</p>
+                  </div>
+                  <div className="w-full bg-border/30 rounded-full h-2">
+                    <div className="bg-primary h-2 rounded-full" style={{ width: "79%" }} />
+                  </div>
+                </div>
+
+                {/* Controls grid */}
+                <div className="grid grid-cols-3 gap-3 mb-4">
+                  {[
+                    { label: "Controls Mapped", value: "94", total: "/110", color: "text-primary" },
+                    { label: "Evidence Collected", value: "312", total: " docs", color: "text-accent" },
+                    { label: "Gaps Remaining", value: "16", total: " items", color: "text-destructive" },
+                  ].map((stat) => (
+                    <div key={stat.label} className="bg-background/60 border border-border/30 rounded-sm p-3 text-center">
+                      <p className={`font-heading text-xl font-bold ${stat.color}`}>{stat.value}<span className="text-xs font-normal text-muted-foreground">{stat.total}</span></p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-tight">{stat.label}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Recent alerts */}
+                <div className="space-y-2">
+                  {[
+                    { icon: CheckCircle2, color: "text-green-400", msg: "AC.1.001 — Evidence auto-collected", time: "2m ago" },
+                    { icon: CheckCircle2, color: "text-green-400", msg: "SSP generated — 47 pages", time: "1h ago" },
+                    { icon: Zap, color: "text-accent", msg: "POA&M updated — 3 items closed", time: "3h ago" },
+                  ].map((item) => (
+                    <div key={item.msg} className="flex items-center gap-2.5 text-xs bg-background/40 border border-border/20 rounded-sm px-3 py-2">
+                      <item.icon className={`w-3.5 h-3.5 shrink-0 ${item.color}`} />
+                      <span className="text-muted-foreground flex-1">{item.msg}</span>
+                      <span className="text-muted-foreground/50">{item.time}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </motion.div>
@@ -905,6 +1148,7 @@ export default function Home() {
                       ? "bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full glow-amber"
                       : "border-primary/40 text-primary hover:bg-primary/10 w-full"
                   }
+                  onClick={() => setModalOpen(true)}
                 >
                   {plan.cta}
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -975,11 +1219,11 @@ export default function Home() {
               Join DoD contractors who trust DefenseEye's CMMC Lens to achieve audit readiness faster. Start your free trial today and see how AI-driven automation can transform your CMMC compliance journey.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-10 glow-amber">
+              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-10 glow-amber" onClick={() => setModalOpen(true)}>
                 Start Free Trial
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
-              <Button variant="outline" size="lg" className="border-primary/40 text-primary hover:bg-primary/10 text-base px-10">
+              <Button variant="outline" size="lg" className="border-primary/40 text-primary hover:bg-primary/10 text-base px-10" onClick={() => setModalOpen(true)}>
                 Book a Demo
               </Button>
             </div>
@@ -997,9 +1241,7 @@ export default function Home() {
             {/* Brand */}
             <div className="md:col-span-1">
               <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-8 h-8 rounded bg-primary/20 border border-primary/40 flex items-center justify-center">
-                  <Shield className="w-4.5 h-4.5 text-primary" />
-                </div>
+                <DefenseEyeLogo className="w-9 h-7" />
                 <span className="font-heading font-bold text-lg tracking-tight text-foreground">
                   Defense<span className="text-primary">Eye</span>
                 </span>
