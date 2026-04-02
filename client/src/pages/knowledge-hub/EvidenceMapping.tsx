@@ -309,7 +309,7 @@ export default function EvidenceMapping() {
             {
               step: "01",
               title: "Environment Discovery",
-              desc: "CMMC Lens connects to your cloud environments via read-only API integrations (AWS, Azure, Microsoft 365, GCC High). It performs an automated asset discovery to identify all systems, applications, and data stores within your CMMC assessment boundary.",
+              desc: "CMMC Lens connects to your Microsoft Azure Commercial, Azure GCC, Microsoft 365 Commercial, and M365 GCC High environments via read-only API integrations. It performs an automated asset discovery to identify all systems, applications, and data stores within your CMMC assessment boundary.",
             },
             {
               step: "02",
@@ -389,12 +389,7 @@ export default function EvidenceMapping() {
               platform: "Amazon Web Services (GovCloud)",
               color: "border-orange-500/30 bg-orange-500/5",
               evidence: [
-                "AWS Config compliance rules and evaluation results",
-                "IAM policy configurations and access analyzer findings",
-                "CloudTrail audit logs and S3 access logs",
-                "GuardDuty threat detection findings",
-                "Security Hub compliance scores by standard",
-                "VPC security group and network ACL configurations",
+                "Note: CMMC Lens currently supports Azure Commercial, Azure GCC, M365 Commercial, and M365 GCC High. AWS GovCloud integration is on our roadmap — contact us to be notified when available.",
               ],
             },
             {

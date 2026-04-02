@@ -171,7 +171,7 @@ const PROFILES: ContractorProfile[] = [
       details: [
         "Provides managed IT services to 12 DoD prime contractors, each with different CUI environments, scope boundaries, and contract-specific compliance requirements.",
         "As an MSP within client CUI boundaries, must demonstrate its own CMMC compliance AND ensure service delivery infrastructure doesn't introduce gaps for clients.",
-        "Cloud-first service delivery architecture spans AWS GovCloud, Azure Government, and M365 GCC High — each with its own evidence collection and documentation requirements.",
+        "Cloud-first service delivery architecture spans Azure Government and M365 GCC High — each with its own evidence collection and documentation requirements.",
         "High employee turnover in technical roles creates ongoing access control and security awareness training challenges.",
         "C3PAO assessment scheduled for Q3 — 7 months away — with no centralized compliance tracking in place.",
       ],
@@ -180,7 +180,7 @@ const PROFILES: ContractorProfile[] = [
       headline: "Multi-tenant compliance management and cloud-native evidence collection",
       features: [
         "Multi-tenant workspace architecture allows management of compliance programs for the firm's own environment and visibility into client readiness separately.",
-        "Cloud provider evidence integrations automatically pull configuration data from AWS GovCloud, Azure Government, and M365 GCC High into the evidence library.",
+        "Cloud provider evidence integrations automatically pull configuration data from Azure Government and M365 GCC High into the evidence library.",
         "User lifecycle tracking integrates with HR systems to flag access control gaps when employees onboard, transfer, or depart.",
         "Assessment preparation mode organizes all 110 practices with evidence artifacts by assessor-ready category for streamlined C3PAO document review.",
         "Continuous monitoring dashboards provide real-time compliance posture visibility — not just a point-in-time snapshot.",

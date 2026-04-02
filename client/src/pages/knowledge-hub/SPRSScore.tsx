@@ -460,7 +460,7 @@ export default function SPRSScore() {
             {
               num: 4,
               title: "Configure centralized audit logging",
-              detail: "AU domain controls require audit logging, review, and protection. Enabling Microsoft 365 Unified Audit Log, Azure Monitor, or AWS CloudTrail and configuring a 3-year retention period satisfies multiple AU family controls efficiently.",
+              detail: "AU domain controls require audit logging, review, and protection. Enabling Microsoft 365 Unified Audit Log or Azure Monitor and configuring a 3-year retention period satisfies multiple AU family controls efficiently.",
             },
             {
               num: 5,

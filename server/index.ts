@@ -2,6 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
+import nodemailer from "nodemailer";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -89,8 +90,8 @@ const CMMC_CHUNKS = [
     id: "cmmc-lens-product",
     topic: "DefenseEye CMMC Lens",
     question: "What is CMMC Lens by DefenseEye?",
-    answer: "CMMC Lens is an AI-powered CMMC 2.0 compliance automation platform by DefenseEye.ai. It automates evidence collection from cloud environments (AWS, Azure, GCC High, Microsoft 365), maps controls to NIST 800-171, generates SSP and POA&M documents, and provides real-time SPRS score monitoring — reducing documentation time by up to 80%.",
-    detail: "CMMC Lens connects to your cloud infrastructure via read-only API integrations, automatically inventories security configurations, and maps existing controls to NIST 800-171 requirements. It identifies gaps, prioritizes remediation by SPRS impact, generates audit-ready evidence packages for C3PAO assessments, and monitors compliance 365 days per year. Pricing starts at $199/month for CMMC Level 1 and $499/month for full Level 2 automation. A 14-day free trial is available with no credit card required.",
+    answer: "CMMC Lens is an AI-powered CMMC 2.0 compliance automation platform by DefenseEye.ai. It automates evidence collection from Microsoft Azure Commercial, Azure GCC, Microsoft 365 Commercial, and M365 GCC High environments, maps controls to NIST 800-171, generates SSP and POA&M documents, and provides real-time SPRS score monitoring — reducing documentation time by up to 80%.",
+    detail: "CMMC Lens connects to your Microsoft Azure Commercial, Azure GCC, M365 Commercial, and M365 GCC High infrastructure via read-only API integrations, automatically inventories security configurations, and maps existing controls to NIST 800-171 requirements. It identifies gaps, prioritizes remediation by SPRS impact, generates audit-ready evidence packages for C3PAO assessments, and monitors compliance 365 days per year. Pricing starts at $199/month for CMMC Level 1 and $499/month for full Level 2 automation. A 14-day free trial is available with no credit card required.",
     source: "https://defenseeye.ai",
     last_updated: "2026-04-01",
     confidence: 1.0,
@@ -194,6 +195,109 @@ async function startServer() {
   app.get("/api/cmmc-content/topics", rateLimit, (_req, res) => {
     const topics = [...new Set(CMMC_CHUNKS.map((c) => c.topic))];
     res.json({ topics });
+  });
+
+  // ─── Contact / Demo Request form ─────────────────────────────────────────────
+  app.post("/api/contact", rateLimit, async (req, res) => {
+    const { firstName, lastName, email, company, title, companySize, cmmcLevel, challenge, timeline, message } = req.body;
+
+    if (!email || !firstName || !company) {
+      return res.status(400).json({ error: "firstName, email, and company are required." });
+    }
+
+    const fullName = `${firstName} ${lastName}`.trim();
+    const subject = `New CMMC Demo Request — ${company}${cmmcLevel ? ` (${cmmcLevel})` : ""}`;
+
+    const htmlBody = `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A1628;color:#e8eaf0;padding:32px;border-radius:8px;">
+        <div style="text-align:center;margin-bottom:28px;">
+          <h1 style="color:#00D4FF;font-size:22px;margin:0;">New Demo Request — DefenseEye.ai</h1>
+          <p style="color:#9ca3af;font-size:14px;margin:6px 0 0;">Submitted via defenseeye.ai contact form</p>
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          ${[
+            ["Name", fullName],
+            ["Work Email", email],
+            ["Company", company],
+            ["Role", title || "—"],
+            ["Company Size", companySize || "—"],
+            ["Target CMMC Level", cmmcLevel || "—"],
+            ["Compliance Timeline", timeline || "—"],
+            ["Biggest Challenge", challenge || "—"],
+            ["Additional Context", message || "—"],
+          ]
+            .map(
+              ([label, value]) => `
+            <tr>
+              <td style="padding:10px 12px;background:#131f35;border-bottom:1px solid #1e2d4a;font-weight:600;color:#00D4FF;width:38%;">${label}</td>
+              <td style="padding:10px 12px;background:#0d1a2d;border-bottom:1px solid #1e2d4a;color:#e8eaf0;">${value}</td>
+            </tr>`
+            )
+            .join("")}
+        </table>
+        <p style="margin-top:24px;font-size:12px;color:#6b7280;text-align:center;">
+          Reply directly to this email to respond to ${fullName} at ${email}
+        </p>
+      </div>
+    `;
+
+    const confirmationHtml = `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A1628;color:#e8eaf0;padding:32px;border-radius:8px;">
+        <div style="text-align:center;margin-bottom:24px;">
+          <h1 style="color:#00D4FF;font-size:22px;margin:0;">We received your request, ${firstName}!</h1>
+        </div>
+        <p style="color:#cbd5e1;line-height:1.7;">
+          Thank you for reaching out to <strong style="color:#00D4FF;">DefenseEye</strong>. Our certified CMMC professionals will review your request and contact you within <strong>24 business hours</strong> to discuss your CMMC compliance roadmap.
+        </p>
+        <div style="background:#131f35;border:1px solid #1e3a5f;border-radius:6px;padding:20px;margin:24px 0;">
+          <p style="margin:0 0 8px;font-size:13px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Your submission summary</p>
+          <p style="margin:4px 0;color:#e8eaf0;"><strong>Company:</strong> ${company}</p>
+          <p style="margin:4px 0;color:#e8eaf0;"><strong>Target Level:</strong> ${cmmcLevel || "TBD"}</p>
+          <p style="margin:4px 0;color:#e8eaf0;"><strong>Timeline:</strong> ${timeline || "TBD"}</p>
+        </div>
+        <p style="color:#9ca3af;font-size:13px;">
+          While you wait, explore our free <a href="https://defenseeye.ai/knowledge-hub" style="color:#00D4FF;">CMMC Knowledge Hub</a> — plain-English guides on CMMC Level 2, NIST 800-171, SPRS scoring, and C3PAO assessment preparation.
+        </p>
+        <hr style="border:none;border-top:1px solid #1e2d4a;margin:28px 0;"/>
+        <p style="font-size:12px;color:#6b7280;text-align:center;">DefenseEye, Inc. · defenseeye.ai · CMMC Certified Professionals</p>
+      </div>
+    `;
+
+    // Send emails only when SMTP is configured
+    if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+      try {
+        const transporter = nodemailer.createTransport({
+          host: process.env.SMTP_HOST,
+          port: parseInt(process.env.SMTP_PORT || "465"),
+          secure: process.env.SMTP_SECURE !== "false",
+          auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+        });
+
+        await transporter.sendMail({
+          from: `"DefenseEye Contact Form" <${process.env.SMTP_USER}>`,
+          to: "mahesh@defenseeye.ai",
+          cc: "sujatha@defenseeye.ai",
+          replyTo: email,
+          subject,
+          html: htmlBody,
+        });
+
+        await transporter.sendMail({
+          from: `"DefenseEye Team" <${process.env.SMTP_USER}>`,
+          to: email,
+          subject: `We received your CMMC inquiry — DefenseEye.ai`,
+          html: confirmationHtml,
+        });
+      } catch (err) {
+        console.error("[contact] Email send error:", err);
+        // Still return success — log the submission server-side
+      }
+    }
+
+    // Always log the lead server-side regardless of email status
+    console.log(`[lead] ${new Date().toISOString()} | ${fullName} | ${email} | ${company} | ${cmmcLevel} | ${challenge}`);
+
+    res.json({ success: true });
   });
 
   // ─── Serve static files from dist/public in production ──────────────────────

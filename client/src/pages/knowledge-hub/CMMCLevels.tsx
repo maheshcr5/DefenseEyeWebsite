@@ -529,7 +529,7 @@ export default function CMMCLevels() {
           />
           <FAQItem
             question="Does CMMC Level 2 require FedRAMP-authorized cloud services?"
-            answer="Not necessarily for all cloud services, but if you store or process CUI in a cloud environment, that cloud service must meet FedRAMP Moderate or equivalent security standards (DoD IL2+) under DFARS 252.239-7010. Microsoft 365 GCC High and Azure Government are commonly used FedRAMP-authorized environments for CMMC Level 2 compliance. CMMC Lens integrates with GCC High, Azure Government, and AWS GovCloud for evidence collection."
+            answer="Not necessarily for all cloud services, but if you store or process CUI in a cloud environment, that cloud service must meet FedRAMP Moderate or equivalent security standards (DoD IL2+) under DFARS 252.239-7010. Microsoft 365 GCC High and Azure Government are commonly used FedRAMP-authorized environments for CMMC Level 2 compliance. CMMC Lens integrates with Azure Commercial, Azure GCC, M365 Commercial, and M365 GCC High for evidence collection."
           />
         </div>
       </section>

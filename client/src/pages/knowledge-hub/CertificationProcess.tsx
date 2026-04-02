@@ -56,7 +56,7 @@ const STEPS = [
       "SSP must cover all 110 controls: implemented, planned, or inherited from a cloud service provider",
       "POA&M entries must include responsible owner, target completion date, and mitigation approach",
       "Define your system boundary (what systems are in scope for CUI processing)",
-      "Document control inheritance from cloud providers (AWS FedRAMP, Microsoft GCC High)",
+      "Document control inheritance from cloud providers (Microsoft Azure Government, M365 GCC High)",
       "SSP is a living document — update it continuously as controls are implemented",
     ],
     timeManual: "3–8 weeks",

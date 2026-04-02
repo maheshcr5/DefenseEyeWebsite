@@ -88,11 +88,26 @@ function TrialFormModal({ open, onClose }: { open: boolean; onClose: () => void 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: wire to CRM / email — for now log and show confirmation
-    console.log("Lead captured:", form);
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error("Server error");
+      setSubmitted(true);
+    } catch {
+      setSubmitError("Something went wrong. Please try again or email us directly.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -248,10 +263,13 @@ function TrialFormModal({ open, onClose }: { open: boolean; onClose: () => void 
                     placeholder="Tell us about your current security posture, upcoming contract requirements, or any specific questions…" />
                 </div>
 
+                {submitError && (
+                  <p className="text-sm text-destructive">{submitError}</p>
+                )}
                 <div className="flex items-center justify-between pt-1">
                   <p className="text-xs text-muted-foreground">No credit card required. 14-day full access.</p>
-                  <Button type="submit" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 glow-amber">
-                    Get Started <ArrowRight className="w-4 h-4 ml-2" />
+                  <Button type="submit" disabled={submitting} className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 glow-amber disabled:opacity-60">
+                    {submitting ? "Sending…" : <>Get Started <ArrowRight className="w-4 h-4 ml-2" /></>}
                   </Button>
                 </div>
               </form>
@@ -329,7 +347,7 @@ export default function Home() {
         {
           "@type": "Question",
           name: "How does CMMC Lens automate CMMC compliance?",
-          acceptedAnswer: { "@type": "Answer", text: "CMMC Lens uses AI-governed automation to streamline the entire CMMC readiness process. It automatically collects evidence from cloud environments (AWS, Azure, GCC High), maps that evidence to all 110 NIST 800-171 controls, generates your System Security Plan (SSP) and Plan of Action & Milestones (POA&M), and continuously monitors your SPRS score — reducing manual documentation and preparation work by up to 80%." },
+          acceptedAnswer: { "@type": "Answer", text: "CMMC Lens uses AI-governed automation to streamline the entire CMMC readiness process. It automatically collects evidence from Microsoft Azure Commercial, Azure GCC, Microsoft 365 Commercial, and M365 GCC High environments, maps that evidence to all 110 NIST 800-171 controls, generates your System Security Plan (SSP) and Plan of Action & Milestones (POA&M), and continuously monitors your SPRS score — reducing manual documentation and preparation work by up to 80%." },
         },
         {
           "@type": "Question",
@@ -766,7 +784,7 @@ export default function Home() {
               {
                 icon: Bot,
                 title: "AI-Driven Evidence Collection",
-                description: "Automatically collect and organize compliance evidence from your AWS, Azure, and GCC High cloud environments. Our AI maps each artifact to the relevant NIST 800-171 controls.",
+                description: "Automatically collect and organize compliance evidence from Microsoft Azure Commercial, Azure GCC, Microsoft 365 Commercial, and M365 GCC High environments. Our AI maps each artifact to the relevant NIST 800-171 controls.",
                 image: FEATURE_EVIDENCE,
               },
               {
@@ -855,7 +873,7 @@ export default function Home() {
               {
                 step: "01",
                 title: "Connect Your Environment",
-                description: "Integrate CMMC Lens with your cloud infrastructure (AWS, Azure, GCC High, Microsoft 365). Our platform securely scans your environment and automatically inventories all security controls and configurations relevant to NIST 800-171.",
+                description: "Integrate CMMC Lens with your Microsoft Azure Commercial, Azure GCC, Microsoft 365 Commercial, or M365 GCC High environment. Our platform securely scans your environment and automatically inventories all security controls and configurations relevant to NIST 800-171.",
               },
               {
                 step: "02",
@@ -1184,7 +1202,7 @@ export default function Home() {
             />
             <FAQItem
               question="How does CMMC Lens automate CMMC compliance?"
-              answer="CMMC Lens uses AI-governed automation to streamline the entire CMMC readiness process. It automatically collects evidence from your cloud environments (AWS, Azure, GCC High), maps that evidence to NIST 800-171 controls, generates your System Security Plan (SSP) and Plan of Action & Milestones (POA&M), and continuously monitors your SPRS score. This reduces manual documentation and preparation work by up to 80% — while your team handles the remaining hands-on assessment activities."
+              answer="CMMC Lens uses AI-governed automation to streamline the entire CMMC readiness process. It automatically collects evidence from Microsoft Azure Commercial, Azure GCC, Microsoft 365 Commercial, and M365 GCC High environments, maps that evidence to NIST 800-171 controls, generates your System Security Plan (SSP) and Plan of Action & Milestones (POA&M), and continuously monitors your SPRS score. This reduces manual documentation and preparation work by up to 80% — while your team handles the remaining hands-on assessment activities."
             />
             <FAQItem
               question="What is the difference between CMMC Level 1 and Level 2?"

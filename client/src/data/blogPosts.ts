@@ -787,6 +787,721 @@ const post3: BlogPost = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Post 4: What Counts as CUI — Plain English Guide
+// ─────────────────────────────────────────────────────────────────────────────
+const post4: BlogPost = {
+  slug: "what-counts-as-cui-plain-english-guide",
+  title: "What Counts as CUI? A Plain-English Guide for Defense Contractors",
+  excerpt:
+    "Controlled Unclassified Information (CUI) is the trigger for most CMMC requirements — but the definition is notoriously confusing. This plain-English guide explains what CUI actually is, what isn't CUI, and how to identify it in your own systems.",
+  author: "Marcus Webb",
+  authorTitle: "CMMC Certified Professional",
+  publishedAt: "2025-04-10",
+  updatedAt: "2025-04-10",
+  readTime: "8 min read",
+  category: "CMMC Compliance",
+  tags: ["CUI", "CMMC 2.0", "DFARS", "NIST 800-171", "DoD contractors"],
+  metaDescription:
+    "Plain-English guide to Controlled Unclassified Information (CUI) for DoD contractors. What counts as CUI, what doesn't, how to identify it in your environment, and what CMMC Level 2 protections it triggers.",
+  content: [
+    {
+      type: "p",
+      content:
+        "If you've spent any time researching CMMC, you've seen the acronym CUI — Controlled Unclassified Information — everywhere. CUI is the trigger for almost every significant CMMC requirement. If your organization handles CUI, you need CMMC Level 2. If you don't, you may only need Level 1. So identifying whether you actually handle CUI is step zero of any CMMC program.",
+    },
+    {
+      type: "p",
+      content:
+        "The problem: the government's definition of CUI is written in bureaucratic language that makes it genuinely hard to apply in practice. Contractors routinely either over-scope (treating ordinary business data as CUI) or under-scope (missing real CUI in their environment). Both mistakes are costly. Here's the plain-English breakdown.",
+    },
+    {
+      type: "h2",
+      content: "What Is CUI? The Short Version",
+    },
+    {
+      type: "p",
+      content:
+        "CUI is government-originated or government-related information that isn't classified — meaning it's not Secret or Top Secret — but still requires safeguarding because of laws, regulations, or government policies. Think of it as the large middle category between publicly available government information and classified intelligence: sensitive enough to protect, not secret enough to classify.",
+    },
+    {
+      type: "p",
+      content:
+        "The National Archives maintains the official CUI Registry at archives.gov/cui, which lists every authorized category of CUI with its source law or regulation. The registry has over 100 categories. For defense contractors, the categories that come up most often are listed below.",
+    },
+    {
+      type: "h2",
+      content: "The CUI Categories Defense Contractors Most Often Handle",
+    },
+    {
+      type: "ul",
+      content: [
+        "Controlled Technical Information (CTI) — Technical data with military or space application, including specifications, engineering drawings, and software related to military systems. Subject to ITAR or EAR export controls.",
+        "Export Controlled — Information regulated under the International Traffic in Arms Regulations (ITAR) or Export Administration Regulations (EAR). Includes defense articles, services, and related technology.",
+        "Procurement & Acquisition — Contract proposals, source selection information, cost or pricing data, and contractor bid information. Very common in the prime/sub supply chain.",
+        "Privacy — Personally Identifiable Information (PII) related to DoD personnel, contractor employees with system access, or other individuals in government systems. Includes names combined with sensitive identifiers.",
+        "Operations Security (OPSEC) — Information about military operations, capabilities, or vulnerabilities that could provide adversaries with an advantage if disclosed.",
+        "Critical Infrastructure — Information about the location, configuration, or vulnerabilities of critical infrastructure systems supporting DoD missions.",
+        "Law Enforcement — Information related to investigations, intelligence sources, or methods. Less common for typical contractors but present in some programs.",
+      ],
+    },
+    {
+      type: "h2",
+      content: "What Is NOT CUI",
+    },
+    {
+      type: "p",
+      content:
+        "This is where many contractors go wrong in the other direction — treating ordinary business information as CUI and over-scoping their CMMC environment, which dramatically increases cost and complexity.",
+    },
+    {
+      type: "ul",
+      content: [
+        "General business information — Your pricing for commercial products, standard HR documents, internal meeting notes, expense reports",
+        "Publicly available information — Anything your government customer has publicly released, information from government websites, published DoD announcements",
+        "Unrelated contract data — Work performed for commercial clients has nothing to do with CUI, even if the same company also has DoD work",
+        "Federal Contract Information (FCI) alone — FCI (non-public information provided by the government under contract) is not automatically CUI. FCI triggers CMMC Level 1; CUI triggers Level 2.",
+        "Commercial off-the-shelf (COTS) product documentation — Standard user manuals, commercial licensing agreements, vendor product specifications",
+        "Aggregated open-source data — Combining publicly available information doesn't automatically create CUI unless the combination reveals something sensitive",
+      ],
+    },
+    {
+      type: "h2",
+      content: "How CUI Gets Into Your Environment",
+    },
+    {
+      type: "p",
+      content:
+        "Understanding how CUI flows into your organization is critical to defining your CMMC assessment boundary. The most common entry points are:",
+    },
+    {
+      type: "ul",
+      content: [
+        "Contract Deliverables and Data Items: Your contract's Contract Data Requirements List (CDRL) or Statement of Work (SOW) specifies what technical data you must produce or handle. Technical specifications, design drawings, and test reports related to defense systems are almost always CUI.",
+        "Government-Furnished Information (GFI): Technical data, specifications, or reference materials the government provides to support your work. If the government hands it to you for contract performance, treat it as CUI unless told otherwise.",
+        "DoD System Access: If you have accounts in DoD systems — email, portals, collaboration platforms — messages and files in those systems may contain CUI.",
+        "Subcontractor Flow-Down: If you're a prime, CUI flows to your subs when they need it to perform their portion of the work. If you're a sub, CUI may come from the prime.",
+        "Export-Controlled Technical Data: Some technical data is controlled under ITAR or EAR before it even reaches a government contract. If you work with defense-related hardware or software, this is likely in scope.",
+      ],
+    },
+    {
+      type: "h2",
+      content: "How to Identify CUI in Your Environment: A Practical Approach",
+    },
+    {
+      type: "ul",
+      content: [
+        "Read your contracts: The surest indicator is your contract language. Look for clauses referencing DFARS 252.204-7012 (CUI requirements) or DFARS 252.204-7021 (CMMC).",
+        "Look for CUI markings: Properly handled CUI should be marked. Government documents are marked 'CUI' with the relevant category (e.g., 'CUI // CTI'). If you receive marked documents, that's CUI.",
+        "Ask your Contracting Officer (CO): If you're unsure whether specific data is CUI, the government CO is the right person to ask. Get the answer in writing.",
+        "Map data flows: Trace where data enters your organization, how it's processed, stored, and transmitted. Apply the CUI category definitions to data at each touchpoint.",
+        "Review shared drives and email: CUI often lives in SharePoint folders, network shares, and email inboxes labeled only by project name. Search for common CUI keywords: classification markings, ITAR language, technical data designations.",
+        "Engage your prime contractor: If you're a sub, your prime knows what CUI they're passing to you. Ask them to formally identify CUI in your Statement of Work.",
+      ],
+    },
+    {
+      type: "h2",
+      content: "Once You Identify CUI: What the Rules Require",
+    },
+    {
+      type: "p",
+      content:
+        "Once you've confirmed your organization handles CUI, two frameworks apply simultaneously: the CUI Federal Rule (which governs how the government itself handles CUI) and DFARS 252.204-7012 / CMMC (which governs how contractors protect it). For contractors, the key requirements are:",
+    },
+    {
+      type: "ul",
+      content: [
+        "Implement all 110 NIST SP 800-171 controls (CMMC Level 2 requirement)",
+        "Pass a Certified Third-Party Assessment Organization (C3PAO) assessment for most CUI contracts",
+        "Report cyber incidents involving CUI to DoD within 72 hours",
+        "Submit and maintain a current SPRS score in the PIEE portal",
+        "Maintain a System Security Plan (SSP) describing how each control is implemented",
+        "Flow down CUI protection requirements to subcontractors who access your CUI",
+        "Store CUI in FedRAMP Moderate or equivalent cloud environments (for cloud storage)",
+      ],
+    },
+    {
+      type: "h2",
+      content: "Practical First Step: Define Your CUI Boundary",
+    },
+    {
+      type: "p",
+      content:
+        "The single most valuable thing you can do before investing in CMMC compliance is to formally define your CUI boundary — the specific systems, people, and processes that touch CUI. A narrow, well-defined boundary keeps your CMMC assessment scope manageable. Every system inside the boundary must comply with all 110 NIST 800-171 controls; every system outside it doesn't. CMMC Lens automates this process by scanning your Microsoft Azure Commercial, Azure GCC, M365 Commercial, or M365 GCC High environment and mapping CUI data flows to your CMMC assessment boundary.",
+    },
+  ],
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Post 5: CMMC Level 2 for Small Businesses
+// ─────────────────────────────────────────────────────────────────────────────
+const post5: BlogPost = {
+  slug: "cmmc-level-2-small-business-guide",
+  title: "CMMC Level 2 for Small Businesses: What You Actually Need (and What You Don't)",
+  excerpt:
+    "Most small defense contractors are overwhelmed by CMMC Level 2's 110 controls. This guide cuts through the noise — what's truly required, what you can inherit from Microsoft, and how to achieve compliance without a $100,000 consultant.",
+  author: "Sarah Chen",
+  authorTitle: "CMMC Advisor",
+  publishedAt: "2025-03-28",
+  updatedAt: "2025-03-28",
+  readTime: "10 min read",
+  category: "CMMC Compliance",
+  tags: ["CMMC Level 2", "small business", "NIST 800-171", "DoD contractors", "compliance cost"],
+  metaDescription:
+    "CMMC Level 2 guide for small defense contractors. What 110 NIST 800-171 controls actually require for a 10-50 person company, what you can inherit from Microsoft 365 GCC High, and affordable paths to compliance.",
+  content: [
+    {
+      type: "p",
+      content:
+        "If you run a small defense contracting firm — 10 to 50 employees, one main DoD program, a Microsoft 365 shop — the CMMC compliance landscape can feel like it was designed for Raytheon, not you. 110 controls, a C3PAO assessment that costs $30,000–$80,000, an SSP that's supposed to be hundreds of pages. How is a small company supposed to survive this?",
+    },
+    {
+      type: "p",
+      content:
+        "The good news: CMMC Level 2 is genuinely achievable for small businesses — many of the 110 NIST 800-171 controls are already handled by Microsoft if you're using M365 GCC High or Azure GCC, and the remaining controls are mostly about documentation and operational discipline, not massive infrastructure spending. Here's the honest picture.",
+    },
+    {
+      type: "h2",
+      content: "The Microsoft Inheritance Advantage",
+    },
+    {
+      type: "p",
+      content:
+        "If your small company uses Microsoft 365 GCC High or Azure Government for cloud storage, email, and collaboration, Microsoft inherits responsibility for a significant portion of physical security, infrastructure, and platform-level controls. Under FedRAMP Moderate authorization (which M365 GCC High holds), Microsoft's Customer Responsibility Matrix documents exactly which controls Microsoft satisfies on your behalf.",
+    },
+    {
+      type: "p",
+      content:
+        "Controls where Microsoft handles the heavy lifting include: physical access controls to data centers (PE domain controls), certain encryption at rest controls for data stored in Microsoft services, platform availability and redundancy, and certain audit log retention for the Microsoft infrastructure layer. You still need to configure these features correctly in your tenant and document the inheritance in your SSP — but you're not building the infrastructure from scratch.",
+    },
+    {
+      type: "h2",
+      content: "What a Small Company Actually Needs to Implement",
+    },
+    {
+      type: "p",
+      content:
+        "For a typical 10–50 person defense contractor using M365 GCC High as the primary environment, the implementation burden falls into three buckets:",
+    },
+    {
+      type: "h3",
+      content: "Bucket 1: Microsoft Configuration (Medium Effort)",
+    },
+    {
+      type: "ul",
+      content: [
+        "Enable and enforce Multi-Factor Authentication (MFA) for all accounts — native to M365, no additional cost",
+        "Configure Conditional Access policies: block legacy authentication, require compliant devices",
+        "Enable Microsoft Defender for Endpoint on all workstations — included in M365 Business Premium or GCC High E3/E5",
+        "Enable Microsoft Purview compliance features: Data Loss Prevention (DLP), sensitivity labels for CUI",
+        "Configure Microsoft 365 Unified Audit Log retention to 1 year (requires E3 or higher)",
+        "Enable BitLocker encryption on all Windows endpoints via Intune policy",
+        "Configure Azure AD Password Protection: minimum 14-character passwords, banned password list",
+        "Set up Entra ID Identity Protection for risky sign-in detection",
+      ],
+    },
+    {
+      type: "h3",
+      content: "Bucket 2: Written Documentation (High Effort, No Cost)",
+    },
+    {
+      type: "p",
+      content:
+        "The most underestimated CMMC cost for small businesses is the documentation burden — not the technology. You need written policies and procedures for everything, even simple things. Many small companies have informal practices that work fine but have never been written down.",
+    },
+    {
+      type: "ul",
+      content: [
+        "System Security Plan (SSP) covering all 110 controls — this is a significant document (typically 60–120 pages for a small company)",
+        "Acceptable Use Policy (AUP) — how employees must handle CUI, acceptable use of company systems",
+        "Incident Response Plan — who does what when you suspect a breach, DoD reporting procedures",
+        "Configuration Management Plan — how you approve and track changes to CUI systems",
+        "Access Control Procedures — user provisioning, reviews, and de-provisioning processes",
+        "Security Awareness Training records — completion tracking for all staff with CUI access",
+        "Risk Assessment — annual formal assessment, documented results",
+        "Media Sanitization Procedures — what to do with drives, USB sticks, and mobile devices",
+      ],
+    },
+    {
+      type: "h3",
+      content: "Bucket 3: Operational Disciplines (Ongoing Effort)",
+    },
+    {
+      type: "ul",
+      content: [
+        "Monthly vulnerability scanning on your endpoints and any on-premises systems",
+        "Quarterly user access reviews — confirm every account still needs its current level of access",
+        "Annual tabletop incident response exercise — even a 2-hour internal discussion with notes counts",
+        "Patch management — critical patches within 30 days, documented and tracked",
+        "Audit log review — alerts for high-priority security events reviewed weekly",
+      ],
+    },
+    {
+      type: "h2",
+      content: "The Real Cost Breakdown for a Small Company",
+    },
+    {
+      type: "table",
+      content: {
+        headers: ["Cost Item", "Estimated Range", "Notes"],
+        rows: [
+          ["M365 GCC High E3 licenses (20 users)", "$3,600–$4,800/yr", "Required for proper CUI handling environment"],
+          ["Microsoft Defender for Endpoint P2", "Included in E5 or ~$84/user/yr", "EDR capability for CMMC SI domain"],
+          ["CMMC Lens — Level 2 automation", "$499/month", "Automates evidence collection, SSP, SPRS score"],
+          ["Gap assessment (pre-assessment)", "$3,000–$8,000", "One-time consultant engagement to identify gaps"],
+          ["C3PAO formal assessment", "$30,000–$60,000", "For a 10–50 person company"],
+          ["Remediation (varies widely)", "$5,000–$30,000", "Depends on gap size — bigger gaps cost more"],
+          ["Total estimated (Year 1)", "$45,000–$110,000", "Heavily influenced by existing security posture"],
+        ],
+      },
+    },
+    {
+      type: "h2",
+      content: "The Controls You Can Probably Skip (Or Simplify)",
+    },
+    {
+      type: "p",
+      content:
+        "Some NIST 800-171 controls are written for large enterprise environments but have lightweight equivalents that a small company can satisfy without enterprise-grade tooling:",
+    },
+    {
+      type: "ul",
+      content: [
+        "Security Orchestration (SC.L2-3.13.1 through 3.13.4): For a small company in M365 GCC High, native Microsoft network security features (Defender for Cloud, NSGs in Azure, Exchange transport rules) satisfy most SC domain controls without a dedicated network security stack.",
+        "Privileged Access Management (AC.L2 controls): You don't need a PAM tool like CyberArk. Admin accounts in Azure AD with Privileged Identity Management (PIM) — just-in-time admin access — satisfies the intent at much lower cost.",
+        "Tape backups and air-gapped media: NIST 800-171 requires backup and recovery (control 3.8.9), but a cloud-based backup solution (M365 Backup, Azure Backup) qualifies without physical tape infrastructure.",
+        "On-premises SIEM: If everything is in M365 GCC High, the native Microsoft Sentinel (SIEM) or even just the Microsoft Secure Score + Compliance Center reports provide audit and monitoring capabilities without a separate SIEM deployment.",
+      ],
+    },
+    {
+      type: "h2",
+      content: "One Mistake That Sinks Small Companies",
+    },
+    {
+      type: "p",
+      content:
+        "The most common reason small businesses fail C3PAO assessments is not missing technology — it's missing documentation. Assessors find that MFA is enabled (good), but there's no policy document specifying it's required. Or vulnerability scans are running, but there's no evidence anyone reviews the results. Or an incident response plan exists but was never tested or approved by leadership.",
+    },
+    {
+      type: "p",
+      content:
+        "Every technical control needs a corresponding policy or procedure document AND evidence that the control is operating as documented. CMMC Lens generates the documentation framework automatically from your M365 configuration — mapping what's actually deployed to the relevant NIST 800-171 controls and generating SSP language for each — so your documentation matches reality.",
+    },
+    {
+      type: "h2",
+      content: "Timeline Expectation for a Small Business Starting From Scratch",
+    },
+    {
+      type: "ul",
+      content: [
+        "Month 1–2: Gap assessment, M365 GCC High tenant configuration, MFA enforcement",
+        "Month 3–4: Write SSP, policies, and procedures; set up CMMC Lens for automated evidence collection",
+        "Month 5–6: Remediate identified gaps; conduct annual risk assessment and tabletop IR exercise",
+        "Month 7–8: Submit SPRS score; select and engage C3PAO",
+        "Month 9–12: C3PAO pre-assessment review, formal assessment, receive CMMC Level 2 certificate",
+      ],
+    },
+    {
+      type: "p",
+      content:
+        "The organizations that compress this timeline successfully are the ones that automate documentation from the start. Every week spent manually compiling screenshots and writing SSP language from scratch is a week that could be spent closing actual compliance gaps. CMMC Lens reduces the documentation and evidence collection phase by up to 80% — getting small businesses to C3PAO-ready faster.",
+    },
+  ],
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Post 6: GCC High vs M365 Commercial for CMMC
+// ─────────────────────────────────────────────────────────────────────────────
+const post6: BlogPost = {
+  slug: "gcc-high-vs-m365-commercial-cmmc",
+  title: "GCC High vs M365 Commercial: Which Do You Need for CMMC Level 2?",
+  excerpt:
+    "Microsoft 365 Commercial, GCC, and GCC High all look similar but have very different CMMC compliance implications. This guide explains which tenant you actually need based on the type of CUI you handle, and what it costs to get it right.",
+  author: "Marcus Webb",
+  authorTitle: "CMMC Certified Professional",
+  publishedAt: "2025-03-15",
+  updatedAt: "2025-03-15",
+  readTime: "9 min read",
+  category: "Cloud Compliance",
+  tags: ["GCC High", "M365 Commercial", "CMMC Level 2", "Azure GCC", "FedRAMP"],
+  metaDescription:
+    "Microsoft 365 GCC High vs Commercial vs GCC for CMMC Level 2 compliance. Which tenant do DoD contractors need, how does CUI type affect the decision, what are the cost differences, and how does CMMC Lens work with each environment.",
+  content: [
+    {
+      type: "p",
+      content:
+        "One of the most common questions we get from defense contractors is: 'We have Microsoft 365 — does that mean we're good for CMMC?' The answer depends heavily on which Microsoft 365 environment you have. Microsoft operates three cloud environments with different compliance postures: Commercial (the standard business cloud), Government Community Cloud (GCC), and Government Community Cloud High (GCC High). For CMMC purposes, these are not interchangeable.",
+    },
+    {
+      type: "h2",
+      content: "Understanding the Three Microsoft Cloud Tiers",
+    },
+    {
+      type: "table",
+      content: {
+        headers: ["Feature", "M365 Commercial", "M365 GCC", "M365 GCC High"],
+        rows: [
+          ["FedRAMP Authorization", "FedRAMP Low (partial)", "FedRAMP Moderate", "FedRAMP High / DoD IL4–IL5"],
+          ["Data sovereignty", "Global data centers", "US data centers", "US-only, restricted personnel"],
+          ["Personnel vetting", "Standard employees", "US persons only", "US citizens, screened"],
+          ["ITAR/EAR suitability", "No", "Limited", "Yes"],
+          ["CMMC Level 2 suitability", "Not recommended for CUI", "Suitable for most CUI", "Required for ITAR-controlled CUI"],
+          ["Approximate cost premium over Commercial", "—", "+20–30%", "+40–60%"],
+          ["Third-party data processing", "Possible (subprocessors)", "Limited US-based", "Restricted US Gov approved"],
+        ],
+      },
+    },
+    {
+      type: "h2",
+      content: "The Short Answer: Which One Do You Need?",
+    },
+    {
+      type: "h3",
+      content: "M365 Commercial: Probably Not Sufficient for CUI",
+    },
+    {
+      type: "p",
+      content:
+        "M365 Commercial operates under FedRAMP Low authorization for some services and lacks the data residency and personnel screening requirements for handling CUI. Storing CUI in M365 Commercial is technically non-compliant with DFARS 252.239-7010, which requires cloud services used for CUI to meet FedRAMP Moderate or equivalent. If you're currently using M365 Commercial for defense work involving CUI, migration planning should be a near-term priority.",
+    },
+    {
+      type: "h3",
+      content: "M365 GCC: Sufficient for Most CMMC Level 2 CUI",
+    },
+    {
+      type: "p",
+      content:
+        "GCC holds FedRAMP Moderate authorization across its core services and limits physical access to US persons. For most defense contractors handling standard CUI categories — procurement-sensitive data, technical data not subject to ITAR, controlled research data — GCC satisfies the cloud environment requirements for CMMC Level 2. GCC also supports Teams, SharePoint, Exchange, and most M365 applications your team already uses.",
+    },
+    {
+      type: "h3",
+      content: "M365 GCC High: Required for ITAR and Certain CUI",
+    },
+    {
+      type: "p",
+      content:
+        "GCC High (also called DoD Cloud by some contractors) is the environment required when CUI includes ITAR-controlled technical data or falls under programs requiring DoD IL4 or IL5 authorization. GCC High restricts data access to US citizens, operates in US data centers with additional physical security, and is authorized for ITAR-controlled technical data. If your contract involves weapons systems, aircraft, defense articles covered by USML categories, or any ITAR-export-controlled technical data, GCC High is not optional — it's required.",
+    },
+    {
+      type: "h2",
+      content: "How to Determine Which Tier Your CUI Requires",
+    },
+    {
+      type: "ul",
+      content: [
+        "Check your contract for ITAR or USML references — if your SOW or CDRL references export-controlled technical data, or your DD2345 (Military Critical Technical Data Agreement) is on file, GCC High is likely required.",
+        "Review DFARS clause 252.204-7012 — the clause specifies cloud service requirements; the 'adequate security' standard maps to FedRAMP Moderate minimum.",
+        "Review DFARS clause 252.239-7010 — the Cloud Computing Services clause specifies additional DoD requirements for cloud deployments handling CUI.",
+        "Ask your Contracting Officer — the CO can tell you whether your specific CUI is subject to ITAR or requires a higher-tier cloud environment.",
+        "Consult the ITAR US Munitions List (USML) — if your technical data relates to items on the USML, it's ITAR-controlled.",
+      ],
+    },
+    {
+      type: "h2",
+      content: "What Changes Between GCC and GCC High for Daily Operations",
+    },
+    {
+      type: "p",
+      content:
+        "The operational differences between GCC and GCC High are meaningful. GCC High does not support all commercial Microsoft integrations — many third-party apps, Marketplace add-ons, and connectors that work in Commercial or GCC don't have GCC High authorization. Before migrating to GCC High, inventory all your third-party app integrations (CRM, project management, accounting tools) and verify GCC High compatibility. The migration itself requires a new tenant — you can't upgrade from GCC to GCC High without a tenant migration project.",
+    },
+    {
+      type: "h2",
+      content: "Azure GCC vs Azure Commercial for CMMC",
+    },
+    {
+      type: "p",
+      content:
+        "The same tiering concept applies to Azure. Azure Commercial uses shared global infrastructure and is not suitable for CUI. Azure Government (sometimes called Azure GCC) operates from US government-designated regions with restricted access and FedRAMP High authorization across most services. For workloads involving CUI — virtual machines running on-premises replacement workloads, storage of controlled data, or development of defense-related software — Azure Government is the appropriate environment.",
+    },
+    {
+      type: "p",
+      content:
+        "CMMC Lens integrates with Azure Commercial (for non-CUI workloads), Azure Government (GCC), Microsoft 365 Commercial (for baseline scanning only), and M365 GCC High. Our evidence collection engine connects via read-only APIs to pull configuration data from each environment and automatically maps what's deployed to the relevant NIST 800-171 controls — giving you an accurate assessment boundary and SSP without manual configuration inventories.",
+    },
+    {
+      type: "h2",
+      content: "Migration from Commercial to GCC or GCC High",
+    },
+    {
+      type: "p",
+      content:
+        "If you're currently using M365 Commercial and need to move to GCC or GCC High, expect a 2–4 month migration project depending on data volume and complexity. Key steps include: tenant creation and license provisioning, DNS and domain verification, user migration (with new accounts in the GCC tenant), mailbox and OneDrive data migration, SharePoint/Teams reconstruction, and third-party app re-integration. Data from your Commercial environment must be exported and re-ingested — Microsoft does not provide automated tenant-to-tenant migration between commercial and government clouds.",
+    },
+    {
+      type: "p",
+      content:
+        "Important: your CMMC assessment boundary clock starts after your CUI is actually in the compliant environment. Running CUI through Commercial while migrating extends your exposure. Plan the migration to complete before your next C3PAO engagement or contract renewal.",
+    },
+  ],
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Post 7: CMMC POA&M Guide — What Assessors Actually Want
+// ─────────────────────────────────────────────────────────────────────────────
+const post7: BlogPost = {
+  slug: "cmmc-poam-guide-what-assessors-want",
+  title: "CMMC POA&M: What Assessors Actually Look For (And What Gets You Failed)",
+  excerpt:
+    "A Plan of Action & Milestones seems straightforward — but most contractors write them wrong. Learn exactly what C3PAO assessors are evaluating when they review your POA&M and the specific mistakes that turn minor gaps into failed assessments.",
+  author: "Sarah Chen",
+  authorTitle: "CMMC Advisor",
+  publishedAt: "2025-02-28",
+  updatedAt: "2025-02-28",
+  readTime: "8 min read",
+  category: "Assessment Preparation",
+  tags: ["POA&M", "C3PAO", "CMMC assessment", "CMMC Level 2", "SSP"],
+  metaDescription:
+    "What C3PAO assessors look for in a CMMC POA&M — required fields, acceptable timelines, high-risk items that block certification, format tips, and the most common mistakes that turn a good compliance program into a failed assessment.",
+  content: [
+    {
+      type: "p",
+      content:
+        "Almost every DoD contractor going through a C3PAO assessment will have a POA&M — a Plan of Action & Milestones listing the NIST 800-171 controls not yet fully implemented. Having a POA&M is perfectly normal and expected. It's not a sign of failure. The problem is that most contractors write their POA&Ms in a way that actually hurts them during the assessment — not because their gaps are too large, but because the POA&M itself signals disorganization, wishful thinking, or worse, deliberate misrepresentation.",
+    },
+    {
+      type: "p",
+      content:
+        "Here's what professional C3PAO assessors are actually evaluating when they look at your POA&M — and the specific red flags that convert a manageable set of gaps into a failed or conditional assessment.",
+    },
+    {
+      type: "h2",
+      content: "What a POA&M Is Supposed to Do",
+    },
+    {
+      type: "p",
+      content:
+        "A POA&M documents every security control that isn't fully implemented, describes the weakness specifically, identifies who is responsible for fixing it, establishes a realistic completion timeline, and describes any interim mitigating controls in place while the gap exists. It gives the C3PAO visibility into your risk awareness and your remediation discipline. A well-crafted POA&M tells the assessor: 'We know exactly what's missing, we understand the risk, and we have a credible plan to close it.'",
+    },
+    {
+      type: "h2",
+      content: "The Required Fields (Don't Omit Any)",
+    },
+    {
+      type: "ul",
+      content: [
+        "NIST 800-171 Practice Number (e.g., 3.5.3) — The specific control being addressed, not a general category",
+        "Weakness description — What specifically is not implemented and on which systems or user populations",
+        "Point of contact — Named individual (not a role or department) responsible for remediation",
+        "Scheduled completion date — A specific calendar date, not 'Q3' or 'end of year'",
+        "Milestones with intermediate dates — For items taking more than 30 days, break the work into stages with dates",
+        "Mitigation approach — Detailed steps being taken to close the gap",
+        "Interim/compensating controls — What you're doing right now to reduce risk while the gap exists",
+        "Resources required — Budget, tools, personnel, or vendor engagement needed",
+        "Status update date — When was the POA&M item last reviewed and updated",
+      ],
+    },
+    {
+      type: "h2",
+      content: "The Completion Date Problem",
+    },
+    {
+      type: "p",
+      content:
+        "The scheduled completion date is where most POA&Ms fall apart. Assessors are trained to scrutinize these dates carefully because they reveal whether the organization actually understands the remediation effort or just wrote something optimistic to look good on paper.",
+    },
+    {
+      type: "ul",
+      content: [
+        "Unrealistic timelines: If MFA is listed as 'completion: 2 weeks' but the organization has 300 endpoints, active directory migration in progress, and no IT staff dedicated to the project, the assessor will probe whether the timeline is credible during interviews.",
+        "Dates already past: If POA&M items show completion dates that have already passed and the item is marked 'open,' this is a serious red flag. It signals either poor program management or that dates were fabricated. Either way, assessors will dig in.",
+        "Everything due 'in 180 days': Putting a 180-day completion date on every item — regardless of actual effort — signals the organization copy-pasted a template without thinking through the remediation. Assessors see this constantly and view it as a sign of program immaturity.",
+        "The right approach: Estimate each item independently. Simple configuration changes (e.g., enabling a security setting in M365) should have short timelines (1–2 weeks). Major architecture changes (e.g., network segmentation) should have realistic longer timelines with intermediate milestones.",
+      ],
+    },
+    {
+      type: "h2",
+      content: "High-Risk POA&M Items That Block Certification",
+    },
+    {
+      type: "p",
+      content:
+        "Not all POA&M items are created equal for certification purposes. The CMMC Level 2 rules establish that certain 'critical' controls cannot remain on a POA&M at initial certification — they must be implemented. The following categories of controls are considered too high-risk to defer:",
+    },
+    {
+      type: "ul",
+      content: [
+        "Multi-factor authentication (3.5.3, 3.5.4) — Any practice related to MFA for privileged or non-privileged users. If MFA isn't implemented, conditional certification is not available.",
+        "Incident response capability (3.6.1) — No plan at all, not just an untested plan",
+        "CUI encryption at rest and in transit (3.13.8, 3.13.10) — Storing CUI in plaintext or transmitting unencrypted is a critical gap",
+        "Audit logging (3.3.1, 3.3.2) — No audit logging capability at all, as opposed to incomplete coverage",
+      ],
+    },
+    {
+      type: "h2",
+      content: "Interim Compensating Controls: What Actually Counts",
+    },
+    {
+      type: "p",
+      content:
+        "For every POA&M item, you should document what you're doing to reduce risk while the gap is being remediated. Assessors evaluate whether the compensating control is genuine or performative. Generic statements like 'we are monitoring the environment' do not constitute a compensating control.",
+    },
+    {
+      type: "ul",
+      content: [
+        "Specific technical controls: 'CUI access is restricted to the VPN-connected segment while endpoint MFA implementation is in progress' is a real compensating control.",
+        "Admin procedure controls: 'Privileged accounts require manual supervisor approval before login credentials are used while PAM deployment is in progress' is real.",
+        "Not real: 'Management is aware of the risk.' 'The IT team is working on it.' These are awareness statements, not compensating controls.",
+      ],
+    },
+    {
+      type: "h2",
+      content: "POA&M Formatting That Makes Assessors' Lives Easier",
+    },
+    {
+      type: "p",
+      content:
+        "Assessors work through hundreds of documents. POA&Ms that are clearly organized, consistently formatted, and easy to navigate create goodwill that disorganized documents destroy. Practical formatting tips:",
+    },
+    {
+      type: "ul",
+      content: [
+        "Use the NIST 800-171 practice number as the primary sort key — assessors think in control numbers",
+        "Group items by domain (AC, IA, AU, etc.) for visual organization",
+        "Color-code status: Open (gray), In Progress (blue), Complete (green) — even in a spreadsheet",
+        "Include a dashboard summary: total items open, count by priority, count closed since last update",
+        "Date every update clearly — assessors want to see this is a live document, not a one-time creation",
+        "Cross-reference the SSP — each POA&M item should reference the SSP section where the control implementation is described",
+        "Keep a separate 'closed items' tab — show assessors what you've already fixed since starting the program",
+      ],
+    },
+    {
+      type: "h2",
+      content: "The Bottom Line",
+    },
+    {
+      type: "p",
+      content:
+        "Your POA&M is a direct reflection of your security program's sophistication. A well-structured POA&M with realistic dates, specific mitigations, named owners, and evidence of regular review tells the assessor you run a real program. A sloppy POA&M with vague language, past-due items, and wishful timelines tells them the opposite — and they'll look much harder at everything else.",
+    },
+    {
+      type: "p",
+      content:
+        "CMMC Lens generates your initial POA&M automatically from the gap analysis results — pre-populated with the NIST control numbers, descriptions, and SPRS impact weights — giving your team a structured starting point rather than a blank spreadsheet.",
+    },
+  ],
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Post 8: CMMC Consultant Red Flags
+// ─────────────────────────────────────────────────────────────────────────────
+const post8: BlogPost = {
+  slug: "cmmc-consultant-red-flags",
+  title: "7 Red Flags When Hiring a CMMC Consultant (How to Avoid Getting Burned)",
+  excerpt:
+    "The CMMC consulting market is flooded with firms that will take your money and leave you no closer to certification. Learn the seven red flags contractors miss when vetting CMMC advisors — and what to look for in a legitimate firm.",
+  author: "Marcus Webb",
+  authorTitle: "CMMC Certified Professional",
+  publishedAt: "2025-02-10",
+  updatedAt: "2025-02-10",
+  readTime: "7 min read",
+  category: "CMMC Compliance",
+  tags: ["CMMC consultant", "C3PAO", "CMMC compliance", "DoD contractors", "CMMC assessment"],
+  metaDescription:
+    "7 red flags to watch for when hiring a CMMC consultant or RPO. How to verify credentials, what questions to ask, and what legitimate CMMC advisory looks like versus firms that will waste your time and budget.",
+  content: [
+    {
+      type: "p",
+      content:
+        "The CMMC compliance industry grew fast — faster than genuine expertise. When the DoD announced CMMC 2.0, thousands of IT firms, management consultants, and MSPs added 'CMMC compliance' to their service offerings. Some are excellent. Many are not. And because most defense contractors don't yet have deep CMMC expertise in-house, it's genuinely hard to distinguish the credible firms from the opportunists — until you're $50,000 into an engagement and no closer to certification.",
+    },
+    {
+      type: "p",
+      content:
+        "These are the seven red flags we consistently hear from contractors who got burned by the wrong consultant. Recognize them before signing a contract.",
+    },
+    {
+      type: "h2",
+      content: "Red Flag 1: No Verifiable CMMC-AB Credentials",
+    },
+    {
+      type: "p",
+      content:
+        "The CMMC Accreditation Body (CMMC-AB) certifies individual assessors and organizations through a defined credentialing program. Legitimate CMMC consulting firms will have staff with one or more of these credentials: Registered Practitioner (RP), Registered Practitioner Advanced (RPA), Certified CMMC Professional (CCP), or Certified CMMC Assessor (CCA). You can verify individual credentials at the official CMMC-AB Marketplace at marketplace.cmmcab.org.",
+    },
+    {
+      type: "p",
+      content:
+        "Red flag: The firm can't name specific staff with verifiable CMMC-AB credentials and their credentials aren't publicly listed in the CMMC-AB ecosystem. 'We have extensive cybersecurity experience' and 'our team has DoD backgrounds' are not substitutes for the actual CMMC credential program.",
+    },
+    {
+      type: "h2",
+      content: "Red Flag 2: Claiming They Can 'Guarantee' Certification",
+    },
+    {
+      type: "p",
+      content:
+        "No legitimate CMMC consultant can guarantee that you'll pass a C3PAO assessment. The assessment is conducted by an independent third party (the C3PAO) that has no financial relationship with your consultant. If a firm promises guaranteed certification, they either don't understand how the process works, or they have an undisclosed relationship with a C3PAO — which creates a serious conflict of interest prohibited by CMMC-AB rules. Walk away.",
+    },
+    {
+      type: "h2",
+      content: "Red Flag 3: Confusing Consulting with Assessment",
+    },
+    {
+      type: "p",
+      content:
+        "A Registered Practitioner Organization (RPO) and associated CPs/CCPs can help you prepare for CMMC — gap assessments, policy writing, remediation support, SSP development, and pre-assessment readiness reviews. They cannot conduct the formal CMMC Level 2 assessment. Only C3PAOs can do that. If a firm presents itself as both your advisor AND your assessor for the same engagement — be very careful. CMMC-AB has strict conflict-of-interest rules preventing firms that have consulting relationships with a contractor from assessing the same contractor.",
+    },
+    {
+      type: "h2",
+      content: "Red Flag 4: One-Size Pricing Without Scoping",
+    },
+    {
+      type: "p",
+      content:
+        "Legitimate CMMC consulting engagements begin with a scoping conversation. A 10-person defense contractor is a completely different engagement from a 500-person prime contractor — different number of systems, different number of CUI users, different cloud environments, different number of controls inherited vs. implemented. If a firm gives you a fixed price without asking about your environment, user count, cloud platforms, or existing security controls, they're not scoping your engagement — they're selling a package.",
+    },
+    {
+      type: "h2",
+      content: "Red Flag 5: Emphasizing Documentation Over Actual Controls",
+    },
+    {
+      type: "p",
+      content:
+        "CMMC assessments evaluate whether controls are actually implemented and working — not just whether you have a policy document saying they should be. Firms that focus almost entirely on writing policies and procedures without addressing actual technical implementation are setting you up for a failed assessment. You need both. If your engagement quote is mostly for document writing and almost nothing for technical remediation support, ask hard questions about what happens when the C3PAO tests live systems.",
+    },
+    {
+      type: "h2",
+      content: "Red Flag 6: No Industry-Specific Experience",
+    },
+    {
+      type: "p",
+      content:
+        "Defense manufacturing, aerospace systems, IT professional services, and research organizations have very different CUI environments, different contract structures, and different assessment risk profiles. A consultant who has done CMMC work exclusively with one type of contractor may not understand the specific challenges your industry faces. Ask for references from organizations of similar size and type — not just 'we've helped DoD contractors.'",
+    },
+    {
+      type: "h2",
+      content: "Red Flag 7: Outdated Guidance",
+    },
+    {
+      type: "p",
+      content:
+        "CMMC 2.0 made significant changes from CMMC 1.0 — reducing from 5 levels to 3, eliminating some practices, changing assessment requirements. Firms still referencing CMMC 1.0 maturity levels, practices that were removed, or the original CMMC-AB certification process haven't kept their knowledge current. The CMMC 2.0 final rule took effect December 2024 — guidance from before that date may be outdated in important ways. Test your consultant by asking specific questions about CMMC 2.0 final rule implementation and how it affects your contracts.",
+    },
+    {
+      type: "h2",
+      content: "What Good CMMC Advisory Actually Looks Like",
+    },
+    {
+      type: "ul",
+      content: [
+        "They begin with a detailed gap assessment against all 110 NIST 800-171 controls, specific to your environment",
+        "They clearly delineate consulting (preparation) from assessment (C3PAO) and explain neither can be done by the same firm",
+        "They provide verifiable staff credentials from the CMMC-AB marketplace",
+        "They give you a realistic timeline — not a 90-day guarantee",
+        "They speak fluently about SPRS scores, DFARS clauses, CMMC-AB marketplace mechanics, and the specific NIST 800-171A assessment procedures",
+        "They have references from contractors who have actually passed C3PAO assessments, not just from contractors they've 'prepared'",
+        "Their pricing reflects the actual scope — lower for well-postured organizations, higher for complex environments with significant gaps",
+      ],
+    },
+    {
+      type: "p",
+      content:
+        "CMMC Lens doesn't replace the need for a qualified advisor, but it dramatically reduces the time advisors spend on manual evidence gathering and documentation — freeing them to focus on actual gap closure and assessment preparation. If you're evaluating consulting firms, consider asking whether they work with CMMC Lens or similar platforms — advisors who still do everything manually may be charging significantly more for time that automation could handle.",
+    },
+  ],
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Export
 // ─────────────────────────────────────────────────────────────────────────────
-export const blogPosts: BlogPost[] = [post1, post2, post3];
+export const blogPosts: BlogPost[] = [post1, post2, post3, post4, post5, post6, post7, post8];

@@ -531,7 +531,7 @@ export default function WhatIsCMMC() {
           <strong className="text-foreground">CMMC Lens by DefenseEye</strong>{" "}
           uses AI-driven automation to compress this timeline to 60–90 days for
           most small and mid-size contractors. The platform connects to your
-          cloud environments (AWS, Azure, Microsoft 365, GCC High), automatically
+          cloud environments (Azure Commercial, Azure GCC, Microsoft 365 Commercial, and M365 GCC High), automatically
           collects evidence for each NIST 800-171 control, generates a
           pre-populated SSP, calculates your live SPRS score, and produces
           remediation guidance ranked by priority.

@@ -134,11 +134,24 @@ const HUB_ARTICLES = [
   },
 ];
 
-// ─── Topic tags ───────────────────────────────────────────────────────────────
-const ALL_TAGS = [
-  "CMMC 2.0", "NIST 800-171", "SPRS Score", "C3PAO", "CUI", "DFARS",
-  "SSP", "POA&M", "FCI", "Level 2", "Evidence Mapping", "Audit Readiness",
-  "Continuous Monitoring", "GCC High", "FIPS 140-2", "ITAR",
+// ─── Topic tags with links ────────────────────────────────────────────────────
+const ALL_TAGS: { label: string; href: string }[] = [
+  { label: "CMMC 2.0", href: "/knowledge-hub/what-is-cmmc" },
+  { label: "NIST 800-171", href: "/knowledge-hub/evidence-mapping" },
+  { label: "SPRS Score", href: "/knowledge-hub/sprs-score" },
+  { label: "C3PAO", href: "/knowledge-hub/certification-process" },
+  { label: "CUI", href: "/knowledge-hub/what-is-cmmc" },
+  { label: "DFARS", href: "/knowledge-hub/what-is-cmmc" },
+  { label: "SSP", href: "/blog/cmmc-level-2-compliance-checklist-2025" },
+  { label: "POA&M", href: "/blog/cmmc-level-2-compliance-checklist-2025" },
+  { label: "FCI", href: "/knowledge-hub/cmmc-levels" },
+  { label: "Level 2", href: "/knowledge-hub/cmmc-levels" },
+  { label: "Evidence Mapping", href: "/knowledge-hub/evidence-mapping" },
+  { label: "Audit Readiness", href: "/blog/what-to-expect-c3pao-assessment" },
+  { label: "Continuous Monitoring", href: "/knowledge-hub/sprs-score" },
+  { label: "GCC High", href: "/knowledge-hub/what-is-cmmc" },
+  { label: "FIPS 140-2", href: "/knowledge-hub/evidence-mapping" },
+  { label: "ITAR", href: "/knowledge-hub/what-is-cmmc" },
 ];
 
 export default function KnowledgeHub() {
@@ -306,10 +319,10 @@ export default function KnowledgeHub() {
               <div className="bg-card/40 border border-border/30 p-5">
                 <h3 className="font-heading font-semibold text-sm text-foreground uppercase tracking-wider mb-4">Popular Topics</h3>
                 <div className="flex flex-wrap gap-2">
-                  {ALL_TAGS.map((tag) => (
-                    <span key={tag} className="text-xs px-2.5 py-1 border border-border/50 text-muted-foreground hover:border-primary/40 hover:text-primary transition-colors cursor-pointer">
-                      {tag}
-                    </span>
+                  {ALL_TAGS.map(({ label, href }) => (
+                    <Link key={label} href={href} className="text-xs px-2.5 py-1 border border-border/50 text-muted-foreground hover:border-primary/40 hover:text-primary transition-colors">
+                      {label}
+                    </Link>
                   ))}
                 </div>
               </div>
