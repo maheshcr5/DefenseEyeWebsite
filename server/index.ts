@@ -349,9 +349,46 @@ async function startServer() {
     },
   };
 
+  const BLOG_SLUG_META: Record<string, { title: string; description: string }> = {
+    "cmmc-level-2-compliance-checklist-2025": {
+      title: "CMMC Level 2 Compliance Checklist for DoD Contractors (2025) | DefenseEye.ai",
+      description: "Complete CMMC Level 2 compliance checklist for 2025. Covers all 110 NIST 800-171 practices, SSP requirements, POA&M guidance, C3PAO selection, and day-of-assessment preparation for DoD contractors.",
+    },
+    "how-to-improve-sprs-score-fast": {
+      title: "How to Improve Your SPRS Score Fast — Defense Contractor Guide | DefenseEye.ai",
+      description: "Learn how to improve your SPRS score fast. Covers the SPRS scoring formula, highest-impact NIST 800-171 controls, quick wins vs long-term fixes, and a prioritized remediation roadmap for defense contractors.",
+    },
+    "what-to-expect-c3pao-assessment": {
+      title: "What to Expect During a C3PAO Assessment: Step-by-Step Walkthrough | DefenseEye.ai",
+      description: "Everything defense contractors need to know about C3PAO assessments: how to find an assessor, assessment phases, what assessors look for, common failure points, POA&M responses, and the full timeline to CMMC Level 2.",
+    },
+    "what-counts-as-cui-plain-english-guide": {
+      title: "What Counts as CUI? Plain-English Guide for Defense Contractors | DefenseEye.ai",
+      description: "Plain-English guide to Controlled Unclassified Information (CUI) for DoD contractors. What counts as CUI, what doesn't, how to identify it in your environment, and what CMMC Level 2 protections it triggers.",
+    },
+    "cmmc-level-2-small-business-guide": {
+      title: "CMMC Level 2 for Small Businesses: What You Actually Need | DefenseEye.ai",
+      description: "CMMC Level 2 guide for small defense contractors. What 110 NIST 800-171 controls actually require for a 10–50 person company, what you can inherit from M365 GCC High, and affordable paths to compliance.",
+    },
+    "gcc-high-vs-m365-commercial-cmmc": {
+      title: "GCC High vs M365 Commercial: Which Do You Need for CMMC Level 2? | DefenseEye.ai",
+      description: "Microsoft 365 GCC High vs Commercial vs GCC for CMMC Level 2 compliance. Which tenant do DoD contractors need, how CUI type affects the decision, cost differences, and how CMMC Lens works with each environment.",
+    },
+    "cmmc-poam-guide-what-assessors-want": {
+      title: "CMMC POA&M: What Assessors Actually Look For | DefenseEye.ai",
+      description: "What C3PAO assessors look for in a CMMC POA&M — required fields, acceptable timelines, high-risk items that block certification, format tips, and the most common mistakes that turn a good program into a failed assessment.",
+    },
+    "cmmc-consultant-red-flags": {
+      title: "7 Red Flags When Hiring a CMMC Consultant | DefenseEye.ai",
+      description: "7 red flags to watch for when hiring a CMMC consultant or RPO. How to verify credentials, what questions to ask, and what legitimate CMMC advisory looks like versus firms that will waste your time and budget.",
+    },
+  };
+
   function getRouteMeta(routePath: string) {
     if (ROUTE_META[routePath]) return ROUTE_META[routePath];
     if (routePath.startsWith("/blog/")) {
+      const slug = routePath.replace("/blog/", "");
+      if (BLOG_SLUG_META[slug]) return BLOG_SLUG_META[slug];
       return {
         title: "CMMC Compliance Guide | DefenseEye.ai",
         description: "Expert CMMC compliance guidance for DoD contractors — NIST 800-171 controls, SPRS score improvement, CUI protection, C3PAO assessment preparation, and SSP documentation.",
@@ -366,12 +403,16 @@ async function startServer() {
     try {
       let html = fs.readFileSync(indexPath, "utf-8");
       const meta = getRouteMeta(req.path);
-      // Replace <title>
+      const canonical = `https://defenseeye.ai${req.path === "/" ? "/" : req.path}`;
+      // Inject title, meta description, and canonical per-route
       html = html.replace(/<title>[^<]*<\/title>/, `<title>${meta.title}</title>`);
-      // Replace static meta description
       html = html.replace(
         /<meta name="description" content="[^"]*"/,
         `<meta name="description" content="${meta.description.replace(/"/g, "&quot;")}"`
+      );
+      html = html.replace(
+        /<link rel="canonical" href="[^"]*"/,
+        `<link rel="canonical" href="${canonical}"`
       );
       res.setHeader("Content-Type", "text/html; charset=utf-8");
       res.send(html);
