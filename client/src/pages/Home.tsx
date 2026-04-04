@@ -620,8 +620,8 @@ export default function Home() {
                 icon: Zap,
                 iconColor: "text-accent",
                 iconBg: "bg-accent/10 border-accent/20",
-                title: "AI Compliance Automation",
-                desc: "Automated evidence collection, SSP generation, POA&M tracking, and continuous SPRS score monitoring.",
+                title: "CMMC Level 2 Automation",
+                desc: "Real-time risk remediation, real-time SSP/policies/procedures/standards generation, POA&M tracking, and continuous SPRS monitoring.",
               },
               {
                 icon: Target,
@@ -670,7 +670,7 @@ export default function Home() {
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               A fixed-price readiness offer built for small and mid-sized defense contractors that need real outputs fast.
-              This is where CMMC consultant support and automation work together.
+              This is where CMMC consultant support and CMMC Level 2 automation work together.
             </p>
           </div>
 
@@ -775,7 +775,9 @@ export default function Home() {
                 features: [
                   "End-to-end advisory",
                   "SSP & POA&M development",
-                  "AI-powered evidence collection",
+                  "CMMC Level 2 automation workflows",
+                  "Real-time risk remediation",
+                  "Real-time SSP/policies/procedures/standards docs",
                   "SPRS score improvement",
                   "C3PAO assessment preparation",
                 ],
@@ -870,7 +872,7 @@ export default function Home() {
                 step: "02",
                 icon: FileCheck,
                 title: "Remediation & Documentation",
-                desc: "Our certified advisors guide technical remediation while CMMC Lens generates your SSP, POA&M, policies, and evidence packages. We handle the documentation so your team can focus on closing gaps.",
+                desc: "Our certified advisors guide technical remediation while CMMC Level 2 automation generates SSP, policies, procedures, standards, POA&M, and evidence packages in real time.",
               },
               {
                 step: "03",
@@ -946,22 +948,22 @@ export default function Home() {
             {[
               {
                 tier: "Starter",
-                price: "$199",
-                period: "/month",
+                price: "Tailored",
+                period: "",
                 badge: null,
-                description: "For small contractors starting their CMMC Level 1 journey.",
-                features: ["CMMC Level 1 (17 practices)", "Up to 10 users", "Automated evidence collection", "Basic SSP generation", "SPRS score dashboard", "Email support"],
-                cta: "Book Free Assessment",
+                description: "For contractors starting CMMC readiness with urgent clarity needs.",
+                features: ["Initial CMMC scope and gap review", "Level 1 / Level 2 alignment", "SSP starter structure", "POA&M starter actions", "SPRS direction guidance", "Advisor support"],
+                cta: "Get Tailored Quote",
                 highlight: false,
               },
               {
                 tier: "Professional",
-                price: "$499",
-                period: "/month",
+                price: "Tailored",
+                period: "",
                 badge: "Most Popular",
-                description: "Full CMMC Level 2 automation for contractors handling CUI.",
-                features: ["CMMC Level 1 + Level 2 (110 controls)", "Up to 50 users", "AI-driven NIST 800-171 mapping", "Full SSP & POA&M generation", "C3PAO assessment prep package", "Real-time SPRS score tracking", "365-day continuous monitoring", "Priority support"],
-                cta: "Book Free Assessment",
+                description: "Full CMMC Level 2 automation for contractors handling CUI under deadlines.",
+                features: ["110-control NIST 800-171 mapping", "Real-time risk remediation", "Real-time SSP/policies/procedures/standards", "Full POA&M workflow", "C3PAO assessment prep package", "Real-time SPRS tracking", "Continuous monitoring", "Priority support"],
+                cta: "Book Urgent Readiness Call",
                 highlight: true,
               },
               {
@@ -971,7 +973,7 @@ export default function Home() {
                 badge: null,
                 description: "For prime contractors and MSSPs managing multiple clients.",
                 features: ["Unlimited users & environments", "Multi-tenant MSSP dashboard", "Dedicated Customer Success Manager", "Custom NIST 800-172 controls", "White-label option", "SLA-backed uptime", "On-site C3PAO coordination", "24/7 priority support"],
-                cta: "Free Consultation",
+                cta: "Request Custom Scope",
                 highlight: false,
               },
             ].map((plan, i) => (
@@ -1021,7 +1023,7 @@ export default function Home() {
             ))}
           </div>
           <p className="text-center text-xs text-muted-foreground mt-8">
-            All plans include a 14-day free trial. No credit card required. Annual billing available (2 months free).
+            Transparent scope, tailored quote, and a practical rollout path for urgent contract timelines.
           </p>
         </div>
       </Section>
@@ -1120,7 +1122,7 @@ export default function Home() {
                 <DefenseEyeLogo />
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                CMMC 2.0 advisory consulting and AI-powered compliance automation for the U.S. Defense Industrial Base.
+                CMMC 2.0 advisory consulting and CMMC Level 2 automation for the U.S. Defense Industrial Base.
               </p>
               <p className="text-xs text-muted-foreground/60">NAICS: 541512, 541519 · SAM Registered</p>
             </div>

@@ -1,6 +1,6 @@
 # DefenseEye.ai — CMMC Advisory + CMMC Lens
 
-> DefenseEye.ai provides CMMC advisory and consulting plus **CMMC Lens**, an AI-powered CMMC 2.0 assessment-readiness platform for Department of Defense (DoD) contractors. CMMC Lens automates evidence collection, NIST 800-171 control mapping, SSP/POA&M generation, and SPRS monitoring to reduce documentation burden and speed readiness.
+> DefenseEye.ai provides CMMC advisory and consulting plus **CMMC Lens**, a CMMC Level 2 automation platform for Department of Defense (DoD) contractors. CMMC Lens supports evidence collection, NIST 800-171 control mapping, real-time risk remediation, and real-time SSP/policies/procedures/standards documentation with SPRS monitoring.
 
 ---
 
@@ -66,15 +66,15 @@ CMMC is being phased into all new DoD contracts starting in 2025. Over 300,000 o
 
 ---
 
-## What is CMMC Lens?
+## What is CMMC Lens (CMMC Level 2 Automation)?
 
-CMMC Lens is DefenseEye's AI-powered compliance automation platform. Capabilities:
+CMMC Lens is DefenseEye's CMMC Level 2 automation platform. Capabilities:
 
 - **Automated Evidence Collection** — Connects to Microsoft Azure Commercial, Azure GCC, Microsoft 365 Commercial, and M365 GCC High to collect and organize compliance evidence mapped to NIST 800-171 controls.
 - **NIST 800-171 Control Mapping** — Automatically maps security configurations to all 110 NIST SP 800-171 Rev 2 controls, identifying gaps with prioritized remediation guidance.
-- **SSP, Policies & Procedures Generation** — Automatically generates System Security Plans, security policies, and procedures required for CMMC certification and DFARS compliance.
+- **Real-Time SSP, Policies, Procedures & Standards** — Generates and updates documentation required for CMMC certification and DFARS compliance.
 - **Real-Time SPRS Score Tracking** — Continuously monitors and calculates the organization's SPRS score, showing which controls impact the score most.
-- **Automated Real-Time Risk Remediation** — AI-driven gap detection with prioritized remediation queues. When a control fails, the platform identifies the issue and provides step-by-step fix guidance immediately.
+- **Automated Real-Time Risk Remediation** — Detects gaps with prioritized remediation queues and immediate fix guidance.
 - **365-Day Continuous Monitoring** — Year-round compliance monitoring with alerts for configuration drift and new vulnerabilities.
 - **C3PAO Assessment Preparation** — Generates complete audit-ready evidence packages and detailed assessment reports for C3PAO assessments.
 
@@ -86,12 +86,12 @@ In addition to the CMMC Lens software platform, DefenseEye offers expert CMMC ad
 
 - **CMMC Scoping** — Define your CMMC boundary: which systems, assets, users, and data flows are in scope for CUI and FCI. Proper scoping reduces audit cost and risk.
 - **CMMC Advisory & Consulting** — Expert 1-on-1 guidance from CMMC Registered Practitioners covering CMMC level strategy, remediation planning, and C3PAO selection.
-- **SSP, Policies & Procedures** — AI-generated System Security Plans, security policies, and procedures mapped to all 110 NIST 800-171 controls, reviewed by certified compliance staff.
+- **SSP, Policies, Procedures & Standards** — Real-time generated documentation mapped to all 110 NIST 800-171 controls, reviewed by certified compliance staff.
 - **Automated Real-Time Risk Remediation** — Continuous gap identification with AI-prioritized remediation guidance to resolve findings before assessment.
 - **Continuous Monitoring** — Ongoing 365-day posture monitoring across Azure Commercial, Azure GCC, and M365 environments to catch compliance drift early.
 - **Detailed Assessment Reports** — C3PAO-ready reports with per-control findings, evidence artifacts, SPRS delta analysis, and executive summaries.
 
-DefenseEye combines software automation with human expertise — organizations get both the speed of AI-driven tooling and the confidence of certified advisor oversight.
+DefenseEye combines CMMC Level 2 automation with certified advisor expertise so organizations move faster with stronger assessment confidence.
 
 ---
 
