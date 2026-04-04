@@ -619,19 +619,19 @@ export default function CaseStudies() {
             </span>
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
+            <Link href="/#services">
+              <span className="hover:text-primary transition-colors cursor-pointer">Services</span>
+            </Link>
             <Link href="/knowledge-hub">
-              <span className="hover:text-primary transition-colors cursor-pointer">Knowledge Hub</span>
+              <span className="hover:text-primary transition-colors cursor-pointer">Resources</span>
             </Link>
-            <Link href="/blog">
-              <span className="hover:text-primary transition-colors cursor-pointer">Blog</span>
-            </Link>
-            <Link href="/case-studies">
-              <span className="text-primary font-semibold cursor-pointer">Case Studies</span>
+            <Link href="/#pricing">
+              <span className="hover:text-primary transition-colors cursor-pointer">Pricing</span>
             </Link>
           </nav>
           <Link href="/#contact">
-            <Button size="sm" className="bg-primary text-background hover:bg-primary/90 font-heading font-semibold">
-              Start Free Trial
+            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-heading font-semibold">
+              Book Assessment
             </Button>
           </Link>
         </div>

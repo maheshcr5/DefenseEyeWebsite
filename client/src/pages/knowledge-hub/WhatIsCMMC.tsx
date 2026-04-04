@@ -570,14 +570,14 @@ export default function WhatIsCMMC() {
           </ul>
           <div className="flex flex-wrap gap-3">
             <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-              Start Free Trial
+              Book Assessment
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
             <Button
               variant="outline"
               className="border-primary/40 text-primary hover:bg-primary/10"
             >
-              Book a Demo
+              Free Consultation
             </Button>
           </div>
         </div>

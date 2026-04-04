@@ -317,37 +317,57 @@ export default function BlogPostPage() {
     script.id = "blogpost-schema";
     script.text = JSON.stringify({
       "@context": "https://schema.org",
-      "@type": "BlogPosting",
+      "@type": "TechArticle",
       headline: post.title,
       description: post.metaDescription,
+      abstract: post.excerpt,
       datePublished: post.publishedAt,
       dateModified: post.updatedAt,
+      inLanguage: "en-US",
       author: {
         "@type": "Organization",
-        name: post.author,
+        name: "DefenseEye Advisory Team",
         url: "https://defenseeye.ai",
+        description: "CMMC 2.0 compliance practitioners serving the U.S. Defense Industrial Base",
       },
       publisher: {
         "@type": "Organization",
-        name: "DefenseEye.ai",
+        name: "DefenseEye",
         url: "https://defenseeye.ai",
         logo: {
           "@type": "ImageObject",
           url: "https://defenseeye.ai/logo.png",
         },
+        knowsAbout: ["CMMC 2.0", "NIST SP 800-171", "DFARS compliance", "C3PAO assessment", "SPRS score", "DoD cybersecurity"],
       },
       mainEntityOfPage: {
         "@type": "WebPage",
         "@id": `https://defenseeye.ai/blog/${post.slug}`,
       },
-      keyword: post.tags.join(", "),
+      url: `https://defenseeye.ai/blog/${post.slug}`,
+      keywords: post.tags.join(", "),
       articleSection: post.category,
+      about: {
+        "@type": "Thing",
+        name: "CMMC 2.0 Compliance",
+        description: "Cybersecurity Maturity Model Certification for DoD contractors under 32 CFR Part 170",
+        sameAs: ["https://dodcio.defense.gov/CMMC/"],
+      },
+      audience: {
+        "@type": "Audience",
+        audienceType: "Department of Defense contractors, defense subcontractors, Defense Industrial Base companies",
+      },
       image: {
         "@type": "ImageObject",
         url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028771419/EuH9Png2HimpzgUP2fBtWN/hero-dashboard-MRfN7kPE4hmjGfzaoj2jb9.png",
         width: 1200,
         height: 630,
       },
+      citation: [
+        { "@type": "CreativeWork", name: "CMMC 2.0 Final Rule (32 CFR Part 170)", url: "https://federalregister.gov/d/2024-21128" },
+        { "@type": "CreativeWork", name: "NIST SP 800-171 Rev. 2", url: "https://csrc.nist.gov/publications/detail/sp/800-171/rev-2/final" },
+        { "@type": "CreativeWork", name: "DoD CMMC Program", url: "https://dodcio.defense.gov/CMMC/" },
+      ],
     });
     const existing = document.getElementById("blogpost-schema");
     if (existing) existing.remove();
@@ -387,19 +407,19 @@ export default function BlogPostPage() {
             </span>
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
+            <Link href="/#services">
+              <span className="hover:text-primary transition-colors cursor-pointer">Services</span>
+            </Link>
             <Link href="/knowledge-hub">
-              <span className="hover:text-primary transition-colors cursor-pointer">Knowledge Hub</span>
+              <span className="hover:text-primary transition-colors cursor-pointer">Resources</span>
             </Link>
-            <Link href="/blog">
-              <span className="hover:text-primary transition-colors cursor-pointer">Blog</span>
-            </Link>
-            <Link href="/case-studies">
-              <span className="hover:text-primary transition-colors cursor-pointer">Case Studies</span>
+            <Link href="/#pricing">
+              <span className="hover:text-primary transition-colors cursor-pointer">Pricing</span>
             </Link>
           </nav>
           <Link href="/#contact">
-            <Button size="sm" className="bg-primary text-background hover:bg-primary/90 font-heading font-semibold">
-              Start Free Trial
+            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-heading font-semibold">
+              Book Assessment
             </Button>
           </Link>
         </div>

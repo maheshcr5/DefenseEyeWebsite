@@ -27,10 +27,8 @@ import {
 
 // ─── Nav (matches Home.tsx) ───────────────────────────────────────────────────
 const NAV_LINKS = [
-  { label: "Features", href: "/#features" },
-  { label: "How It Works", href: "/#how-it-works" },
-  { label: "Knowledge Hub", href: "/knowledge-hub" },
-  { label: "Blog", href: "/blog" },
+  { label: "Services", href: "/#services" },
+  { label: "Resources", href: "/knowledge-hub" },
   { label: "Pricing", href: "/#pricing" },
   { label: "Contact", href: "/#contact" },
 ];
@@ -56,8 +54,8 @@ function Nav() {
           ))}
         </div>
         <div className="hidden md:flex items-center gap-3">
-          <Link href="/#contact"><Button variant="outline" size="sm" className="border-primary/40 text-primary hover:bg-primary/10">Book a Demo</Button></Link>
-          <Link href="/#contact"><Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">Start Free Trial</Button></Link>
+          <Link href="/#contact"><Button variant="outline" size="sm" className="border-primary/40 text-primary hover:bg-primary/10">Free Consultation</Button></Link>
+          <Link href="/#contact"><Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">Book Assessment</Button></Link>
         </div>
         <button className="md:hidden text-foreground" onClick={() => setOpen(!open)} aria-label="Toggle menu">
           {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -70,8 +68,8 @@ function Nav() {
               <Link key={l.href} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-primary py-2" onClick={() => setOpen(false)}>{l.label}</Link>
             ))}
             <div className="flex flex-col gap-2 pt-2 border-t border-border/50">
-              <Link href="/#contact"><Button variant="outline" size="sm" className="border-primary/40 text-primary w-full">Book a Demo</Button></Link>
-              <Link href="/#contact"><Button size="sm" className="bg-accent text-accent-foreground w-full font-semibold">Start Free Trial</Button></Link>
+              <Link href="/#contact"><Button variant="outline" size="sm" className="border-primary/40 text-primary w-full">Free Consultation</Button></Link>
+              <Link href="/#contact"><Button size="sm" className="bg-accent text-accent-foreground w-full font-semibold">Book Assessment</Button></Link>
             </div>
           </div>
         </div>
@@ -161,7 +159,7 @@ export default function KnowledgeHub() {
   const heroInView = useInView(heroRef, { once: true });
 
   useEffect(() => {
-    document.title = "CMMC Knowledge Hub — Authoritative Guides for DoD Contractors | DefenseEye.ai";
+    document.title = "CMMC 2.0 Knowledge Hub — NIST 800-171, SPRS, C3PAO Guides for DoD Contractors | DefenseEye.ai";
     // Inject meta description
     let metaDesc = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (!metaDesc) {
@@ -169,29 +167,34 @@ export default function KnowledgeHub() {
       metaDesc.setAttribute("name", "description");
       document.head.appendChild(metaDesc);
     }
-    metaDesc.content = "Free CMMC 2.0 compliance guides for DoD contractors — NIST 800-171 controls, SPRS score improvement, C3PAO assessment prep, SSP/POA&M templates, and evidence mapping. Authoritative resources from DefenseEye.";
-    // Inject WebPage schema
+    metaDesc.content = "Authoritative CMMC 2.0 compliance guides for DoD contractors — what CMMC is, Level 1 vs Level 2 requirements, SPRS score calculation, C3PAO assessment process, evidence mapping, and SSP/POA&M guidance. All content references DODCIO, NIST, DFARS, and Cyber AB authoritative sources.";
+    // Inject WebPage + SpecialAnnouncement + ItemList schema for LLM/AI engine visibility
     const script = document.createElement("script");
     script.type = "application/ld+json";
     script.id = "schema-knowledge-hub";
-    script.text = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      "name": "CMMC Knowledge Hub",
-      "description": "The authoritative CMMC compliance resource center for DoD contractors — guides on CMMC 2.0, NIST 800-171, SPRS scores, C3PAO assessments, and evidence mapping.",
-      "url": "https://defenseeye.ai/knowledge-hub",
-      "publisher": {
-        "@type": "Organization",
-        "name": "DefenseEye",
-        "url": "https://defenseeye.ai",
+    script.text = JSON.stringify([
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "CMMC Knowledge Hub — Authoritative Guides for DoD Contractors",
+        "description": "The DefenseEye CMMC Knowledge Hub provides authoritative, practitioner-written guides on CMMC 2.0 compliance for the Defense Industrial Base. Topics include what CMMC requires, NIST SP 800-171 implementation, SPRS score calculation and improvement, C3PAO assessment preparation, evidence mapping, and System Security Plan development. All content cites DoD, NIST, and Cyber AB primary sources.",
+        "url": "https://defenseeye.ai/knowledge-hub",
+        "about": { "@type": "Thing", "name": "CMMC 2.0 Compliance", "sameAs": "https://dodcio.defense.gov/CMMC/" },
+        "publisher": {
+          "@type": "Organization",
+          "name": "DefenseEye",
+          "url": "https://defenseeye.ai",
+          "knowsAbout": ["CMMC 2.0", "NIST SP 800-171", "C3PAO assessment", "SPRS score", "DoD cybersecurity"],
+        },
+        "hasPart": HUB_ARTICLES.map((a) => ({
+          "@type": "TechArticle",
+          "name": a.title,
+          "url": `https://defenseeye.ai${a.href}`,
+          "description": a.description,
+          "about": { "@type": "Thing", "name": "CMMC 2.0", "sameAs": "https://dodcio.defense.gov/CMMC/" },
+        })),
       },
-      "hasPart": HUB_ARTICLES.map((a) => ({
-        "@type": "Article",
-        "name": a.title,
-        "url": `https://defenseeye.ai${a.href}`,
-        "description": a.description,
-      })),
-    });
+    ]);
     if (!document.getElementById("schema-knowledge-hub")) {
       document.head.appendChild(script);
     }

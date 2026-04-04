@@ -1,86 +1,113 @@
 /*
- * DefenseEye.ai Landing Page — "Command Center" Design
- * Design: Tactical Interface / Military HUD aesthetic
- * Colors: Navy base (#0A1628), Cyan accent (#00D4FF), Amber CTA (#FFB547)
- * Typography: Space Grotesk (headings) + IBM Plex Sans (body)
+ * DefenseEye.ai — Home Page
+ * UX inspired by trading.defenseeye.ai:
+ *   • Ultra-minimal nav: logo + single CTA
+ *   • Full-width centered hero (no competing panels)
+ *   • 4-column capability card grid below hero
+ *   • 2-column key features checklist
+ *   • Services cards
+ *   • 3-step process
+ *   • Pricing tiers
+ *   • FAQ accordion
+ *   • Lead capture form
+ *   • Footer
+ *
+ * GEO / AEO / SEO: rich FAQ Schema, ProfessionalService schema,
+ * TechArticle citations, semantic HTML, authoritative source anchors.
  */
 
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Zap,
-  BarChart3,
-  FileCheck,
-  Clock,
-  Eye,
-  ChevronDown,
-  ChevronRight,
-  Menu,
-  X,
-  ArrowRight,
-  CheckCircle2,
   Target,
-  Layers,
+  Shield,
+  Zap,
+  FileCheck,
+  CheckCircle2,
+  ChevronDown,
+  ArrowRight,
+  X,
+  Menu,
+  BarChart3,
   Bot,
-  TrendingUp,
   Users,
   Award,
   BookOpen,
-  DollarSign,
+  TrendingUp,
+  Clock,
+  AlertTriangle,
+  Lock,
 } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useSeo } from "@/hooks/useSeo";
 
-// ─── Image URLs ───
-const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310419663028771419/EuH9Png2HimpzgUP2fBtWN/hero-bg-pattern-iega5H83gpAZQ7MY3Y2dWm.webp";
-const FEATURE_EVIDENCE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663028771419/EuH9Png2HimpzgUP2fBtWN/feature-evidence-ZzfobMQwYhy9eGaaH7uYxP.webp";
-const FEATURE_MONITORING = "https://d2xsxph8kpxj0f.cloudfront.net/310419663028771419/EuH9Png2HimpzgUP2fBtWN/feature-monitoring-7m8CSn8qMd6ychfXsmM3xY.webp";
-const FEATURE_SHIELD = "https://d2xsxph8kpxj0f.cloudfront.net/310419663028771419/EuH9Png2HimpzgUP2fBtWN/feature-shield-KkbkpNAAaqNTB8dVtCaqST.webp";
-
-// ─── Animated Counter ───
-function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; suffix?: string; duration?: number }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
-
-  useEffect(() => {
-    if (!isInView) return;
-    let startTime: number;
-    const step = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      setCount(Math.floor(progress * end));
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [isInView, end, duration]);
-
-  return <span ref={ref}>{count}{suffix}</span>;
-}
-
-// ─── DefenseEye Logo SVG ───
-function DefenseEyeLogo({ className = "w-8 h-8" }: { className?: string }) {
+// ─── DefenseEye Logo SVG ────────────────────────────────────────────────────
+function DefenseEyeLogo({ className = "w-8 h-7" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 48 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="DefenseEye logo">
-      {/* Outer eye shape */}
       <path d="M2 18 C10 4 38 4 46 18 C38 32 10 32 2 18Z" stroke="#00D4FF" strokeWidth="2.2" fill="none" strokeLinejoin="round"/>
-      {/* Iris ring */}
       <circle cx="24" cy="18" r="7.5" stroke="#00D4FF" strokeWidth="1.8" fill="none"/>
-      {/* Pupil fill */}
       <circle cx="24" cy="18" r="4" fill="#00D4FF" opacity="0.15"/>
-      {/* Flame / wing — amber accent */}
       <path d="M24 11.5 C21 14 20 17 22 19.5 C23.2 21 24 21.5 24 21.5 C24 21.5 24.8 21 26 19.5 C28 17 27 14 24 11.5Z" fill="#FFB547"/>
-      {/* Inner pupil dot */}
       <circle cx="24" cy="18" r="2" fill="#FFB547"/>
-      {/* Top eyelid line accent */}
       <path d="M14 11 Q24 6 34 11" stroke="#00D4FF" strokeWidth="1" strokeLinecap="round" opacity="0.5"/>
     </svg>
   );
 }
 
-// ─── Lead Capture Modal ───
-function TrialFormModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+// ─── Section wrapper with scroll-triggered animation ────────────────────────
+function Section({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  return (
+    <motion.section
+      ref={ref}
+      id={id}
+      initial={{ opacity: 0, y: 24 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className={className}
+    >
+      {children}
+    </motion.section>
+  );
+}
+
+// ─── FAQ accordion item ──────────────────────────────────────────────────────
+function FAQItem({ question, answer }: { question: string; answer: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border border-border/50 bg-card/40 rounded-sm overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-card/70 transition-colors duration-200"
+        aria-expanded={open}
+      >
+        <span className="font-heading font-semibold text-foreground pr-4 text-sm md:text-base">{question}</span>
+        <ChevronDown className={`w-4 h-4 text-primary shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">{answer}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ─── Lead Capture Modal ──────────────────────────────────────────────────────
+function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [form, setForm] = useState({
     firstName: "", lastName: "", email: "", company: "", title: "",
     companySize: "", cmmcLevel: "", challenge: "", timeline: "", message: "",
@@ -88,9 +115,6 @@ function TrialFormModal({ open, onClose }: { open: boolean; onClose: () => void 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
-
-  const [submitting, setSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,33 +135,27 @@ function TrialFormModal({ open, onClose }: { open: boolean; onClose: () => void 
     }
   };
 
+  const inputCls = "w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/20";
+  const labelCls = "text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block";
+
   return (
     <AnimatePresence>
       {open && (
-        <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-
-          {/* Modal */}
+        <motion.div className="fixed inset-0 z-50 flex items-center justify-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" onClick={onClose} />
           <motion.div
             className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-card border border-border/60 shadow-2xl rounded-sm z-10"
-            initial={{ opacity: 0, y: 30, scale: 0.97 }}
+            initial={{ opacity: 0, y: 24, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.97 }}
-            transition={{ duration: 0.25 }}
+            exit={{ opacity: 0, y: 16, scale: 0.97 }}
+            transition={{ duration: 0.22 }}
           >
-            {/* Header */}
             <div className="flex items-start justify-between p-6 border-b border-border/40">
               <div>
-                <h2 className="font-heading text-xl font-bold text-foreground">Start Your Free CMMC Trial</h2>
-                <p className="text-sm text-muted-foreground mt-1">Tell us about your compliance needs — our CMMC advisory team will reach out within 24 hours.</p>
+                <h2 className="font-heading text-xl font-bold text-foreground">Get Your Free CMMC Assessment</h2>
+                <p className="text-sm text-muted-foreground mt-1">Our certified CMMC advisors will contact you within 24 hours with a tailored readiness roadmap.</p>
               </div>
-              <button onClick={onClose} className="text-muted-foreground hover:text-foreground ml-4 mt-0.5 shrink-0"><X className="w-5 h-5" /></button>
+              <button onClick={onClose} className="text-muted-foreground hover:text-foreground ml-4 mt-0.5"><X className="w-5 h-5" /></button>
             </div>
 
             {submitted ? (
@@ -145,50 +163,24 @@ function TrialFormModal({ open, onClose }: { open: boolean; onClose: () => void 
                 <CheckCircle2 className="w-14 h-14 text-primary mx-auto mb-4" />
                 <h3 className="font-heading text-xl font-bold text-foreground mb-2">You're on the list!</h3>
                 <p className="text-muted-foreground leading-relaxed max-w-sm mx-auto">
-                  Our CMMC advisory team will contact you at <strong className="text-foreground">{form.email}</strong> within 24 hours to discuss your compliance roadmap.
+                  Our CMMC advisory team will reach out at <strong className="text-foreground">{form.email}</strong> within 24 hours.
                 </p>
                 <Button className="mt-6 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold" onClick={onClose}>Close</Button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="p-6 space-y-5">
-                {/* Name row */}
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">First Name *</label>
-                    <input required name="firstName" value={form.firstName} onChange={handleChange}
-                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
-                      placeholder="Jane" />
-                  </div>
-                  <div>
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Last Name *</label>
-                    <input required name="lastName" value={form.lastName} onChange={handleChange}
-                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
-                      placeholder="Smith" />
-                  </div>
+                  <div><label className={labelCls}>First Name *</label><input required name="firstName" value={form.firstName} onChange={handleChange} className={inputCls} placeholder="Jane" /></div>
+                  <div><label className={labelCls}>Last Name *</label><input required name="lastName" value={form.lastName} onChange={handleChange} className={inputCls} placeholder="Smith" /></div>
                 </div>
-
-                {/* Email + Company */}
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Work Email *</label>
-                    <input required type="email" name="email" value={form.email} onChange={handleChange}
-                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
-                      placeholder="jane@company.com" />
-                  </div>
-                  <div>
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Company Name *</label>
-                    <input required name="company" value={form.company} onChange={handleChange}
-                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
-                      placeholder="Acme Defense LLC" />
-                  </div>
+                  <div><label className={labelCls}>Work Email *</label><input required type="email" name="email" value={form.email} onChange={handleChange} className={inputCls} placeholder="jane@company.com" /></div>
+                  <div><label className={labelCls}>Company *</label><input required name="company" value={form.company} onChange={handleChange} className={inputCls} placeholder="Acme Defense LLC" /></div>
                 </div>
-
-                {/* Title + Size */}
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Your Role *</label>
-                    <select required name="title" value={form.title} onChange={handleChange}
-                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30">
+                    <label className={labelCls}>Your Role *</label>
+                    <select required name="title" value={form.title} onChange={handleChange} className={inputCls}>
                       <option value="">Select role…</option>
                       <option>CEO / Owner</option>
                       <option>CISO / Security Director</option>
@@ -200,9 +192,8 @@ function TrialFormModal({ open, onClose }: { open: boolean; onClose: () => void 
                     </select>
                   </div>
                   <div>
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Company Size *</label>
-                    <select required name="companySize" value={form.companySize} onChange={handleChange}
-                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30">
+                    <label className={labelCls}>Company Size *</label>
+                    <select required name="companySize" value={form.companySize} onChange={handleChange} className={inputCls}>
                       <option value="">Select size…</option>
                       <option>1–10 employees</option>
                       <option>11–50 employees</option>
@@ -212,13 +203,10 @@ function TrialFormModal({ open, onClose }: { open: boolean; onClose: () => void 
                     </select>
                   </div>
                 </div>
-
-                {/* CMMC Level + Timeline */}
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Target CMMC Level *</label>
-                    <select required name="cmmcLevel" value={form.cmmcLevel} onChange={handleChange}
-                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30">
+                    <label className={labelCls}>Target CMMC Level *</label>
+                    <select required name="cmmcLevel" value={form.cmmcLevel} onChange={handleChange} className={inputCls}>
                       <option value="">Select level…</option>
                       <option>CMMC Level 1 (17 practices)</option>
                       <option>CMMC Level 2 (110 controls)</option>
@@ -226,9 +214,8 @@ function TrialFormModal({ open, onClose }: { open: boolean; onClose: () => void 
                     </select>
                   </div>
                   <div>
-                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Compliance Timeline *</label>
-                    <select required name="timeline" value={form.timeline} onChange={handleChange}
-                      className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30">
+                    <label className={labelCls}>Compliance Timeline *</label>
+                    <select required name="timeline" value={form.timeline} onChange={handleChange} className={inputCls}>
                       <option value="">Select timeline…</option>
                       <option>ASAP — contract at risk</option>
                       <option>Within 3 months</option>
@@ -238,12 +225,9 @@ function TrialFormModal({ open, onClose }: { open: boolean; onClose: () => void 
                     </select>
                   </div>
                 </div>
-
-                {/* Biggest challenge */}
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Biggest CMMC Challenge *</label>
-                  <select required name="challenge" value={form.challenge} onChange={handleChange}
-                    className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30">
+                  <label className={labelCls}>Biggest CMMC Challenge *</label>
+                  <select required name="challenge" value={form.challenge} onChange={handleChange} className={inputCls}>
                     <option value="">Select challenge…</option>
                     <option>Don't know where to start</option>
                     <option>Documentation & evidence collection burden</option>
@@ -255,22 +239,15 @@ function TrialFormModal({ open, onClose }: { open: boolean; onClose: () => void 
                     <option>Managing multiple subcontractors / supply chain</option>
                   </select>
                 </div>
-
-                {/* Optional message */}
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Additional Context <span className="normal-case font-normal">(optional)</span></label>
-                  <textarea name="message" value={form.message} onChange={handleChange} rows={3}
-                    className="w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 resize-none"
-                    placeholder="Tell us about your current security posture, upcoming contract requirements, or any specific questions…" />
+                  <label className={labelCls}>Additional Context <span className="normal-case font-normal">(optional)</span></label>
+                  <textarea name="message" value={form.message} onChange={handleChange} rows={3} className={`${inputCls} resize-none`} placeholder="Upcoming contract deadline, current SPRS score, specific controls giving you trouble…" />
                 </div>
-
-                {submitError && (
-                  <p className="text-sm text-destructive">{submitError}</p>
-                )}
+                {submitError && <p className="text-sm text-destructive">{submitError}</p>}
                 <div className="flex items-center justify-between pt-1">
-                  <p className="text-xs text-muted-foreground">No credit card required. 14-day full access.</p>
-                  <Button type="submit" disabled={submitting} className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 glow-amber disabled:opacity-60">
-                    {submitting ? "Sending…" : <>Get Started <ArrowRight className="w-4 h-4 ml-2" /></>}
+                  <p className="text-xs text-muted-foreground">Free assessment. No commitment required.</p>
+                  <Button type="submit" disabled={submitting} className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 disabled:opacity-60">
+                    {submitting ? "Sending…" : <>Get Assessment <ArrowRight className="w-4 h-4 ml-2" /></>}
                   </Button>
                 </div>
               </form>
@@ -282,64 +259,17 @@ function TrialFormModal({ open, onClose }: { open: boolean; onClose: () => void 
   );
 }
 
-// ─── FAQ Item ───
-function FAQItem({ question, answer }: { question: string; answer: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="border border-border/50 bg-card/50 backdrop-blur-sm">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between p-5 text-left hover:bg-secondary/30 transition-colors duration-200"
-        aria-expanded={open}
-      >
-        <span className="font-heading font-semibold text-foreground pr-4">{question}</span>
-        <ChevronDown className={`w-5 h-5 text-primary shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
-      </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden"
-          >
-            <p className="px-5 pb-5 text-muted-foreground leading-relaxed">{answer}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-// ─── Section Wrapper with InView animation ───
-function Section({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
-  const ref = useRef<HTMLElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-  return (
-    <motion.section
-      ref={ref}
-      id={id}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className={className}
-    >
-      {children}
-    </motion.section>
-  );
-}
-
+// ─── Main Page ───────────────────────────────────────────────────────────────
 export default function Home() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useSeo(
-    "DefenseEye.ai — AI-Powered CMMC 2.0 Compliance Automation | CMMC Lens",
-    "DefenseEye CMMC Lens automates CMMC 2.0 compliance for DoD contractors — AI-driven evidence collection, NIST 800-171 mapping, SSP/POA&M generation, SPRS score monitoring, and expert CMMC advisory consulting. Reduce documentation time by 80%."
+    "DefenseEye.ai — CMMC Advisory & Compliance Automation for DoD Contractors",
+    "Expert CMMC 2.0 advisory consulting and AI-powered compliance automation for DoD contractors. Gap assessments, NIST SP 800-171 remediation, SSP/POA&M, SPRS score improvement, and C3PAO assessment preparation under 32 CFR Part 170."
   );
 
-  // ─── Structured Data for LLMs / AI Agents / SEO ───
+  // ── Structured Data for GEO / AEO / SEO ──────────────────────────────────
   useEffect(() => {
     const faqSchema = {
       "@context": "https://schema.org",
@@ -347,118 +277,117 @@ export default function Home() {
       mainEntity: [
         {
           "@type": "Question",
-          name: "What is CMMC 2.0 and why do DoD contractors need it?",
-          acceptedAnswer: { "@type": "Answer", text: "CMMC 2.0 (Cybersecurity Maturity Model Certification) is a Department of Defense framework that requires all defense contractors to demonstrate specific cybersecurity practices to protect Controlled Unclassified Information (CUI) and Federal Contract Information (FCI). Starting in 2025, CMMC certification is being phased into all new DoD contracts, making compliance mandatory for contractors who want to continue working with the Department of Defense." },
-        },
-        {
-          "@type": "Question",
-          name: "How does CMMC Lens automate CMMC compliance?",
-          acceptedAnswer: { "@type": "Answer", text: "CMMC Lens uses AI-governed automation to streamline the entire CMMC readiness process. It automatically collects evidence from Microsoft Azure Commercial, Azure GCC, Microsoft 365 Commercial, and M365 GCC High environments, maps that evidence to all 110 NIST 800-171 controls, generates your System Security Plan (SSP) and Plan of Action & Milestones (POA&M), and continuously monitors your SPRS score — reducing manual documentation and preparation work by up to 80%." },
+          name: "What is CMMC 2.0 and who needs it?",
+          acceptedAnswer: { "@type": "Answer", text: "CMMC 2.0 (Cybersecurity Maturity Model Certification) is a DoD program codified as 32 CFR Part 170 (effective December 16, 2024). Any Defense Industrial Base company that processes, stores, or transmits Controlled Unclassified Information (CUI) must achieve CMMC Level 2 certification via a third-party C3PAO assessment. The DoD estimates over 80,000 DIB companies require Level 2. Source: DODCIO (dodcio.defense.gov/CMMC)." },
         },
         {
           "@type": "Question",
           name: "What is the difference between CMMC Level 1 and Level 2?",
-          acceptedAnswer: { "@type": "Answer", text: "CMMC Level 1 requires 17 basic cybersecurity practices for protecting Federal Contract Information (FCI) and allows annual self-assessment. CMMC Level 2 requires all 110 security controls from NIST SP 800-171 to protect Controlled Unclassified Information (CUI) and mandates a third-party C3PAO assessment. CMMC Lens supports both levels with automated evidence mapping and compliance tracking." },
+          acceptedAnswer: { "@type": "Answer", text: "CMMC Level 1 covers 17 basic practices from FAR 52.204-21 for companies handling only Federal Contract Information (FCI) — annual self-attestation is allowed. CMMC Level 2 covers all 110 practices from NIST SP 800-171 Rev. 2 for companies handling Controlled Unclassified Information (CUI) — a triennial third-party C3PAO assessment is required. SPRS score submission to sprs.apps.mil is required before contract award at both levels per DFARS 252.204-7019." },
         },
         {
           "@type": "Question",
-          name: "How long does it take to achieve CMMC readiness with DefenseEye?",
-          acceptedAnswer: { "@type": "Answer", text: "With CMMC Lens, most organizations can achieve audit readiness in days rather than the typical 6–12 months required for manual processes. The AI-driven platform automates evidence collection, NIST 800-171 control mapping, and documentation generation, reducing documentation and preparation time by up to 80%." },
+          name: "What is an SPRS score and how is it calculated?",
+          acceptedAnswer: { "@type": "Answer", text: "The SPRS (Supplier Performance Risk System) cybersecurity score measures NIST SP 800-171 compliance. Per the DoD Assessment Methodology: start at 110 points (maximum), deduct 1, 3, or 5 points for each unimplemented control. Contractors must self-assess and submit their score to sprs.apps.mil per DFARS 252.204-7019. False submissions trigger False Claims Act liability. Source: DoD Assessment Methodology (dodcio.defense.gov)." },
         },
         {
           "@type": "Question",
-          name: "What is an SPRS score and how does DefenseEye improve it?",
-          acceptedAnswer: { "@type": "Answer", text: "The Supplier Performance Risk System (SPRS) score is a numerical representation of your NIST 800-171 compliance, ranging from -203 to 110. DefenseEye's CMMC Lens continuously monitors your security posture, provides real-time SPRS score tracking, and identifies specific controls that need remediation to maximize your score before C3PAO assessment." },
+          name: "What is a C3PAO and how do I find one?",
+          acceptedAnswer: { "@type": "Answer", text: "A C3PAO (Certified Third-Party Assessment Organization) is authorized by the Cyber AB to conduct official CMMC Level 2 assessments using NIST SP 800-171A procedures. Results go to DoD eMASS. Find verified C3PAOs at cyberaccreditation.us/marketplace. Only C3PAOs issue CMMC Level 2 certifications — RPOs and consultants cannot. Source: Cyber AB (cyberaccreditation.us), DFARS 252.204-7021." },
+        },
+        {
+          "@type": "Question",
+          name: "How long does CMMC Level 2 certification take?",
+          acceptedAnswer: { "@type": "Answer", text: "For a well-prepared organization, CMMC Level 2 certification typically takes 6–12 months from starting gap remediation to receiving the final C3PAO certificate. The C3PAO assessment itself takes 6–16 weeks from engagement to certification decision. Organizations that start underprepared often spend an additional 3–6 months in remediation before re-assessment. DefenseEye's advisory program and automation platform reduce preparation time by 60–80%." },
+        },
+        {
+          "@type": "Question",
+          name: "What does DefenseEye do for CMMC compliance?",
+          acceptedAnswer: { "@type": "Answer", text: "DefenseEye provides CMMC 2.0 advisory consulting and AI-powered compliance automation for DoD contractors. Services include: free CMMC gap assessments, NIST SP 800-171 remediation guidance, SSP and POA&M development, SPRS score improvement, Microsoft GCC High configuration, C3PAO evidence package preparation, and pre-assessment readiness reviews. The CMMC Lens platform automates evidence collection, control mapping, and continuous monitoring." },
+        },
+        {
+          "@type": "Question",
+          name: "Can I get CMMC certified with a POA&M for open items?",
+          acceptedAnswer: { "@type": "Answer", text: "Under CMMC 2.0 (32 CFR Part 170.21), contractors can receive conditional CMMC Level 2 certification with certain open POA&M items, but must close gaps within 180 days. Critical controls — including MFA for privileged accounts (3.5.3), CUI encryption at rest and in transit (3.13.8, 3.13.10), and audit logging (3.3.1) — cannot remain in POA&M status at initial certification. A well-written POA&M includes specific control numbers, named owners, realistic timelines, and genuine compensating controls." },
+        },
+        {
+          "@type": "Question",
+          name: "Does Microsoft 365 GCC High satisfy CMMC requirements?",
+          acceptedAnswer: { "@type": "Answer", text: "Microsoft 365 GCC High holds FedRAMP High authorization and inherits many CMMC Level 2 infrastructure controls per Microsoft's Customer Responsibility Matrix. However, GCC High alone does not make you CMMC compliant — you must correctly configure MFA, Conditional Access, DLP, audit logging, and endpoint encryption in your tenant, and document all 110 controls in your SSP. M365 Commercial does NOT satisfy CMMC requirements for CUI per DFARS 252.239-7010." },
         },
       ],
     };
 
-    const videoSchema = {
+    const serviceSchema = {
       "@context": "https://schema.org",
-      "@type": "VideoObject",
-      name: "What Is CMMC 2.0? CMMC Compliance Explained for DoD Contractors",
-      description: "A plain-English overview of CMMC 2.0 — what DoD prime and subcontractors need to know about CMMC Level 2, NIST 800-171, C3PAO assessments, and how to achieve certification faster with AI automation.",
-      thumbnailUrl: "https://img.youtube.com/vi/g3Yhk1nUb7s/maxresdefault.jpg",
-      embedUrl: "https://www.youtube.com/embed/g3Yhk1nUb7s",
-      url: "https://www.youtube.com/watch?v=g3Yhk1nUb7s",
-      publisher: { "@type": "Organization", name: "DefenseEye", url: "https://defenseeye.ai" },
+      "@type": "ProfessionalService",
+      name: "DefenseEye — CMMC Advisory & Compliance Automation",
+      url: "https://defenseeye.ai",
+      description: "DefenseEye provides CMMC 2.0 advisory consulting and AI-powered compliance automation for DoD prime contractors and subcontractors. Services include CMMC gap assessments, NIST SP 800-171 remediation, SSP/POA&M development, SPRS score improvement, and C3PAO assessment preparation under 32 CFR Part 170.",
+      serviceType: ["CMMC Compliance Consulting", "CMMC Gap Assessment", "NIST 800-171 Implementation", "SPRS Score Improvement", "C3PAO Assessment Preparation", "SSP Development"],
+      areaServed: { "@type": "Country", name: "United States" },
+      audience: { "@type": "Audience", audienceType: "Department of Defense contractors, defense subcontractors, Defense Industrial Base" },
+      knowsAbout: ["CMMC 2.0 (32 CFR Part 170)", "NIST SP 800-171 Rev. 2", "DFARS 252.204-7012", "DFARS 252.204-7019", "DFARS 252.204-7021", "SPRS score", "C3PAO assessment", "CUI", "SSP", "POA&M", "Microsoft 365 GCC High CMMC", "Azure Government CMMC"],
     };
 
     const orgSchema = {
       "@context": "https://schema.org",
       "@type": "Organization",
       name: "DefenseEye",
+      alternateName: "DefenseEye.ai",
       url: "https://defenseeye.ai",
-      description: "AI-powered CMMC 2.0 compliance automation for Department of Defense contractors. Protecting Controlled Unclassified Information with intelligent automation.",
-      knowsAbout: ["CMMC 2.0", "NIST 800-171", "DFARS 252.204-7012", "SPRS score", "C3PAO assessment", "CUI protection", "DoD cybersecurity"],
+      description: "CMMC advisory and compliance automation for the U.S. Defense Industrial Base.",
+      foundingDate: "2024",
+      knowsAbout: ["CMMC 2.0", "NIST 800-171", "DFARS compliance", "SPRS score", "C3PAO assessment", "DoD cybersecurity"],
     };
 
-    const scriptId = "defenseeye-schema";
-    if (!document.getElementById(scriptId)) {
-      const script = document.createElement("script");
-      script.id = scriptId;
-      script.type = "application/ld+json";
-      script.text = JSON.stringify([faqSchema, videoSchema, orgSchema]);
-      document.head.appendChild(script);
+    const id = "de-schema";
+    if (!document.getElementById(id)) {
+      const s = document.createElement("script");
+      s.id = id;
+      s.type = "application/ld+json";
+      s.text = JSON.stringify([faqSchema, serviceSchema, orgSchema]);
+      document.head.appendChild(s);
     }
-    return () => { document.getElementById(scriptId)?.remove(); };
+    return () => { document.getElementById(id)?.remove(); };
   }, []);
-
-  const navLinks = [
-    { label: "Features", href: "#features" },
-    { label: "Services", href: "#services" },
-    { label: "How It Works", href: "#how-it-works" },
-    { label: "Knowledge Hub", href: "/knowledge-hub" },
-    { label: "Blog", href: "/blog" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "Contact", href: "#contact" },
-  ];
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      <TrialFormModal open={modalOpen} onClose={() => setModalOpen(false)} />
-      {/* ─── Scan Line Effect ─── */}
-      <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
-        <div className="scan-line absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-      </div>
+      <LeadModal open={modalOpen} onClose={() => setModalOpen(false)} />
 
       {/* ═══════════════════════════════════════════════════════════════
-          NAVIGATION
+          NAVIGATION — ultra-minimal (logo + single CTA)
       ═══════════════════════════════════════════════════════════════ */}
-      <nav className="fixed top-0 inset-x-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border/30" role="navigation" aria-label="Main navigation">
-        <div className="container flex items-center justify-between h-16">
+      <nav
+        className="fixed top-0 inset-x-0 z-40 bg-background/90 backdrop-blur-xl border-b border-border/30"
+        role="navigation"
+        aria-label="Main navigation"
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2.5 group" aria-label="DefenseEye.ai Home">
+          <a href="/" className="flex items-center gap-2.5" aria-label="DefenseEye.ai Home">
             <DefenseEyeLogo className="w-9 h-7" />
             <span className="font-heading font-bold text-lg tracking-tight text-foreground">
               Defense<span className="text-primary">Eye</span>
             </span>
           </a>
 
-          {/* Desktop Nav */}
+          {/* Desktop: minimal links + CTA */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="hidden md:flex items-center gap-3">
-            <Button variant="outline" size="sm" className="border-primary/40 text-primary hover:bg-primary/10" onClick={() => setModalOpen(true)}>
-              Book a Demo
-            </Button>
-            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold glow-amber" onClick={() => setModalOpen(true)}>
-              Start Free Trial
+            <a href="#services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Services</a>
+            <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
+            <a href="/knowledge-hub" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Resources</a>
+            <Button
+              size="sm"
+              className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-5"
+              onClick={() => setModalOpen(true)}
+            >
+              Book Free Assessment
             </Button>
           </div>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile toggle */}
           <button
             className="md:hidden text-foreground"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -468,7 +397,7 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile menu */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
@@ -477,25 +406,18 @@ export default function Home() {
               exit={{ height: 0, opacity: 0 }}
               className="md:hidden bg-card border-b border-border overflow-hidden"
             >
-              <div className="container py-4 flex flex-col gap-3">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className="text-sm font-medium text-muted-foreground hover:text-primary py-2"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {link.label}
-                  </a>
+              <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-3">
+                {[
+                  { label: "Services", href: "#services" },
+                  { label: "Pricing", href: "#pricing" },
+                  { label: "Resources", href: "/knowledge-hub" },
+                  { label: "Blog", href: "/blog" },
+                ].map((l) => (
+                  <a key={l.href} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-primary py-2" onClick={() => setMobileMenuOpen(false)}>{l.label}</a>
                 ))}
-                <div className="flex flex-col gap-2 pt-2 border-t border-border/50">
-                  <Button variant="outline" size="sm" className="border-primary/40 text-primary w-full" onClick={() => { setMobileMenuOpen(false); setModalOpen(true); }}>
-                    Book a Demo
-                  </Button>
-                  <Button size="sm" className="bg-accent text-accent-foreground w-full font-semibold" onClick={() => { setMobileMenuOpen(false); setModalOpen(true); }}>
-                    Start Free Trial
-                  </Button>
-                </div>
+                <Button className="bg-accent text-accent-foreground font-semibold w-full mt-2" onClick={() => { setMobileMenuOpen(false); setModalOpen(true); }}>
+                  Book Free Assessment
+                </Button>
               </div>
             </motion.div>
           )}
@@ -503,532 +425,270 @@ export default function Home() {
       </nav>
 
       {/* ═══════════════════════════════════════════════════════════════
-          HERO SECTION
+          HERO — centered, full-width, no competing panels
       ═══════════════════════════════════════════════════════════════ */}
-      <header className="relative pt-28 pb-20 lg:pt-36 lg:pb-28 overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src={HERO_BG}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover opacity-30"
-            loading="eager"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
-        </div>
-
-        <div className="container relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left: Copy */}
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-6">
-                <div className="w-2 h-2 rounded-full bg-primary pulse-ring" />
-                <span className="text-xs font-medium text-primary tracking-wide uppercase">AI-Governed CMMC 2.0 Compliance</span>
-              </div>
-
-              <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] mb-6">
-                Automate <span className="text-primary">CMMC Readiness</span> in Days, Not Months
-              </h1>
-
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-xl">
-                CMMC Lens by DefenseEye uses AI-driven automation to handle evidence collection, NIST 800-171 control mapping, SSP generation, and continuous SPRS score monitoring — reducing documentation and preparation time by up to 80% for DoD contractors pursuing CMMC 2.0 certification.
-              </p>
-
-              {/* CTA Buttons */}
-              <div className="flex flex-wrap gap-4 mb-10">
-                <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-8 glow-amber" onClick={() => setModalOpen(true)}>
-                  Start Free Trial
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-                <Button variant="outline" size="lg" className="border-primary/40 text-primary hover:bg-primary/10 text-base px-8" onClick={() => setModalOpen(true)}>
-                  Book a Demo
-                </Button>
-              </div>
-
-              {/* Trust Signals */}
-              <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-primary" />
-                  <span>DFARS Compliant</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-primary" />
-                  <span>NIST 800-171 Aligned</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-primary" />
-                  <span>FedRAMP Ready</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Right: CMMC Readiness Dashboard */}
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-              className="relative"
-            >
-              <div className="bracket-decoration bg-card/80 border border-primary/20 p-6 shadow-2xl">
-                {/* Dashboard header */}
-                <div className="flex items-center justify-between mb-5">
-                  <div>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">CMMC Lens — Live Dashboard</p>
-                    <h3 className="font-heading font-semibold text-foreground">Readiness Overview</h3>
-                  </div>
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 bg-green-500/10 border border-green-500/30 rounded-full">
-                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                    <span className="text-xs font-medium text-green-400">Monitoring Active</span>
-                  </div>
-                </div>
-
-                {/* SPRS Score */}
-                <div className="bg-background/60 border border-border/30 rounded-sm p-4 mb-4">
-                  <div className="flex items-end justify-between mb-2">
-                    <div>
-                      <p className="text-xs text-muted-foreground mb-1">SPRS Score</p>
-                      <p className="font-heading text-3xl font-bold text-primary">87<span className="text-base font-normal text-muted-foreground">/110</span></p>
-                    </div>
-                    <p className="text-xs text-green-400 font-medium">↑ +23 this month</p>
-                  </div>
-                  <div className="w-full bg-border/30 rounded-full h-2">
-                    <div className="bg-primary h-2 rounded-full" style={{ width: "79%" }} />
-                  </div>
-                </div>
-
-                {/* Controls grid */}
-                <div className="grid grid-cols-3 gap-3 mb-4">
-                  {[
-                    { label: "Controls Mapped", value: "94", total: "/110", color: "text-primary" },
-                    { label: "Evidence Collected", value: "312", total: " docs", color: "text-accent" },
-                    { label: "Gaps Remaining", value: "16", total: " items", color: "text-destructive" },
-                  ].map((stat) => (
-                    <div key={stat.label} className="bg-background/60 border border-border/30 rounded-sm p-3 text-center">
-                      <p className={`font-heading text-xl font-bold ${stat.color}`}>{stat.value}<span className="text-xs font-normal text-muted-foreground">{stat.total}</span></p>
-                      <p className="text-xs text-muted-foreground mt-0.5 leading-tight">{stat.label}</p>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Recent alerts */}
-                <div className="space-y-2">
-                  {[
-                    { icon: CheckCircle2, color: "text-green-400", msg: "AC.1.001 — Evidence auto-collected", time: "2m ago" },
-                    { icon: CheckCircle2, color: "text-green-400", msg: "SSP generated — 47 pages", time: "1h ago" },
-                    { icon: Zap, color: "text-accent", msg: "POA&M updated — 3 items closed", time: "3h ago" },
-                  ].map((item) => (
-                    <div key={item.msg} className="flex items-center gap-2.5 text-xs bg-background/40 border border-border/20 rounded-sm px-3 py-2">
-                      <item.icon className={`w-3.5 h-3.5 shrink-0 ${item.color}`} />
-                      <span className="text-muted-foreground flex-1">{item.msg}</span>
-                      <span className="text-muted-foreground/50">{item.time}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
+      <header className="pt-36 pb-24 px-4 text-center">
+        <motion.div
+          className="max-w-4xl mx-auto"
+          initial={{ opacity: 0, y: 32 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          {/* Urgency badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-8">
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-xs font-medium text-primary tracking-wide uppercase">CMMC 2.0 Final Rule — 32 CFR Part 170 in Effect</span>
           </div>
-        </div>
+
+          <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.08] tracking-tight mb-6 text-foreground">
+            Expert CMMC Advisory<br />
+            <span className="text-primary">for DoD Contractors</span>
+          </h1>
+
+          <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed mb-10 max-w-2xl mx-auto">
+            From gap assessment to C3PAO certification — DefenseEye combines certified CMMC advisors with
+            AI-powered compliance automation. Get contract-ready without the $100K+ consulting bill.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button
+              size="lg"
+              className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-10 h-12 w-full sm:w-auto"
+              onClick={() => setModalOpen(true)}
+            >
+              Book Your Free Assessment
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 text-base px-10 h-12 w-full sm:w-auto"
+              onClick={() => setModalOpen(true)}
+            >
+              Get Free Gap Analysis
+            </Button>
+          </div>
+
+          <p className="text-xs text-muted-foreground/60 mt-5">
+            No commitment required. Results within 24 hours.
+          </p>
+        </motion.div>
       </header>
 
       {/* ═══════════════════════════════════════════════════════════════
-          SOCIAL PROOF / STATS
+          4-COLUMN CAPABILITY CARDS — core value props
       ═══════════════════════════════════════════════════════════════ */}
-      <Section className="py-16 border-y border-border/30 bg-card/30">
-        <div className="container">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-            {[
-              { value: 80, suffix: "%", label: "Reduction in Documentation Time", icon: Clock },
-              { value: 80, suffix: "%", label: "Less Manual Effort", icon: Zap },
-              { value: 1000, suffix: "+", label: "Hours Saved Per Assessment", icon: BarChart3 },
-              { value: 365, suffix: "", label: "Days of Continuous Monitoring", icon: Eye },
-            ].map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.4 }}
-                className="text-center"
-              >
-                <stat.icon className="w-6 h-6 text-primary mx-auto mb-3 opacity-70" />
-                <div className="font-heading text-3xl sm:text-4xl font-bold text-primary mb-1">
-                  <AnimatedCounter end={stat.value} suffix={stat.suffix} />
-                </div>
-                <p className="text-sm text-muted-foreground">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* ═══════════════════════════════════════════════════════════════
-          SOCIAL PROOF — Industry Stats & Trust Signals
-      ═══════════════════════════════════════════════════════════════ */}
-      <Section className="py-20 lg:py-28">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center mb-14">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/5 mb-4">
-              <span className="text-xs font-medium text-primary tracking-wide uppercase">The CMMC Challenge</span>
-            </div>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4">
-              Why DoD Contractors Need <span className="text-primary">CMMC Automation</span>
-            </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              CMMC Level 2 compliance is mandatory for DoD prime and sub-contractors handling CUI. The manual path is expensive, slow, and error-prone.
-            </p>
-          </div>
-
-          {/* Industry pain-point stats */}
-          <div className="grid md:grid-cols-3 gap-6 mb-16">
+      <section className="pb-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               {
-                icon: Clock,
-                stat: "6–12 months",
-                label: "Average manual CMMC Level 2 readiness timeline",
-                source: "DoD CMMC Program Office",
+                icon: BarChart3,
+                iconColor: "text-primary",
+                iconBg: "bg-primary/10 border-primary/20",
+                title: "CMMC Gap Assessment",
+                desc: "Scored analysis against all 110 NIST SP 800-171 controls with SPRS estimate and prioritized gap report.",
               },
               {
-                icon: DollarSign,
-                stat: "$50K–$150K+",
-                label: "Typical consulting fees for manual compliance preparation",
-                source: "Industry benchmark",
-              },
-              {
-                icon: TrendingUp,
-                stat: "300,000+",
-                label: "Defense contractors in the DIB required to comply with CMMC",
-                source: "Office of the Under Secretary of Defense",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.stat}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.4 }}
-                className="bracket-decoration bg-card/60 border border-border/40 p-6 text-center"
-              >
-                <item.icon className="w-7 h-7 text-accent mx-auto mb-3" />
-                <div className="font-heading text-2xl font-bold text-accent mb-2">{item.stat}</div>
-                <p className="text-sm text-muted-foreground mb-2 leading-relaxed">{item.label}</p>
-                <p className="text-xs text-muted-foreground/50 italic">{item.source}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* How DefenseEye Addresses It */}
-          <div className="max-w-4xl mx-auto bg-card/40 border border-primary/20 p-8 lg:p-10">
-            <div className="grid lg:grid-cols-2 gap-8 items-center">
-              <div>
-                <h3 className="font-heading text-2xl font-bold mb-4">
-                  Built for the <span className="text-primary">Defense Industrial Base</span>
-                </h3>
-                <p className="text-muted-foreground leading-relaxed mb-6">
-                  DefenseEye is purpose-built for the contractors, subcontractors, and MSSPs navigating the CMMC ecosystem. Our platform eliminates the guesswork from NIST 800-171 control mapping and slashes documentation time — so your team can focus on the hands-on remediation work that actually needs human judgment.
-                </p>
-                <ul className="space-y-3">
-                  {[
-                    "DoD prime contractors (CMMC Level 2 required)",
-                    "Defense subcontractors handling CUI under DFARS 252.204-7012",
-                    "MSSPs supporting multiple DIB clients",
-                    "Organizations with SPRS scores below 70 needing rapid improvement",
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                      <span className="text-sm text-muted-foreground">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="space-y-4">
-                {[
-                  { icon: Award, label: "Early Access Program", desc: "Join our founding customer cohort and shape the product roadmap." },
-                  { icon: Users, label: "CMMC Expert Advisory Board", desc: "Built with guidance from C3PAO assessors and DoD cybersecurity practitioners." },
-                  { icon: BookOpen, label: "Free CMMC Knowledge Hub", desc: "Access our library of guides, checklists, and SPRS calculators — no signup required." },
-                ].map((item) => (
-                  <div key={item.label} className="flex items-start gap-4 p-4 bg-background/40 border border-border/30">
-                    <div className="w-9 h-9 rounded bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                      <item.icon className="w-4.5 h-4.5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-heading font-semibold text-sm text-foreground mb-0.5">{item.label}</p>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* ═══════════════════════════════════════════════════════════════
-          FEATURES — CMMC Lens Capabilities
-      ═══════════════════════════════════════════════════════════════ */}
-      <Section id="features" className="py-20 lg:py-28">
-        <div className="container">
-          {/* Section Header */}
-          <div className="max-w-2xl mx-auto text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/5 mb-4">
-              <span className="text-xs font-medium text-primary tracking-wide uppercase">CMMC Lens Capabilities</span>
-            </div>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4">
-              AI-Powered <span className="text-primary">CMMC 2.0 Compliance</span> Automation
-            </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              CMMC Lens automates the most time-consuming aspects of Cybersecurity Maturity Model Certification readiness, from evidence collection to continuous SPRS score monitoring.
-            </p>
-          </div>
-
-          {/* Feature Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                icon: Bot,
-                title: "AI-Driven Evidence Collection",
-                description: "Automatically collect and organize compliance evidence from Microsoft Azure Commercial, Azure GCC, Microsoft 365 Commercial, and M365 GCC High environments. Our AI maps each artifact to the relevant NIST 800-171 controls.",
-                image: FEATURE_EVIDENCE,
-              },
-              {
-                icon: FileCheck,
-                title: "Automated SSP & POA&M Generation",
-                description: "Generate your System Security Plan and Plan of Action & Milestones documents automatically. CMMC Lens produces audit-ready documentation aligned with DFARS and FAR requirements.",
-                image: null,
+                icon: Zap,
+                iconColor: "text-accent",
+                iconBg: "bg-accent/10 border-accent/20",
+                title: "AI Compliance Automation",
+                desc: "Automated evidence collection, SSP generation, POA&M tracking, and continuous SPRS score monitoring.",
               },
               {
                 icon: Target,
-                title: "NIST 800-171 Control Mapping",
-                description: "Automatically map your security controls to all 110 NIST SP 800-171 requirements. Identify gaps instantly and receive prioritized remediation guidance for CMMC Level 2 readiness.",
-                image: null,
+                iconColor: "text-emerald-400",
+                iconBg: "bg-emerald-400/10 border-emerald-400/20",
+                title: "Advisory & Consulting",
+                desc: "Certified CMMC advisors for scoping, remediation, documentation, and C3PAO coordination.",
               },
               {
-                icon: BarChart3,
-                title: "Real-Time SPRS Score Tracking",
-                description: "Monitor your Supplier Performance Risk System score continuously. Track progress as you close gaps and see exactly which controls impact your score the most.",
-                image: null,
+                icon: Shield,
+                iconColor: "text-violet-400",
+                iconBg: "bg-violet-400/10 border-violet-400/20",
+                title: "Assessment Preparation",
+                desc: "C3PAO-ready evidence packages, pre-assessment reviews, and staff interview preparation.",
               },
-              {
-                icon: Eye,
-                title: "365-Day Continuous Monitoring",
-                description: "Maintain compliance year-round with continuous monitoring of your security posture. Receive alerts when configurations drift or new vulnerabilities affect your CMMC readiness.",
-                image: FEATURE_MONITORING,
-              },
-              {
-                icon: Layers,
-                title: "C3PAO Assessment Preparation",
-                description: "Prepare for your Certified Third-Party Assessment Organization audit with pre-assessment checklists, evidence packages, and gap analysis reports tailored to your CMMC level.",
-                image: null,
-              },
-            ].map((feature, i) => (
+            ].map((card, i) => (
               <motion.div
-                key={feature.title}
+                key={card.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                className={`group bracket-decoration bg-card/60 backdrop-blur-sm border border-border/40 p-6 hover:border-primary/40 transition-all duration-300 ${feature.image ? "md:col-span-1 row-span-1" : ""}`}
+                className="bg-card/50 border border-border/40 rounded-sm p-6 hover:border-primary/30 hover:bg-card/70 transition-all duration-300"
               >
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
-                    <feature.icon className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-heading font-semibold text-lg mb-2 text-foreground">{feature.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
-                  </div>
+                <div className={`w-11 h-11 rounded-sm border ${card.iconBg} flex items-center justify-center mb-5`}>
+                  <card.icon className={`w-5 h-5 ${card.iconColor}`} />
                 </div>
-                {feature.image && (
-                  <div className="mt-5 rounded overflow-hidden border border-border/20">
-                    <img
-                      src={feature.image}
-                      alt={`${feature.title} visualization for CMMC compliance automation`}
-                      className="w-full h-40 object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
+                <h3 className="font-heading font-bold text-foreground mb-2">{card.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          KEY FEATURES — 2-column checklist
+      ═══════════════════════════════════════════════════════════════ */}
+      <Section className="py-20 px-4 bg-card/20 border-y border-border/20">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
+              Everything You Need to Pass Your <span className="text-primary">C3PAO Assessment</span>
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              DefenseEye delivers every component of a successful CMMC Level 2 certification program —
+              from scoping and documentation to day-of-assessment support.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-4 max-w-4xl mx-auto">
+            {[
+              "All 110 NIST SP 800-171 Rev. 2 controls mapped and documented",
+              "SPRS score calculation, tracking, and improvement roadmap",
+              "System Security Plan (SSP) generation — audit-ready format",
+              "Plan of Action & Milestones (POA&M) with completion tracking",
+              "CUI boundary scoping and data flow mapping",
+              "Microsoft 365 GCC High and Azure Government configuration",
+              "C3PAO-ready evidence packages organized by control family",
+              "DFARS 252.204-7012 and 252.204-7019 compliance alignment",
+              "Continuous compliance drift monitoring and alerting",
+              "Incident response plan development and tabletop support",
+              "Staff and end-user interview preparation for assessors",
+              "Subcontractor and supply chain flow-down guidance",
+            ].map((feature) => (
+              <div key={feature} className="flex items-start gap-3 py-2">
+                <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                <span className="text-sm text-muted-foreground">{feature}</span>
+              </div>
             ))}
           </div>
         </div>
       </Section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          CMMC ADVISORY & CONSULTING SERVICES
+          WHO WE HELP — trust signal strip
       ═══════════════════════════════════════════════════════════════ */}
-      <Section id="services" className="py-20 lg:py-28 bg-card/20 border-y border-border/20">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/30 bg-accent/5 mb-4">
-              <span className="text-xs font-medium text-accent tracking-wide uppercase">Full-Service CMMC Support</span>
-            </div>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4">
-              Software <span className="text-primary">+</span> Expert Advisory — Everything You Need
+      <Section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <p className="text-center text-xs font-medium text-muted-foreground/50 uppercase tracking-widest mb-10">
+            Serving the Defense Industrial Base across every contractor type
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { icon: Award, label: "Prime Contractors", sub: "Managing CUI at scale" },
+              { icon: Users, label: "Small Businesses", sub: "Under 50 employees" },
+              { icon: BookOpen, label: "IT Services Firms", sub: "Supporting DoD programs" },
+              { icon: TrendingUp, label: "MSSPs & Consultants", sub: "Managing multiple clients" },
+            ].map((item) => (
+              <div key={item.label} className="flex flex-col items-center text-center p-5 bg-card/30 border border-border/30 rounded-sm">
+                <item.icon className="w-6 h-6 text-primary mb-3" />
+                <p className="font-heading font-semibold text-sm text-foreground mb-1">{item.label}</p>
+                <p className="text-xs text-muted-foreground">{item.sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          SERVICES — 3 detailed service cards
+      ═══════════════════════════════════════════════════════════════ */}
+      <Section id="services" className="py-20 px-4 bg-card/20 border-y border-border/20">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Full-Service CMMC Support</p>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
+              Advisory + Automation — Everything You Need
             </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              CMMC Lens automates the heavy lifting. Our certified CMMC advisors handle the strategy, scoping, and expert guidance your team can't do alone.
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Traditional CMMC consulting runs $50K–$150K. DefenseEye delivers the same expert guidance
+              at a fraction of the cost — powered by automation.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                icon: Target,
-                label: "CMMC Scoping",
-                color: "text-primary",
-                border: "border-primary/20",
-                bg: "bg-primary/5",
-                description:
-                  "We define your exact CMMC boundary — which systems, assets, users, and data flows are in scope for CUI. Proper scoping reduces cost and audit risk before you start.",
-                bullets: ["CUI flow mapping", "System boundary definition", "Asset inventory & classification"],
-              },
-              {
-                icon: Users,
-                label: "CMMC Advisory & Consulting",
-                color: "text-accent",
-                border: "border-accent/20",
-                bg: "bg-accent/5",
-                description:
-                  "Our CMMC Registered Practitioners guide you through every decision — from choosing Level 1 vs Level 2 to preparing your team for C3PAO assessment.",
-                bullets: ["1-on-1 advisor sessions", "CMMC level strategy", "C3PAO selection guidance"],
-              },
-              {
+                badge: "Start Here — Free",
+                badgeColor: "text-emerald-400 border-emerald-400/40 bg-emerald-400/5",
                 icon: FileCheck,
-                label: "SSP, Policies & Procedures",
-                color: "text-primary",
-                border: "border-primary/20",
-                bg: "bg-primary/5",
-                description:
-                  "AI-generated System Security Plans, policies, and procedures mapped to all 110 NIST 800-171 controls. Reviewed and stamped by our compliance team.",
-                bullets: ["Full SSP generation", "110 control policies", "POA&M documentation"],
+                iconColor: "text-emerald-400",
+                title: "CMMC Gap Assessment",
+                desc: "We evaluate your posture against all 110 NIST SP 800-171 controls, calculate your estimated SPRS score, and deliver a prioritized remediation roadmap — at no cost.",
+                features: [
+                  "110-control gap analysis",
+                  "SPRS score estimate",
+                  "Prioritized remediation roadmap",
+                  "CUI boundary review",
+                  "Results within 24 hours",
+                ],
               },
               {
-                icon: Zap,
-                label: "Automated Risk Remediation",
-                color: "text-accent",
-                border: "border-accent/20",
-                bg: "bg-accent/5",
-                description:
-                  "Real-time gap detection with AI-prioritized remediation guidance. When a control fails, CMMC Lens tells you exactly what to fix and how — instantly.",
-                bullets: ["Real-time gap alerts", "Prioritized fix queue", "Step-by-step remediation"],
+                badge: "Most Requested",
+                badgeColor: "text-primary border-primary/40 bg-primary/5",
+                icon: Bot,
+                iconColor: "text-primary",
+                title: "Level 2 Readiness Program",
+                desc: "Our advisors guide your team through full CMMC Level 2 readiness — remediation, SSP and POA&M development, evidence collection, and C3PAO selection and prep.",
+                features: [
+                  "End-to-end advisory",
+                  "SSP & POA&M development",
+                  "AI-powered evidence collection",
+                  "SPRS score improvement",
+                  "C3PAO assessment preparation",
+                ],
               },
               {
-                icon: Eye,
-                label: "Continuous Monitoring",
-                color: "text-primary",
-                border: "border-primary/20",
-                bg: "bg-primary/5",
-                description:
-                  "365-day posture monitoring across your Azure Commercial, Azure GCC, and M365 environments. Catch drift before it becomes a finding.",
-                bullets: ["24/7 control monitoring", "Drift alerts", "Audit trail & evidence log"],
+                badge: "Enterprise",
+                badgeColor: "text-muted-foreground border-border/50 bg-card/30",
+                icon: Lock,
+                iconColor: "text-violet-400",
+                title: "MSSP & Prime Contractor",
+                desc: "Multi-client CMMC program management for MSSPs and prime contractors managing subcontractor compliance across the supply chain.",
+                features: [
+                  "Multi-tenant management",
+                  "Subcontractor flow-down",
+                  "Supply chain risk mapping",
+                  "Custom reporting",
+                  "Dedicated advisor",
+                ],
               },
-              {
-                icon: BarChart3,
-                label: "Detailed Assessment Reports",
-                color: "text-accent",
-                border: "border-accent/20",
-                bg: "bg-accent/5",
-                description:
-                  "C3PAO-ready assessment reports with per-control findings, evidence artifacts, SPRS delta analysis, and executive summaries for leadership.",
-                bullets: ["Per-control findings", "SPRS delta analysis", "C3PAO evidence packages"],
-              },
-            ].map(({ icon: Icon, label, color, border, bg, description, bullets }) => (
+            ].map((svc, i) => (
               <motion.div
-                key={label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5 }}
-                className={`relative rounded-xl border ${border} bg-card/60 p-6 hover:bg-card/90 transition-colors duration-300`}
-              >
-                <div className={`w-10 h-10 rounded-lg ${bg} border ${border} flex items-center justify-center mb-4`}>
-                  <Icon className={`w-5 h-5 ${color}`} />
-                </div>
-                <h3 className="font-heading font-semibold text-lg text-foreground mb-2">{label}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4">{description}</p>
-                <ul className="space-y-1">
-                  {bullets.map((b) => (
-                    <li key={b} className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <CheckCircle2 className={`w-3.5 h-3.5 ${color} shrink-0`} />
-                      {b}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <button
-              onClick={() => setModalOpen(true)}
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg bg-accent text-accent-foreground font-semibold text-base hover:bg-accent/90 transition-colors glow-amber"
-            >
-              Talk to a CMMC Advisor
-              <ArrowRight className="w-4 h-4" />
-            </button>
-            <p className="mt-3 text-xs text-muted-foreground">Free 30-minute scoping consultation — no commitment required</p>
-          </div>
-        </div>
-      </Section>
-
-      {/* ═══════════════════════════════════════════════════════════════
-          HOW IT WORKS
-      ═══════════════════════════════════════════════════════════════ */}
-      <Section id="how-it-works" className="py-20 lg:py-28 bg-card/20 border-y border-border/20">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/5 mb-4">
-              <span className="text-xs font-medium text-primary tracking-wide uppercase">How CMMC Lens Works</span>
-            </div>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4">
-              From Assessment to <span className="text-primary">Certification</span> in Three Steps
-            </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              CMMC Lens streamlines the entire CMMC 2.0 compliance journey for DoD contractors, turning months of manual work into days of automated readiness.
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-8">
-            {[
-              {
-                step: "01",
-                title: "Connect Your Environment",
-                description: "Integrate CMMC Lens with your Microsoft Azure Commercial, Azure GCC, Microsoft 365 Commercial, or M365 GCC High environment. Our platform securely scans your environment and automatically inventories all security controls and configurations relevant to NIST 800-171.",
-              },
-              {
-                step: "02",
-                title: "AI Maps & Analyzes",
-                description: "Our AI engine automatically maps your existing security evidence to all 110 NIST 800-171 controls, identifies compliance gaps, calculates your real-time SPRS score, and generates your SSP and POA&M documentation.",
-              },
-              {
-                step: "03",
-                title: "Achieve Audit Readiness",
-                description: "Receive a complete, audit-ready evidence package for your C3PAO assessment. CMMC Lens provides continuous monitoring to maintain compliance, alerting you to any configuration drift that could impact your CMMC certification.",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.step}
+                key={svc.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.15, duration: 0.4 }}
-                className="relative"
+                transition={{ delay: i * 0.1, duration: 0.4 }}
+                className="flex flex-col bg-card/50 border border-border/40 rounded-sm p-7 hover:border-primary/30 transition-all duration-300"
               >
-                <div className="bracket-decoration bg-card/60 backdrop-blur-sm border border-border/40 p-8 h-full">
-                  <div className="font-heading text-5xl font-bold text-primary/20 mb-4">{item.step}</div>
-                  <h3 className="font-heading text-xl font-semibold mb-3 text-foreground">{item.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+                <div className={`self-start text-xs font-semibold border px-2.5 py-1 rounded-full mb-5 ${svc.badgeColor}`}>
+                  {svc.badge}
                 </div>
-                {i < 2 && (
-                  <div className="hidden lg:flex absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
-                    <ChevronRight className="w-8 h-8 text-primary/40" />
-                  </div>
-                )}
+                <div className="flex items-center gap-3 mb-4">
+                  <svc.icon className={`w-5 h-5 ${svc.iconColor}`} />
+                  <h3 className="font-heading font-bold text-foreground">{svc.title}</h3>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-5">{svc.desc}</p>
+                <ul className="space-y-2.5 mb-8 flex-1">
+                  {svc.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2.5">
+                      <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  variant="outline"
+                  className="border-primary/40 text-primary hover:bg-primary/10 w-full mt-auto"
+                  onClick={() => setModalOpen(true)}
+                >
+                  Get Started <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
               </motion.div>
             ))}
           </div>
@@ -1036,158 +696,100 @@ export default function Home() {
       </Section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          VIDEO — CMMC Explained
+          PROCESS — 3 numbered steps
       ═══════════════════════════════════════════════════════════════ */}
-      <Section id="cmmc-overview-video" className="py-20 lg:py-28">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/5 mb-4">
-              <span className="text-xs font-medium text-primary tracking-wide uppercase">CMMC Explained</span>
-            </div>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4">
-              Watch: <span className="text-primary">What Is CMMC 2.0</span> and Why It Matters for DoD Contractors
+      <Section className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
+              How We Get You <span className="text-primary">Certified</span>
             </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              A plain-English breakdown of the Cybersecurity Maturity Model Certification — CMMC Level 2 requirements, NIST 800-171 controls, C3PAO assessments, and how AI automation accelerates your path to certification.
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              A structured, advisor-led process from your first call to your C3PAO assessment certificate.
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            {/* 16:9 responsive embed */}
-            <div className="relative w-full overflow-hidden rounded-sm border border-border/40 shadow-2xl mb-8" style={{ paddingBottom: "56.25%" }}>
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src="https://www.youtube.com/embed/g3Yhk1nUb7s"
-                title="What Is CMMC 2.0? CMMC Compliance Explained for DoD Contractors | DefenseEye"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                loading="lazy"
-              />
-            </div>
-
-            {/* Key takeaways */}
-            <div className="bg-card/60 border border-border/40 p-8">
-              <h3 className="font-heading text-lg font-semibold mb-5 text-foreground">Key Takeaways</h3>
-              <div className="grid sm:grid-cols-2 gap-3">
-                {[
-                  "CMMC 2.0 is mandatory for all DoD prime and subcontractors handling CUI",
-                  "CMMC Level 2 requires all 110 NIST SP 800-171 controls — not optional",
-                  "C3PAO third-party assessments required for most Level 2 contractors",
-                  "SPRS scores must be submitted to the government before contract awards",
-                  "Manual CMMC preparation typically takes 6–12 months and $50K–$150K+",
-                  "AI-driven automation reduces readiness documentation time by up to 80%",
-                ].map((point) => (
-                  <div key={point} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                    <span className="text-sm text-muted-foreground">{point}</span>
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {[
+              {
+                step: "01",
+                icon: BarChart3,
+                title: "Free Gap Assessment",
+                desc: "We evaluate your current security posture against all 110 NIST SP 800-171 controls, calculate your estimated SPRS score, and deliver a prioritized gap report within 24 hours — no cost, no commitment.",
+              },
+              {
+                step: "02",
+                icon: FileCheck,
+                title: "Remediation & Documentation",
+                desc: "Our certified advisors guide technical remediation while CMMC Lens generates your SSP, POA&M, policies, and evidence packages. We handle the documentation so your team can focus on closing gaps.",
+              },
+              {
+                step: "03",
+                icon: Award,
+                title: "C3PAO Assessment Ready",
+                desc: "We organize your complete evidence package, conduct a pre-assessment readiness review, prepare your staff for assessor interviews, and coordinate with your selected C3PAO for a smooth assessment.",
+              },
+            ].map((step, i) => (
+              <motion.div
+                key={step.step}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.12, duration: 0.4 }}
+                className="relative"
+              >
+                {/* Connector line */}
+                {i < 2 && (
+                  <div className="hidden md:block absolute top-6 left-[calc(100%+1rem)] w-8 h-px bg-border/50" />
+                )}
+                <div className="flex items-start gap-5">
+                  <div className="shrink-0">
+                    <div className="w-12 h-12 rounded-sm bg-primary/10 border border-primary/20 flex items-center justify-center">
+                      <span className="font-heading font-bold text-primary text-sm">{step.step}</span>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <step.icon className="w-4 h-4 text-primary" />
+                      <h3 className="font-heading font-bold text-foreground">{step.title}</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </Section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          CMMC LEVELS COMPARISON
+          URGENCY BANNER — loss aversion for desperate contractors
       ═══════════════════════════════════════════════════════════════ */}
-      <Section className="py-20 lg:py-28">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center mb-16">
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4">
-              CMMC Level 1 vs <span className="text-primary">Level 2</span> Comparison
-            </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Understanding the difference between CMMC certification levels is critical for DoD contractors. CMMC Lens supports both levels with tailored automation workflows.
-            </p>
+      <section className="py-10 px-4 bg-destructive/5 border-y border-destructive/20">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+          <AlertTriangle className="w-8 h-8 text-destructive shrink-0" />
+          <div className="flex-1">
+            <p className="font-heading font-bold text-foreground mb-1">CMMC 2.0 is now in effect for new DoD contracts.</p>
+            <p className="text-sm text-muted-foreground">Under 32 CFR Part 170 (effective December 16, 2024), DoD solicitations are beginning to include CMMC requirements. Contractors without a certification plan risk losing contract eligibility. SPRS score submission is required before contract award per DFARS 252.204-7019.</p>
           </div>
-
-          <div className="max-w-4xl mx-auto">
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse" role="table">
-                <thead>
-                  <tr className="border-b-2 border-primary/30">
-                    <th className="text-left py-4 px-4 font-heading font-semibold text-foreground">Criteria</th>
-                    <th className="text-center py-4 px-4 font-heading font-semibold text-primary">Level 1</th>
-                    <th className="text-center py-4 px-4 font-heading font-semibold text-accent">Level 2</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { criteria: "Number of Controls", l1: "17 practices", l2: "110 controls (NIST 800-171)" },
-                    { criteria: "Data Protected", l1: "FCI only", l2: "CUI and FCI" },
-                    { criteria: "Assessment Type", l1: "Annual self-assessment", l2: "C3PAO third-party assessment" },
-                    { criteria: "Documentation Required", l1: "Basic policies", l2: "Full SSP, POA&M, evidence packages" },
-                    { criteria: "SPRS Score Required", l1: "Not required", l2: "Yes (submitted to SPRS)" },
-                    { criteria: "CMMC Lens Support", l1: "Full automation", l2: "Full automation + C3PAO prep" },
-                  ].map((row, i) => (
-                    <tr key={row.criteria} className={`border-b border-border/30 ${i % 2 === 0 ? "bg-card/30" : ""}`}>
-                      <td className="py-3.5 px-4 text-sm font-medium text-foreground">{row.criteria}</td>
-                      <td className="py-3.5 px-4 text-sm text-center text-muted-foreground">{row.l1}</td>
-                      <td className="py-3.5 px-4 text-sm text-center text-muted-foreground">{row.l2}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold shrink-0 px-7" onClick={() => setModalOpen(true)}>
+            Start Now
+          </Button>
         </div>
-      </Section>
-
-      {/* ═══════════════════════════════════════════════════════════════
-          SHIELD / CUI PROTECTION SECTION
-      ═══════════════════════════════════════════════════════════════ */}
-      <Section className="py-20 lg:py-28 bg-card/20 border-y border-border/20">
-        <div className="container">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div>
-              <img
-                src={FEATURE_SHIELD}
-                alt="AI-powered digital shield protecting Controlled Unclassified Information for CMMC compliance"
-                className="w-full max-w-md mx-auto rounded-sm border border-border/30"
-                loading="lazy"
-              />
-            </div>
-            <div>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-6">
-                Protect <span className="text-primary">Controlled Unclassified Information</span> with AI-Governed Security
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                DefenseEye's CMMC Lens provides comprehensive CUI protection aligned with DFARS 252.204-7012 and the Federal Acquisition Regulation. Our AI-governed platform ensures your organization meets every requirement for handling sensitive defense information.
-              </p>
-              <ul className="space-y-4">
-                {[
-                  "Automated CUI identification and classification across your environment",
-                  "Encryption validation for data at rest and in transit (FIPS 140-2)",
-                  "Access control monitoring aligned with NIST 800-171 AC controls",
-                  "Incident response plan generation and testing workflows",
-                  "Supply chain risk management for CMMC ecosystem partners",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <span className="text-sm text-muted-foreground">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </Section>
+      </section>
 
       {/* ═══════════════════════════════════════════════════════════════
           PRICING
       ═══════════════════════════════════════════════════════════════ */}
-      <Section id="pricing" className="py-20 lg:py-28">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center mb-14">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/5 mb-4">
-              <span className="text-xs font-medium text-primary tracking-wide uppercase">Transparent Pricing</span>
-            </div>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4">
-              CMMC Compliance at a Fraction of <span className="text-primary">Consulting Costs</span>
+      <Section id="pricing" className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">Transparent Pricing</p>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
+              CMMC Compliance at a Fraction of <span className="text-primary">Traditional Consulting Cost</span>
             </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Traditional CMMC consulting runs $50K–$150K+. CMMC Lens delivers AI-driven automation at a predictable monthly rate — with a free trial, no credit card required.
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Traditional CMMC consulting runs $50K–$150K+. DefenseEye delivers expert advisory and AI automation at a predictable rate — free trial, no credit card required.
             </p>
           </div>
 
@@ -1198,17 +800,10 @@ export default function Home() {
                 price: "$199",
                 period: "/month",
                 badge: null,
-                description: "Perfect for small contractors beginning their CMMC Level 1 journey.",
-                features: [
-                  "CMMC Level 1 (17 practices)",
-                  "Up to 10 users",
-                  "Automated evidence collection",
-                  "Basic SSP generation",
-                  "SPRS score dashboard",
-                  "Email support",
-                ],
-                cta: "Start Free Trial",
-                ctaVariant: "outline" as const,
+                description: "For small contractors starting their CMMC Level 1 journey.",
+                features: ["CMMC Level 1 (17 practices)", "Up to 10 users", "Automated evidence collection", "Basic SSP generation", "SPRS score dashboard", "Email support"],
+                cta: "Book Free Assessment",
+                highlight: false,
               },
               {
                 tier: "Professional",
@@ -1216,37 +811,19 @@ export default function Home() {
                 period: "/month",
                 badge: "Most Popular",
                 description: "Full CMMC Level 2 automation for contractors handling CUI.",
-                features: [
-                  "CMMC Level 1 + Level 2 (110 controls)",
-                  "Up to 50 users",
-                  "AI-driven NIST 800-171 mapping",
-                  "Full SSP & POA&M generation",
-                  "C3PAO assessment prep package",
-                  "Real-time SPRS score tracking",
-                  "365-day continuous monitoring",
-                  "Priority support",
-                ],
-                cta: "Start Free Trial",
-                ctaVariant: "default" as const,
+                features: ["CMMC Level 1 + Level 2 (110 controls)", "Up to 50 users", "AI-driven NIST 800-171 mapping", "Full SSP & POA&M generation", "C3PAO assessment prep package", "Real-time SPRS score tracking", "365-day continuous monitoring", "Priority support"],
+                cta: "Book Free Assessment",
+                highlight: true,
               },
               {
                 tier: "Enterprise",
                 price: "Custom",
                 period: "",
                 badge: null,
-                description: "For large contractors, primes, and MSSPs managing multiple clients.",
-                features: [
-                  "Unlimited users & environments",
-                  "Multi-tenant MSSP dashboard",
-                  "Dedicated Customer Success Manager",
-                  "Custom NIST 800-172 controls",
-                  "White-label option",
-                  "SLA-backed uptime guarantee",
-                  "On-site C3PAO coordination",
-                  "24/7 priority support",
-                ],
-                cta: "Book a Demo",
-                ctaVariant: "outline" as const,
+                description: "For prime contractors and MSSPs managing multiple clients.",
+                features: ["Unlimited users & environments", "Multi-tenant MSSP dashboard", "Dedicated Customer Success Manager", "Custom NIST 800-172 controls", "White-label option", "SLA-backed uptime", "On-site C3PAO coordination", "24/7 priority support"],
+                cta: "Free Consultation",
+                highlight: false,
               },
             ].map((plan, i) => (
               <motion.div
@@ -1255,9 +832,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.4 }}
-                className={`relative bracket-decoration flex flex-col border p-7 ${
-                  plan.badge
-                    ? "border-primary/60 bg-card/80 shadow-lg shadow-primary/10"
+                className={`relative flex flex-col rounded-sm border p-7 ${
+                  plan.highlight
+                    ? "border-primary/50 bg-card/80 shadow-lg shadow-primary/10"
                     : "border-border/40 bg-card/40"
                 }`}
               >
@@ -1269,12 +846,12 @@ export default function Home() {
                   </div>
                 )}
                 <div className="mb-6">
-                  <p className="font-heading font-semibold text-sm text-muted-foreground uppercase tracking-wider mb-2">{plan.tier}</p>
+                  <p className="font-heading font-semibold text-xs text-muted-foreground uppercase tracking-widest mb-2">{plan.tier}</p>
                   <div className="flex items-end gap-1 mb-3">
                     <span className="font-heading text-4xl font-bold text-foreground">{plan.price}</span>
                     {plan.period && <span className="text-muted-foreground text-sm mb-1">{plan.period}</span>}
                   </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{plan.description}</p>
+                  <p className="text-sm text-muted-foreground">{plan.description}</p>
                 </div>
                 <ul className="space-y-2.5 mb-8 flex-1">
                   {plan.features.map((f) => (
@@ -1285,21 +862,15 @@ export default function Home() {
                   ))}
                 </ul>
                 <Button
-                  variant={plan.ctaVariant === "default" ? undefined : "outline"}
-                  className={
-                    plan.ctaVariant === "default"
-                      ? "bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full glow-amber"
-                      : "border-primary/40 text-primary hover:bg-primary/10 w-full"
-                  }
+                  className={plan.highlight ? "bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full" : "border-primary/40 text-primary hover:bg-primary/10 w-full"}
+                  variant={plan.highlight ? undefined : "outline"}
                   onClick={() => setModalOpen(true)}
                 >
-                  {plan.cta}
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                  {plan.cta} <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </motion.div>
             ))}
           </div>
-
           <p className="text-center text-xs text-muted-foreground mt-8">
             All plans include a 14-day free trial. No credit card required. Annual billing available (2 months free).
           </p>
@@ -1307,80 +878,103 @@ export default function Home() {
       </Section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          FAQ SECTION
+          FAQ — AEO / LLM citation optimized
       ═══════════════════════════════════════════════════════════════ */}
-      <Section id="faq" className="py-20 lg:py-28">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center mb-16">
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4">
-              Frequently Asked Questions About <span className="text-primary">CMMC Compliance</span>
+      <Section id="faq" className="py-20 px-4 bg-card/20 border-y border-border/20">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
+              Frequently Asked Questions About <span className="text-primary">CMMC 2.0</span>
             </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Common questions about the Cybersecurity Maturity Model Certification, NIST 800-171, and how DefenseEye's CMMC Lens automates compliance for DoD contractors.
+            <p className="text-muted-foreground">
+              Authoritative answers to the most common CMMC questions from DoD contractors —
+              sourced from DODCIO, NIST, Cyber AB, and DFARS.
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto space-y-3">
+          <div className="space-y-3">
             <FAQItem
-              question="What is CMMC 2.0 and why do DoD contractors need it?"
-              answer="CMMC 2.0 (Cybersecurity Maturity Model Certification) is a Department of Defense framework that requires all defense contractors to demonstrate specific cybersecurity practices to protect Controlled Unclassified Information (CUI) and Federal Contract Information (FCI). Starting in 2025, CMMC certification is being phased into all new DoD contracts, making compliance mandatory for contractors who want to continue working with the Department of Defense."
-            />
-            <FAQItem
-              question="How does CMMC Lens automate CMMC compliance?"
-              answer="CMMC Lens uses AI-governed automation to streamline the entire CMMC readiness process. It automatically collects evidence from Microsoft Azure Commercial, Azure GCC, Microsoft 365 Commercial, and M365 GCC High environments, maps that evidence to NIST 800-171 controls, generates your System Security Plan (SSP) and Plan of Action & Milestones (POA&M), and continuously monitors your SPRS score. This reduces manual documentation and preparation work by up to 80% — while your team handles the remaining hands-on assessment activities."
+              question="What is CMMC 2.0 and who needs it?"
+              answer="CMMC 2.0 (Cybersecurity Maturity Model Certification) is a DoD program codified as 32 CFR Part 170, effective December 16, 2024. Any Defense Industrial Base company that processes, stores, or transmits Controlled Unclassified Information (CUI) must achieve CMMC Level 2 certification via a third-party C3PAO assessment. The DoD estimates over 80,000 DIB companies require Level 2. (Source: DODCIO — dodcio.defense.gov/CMMC)"
             />
             <FAQItem
               question="What is the difference between CMMC Level 1 and Level 2?"
-              answer="CMMC Level 1 requires 17 basic cybersecurity practices focused on protecting Federal Contract Information (FCI) and allows self-assessment. CMMC Level 2 requires all 110 security controls from NIST SP 800-171 to protect Controlled Unclassified Information (CUI) and requires assessment by a Certified Third-Party Assessment Organization (C3PAO). CMMC Lens supports both levels with automated evidence mapping and compliance tracking."
+              answer="CMMC Level 1 covers 17 basic practices from FAR 52.204-21 for companies handling only Federal Contract Information (FCI) — annual self-attestation is allowed. CMMC Level 2 covers all 110 practices from NIST SP 800-171 Rev. 2 for CUI contractors — a triennial C3PAO assessment is required for most contracts. SPRS score submission to sprs.apps.mil is mandatory before contract award at both levels per DFARS 252.204-7019."
             />
             <FAQItem
-              question="How long does it take to achieve CMMC readiness with DefenseEye?"
-              answer="With CMMC Lens, most organizations can achieve audit readiness in days rather than the typical 6-12 months required with manual processes. Our AI-driven platform automates evidence collection, control mapping, and documentation generation, reducing documentation and preparation time by up to 80%. The exact timeline depends on your current security posture and target CMMC level — Level 2 still requires hands-on remediation and C3PAO coordination."
+              question="What is an SPRS score and why does it matter?"
+              answer="The SPRS (Supplier Performance Risk System) cybersecurity score measures your NIST SP 800-171 compliance. Per the DoD Assessment Methodology: start at 110 points, deduct 1, 3, or 5 points for each unimplemented control. Contracting officers review your score before award. Scores below 70 are considered high risk. False submissions create False Claims Act liability — the DoJ Civil Cyber-Fraud Initiative actively pursues cases. (Source: DoD Assessment Methodology — dodcio.defense.gov)"
             />
             <FAQItem
-              question="Does CMMC Lens help with NIST 800-171 and DFARS compliance?"
-              answer="Yes. CMMC 2.0 Level 2 is directly aligned with NIST SP 800-171 Rev 2, and DFARS clause 252.204-7012 requires contractors to implement these controls. CMMC Lens automatically maps your existing security evidence to all 110 NIST 800-171 controls, identifies gaps, and generates the documentation required for both DFARS compliance and CMMC certification."
+              question="What is a C3PAO and how do I find one?"
+              answer="A C3PAO (Certified Third-Party Assessment Organization) is authorized by the Cyber AB to conduct official CMMC Level 2 assessments using NIST SP 800-171A procedures. Results are submitted to DoD's eMASS system. Verify authorized C3PAOs at cyberaccreditation.us/marketplace. Only C3PAOs can issue CMMC Level 2 certifications — RPOs and consultants cannot conduct formal assessments. (Source: Cyber AB — cyberaccreditation.us, DFARS 252.204-7021)"
             />
             <FAQItem
-              question="What is an SPRS score and how does DefenseEye improve it?"
-              answer="The Supplier Performance Risk System (SPRS) score is a numerical representation of your organization's compliance with NIST 800-171 controls, ranging from -203 to 110. DefenseEye's CMMC Lens continuously monitors your security posture and provides real-time SPRS score tracking, identifying specific controls that need attention to maximize your score before assessment."
+              question="How long does CMMC Level 2 certification take?"
+              answer="For a well-prepared organization, CMMC Level 2 certification typically takes 6–12 months from starting gap remediation to receiving the C3PAO certificate. The C3PAO assessment itself takes 6–16 weeks from engagement to certification decision. Organizations starting underprepared often spend an additional 3–6 months in remediation before re-assessment. DefenseEye's advisory and automation platform reduces preparation time by 60–80%."
+            />
+            <FAQItem
+              question="Can I still get certified if I have open POA&M items?"
+              answer="Under 32 CFR Part 170.21, contractors can receive conditional CMMC Level 2 certification with certain open POA&M items and must close them within 180 days. However, critical controls — including MFA for privileged accounts (3.5.3), CUI encryption at rest/transit (3.13.8, 3.13.10), and audit logging (3.3.1) — cannot remain in POA&M status at initial certification. A proper POA&M includes specific control numbers, named owners, realistic timelines, and genuine compensating controls."
+            />
+            <FAQItem
+              question="Does Microsoft 365 GCC High satisfy CMMC Level 2 requirements?"
+              answer="M365 GCC High holds FedRAMP High authorization and inherits many CMMC Level 2 infrastructure controls per Microsoft's Customer Responsibility Matrix. However, GCC High alone is not sufficient — you must correctly configure MFA, Conditional Access, DLP, audit logging, and endpoint encryption, and document all 110 controls in your SSP. M365 Commercial does NOT satisfy CMMC requirements for CUI per DFARS 252.239-7010."
+            />
+            <FAQItem
+              question="How much does CMMC Level 2 certification cost?"
+              answer="A C3PAO assessment typically costs $30,000–$120,000 for small-to-mid-size companies. Pre-assessment consulting and remediation can add $25,000–$150,000+ depending on existing gaps. The DoD's regulatory analysis estimated average annual costs of ~$57,000 for already-compliant companies and significantly more for those with major gaps. DefenseEye's advisory and automation approach reduces preparation costs by 60–80% compared to traditional consulting engagements."
             />
           </div>
         </div>
       </Section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          CTA SECTION
+          CONTACT / LEAD CAPTURE
       ═══════════════════════════════════════════════════════════════ */}
-      <Section id="contact" className="py-20 lg:py-28 bg-card/30 border-y border-border/20">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-6">
-              Ready to Automate Your <span className="text-primary">CMMC 2.0 Compliance</span>?
-            </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed mb-10 max-w-2xl mx-auto">
-              Join DoD contractors who trust DefenseEye's CMMC Lens to achieve audit readiness faster. Start your free trial today and see how AI-driven automation can transform your CMMC compliance journey.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-10 glow-amber" onClick={() => setModalOpen(true)}>
-                Start Free Trial
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-              <Button variant="outline" size="lg" className="border-primary/40 text-primary hover:bg-primary/10 text-base px-10" onClick={() => setModalOpen(true)}>
-                Book a Demo
-              </Button>
-            </div>
-            <p className="text-xs text-muted-foreground mt-6">No credit card required. Full access to CMMC Lens for 14 days.</p>
+      <Section id="contact" className="py-20 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/30 bg-accent/5 mb-8">
+            <Clock className="w-3.5 h-3.5 text-accent" />
+            <span className="text-xs font-medium text-accent tracking-wide uppercase">Response within 24 hours</span>
           </div>
+          <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-5 text-foreground">
+            Ready to Start Your CMMC Journey?
+          </h2>
+          <p className="text-lg text-muted-foreground leading-relaxed mb-10 max-w-2xl mx-auto">
+            Book your free CMMC gap assessment. Our certified advisors will evaluate your current
+            posture, estimate your SPRS score, and deliver a prioritized roadmap to certification.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button
+              size="lg"
+              className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-12 h-12 w-full sm:w-auto"
+              onClick={() => setModalOpen(true)}
+            >
+              Book Your Free Assessment
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 text-base px-10 h-12 w-full sm:w-auto"
+              onClick={() => setModalOpen(true)}
+            >
+              Get Free Gap Analysis
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground mt-6">
+            Free assessment. No commitment. No credit card.
+          </p>
         </div>
       </Section>
 
       {/* ═══════════════════════════════════════════════════════════════
           FOOTER
       ═══════════════════════════════════════════════════════════════ */}
-      <footer className="py-12 border-t border-border/30" role="contentinfo">
-        <div className="container">
-          <div className="grid md:grid-cols-4 gap-8 mb-10">
+      <footer className="py-14 px-4 border-t border-border/30" role="contentinfo">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-10 mb-12">
             {/* Brand */}
             <div className="md:col-span-1">
               <div className="flex items-center gap-2.5 mb-4">
@@ -1389,24 +983,25 @@ export default function Home() {
                   Defense<span className="text-primary">Eye</span>
                 </span>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                AI-powered CMMC 2.0 compliance automation for Department of Defense contractors. Protecting Controlled Unclassified Information with intelligent automation.
+              <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                CMMC 2.0 advisory consulting and AI-powered compliance automation for the U.S. Defense Industrial Base.
               </p>
+              <p className="text-xs text-muted-foreground/60">NAICS: 541512, 541519 · SAM Registered</p>
             </div>
 
-            {/* Product */}
+            {/* Services */}
             <div>
-              <h4 className="font-heading font-semibold text-sm text-foreground mb-4 uppercase tracking-wider">Product</h4>
+              <h4 className="font-heading font-semibold text-xs text-foreground mb-4 uppercase tracking-widest">Services</h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: "CMMC Lens", href: "#features" },
-                  { label: "Evidence Collection", href: "#features" },
-                  { label: "SSP Generation", href: "#features" },
-                  { label: "SPRS Monitoring", href: "#features" },
-                  { label: "Pricing", href: "#pricing" },
+                  { label: "Free CMMC Assessment", href: "#contact" },
+                  { label: "Level 2 Readiness Program", href: "#services" },
+                  { label: "SPRS Score Improvement", href: "#services" },
+                  { label: "C3PAO Assessment Prep", href: "#services" },
+                  { label: "Enterprise / MSSP", href: "#services" },
                 ].map((item) => (
                   <li key={item.label}>
-                    <a href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200">{item.label}</a>
+                    <a href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{item.label}</a>
                   </li>
                 ))}
               </ul>
@@ -1414,52 +1009,52 @@ export default function Home() {
 
             {/* Resources */}
             <div>
-              <h4 className="font-heading font-semibold text-sm text-foreground mb-4 uppercase tracking-wider">Resources</h4>
+              <h4 className="font-heading font-semibold text-xs text-foreground mb-4 uppercase tracking-widest">Resources</h4>
               <ul className="space-y-2.5">
                 {[
                   { label: "CMMC Knowledge Hub", href: "/knowledge-hub" },
-                  { label: "NIST 800-171 Guide", href: "/knowledge-hub/evidence-mapping" },
+                  { label: "What Is CMMC 2.0?", href: "/knowledge-hub/what-is-cmmc" },
                   { label: "SPRS Score Guide", href: "/knowledge-hub/sprs-score" },
-                  { label: "Blog", href: "/blog" },
-                  { label: "Case Studies", href: "/case-studies" },
+                  { label: "C3PAO Assessment Guide", href: "/knowledge-hub/certification-process" },
+                  { label: "CMMC Blog", href: "/blog" },
                 ].map((item) => (
                   <li key={item.label}>
-                    <a href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200">{item.label}</a>
+                    <a href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{item.label}</a>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Company */}
+            {/* Authoritative Links */}
             <div>
-              <h4 className="font-heading font-semibold text-sm text-foreground mb-4 uppercase tracking-wider">Company</h4>
+              <h4 className="font-heading font-semibold text-xs text-foreground mb-4 uppercase tracking-widest">Authoritative Sources</h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: "About DefenseEye", href: "#contact" },
-                  { label: "Careers", href: "#contact" },
-                  { label: "Contact Us", href: "#contact" },
-                  { label: "Privacy Policy", href: "#contact" },
-                  { label: "Terms of Service", href: "#contact" },
+                  { label: "DODCIO CMMC Program", href: "https://dodcio.defense.gov/CMMC/" },
+                  { label: "NIST SP 800-171", href: "https://csrc.nist.gov/publications/detail/sp/800-171/rev-2/final" },
+                  { label: "Cyber AB Marketplace", href: "https://cyberaccreditation.us/marketplace" },
+                  { label: "NARA CUI Registry", href: "https://www.archives.gov/cui" },
+                  { label: "DFARS 252.204-7012", href: "https://www.acquisition.gov/dfars/252.204-7012" },
                 ].map((item) => (
                   <li key={item.label}>
-                    <a href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200">{item.label}</a>
+                    <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">{item.label}</a>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
 
-          {/* Bottom Bar */}
           <div className="border-t border-border/30 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-xs text-muted-foreground">
-              &copy; {new Date().getFullYear()} DefenseEye, Inc. All rights reserved. CMMC Lens is a trademark of DefenseEye.
+              &copy; {new Date().getFullYear()} DefenseEye, Inc. All rights reserved.
+              CMMC Lens is a trademark of DefenseEye.
             </p>
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
-              <span>CAGE Code: Available</span>
+              <a href="/knowledge-hub" className="hover:text-primary transition-colors">Knowledge Hub</a>
               <span className="text-border">|</span>
-              <span>NAICS: 541512, 541519</span>
+              <a href="/blog" className="hover:text-primary transition-colors">Blog</a>
               <span className="text-border">|</span>
-              <span>SAM Registered</span>
+              <a href="#contact" className="hover:text-primary transition-colors">Contact</a>
             </div>
           </div>
         </div>
