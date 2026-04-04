@@ -108,14 +108,8 @@ temp/
 # Webdev artifacts (checkpoint zips, migrations, etc.)
 .webdev/
 
-# Manus version file (auto-generated, not part of source)
-client/public/__manus__/version.json
-
 # PM2 runtime logs (generated on server)
 logs/
-
-# Manus debug logs (dev only)
-.manus-logs/
 
 # Python virtual environment
 venv/

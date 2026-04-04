@@ -230,9 +230,17 @@
     </script>
 
     <!-- Umami Analytics (privacy-first, no consent required) -->
-    <script
-      defer
-      src="%VITE_ANALYTICS_ENDPOINT%/umami"
-      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
+    <script>
+      (function(){
+        var ep = "%VITE_ANALYTICS_ENDPOINT%";
+        var id = "%VITE_ANALYTICS_WEBSITE_ID%";
+        if (!ep || ep.charAt(0) === '%' || !id || id.charAt(0) === '%' || id === 'your-umami-website-id-here') return;
+        var s = document.createElement('script');
+        s.defer = true;
+        s.src = ep + '/umami';
+        s.setAttribute('data-website-id', id);
+        document.body.appendChild(s);
+      })();
+    </script>
   </body>
 </html>
