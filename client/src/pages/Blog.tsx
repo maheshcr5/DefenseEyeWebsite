@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { useSeo } from "@/hooks/useSeo";
 import {
   ArrowRight,
@@ -371,11 +372,7 @@ export default function Blog() {
       {/* ── Navigation Back ── */}
       <div className="border-b border-border/30 bg-background/80 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/">
-            <span className="font-heading font-bold text-primary text-lg cursor-pointer tracking-wider">
-              DefenseEye<span className="text-accent">.ai</span>
-            </span>
-          </Link>
+          <DefenseEyeLogo href="/" />
           <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
             <Link href="/#services">
               <span className="hover:text-primary transition-colors cursor-pointer">Services</span>

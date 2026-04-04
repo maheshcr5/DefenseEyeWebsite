@@ -9,6 +9,7 @@ import { Link } from "wouter";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
+import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import {
   Shield,
   BookOpen,
@@ -27,10 +28,9 @@ import {
 
 // ─── Nav (matches Home.tsx) ───────────────────────────────────────────────────
 const NAV_LINKS = [
-  { label: "Services", href: "/#services" },
+  { label: "Services",  href: "/#services" },
+  { label: "Pricing",   href: "/#pricing" },
   { label: "Resources", href: "/knowledge-hub" },
-  { label: "Pricing", href: "/#pricing" },
-  { label: "Contact", href: "/#contact" },
 ];
 
 function Nav() {
@@ -38,14 +38,7 @@ function Nav() {
   return (
     <nav className="fixed top-0 inset-x-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border/30" role="navigation" aria-label="Main navigation">
       <div className="container flex items-center justify-between h-16">
-        <Link href="/" className="flex items-center gap-2.5 group" aria-label="DefenseEye.ai Home">
-          <div className="w-8 h-8 rounded bg-primary/20 border border-primary/40 flex items-center justify-center">
-            <Shield className="w-4 h-4 text-primary" />
-          </div>
-          <span className="font-heading font-bold text-lg tracking-tight text-foreground">
-            Defense<span className="text-primary">Eye</span>
-          </span>
-        </Link>
+        <DefenseEyeLogo href="/" />
         <div className="hidden md:flex items-center gap-7">
           {NAV_LINKS.map((l) => (
             <Link key={l.href} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200">
@@ -54,8 +47,7 @@ function Nav() {
           ))}
         </div>
         <div className="hidden md:flex items-center gap-3">
-          <Link href="/#contact"><Button variant="outline" size="sm" className="border-primary/40 text-primary hover:bg-primary/10">Free Consultation</Button></Link>
-          <Link href="/#contact"><Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">Book Assessment</Button></Link>
+          <Link href="/#contact"><Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">Book Free Assessment</Button></Link>
         </div>
         <button className="md:hidden text-foreground" onClick={() => setOpen(!open)} aria-label="Toggle menu">
           {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -67,9 +59,8 @@ function Nav() {
             {NAV_LINKS.map((l) => (
               <Link key={l.href} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-primary py-2" onClick={() => setOpen(false)}>{l.label}</Link>
             ))}
-            <div className="flex flex-col gap-2 pt-2 border-t border-border/50">
-              <Link href="/#contact"><Button variant="outline" size="sm" className="border-primary/40 text-primary w-full">Free Consultation</Button></Link>
-              <Link href="/#contact"><Button size="sm" className="bg-accent text-accent-foreground w-full font-semibold">Book Assessment</Button></Link>
+            <div className="pt-2 border-t border-border/50">
+              <Link href="/#contact"><Button size="sm" className="bg-accent text-accent-foreground w-full font-semibold">Book Free Assessment</Button></Link>
             </div>
           </div>
         </div>

@@ -8,7 +8,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Shield,
   ChevronRight,
   Clock,
   BookOpen,
@@ -18,6 +17,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -45,12 +45,9 @@ export interface KnowledgeHubLayoutProps {
 // ─── Nav links (matches Home.tsx) ────────────────────────────────────────────
 
 const NAV_LINKS = [
-  { label: "Features", href: "/#features" },
-  { label: "How It Works", href: "/#how-it-works" },
-  { label: "Knowledge Hub", href: "/knowledge-hub" },
-  { label: "Blog", href: "/blog" },
-  { label: "Pricing", href: "/#pricing" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Services",  href: "/#services" },
+  { label: "Pricing",   href: "/#pricing" },
+  { label: "Resources", href: "/knowledge-hub" },
 ];
 
 // ─── Main Layout Component ────────────────────────────────────────────────────
@@ -160,18 +157,7 @@ export default function KnowledgeHubLayout({
       >
         <div className="container flex items-center justify-between h-16">
           {/* Logo */}
-          <a
-            href="/"
-            className="flex items-center gap-2.5 group"
-            aria-label="DefenseEye.ai Home"
-          >
-            <div className="w-8 h-8 rounded bg-primary/20 border border-primary/40 flex items-center justify-center group-hover:glow-cyan transition-all duration-300">
-              <Shield className="w-4.5 h-4.5 text-primary" />
-            </div>
-            <span className="font-heading font-bold text-lg tracking-tight text-foreground">
-              Defense<span className="text-primary">Eye</span>
-            </span>
-          </a>
+          <DefenseEyeLogo href="/" />
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
@@ -186,21 +172,13 @@ export default function KnowledgeHubLayout({
             ))}
           </div>
 
-          {/* CTA Buttons */}
+          {/* CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Button
-              variant="outline"
-              size="sm"
-              className="border-primary/40 text-primary hover:bg-primary/10"
-            >
-              Book a Demo
-            </Button>
-            <Button
-              size="sm"
-              className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold glow-amber"
-            >
-              Start Free Trial
-            </Button>
+            <a href="/#contact">
+              <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+                Book Free Assessment
+              </Button>
+            </a>
           </div>
 
           {/* Mobile Toggle */}
@@ -237,20 +215,12 @@ export default function KnowledgeHubLayout({
                     {link.label}
                   </a>
                 ))}
-                <div className="flex flex-col gap-2 pt-2 border-t border-border/50">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-primary/40 text-primary w-full"
-                  >
-                    Book a Demo
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="bg-accent text-accent-foreground w-full font-semibold"
-                  >
-                    Start Free Trial
-                  </Button>
+                <div className="pt-2 border-t border-border/50">
+                  <a href="/#contact" className="block">
+                    <Button size="sm" className="bg-accent text-accent-foreground font-semibold w-full">
+                      Book Free Assessment
+                    </Button>
+                  </a>
                 </div>
               </div>
             </motion.div>
@@ -386,8 +356,9 @@ export default function KnowledgeHubLayout({
                 <Button
                   size="sm"
                   className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full text-xs"
+                  onClick={() => window.location.href = "/#contact"}
                 >
-                  Start Free Trial
+                  Book Free Assessment
                   <ArrowRight className="w-3 h-3 ml-1.5" />
                 </Button>
               </div>
@@ -404,13 +375,8 @@ export default function KnowledgeHubLayout({
           <div className="grid md:grid-cols-4 gap-8 mb-10">
             {/* Brand */}
             <div className="md:col-span-1">
-              <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-8 h-8 rounded bg-primary/20 border border-primary/40 flex items-center justify-center">
-                  <Shield className="w-4.5 h-4.5 text-primary" />
-                </div>
-                <span className="font-heading font-bold text-lg tracking-tight text-foreground">
-                  Defense<span className="text-primary">Eye</span>
-                </span>
+              <div className="mb-4">
+                <DefenseEyeLogo />
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 AI-powered CMMC 2.0 compliance automation for Department of

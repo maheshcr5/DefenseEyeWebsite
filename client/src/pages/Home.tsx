@@ -18,6 +18,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import {
   Target,
   Shield,
@@ -40,20 +41,6 @@ import {
 } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useSeo } from "@/hooks/useSeo";
-
-// ─── DefenseEye Logo SVG ────────────────────────────────────────────────────
-function DefenseEyeLogo({ className = "w-8 h-7" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 48 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="DefenseEye logo">
-      <path d="M2 18 C10 4 38 4 46 18 C38 32 10 32 2 18Z" stroke="#00D4FF" strokeWidth="2.2" fill="none" strokeLinejoin="round"/>
-      <circle cx="24" cy="18" r="7.5" stroke="#00D4FF" strokeWidth="1.8" fill="none"/>
-      <circle cx="24" cy="18" r="4" fill="#00D4FF" opacity="0.15"/>
-      <path d="M24 11.5 C21 14 20 17 22 19.5 C23.2 21 24 21.5 24 21.5 C24 21.5 24.8 21 26 19.5 C28 17 27 14 24 11.5Z" fill="#FFB547"/>
-      <circle cx="24" cy="18" r="2" fill="#FFB547"/>
-      <path d="M14 11 Q24 6 34 11" stroke="#00D4FF" strokeWidth="1" strokeLinecap="round" opacity="0.5"/>
-    </svg>
-  );
-}
 
 // ─── Section wrapper with scroll-triggered animation ────────────────────────
 function Section({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
@@ -366,12 +353,7 @@ export default function Home() {
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2.5" aria-label="DefenseEye.ai Home">
-            <DefenseEyeLogo className="w-9 h-7" />
-            <span className="font-heading font-bold text-lg tracking-tight text-foreground">
-              Defense<span className="text-primary">Eye</span>
-            </span>
-          </a>
+          <DefenseEyeLogo href="/" />
 
           {/* Desktop: minimal links + CTA */}
           <div className="hidden md:flex items-center gap-8">
@@ -427,7 +409,12 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           HERO — centered, full-width, no competing panels
       ═══════════════════════════════════════════════════════════════ */}
-      <header className="pt-36 pb-24 px-4 text-center">
+      <header className="relative pt-36 pb-24 px-4 text-center overflow-hidden">
+        {/* Ambient glow behind hero */}
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] rounded-full bg-primary/5 blur-[140px]" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] rounded-full bg-accent/[0.04] blur-[100px]" />
+        </div>
         <motion.div
           className="max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 32 }}
@@ -472,6 +459,21 @@ export default function Home() {
           <p className="text-xs text-muted-foreground/60 mt-5">
             No commitment required. Results within 24 hours.
           </p>
+
+          {/* ── Key stats strip ── */}
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5 mt-14 pt-10 border-t border-border/20">
+            {[
+              { num: "80,000+", label: "DIB contractors need CMMC" },
+              { num: "110",     label: "NIST SP 800-171 controls" },
+              { num: "180",     label: "Days to close POA&M gaps" },
+              { num: "$57K",    label: "Avg annual compliance cost" },
+            ].map(({ num, label }) => (
+              <div key={num} className="text-center">
+                <p className="font-heading text-2xl font-bold text-foreground">{num}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">{label}</p>
+              </div>
+            ))}
+          </div>
         </motion.div>
       </header>
 
@@ -977,11 +979,8 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-10 mb-12">
             {/* Brand */}
             <div className="md:col-span-1">
-              <div className="flex items-center gap-2.5 mb-4">
-                <DefenseEyeLogo className="w-9 h-7" />
-                <span className="font-heading font-bold text-lg tracking-tight text-foreground">
-                  Defense<span className="text-primary">Eye</span>
-                </span>
+              <div className="mb-4">
+                <DefenseEyeLogo />
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                 CMMC 2.0 advisory consulting and AI-powered compliance automation for the U.S. Defense Industrial Base.
