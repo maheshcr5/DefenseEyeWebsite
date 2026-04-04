@@ -267,32 +267,41 @@ async function startServer() {
     // Send emails only when SMTP is configured
     if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
       try {
+        console.log(`[contact] SMTP configured: host=${process.env.SMTP_HOST}, port=${process.env.SMTP_PORT}, secure=${process.env.SMTP_SECURE}, user=${process.env.SMTP_USER}`);
         const transporter = nodemailer.createTransport({
           host: process.env.SMTP_HOST,
-          port: parseInt(process.env.SMTP_PORT || "465"),
-          secure: process.env.SMTP_SECURE !== "false",
+          port: parseInt(process.env.SMTP_PORT || "587"),
+          secure: process.env.SMTP_SECURE === "true",
           auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
         });
 
+        const fromAddr = process.env.SMTP_FROM || process.env.SMTP_USER;
+
+        console.log(`[contact] Sending notification to mahesh@defenseeye.ai from ${fromAddr}...`);
         await transporter.sendMail({
-          from: `"DefenseEye Contact Form" <${process.env.SMTP_USER}>`,
+          from: `"DefenseEye Contact Form" <${fromAddr}>`,
           to: "mahesh@defenseeye.ai",
           cc: "sujatha@defenseeye.ai",
           replyTo: email,
           subject,
           html: htmlBody,
         });
+        console.log("[contact] Notification email sent successfully.");
 
+        console.log(`[contact] Sending confirmation to ${email}...`);
         await transporter.sendMail({
-          from: `"DefenseEye Team" <${process.env.SMTP_USER}>`,
+          from: `"DefenseEye Team" <${fromAddr}>`,
           to: email,
           subject: `We received your CMMC inquiry — DefenseEye.ai`,
           html: confirmationHtml,
         });
+        console.log("[contact] Confirmation email sent successfully.");
       } catch (err) {
         console.error("[contact] Email send error:", err);
         // Still return success — log the submission server-side
       }
+    } else {
+      console.warn("[contact] SMTP not configured — skipping email. Set SMTP_HOST, SMTP_USER, SMTP_PASS.");
     }
 
     // Always log the lead server-side regardless of email status
