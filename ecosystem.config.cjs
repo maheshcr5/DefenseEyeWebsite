@@ -15,6 +15,7 @@ module.exports = {
     {
       name: "defenseeye",
       script: "./dist/index.js",
+      node_args: "--env-file=.env",
 
       // ── Environment ────────────────────────────────────────────────────────
       env_production: {
