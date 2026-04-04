@@ -241,11 +241,11 @@ function NewsletterSection() {
             CMMC Intelligence
           </div>
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-3">
-            Stay Ahead of CMMC Changes
+            Stay Ahead of CMMC Rule Changes
           </h2>
           <p className="text-muted-foreground mb-8 leading-relaxed">
-            Get expert analysis on CMMC 2.0 rule updates, SPRS scoring changes, and DoD compliance
-            deadlines — delivered to your inbox. No spam. Unsubscribe anytime.
+            Get practical guidance on readiness priorities, SPRS score movement, and C3PAO prep
+            decisions while intent is high and award windows are open.
           </p>
 
           {status === "success" ? (
@@ -374,13 +374,16 @@ export default function Blog() {
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <DefenseEyeLogo href="/" />
           <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
-            <Link href="/#services">
-              <span className="hover:text-primary transition-colors cursor-pointer">Services</span>
+            <Link href="/services/cmmc-readiness-sprint">
+              <span className="hover:text-primary transition-colors cursor-pointer">CMMC Sprint</span>
+            </Link>
+            <Link href="/#process">
+              <span className="hover:text-primary transition-colors cursor-pointer">Readiness Path</span>
             </Link>
             <Link href="/knowledge-hub">
-              <span className="hover:text-primary transition-colors cursor-pointer">Resources</span>
+              <span className="hover:text-primary transition-colors cursor-pointer">Knowledge Hub</span>
             </Link>
-            <Link href="/#pricing">
+            <Link href="/pricing">
               <span className="hover:text-primary transition-colors cursor-pointer">Pricing</span>
             </Link>
           </nav>
@@ -397,16 +400,16 @@ export default function Blog() {
         <div className="max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-heading font-semibold bg-primary/10 text-primary border border-primary/20 uppercase tracking-wider mb-6">
             <BookOpen className="w-3.5 h-3.5" />
-            CMMC Resource Center
+            CMMC Revenue Protection Insights
           </div>
           <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-5 leading-tight">
-            CMMC Compliance Blog —{" "}
-            <span className="text-primary">Expert Guides</span> for Defense Contractors
+            Content Built for Teams That
+            <span className="text-primary"> Cannot Afford Readiness Delays</span>
           </h1>
           <p className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-3xl mx-auto mb-10">
-            Deep-dive articles on CMMC 2.0 compliance, SPRS score optimization, C3PAO assessment
-            preparation, and NIST 800-171 implementation — written for DoD contractors who need
-            actionable intelligence, not theory.
+            Every article is written to help defense contractors move from uncertainty to
+            assessor-ready decisions faster: scope right, fix the right controls first, and reduce
+            avoidable consulting drag.
           </p>
 
           {/* Search */}
@@ -504,11 +507,11 @@ export default function Blog() {
       <Section className="py-14 px-4 border-y border-border/30 bg-primary/5">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-3">
-            Ready to Automate Your CMMC Readiness?
+            Need a Faster Path to Assessment Readiness?
           </h2>
           <p className="text-muted-foreground mb-6">
-            CMMC Lens maps your controls to all 110 NIST 800-171 practices, calculates your live
-            SPRS score, and generates your SSP automatically.
+            DefenseEye combines advisory and CMMC Lens automation to prioritize remediation,
+            generate clean evidence, and shorten the cycle from "we might fail" to "we are ready."
           </p>
           <Link href="/#contact">
             <Button className="bg-accent text-background hover:bg-accent/90 font-heading font-bold text-base px-8 py-3">

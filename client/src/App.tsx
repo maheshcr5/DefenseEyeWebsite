@@ -18,6 +18,8 @@ const CertificationProcess = lazy(() => import("./pages/knowledge-hub/Certificat
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const CaseStudies = lazy(() => import("./pages/CaseStudies"));
+const CMMCReadinessSprint = lazy(() => import("./pages/CMMCReadinessSprint"));
+const Pricing = lazy(() => import("./pages/Pricing"));
 
 // Minimal loading fallback that matches the dark theme
 function PageLoader() {
@@ -48,6 +50,9 @@ function Router() {
 
         {/* Case Studies */}
         <Route path="/case-studies" component={CaseStudies} />
+        <Route path="/services" component={CMMCReadinessSprint} />
+        <Route path="/services/cmmc-readiness-sprint" component={CMMCReadinessSprint} />
+        <Route path="/pricing" component={Pricing} />
 
         {/* Fallback */}
         <Route path="/404" component={NotFound} />
@@ -58,12 +63,21 @@ function Router() {
 }
 
 function App() {
+  const calendlyUrl = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <Toaster />
           <Router />
+          <a
+            href={calendlyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fixed bottom-4 right-4 z-[60] bg-accent text-accent-foreground text-xs sm:text-sm font-semibold px-4 py-2.5 rounded shadow-lg shadow-black/30 hover:bg-accent/90 transition-colors"
+          >
+            Urgent CMMC Help? Book Call
+          </a>
           <CookieConsent />
         </TooltipProvider>
       </ThemeProvider>

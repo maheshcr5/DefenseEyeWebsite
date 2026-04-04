@@ -28,9 +28,11 @@ import {
 
 // ─── Nav (matches Home.tsx) ───────────────────────────────────────────────────
 const NAV_LINKS = [
-  { label: "Services",  href: "/#services" },
-  { label: "Pricing",   href: "/#pricing" },
-  { label: "Resources", href: "/knowledge-hub" },
+  { label: "CMMC Sprint", href: "/services/cmmc-readiness-sprint" },
+  { label: "Readiness Path", href: "/#process" },
+  { label: "Insights", href: "/blog" },
+  { label: "Knowledge Hub", href: "/knowledge-hub" },
+  { label: "Pricing", href: "/pricing" },
 ];
 
 function Nav() {
@@ -74,8 +76,8 @@ const HUB_ARTICLES = [
   {
     icon: Shield,
     title: "What is CMMC?",
-    subtitle: "The Complete Introduction",
-    description: "Understand the Cybersecurity Maturity Model Certification — its purpose, history, levels, key terminology, and why every DoD contractor must comply by 2025.",
+    subtitle: "Start Here if Contracts Are at Risk",
+    description: "A plain-English overview for teams under pressure: what CMMC changes in solicitations, who must certify, and what to do first to protect contract eligibility.",
     href: "/knowledge-hub/what-is-cmmc",
     readTime: "15 min",
     tags: ["CMMC 2.0", "DoD", "CUI", "FCI"],
@@ -84,8 +86,8 @@ const HUB_ARTICLES = [
   {
     icon: Layers,
     title: "CMMC Level 1 vs Level 2",
-    subtitle: "Detailed Comparison Guide",
-    description: "A comprehensive side-by-side comparison of CMMC Level 1 (17 practices) and Level 2 (110 NIST 800-171 controls), including assessment types, costs, and timelines.",
+    subtitle: "Scoping and Cost Clarity",
+    description: "A side-by-side comparison of Level 1 and Level 2 so leadership can scope effort, budget remediation, and avoid buying the wrong readiness program.",
     href: "/knowledge-hub/cmmc-levels",
     readTime: "12 min",
     tags: ["CMMC Level 2", "C3PAO", "NIST 800-171"],
@@ -94,8 +96,8 @@ const HUB_ARTICLES = [
   {
     icon: FileCheck,
     title: "Automated Evidence Mapping for NIST 800-171",
-    subtitle: "How AI Transforms Compliance",
-    description: "How automated evidence collection and AI control mapping cut CMMC Level 2 documentation time by up to 80% — covering all 14 NIST 800-171 control families.",
+    subtitle: "How AI Cuts Prep Bottlenecks",
+    description: "How evidence automation removes documentation chaos, maps proof to all 110 controls, and reduces C3PAO prep friction for lean internal teams.",
     href: "/knowledge-hub/evidence-mapping",
     readTime: "10 min",
     tags: ["NIST 800-171", "Evidence", "SSP", "POA&M"],
@@ -104,8 +106,8 @@ const HUB_ARTICLES = [
   {
     icon: BarChart3,
     title: "Understanding Your SPRS Score",
-    subtitle: "Calculate, Submit, and Improve",
-    description: "Everything you need to know about the Supplier Performance Risk System score: how it's calculated (-203 to 110), how to submit it, and the fastest ways to improve it.",
+    subtitle: "Calculate, Submit, Improve Fast",
+    description: "What your SPRS score means in practice, how deductions impact award confidence, and where to prioritize remediation for the fastest point recovery.",
     href: "/knowledge-hub/sprs-score",
     readTime: "11 min",
     tags: ["SPRS", "DFARS", "Scoring", "Improvement"],
@@ -114,8 +116,8 @@ const HUB_ARTICLES = [
   {
     icon: Target,
     title: "CMMC Certification Process",
-    subtitle: "Step-by-Step for 2025",
-    description: "A complete walkthrough of the CMMC Level 2 certification journey — from initial gap assessment through C3PAO audit, with timeline and cost expectations at each phase.",
+    subtitle: "Step-by-Step Readiness Path",
+    description: "From first gap review to C3PAO assessment day: timeline, dependencies, and the exact evidence posture that shortens the path to certification.",
     href: "/knowledge-hub/certification-process",
     readTime: "13 min",
     tags: ["C3PAO", "Certification", "Assessment", "Timeline"],
@@ -225,17 +227,18 @@ export default function KnowledgeHub() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-5">
               <BookOpen className="w-3.5 h-3.5 text-primary" />
-              <span className="text-xs font-medium text-primary tracking-wide uppercase">Free Resource Center</span>
+              <span className="text-xs font-medium text-primary tracking-wide uppercase">Operator Knowledge Center</span>
             </div>
             <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-5">
-              CMMC <span className="text-primary">Knowledge Hub</span>
+              CMMC <span className="text-primary">Readiness Knowledge Hub</span>
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6 max-w-2xl">
-              The authoritative resource for DoD contractors navigating CMMC 2.0, NIST 800-171, SPRS scores, and C3PAO assessments. Built by the DefenseEye team — updated for 2025.
+              If your team is asking "what must be fixed first so we do not miss the next award," start here.
+              These guides are written for decision-makers and implementers who need fast, defensible CMMC progress.
             </p>
             <div className="flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
               <div className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /><span>No signup required</span></div>
-              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /><span>Updated April 2025</span></div>
+              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /><span>Updated April 2026</span></div>
               <div className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /><span>5 in-depth guides</span></div>
             </div>
           </motion.div>
@@ -338,7 +341,7 @@ export default function KnowledgeHub() {
                     { label: "Level 2 controls (NIST 800-171)", value: "110" },
                     { label: "Control families", value: "14" },
                     { label: "SPRS score range", value: "-203 to 110" },
-                    { label: "DIB contractors affected", value: "300,000+" },
+                    { label: "DoD contractors impacted", value: "300,000+" },
                     { label: "C3PAO assessment validity", value: "3 years" },
                   ].map((s) => (
                     <div key={s.label} className="flex items-center justify-between text-sm">
@@ -352,13 +355,13 @@ export default function KnowledgeHub() {
               {/* CTA */}
               <div className="bracket-decoration bg-primary/5 border border-primary/20 p-5 text-center">
                 <Shield className="w-8 h-8 text-primary mx-auto mb-3" />
-                <h3 className="font-heading font-semibold text-foreground mb-2">Ready to Automate?</h3>
+                <h3 className="font-heading font-semibold text-foreground mb-2">Ready to Move Faster?</h3>
                 <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-                  Let CMMC Lens handle evidence collection, NIST mapping, and SSP generation automatically.
+                  Let CMMC Lens handle evidence collection, NIST mapping, and SSP/POA&M workflow automation.
                 </p>
                 <Link href="/#contact">
                   <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
-                    Start Free Trial <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                    Book Free Assessment <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                   </Button>
                 </Link>
               </div>

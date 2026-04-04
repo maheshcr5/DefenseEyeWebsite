@@ -404,13 +404,16 @@ export default function BlogPostPage() {
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <DefenseEyeLogo href="/" />
           <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
-            <Link href="/#services">
-              <span className="hover:text-primary transition-colors cursor-pointer">Services</span>
+            <Link href="/services/cmmc-readiness-sprint">
+              <span className="hover:text-primary transition-colors cursor-pointer">CMMC Sprint</span>
+            </Link>
+            <Link href="/#process">
+              <span className="hover:text-primary transition-colors cursor-pointer">Readiness Path</span>
             </Link>
             <Link href="/knowledge-hub">
-              <span className="hover:text-primary transition-colors cursor-pointer">Resources</span>
+              <span className="hover:text-primary transition-colors cursor-pointer">Knowledge Hub</span>
             </Link>
-            <Link href="/#pricing">
+            <Link href="/pricing">
               <span className="hover:text-primary transition-colors cursor-pointer">Pricing</span>
             </Link>
           </nav>

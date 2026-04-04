@@ -38,6 +38,7 @@ import {
   Clock,
   AlertTriangle,
   Lock,
+  PlayCircle,
 } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useSeo } from "@/hooks/useSeo";
@@ -250,10 +251,11 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
   useSeo(
-    "DefenseEye.ai — CMMC Advisory & Compliance Automation for DoD Contractors",
-    "Expert CMMC 2.0 advisory consulting and AI-powered compliance automation for DoD contractors. Gap assessments, NIST SP 800-171 remediation, SSP/POA&M, SPRS score improvement, and C3PAO assessment preparation under 32 CFR Part 170."
+    "DefenseEye.ai — CMMC Readiness Experts for U.S. Defense Contractors",
+    "CMMC readiness experts and CMMC consultants for U.S. defense contractors. Get a CMMC gap assessment, NIST 800-171 compliance mapping, SSP and POA&M support, and fast CMMC Level 2 readiness."
   );
 
   // ── Structured Data for GEO / AEO / SEO ──────────────────────────────────
@@ -264,43 +266,33 @@ export default function Home() {
       mainEntity: [
         {
           "@type": "Question",
-          name: "What is CMMC 2.0 and who needs it?",
-          acceptedAnswer: { "@type": "Answer", text: "CMMC 2.0 (Cybersecurity Maturity Model Certification) is a DoD program codified as 32 CFR Part 170 (effective December 16, 2024). Any Defense Industrial Base company that processes, stores, or transmits Controlled Unclassified Information (CUI) must achieve CMMC Level 2 certification via a third-party C3PAO assessment. The DoD estimates over 80,000 DIB companies require Level 2. Source: DODCIO (dodcio.defense.gov/CMMC)." },
+          name: "Do I need CMMC Level 2?",
+          acceptedAnswer: { "@type": "Answer", text: "If your company handles Controlled Unclassified Information (CUI), you typically need CMMC Level 2 aligned to NIST SP 800-171 controls. Contractors handling only Federal Contract Information may only need Level 1." },
         },
         {
           "@type": "Question",
-          name: "What is the difference between CMMC Level 1 and Level 2?",
-          acceptedAnswer: { "@type": "Answer", text: "CMMC Level 1 covers 17 basic practices from FAR 52.204-21 for companies handling only Federal Contract Information (FCI) — annual self-attestation is allowed. CMMC Level 2 covers all 110 practices from NIST SP 800-171 Rev. 2 for companies handling Controlled Unclassified Information (CUI) — a triennial third-party C3PAO assessment is required. SPRS score submission to sprs.apps.mil is required before contract award at both levels per DFARS 252.204-7019." },
+          name: "How long does CMMC readiness take?",
+          acceptedAnswer: { "@type": "Answer", text: "Most small-to-mid defense contractors can complete an initial CMMC readiness sprint in 2-4 weeks, then execute remediation based on identified gaps and scope complexity." },
         },
         {
           "@type": "Question",
-          name: "What is an SPRS score and how is it calculated?",
-          acceptedAnswer: { "@type": "Answer", text: "The SPRS (Supplier Performance Risk System) cybersecurity score measures NIST SP 800-171 compliance. Per the DoD Assessment Methodology: start at 110 points (maximum), deduct 1, 3, or 5 points for each unimplemented control. Contractors must self-assess and submit their score to sprs.apps.mil per DFARS 252.204-7019. False submissions trigger False Claims Act liability. Source: DoD Assessment Methodology (dodcio.defense.gov)." },
+          name: "What happens if we are not compliant?",
+          acceptedAnswer: { "@type": "Answer", text: "You risk losing eligibility for DoD contracts that require CMMC evidence, plus delays and higher remediation costs when compliance is deferred." },
         },
         {
           "@type": "Question",
-          name: "What is a C3PAO and how do I find one?",
-          acceptedAnswer: { "@type": "Answer", text: "A C3PAO (Certified Third-Party Assessment Organization) is authorized by the Cyber AB to conduct official CMMC Level 2 assessments using NIST SP 800-171A procedures. Results go to DoD eMASS. Find verified C3PAOs at cyberaccreditation.us/marketplace. Only C3PAOs issue CMMC Level 2 certifications — RPOs and consultants cannot. Source: Cyber AB (cyberaccreditation.us), DFARS 252.204-7021." },
+          name: "What if we fail CMMC?",
+          acceptedAnswer: { "@type": "Answer", text: "A failed or incomplete readiness posture can delay contract awards and increase remediation cost under deadline pressure. Preparing early with a structured readiness sprint lowers that risk." },
         },
         {
           "@type": "Question",
-          name: "How long does CMMC Level 2 certification take?",
-          acceptedAnswer: { "@type": "Answer", text: "For a well-prepared organization, CMMC Level 2 certification typically takes 6–12 months from starting gap remediation to receiving the final C3PAO certificate. The C3PAO assessment itself takes 6–16 weeks from engagement to certification decision. Organizations that start underprepared often spend an additional 3–6 months in remediation before re-assessment. DefenseEye's advisory program and automation platform reduce preparation time by 60–80%." },
+          name: "How much does CMMC compliance cost?",
+          acceptedAnswer: { "@type": "Answer", text: "Cost depends on your current control maturity and environment. DefenseEye starts with a fixed-price CMMC readiness sprint so you can scope cost before full remediation." },
         },
         {
           "@type": "Question",
-          name: "What does DefenseEye do for CMMC compliance?",
-          acceptedAnswer: { "@type": "Answer", text: "DefenseEye provides CMMC 2.0 advisory consulting and AI-powered compliance automation for DoD contractors. Services include: free CMMC gap assessments, NIST SP 800-171 remediation guidance, SSP and POA&M development, SPRS score improvement, Microsoft GCC High configuration, C3PAO evidence package preparation, and pre-assessment readiness reviews. The CMMC Lens platform automates evidence collection, control mapping, and continuous monitoring." },
-        },
-        {
-          "@type": "Question",
-          name: "Can I get CMMC certified with a POA&M for open items?",
-          acceptedAnswer: { "@type": "Answer", text: "Under CMMC 2.0 (32 CFR Part 170.21), contractors can receive conditional CMMC Level 2 certification with certain open POA&M items, but must close gaps within 180 days. Critical controls — including MFA for privileged accounts (3.5.3), CUI encryption at rest and in transit (3.13.8, 3.13.10), and audit logging (3.3.1) — cannot remain in POA&M status at initial certification. A well-written POA&M includes specific control numbers, named owners, realistic timelines, and genuine compensating controls." },
-        },
-        {
-          "@type": "Question",
-          name: "Does Microsoft 365 GCC High satisfy CMMC requirements?",
-          acceptedAnswer: { "@type": "Answer", text: "Microsoft 365 GCC High holds FedRAMP High authorization and inherits many CMMC Level 2 infrastructure controls per Microsoft's Customer Responsibility Matrix. However, GCC High alone does not make you CMMC compliant — you must correctly configure MFA, Conditional Access, DLP, audit logging, and endpoint encryption in your tenant, and document all 110 controls in your SSP. M365 Commercial does NOT satisfy CMMC requirements for CUI per DFARS 252.239-7010." },
+          name: "Can small companies pass CMMC?",
+          acceptedAnswer: { "@type": "Answer", text: "Yes. Small companies can pass CMMC with clear scope, a practical SSP and POA&M, and a prioritized remediation plan matched to available IT capacity." },
         },
       ],
     };
@@ -310,8 +302,8 @@ export default function Home() {
       "@type": "ProfessionalService",
       name: "DefenseEye — CMMC Advisory & Compliance Automation",
       url: "https://defenseeye.ai",
-      description: "DefenseEye provides CMMC 2.0 advisory consulting and AI-powered compliance automation for DoD prime contractors and subcontractors. Services include CMMC gap assessments, NIST SP 800-171 remediation, SSP/POA&M development, SPRS score improvement, and C3PAO assessment preparation under 32 CFR Part 170.",
-      serviceType: ["CMMC Compliance Consulting", "CMMC Gap Assessment", "NIST 800-171 Implementation", "SPRS Score Improvement", "C3PAO Assessment Preparation", "SSP Development"],
+      description: "DefenseEye provides CMMC readiness consulting for U.S. defense contractors. Services include fixed-price CMMC readiness sprints, CMMC gap assessments, NIST SP 800-171 mapping, SSP and POA&M support, and C3PAO preparation.",
+      serviceType: ["CMMC Readiness", "CMMC Consultant", "CMMC Gap Assessment", "NIST 800-171 Compliance", "SSP and POA&M", "CMMC Level 2 Readiness"],
       areaServed: { "@type": "Country", name: "United States" },
       audience: { "@type": "Audience", audienceType: "Department of Defense contractors, defense subcontractors, Defense Industrial Base" },
       knowsAbout: ["CMMC 2.0 (32 CFR Part 170)", "NIST SP 800-171 Rev. 2", "DFARS 252.204-7012", "DFARS 252.204-7019", "DFARS 252.204-7021", "SPRS score", "C3PAO assessment", "CUI", "SSP", "POA&M", "Microsoft 365 GCC High CMMC", "Azure Government CMMC"],
@@ -328,12 +320,27 @@ export default function Home() {
       knowsAbout: ["CMMC 2.0", "NIST 800-171", "DFARS compliance", "SPRS score", "C3PAO assessment", "DoD cybersecurity"],
     };
 
+    const videoSchema = {
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      name: "CMMC Assessment Readiness Briefing for DoD Contractors",
+      description: "DefenseEye overview of CMMC consulting, advisory, and automation for faster CMMC assessment readiness.",
+      embedUrl: "https://www.youtube.com/embed/g3Yhk1nUb7s",
+      contentUrl: "https://www.youtube.com/watch?v=g3Yhk1nUb7s",
+      uploadDate: "2026-04-04",
+      publisher: {
+        "@type": "Organization",
+        name: "DefenseEye",
+        url: "https://defenseeye.ai",
+      },
+    };
+
     const id = "de-schema";
     if (!document.getElementById(id)) {
       const s = document.createElement("script");
       s.id = id;
       s.type = "application/ld+json";
-      s.text = JSON.stringify([faqSchema, serviceSchema, orgSchema]);
+      s.text = JSON.stringify([faqSchema, serviceSchema, orgSchema, videoSchema]);
       document.head.appendChild(s);
     }
     return () => { document.getElementById(id)?.remove(); };
@@ -357,9 +364,11 @@ export default function Home() {
 
           {/* Desktop: minimal links + CTA */}
           <div className="hidden md:flex items-center gap-8">
-            <a href="#services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Services</a>
-            <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
-            <a href="/knowledge-hub" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Resources</a>
+            <a href="/services/cmmc-readiness-sprint" className="text-sm text-muted-foreground hover:text-foreground transition-colors">CMMC Sprint</a>
+            <a href="#process" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Readiness Path</a>
+            <a href="/knowledge-hub" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Knowledge Hub</a>
+            <a href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Insights</a>
+            <a href="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
             <Button
               size="sm"
               className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-5"
@@ -390,10 +399,12 @@ export default function Home() {
             >
               <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-3">
                 {[
-                  { label: "Services", href: "#services" },
-                  { label: "Pricing", href: "#pricing" },
-                  { label: "Resources", href: "/knowledge-hub" },
-                  { label: "Blog", href: "/blog" },
+                  { label: "CMMC Sprint", href: "/services/cmmc-readiness-sprint" },
+                  { label: "Readiness Path", href: "#process" },
+                  { label: "Knowledge Hub", href: "/knowledge-hub" },
+                  { label: "Insights", href: "/blog" },
+                  { label: "Case Studies", href: "/case-studies" },
+                  { label: "Pricing", href: "/pricing" },
                 ].map((l) => (
                   <a key={l.href} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-primary py-2" onClick={() => setMobileMenuOpen(false)}>{l.label}</a>
                 ))}
@@ -424,49 +435,56 @@ export default function Home() {
           {/* Urgency badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-8">
             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-xs font-medium text-primary tracking-wide uppercase">CMMC 2.0 Final Rule — 32 CFR Part 170 in Effect</span>
+            <span className="text-xs font-medium text-primary tracking-wide uppercase">CMMC 2.0 Is Active in New Awards</span>
           </div>
 
           <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.08] tracking-tight mb-6 text-foreground">
-            Expert CMMC Advisory<br />
-            <span className="text-primary">for DoD Contractors</span>
+            Get CMMC Ready in <span className="text-primary">2-4 Weeks</span>
           </h1>
 
           <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed mb-10 max-w-2xl mx-auto">
-            From gap assessment to C3PAO certification — DefenseEye combines certified CMMC advisors with
-            AI-powered compliance automation. Get contract-ready without the $100K+ consulting bill.
+            Protect your DoD contracts before it is too late. DefenseEye delivers a fast CMMC readiness
+            sprint for small-to-mid defense contractors that need clear compliance direction now.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button
-              size="lg"
-              className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-10 h-12 w-full sm:w-auto"
-              onClick={() => setModalOpen(true)}
-            >
-              Book Your Free Assessment
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-10 h-12 w-full sm:w-auto"
+              >
+                Book Your Urgent CMMC Readiness Call
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </a>
             <Button
               variant="outline"
               size="lg"
               className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 text-base px-10 h-12 w-full sm:w-auto"
               onClick={() => setModalOpen(true)}
             >
-              Get Free Gap Analysis
+              Get Immediate Help to Protect Your DoD Contracts
             </Button>
           </div>
 
           <p className="text-xs text-muted-foreground/60 mt-5">
-            No commitment required. Results within 24 hours.
+            Built for U.S. defense subcontractors (10-150 employees) under contract pressure.
+          </p>
+          <p className="text-xs text-muted-foreground/80 mt-2 max-w-2xl mx-auto">
+            If you need urgent CMMC readiness help, book a call now:{" "}
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+              {CALENDLY_URL}
+            </a>
+            . Quick triage call (20-30 minutes) for teams handling CUI with active contract timelines.
           </p>
 
           {/* ── Key stats strip ── */}
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5 mt-14 pt-10 border-t border-border/20">
             {[
-              { num: "80,000+", label: "DIB contractors need CMMC" },
-              { num: "110",     label: "NIST SP 800-171 controls" },
-              { num: "180",     label: "Days to close POA&M gaps" },
-              { num: "$57K",    label: "Avg annual compliance cost" },
+              { num: "24 hrs", label: "To get your first readiness map" },
+              { num: "110", label: "NIST 800-171 controls to evidence" },
+              { num: "180", label: "Days for conditional POA&M closure" },
+              { num: "60-80%", label: "Prep-time reduction with automation" },
             ].map(({ num, label }) => (
               <div key={num} className="text-center">
                 <p className="font-heading text-2xl font-bold text-foreground">{num}</p>
@@ -476,6 +494,113 @@ export default function Home() {
           </div>
         </motion.div>
       </header>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          VIDEO BRIEFING — trust + urgency for high-intent visitors
+      ═══════════════════════════════════════════════════════════════ */}
+      <Section className="pb-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-5">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-5">
+                <PlayCircle className="w-3.5 h-3.5 text-primary" />
+                <span className="text-xs font-medium text-primary tracking-wide uppercase">Watch: CMMC Readiness Briefing</span>
+              </div>
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold leading-tight mb-4 text-foreground">
+                See How DefenseEye Accelerates
+                <span className="text-primary"> CMMC Assessment Readiness</span>
+              </h2>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                If your team is under deadline pressure for CMMC consulting, advisory, or automation
+                like `cmmclensgov.azurewebsites.net`, this walkthrough shows the execution model
+                that turns uncertainty into assessment-ready progress.
+              </p>
+              <ul className="space-y-2.5 mb-8">
+                {[
+                  "What to fix first when contracts are at risk",
+                  "How advisory + automation shortens prep cycles",
+                  "How to organize evidence for C3PAO confidence",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span className="text-sm text-muted-foreground">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mb-8">
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground/70 mb-2">Key Moments</p>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { label: "00:00 Contract Risk", href: "https://www.youtube.com/watch?v=g3Yhk1nUb7s&t=0s" },
+                    { label: "01:10 CMMC Sprint", href: "https://www.youtube.com/watch?v=g3Yhk1nUb7s&t=70s" },
+                    { label: "02:20 SSP + POA&M", href: "https://www.youtube.com/watch?v=g3Yhk1nUb7s&t=140s" },
+                    { label: "03:30 C3PAO Prep", href: "https://www.youtube.com/watch?v=g3Yhk1nUb7s&t=210s" },
+                  ].map((item) => (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs px-2.5 py-1 rounded border border-border/50 text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+                <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+                  Schedule a Fast 30-Min Assessment Call <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </a>
+            </div>
+
+            <div className="lg:col-span-7">
+              <div className="relative bracket-decoration bg-card/50 border border-border/40 p-3">
+                <div className="relative w-full overflow-hidden rounded-sm border border-border/30 bg-black aspect-video">
+                  <iframe
+                    className="absolute inset-0 w-full h-full"
+                    src="https://www.youtube.com/embed/g3Yhk1nUb7s?rel=0"
+                    title="CMMC Assessment Readiness Briefing"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          PROBLEM SECTION
+      ═══════════════════════════════════════════════════════════════ */}
+      <Section className="pb-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-xs font-medium text-destructive uppercase tracking-widest mb-3">If This Sounds Familiar</p>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground mb-3">
+              You Are Not Behind Because You Do Not Care.
+            </h2>
+            <p className="text-muted-foreground max-w-3xl mx-auto">
+              Most defense subcontractors we meet are under-resourced, under time pressure, and one CMMC question away from contract anxiety.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
+            {[
+              "You might lose contracts because CMMC evidence is not assessment-ready.",
+              "Your team is confused about CMMC Level 2, NIST 800-171 compliance, and what to fix first.",
+              "You have 1-3 IT staff and cannot run day-to-day operations plus full compliance execution.",
+            ].map((item) => (
+              <div key={item} className="bg-card/50 border border-border/40 p-6 rounded-sm">
+                <p className="text-sm text-muted-foreground leading-relaxed">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
 
       {/* ═══════════════════════════════════════════════════════════════
           4-COLUMN CAPABILITY CARDS — core value props
@@ -510,7 +635,7 @@ export default function Home() {
                 iconColor: "text-violet-400",
                 iconBg: "bg-violet-400/10 border-violet-400/20",
                 title: "Assessment Preparation",
-                desc: "C3PAO-ready evidence packages, pre-assessment reviews, and staff interview preparation.",
+                desc: "C3PAO-ready evidence packages, mock interviews, and executive-ready risk narratives.",
               },
             ].map((card, i) => (
               <motion.div
@@ -538,29 +663,31 @@ export default function Home() {
       <Section className="py-20 px-4 bg-card/20 border-y border-border/20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
+            <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">Solution</p>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
-              Everything You Need to Pass Your <span className="text-primary">C3PAO Assessment</span>
+              CMMC Readiness Sprint:
+              <span className="text-primary"> Fast, Structured, Practical</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              DefenseEye delivers every component of a successful CMMC Level 2 certification program —
-              from scoping and documentation to day-of-assessment support.
+              A fixed-price readiness offer built for small and mid-sized defense contractors that need real outputs fast.
+              This is where CMMC consultant support and automation work together.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-4 max-w-4xl mx-auto">
             {[
-              "All 110 NIST SP 800-171 Rev. 2 controls mapped and documented",
-              "SPRS score calculation, tracking, and improvement roadmap",
-              "System Security Plan (SSP) generation — audit-ready format",
-              "Plan of Action & Milestones (POA&M) with completion tracking",
+              "CMMC gap assessment (CMMC Level 1 / CMMC Level 2 aligned)",
+              "NIST SP 800-171 compliance mapping across all 110 controls",
+              "SSP starter package (System Security Plan)",
+              "POA&M with prioritized remediation actions",
+              "Prioritized remediation roadmap tied to business risk",
+              "SPRS score estimate with improvement priorities",
               "CUI boundary scoping and data flow mapping",
-              "Microsoft 365 GCC High and Azure Government configuration",
-              "C3PAO-ready evidence packages organized by control family",
-              "DFARS 252.204-7012 and 252.204-7019 compliance alignment",
-              "Continuous compliance drift monitoring and alerting",
-              "Incident response plan development and tabletop support",
-              "Staff and end-user interview preparation for assessors",
-              "Subcontractor and supply chain flow-down guidance",
+              "C3PAO-ready evidence structure by control family",
+              "DFARS 252.204-7012 and 252.204-7019 alignment guidance",
+              "Interview-readiness prep for assessors and leadership",
+              "Execution support for lean IT teams (1-3 staff)",
+              "Automation-assisted documentation and evidence workflows",
             ].map((feature) => (
               <div key={feature} className="flex items-start gap-3 py-2">
                 <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
@@ -577,14 +704,14 @@ export default function Home() {
       <Section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <p className="text-center text-xs font-medium text-muted-foreground/50 uppercase tracking-widest mb-10">
-            Serving the Defense Industrial Base across every contractor type
+            Why DefenseEye
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { icon: Award, label: "Prime Contractors", sub: "Managing CUI at scale" },
-              { icon: Users, label: "Small Businesses", sub: "Under 50 employees" },
-              { icon: BookOpen, label: "IT Services Firms", sub: "Supporting DoD programs" },
-              { icon: TrendingUp, label: "MSSPs & Consultants", sub: "Managing multiple clients" },
+              { icon: Award, label: "CCP-Led Support", sub: "Led by Certified CMMC Professionals (CCPs)" },
+              { icon: Users, label: "Defense-Focused", sub: "Built for U.S. defense contractors handling CUI" },
+              { icon: BookOpen, label: "Practical Outputs", sub: "SSP and POA&M deliverables your team can use now" },
+              { icon: TrendingUp, label: "Fast Turnaround", sub: "Designed for contract-driven readiness timelines" },
             ].map((item) => (
               <div key={item.label} className="flex flex-col items-center text-center p-5 bg-card/30 border border-border/30 rounded-sm">
                 <item.icon className="w-6 h-6 text-primary mb-3" />
@@ -593,6 +720,9 @@ export default function Home() {
               </div>
             ))}
           </div>
+          <p className="text-center text-xs text-muted-foreground mt-6">
+            Built for defense contractors. Aligned with DoD requirements. Serving U.S. teams nationwide, including Washington and Seattle region suppliers.
+          </p>
         </div>
       </Section>
 
@@ -602,31 +732,37 @@ export default function Home() {
       <Section id="services" className="py-20 px-4 bg-card/20 border-y border-border/20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
-            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Full-Service CMMC Support</p>
+            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Core Offer</p>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
-              Advisory + Automation — Everything You Need
+              Start with the <span className="text-primary">CMMC Readiness Sprint</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Traditional CMMC consulting runs $50K–$150K. DefenseEye delivers the same expert guidance
-              at a fraction of the cost — powered by automation.
+              Fixed-price, scope-first, and designed for small-to-mid contractors that need speed without sacrificing quality.
+            </p>
+            <p className="text-sm text-muted-foreground mt-4">
+              Urgent buyer?{" "}
+              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                Book a call now
+              </a>
+              {" "}to protect active DoD contract opportunities.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                badge: "Start Here — Free",
+                badge: "Primary Entry Point",
                 badgeColor: "text-emerald-400 border-emerald-400/40 bg-emerald-400/5",
                 icon: FileCheck,
                 iconColor: "text-emerald-400",
-                title: "CMMC Gap Assessment",
-                desc: "We evaluate your posture against all 110 NIST SP 800-171 controls, calculate your estimated SPRS score, and deliver a prioritized remediation roadmap — at no cost.",
+                title: "CMMC Readiness Sprint",
+                desc: "A fixed-price sprint that gives you a CMMC gap assessment, NIST 800-171 mapping, SSP starter, POA&M, and prioritized roadmap.",
                 features: [
-                  "110-control gap analysis",
-                  "SPRS score estimate",
-                  "Prioritized remediation roadmap",
-                  "CUI boundary review",
-                  "Results within 24 hours",
+                  "Fixed-price engagement",
+                  "2-4 week timeline",
+                  "Level 1 / Level 2 alignment",
+                  "SSP + POA&M starter deliverables",
+                  "Roadmap tied to contract risk",
                 ],
               },
               {
@@ -634,8 +770,8 @@ export default function Home() {
                 badgeColor: "text-primary border-primary/40 bg-primary/5",
                 icon: Bot,
                 iconColor: "text-primary",
-                title: "Level 2 Readiness Program",
-                desc: "Our advisors guide your team through full CMMC Level 2 readiness — remediation, SSP and POA&M development, evidence collection, and C3PAO selection and prep.",
+                title: "Level 2 Implementation Support",
+                desc: "For teams that need ongoing CMMC consultant support after the sprint: remediation execution, control hardening, and assessment prep.",
                 features: [
                   "End-to-end advisory",
                   "SSP & POA&M development",
@@ -649,8 +785,8 @@ export default function Home() {
                 badgeColor: "text-muted-foreground border-border/50 bg-card/30",
                 icon: Lock,
                 iconColor: "text-violet-400",
-                title: "MSSP & Prime Contractor",
-                desc: "Multi-client CMMC program management for MSSPs and prime contractors managing subcontractor compliance across the supply chain.",
+                title: "MSSP & Prime Enablement",
+                desc: "Multi-entity readiness management for MSSPs and prime contractors responsible for subcontractor compliance outcomes.",
                 features: [
                   "Multi-tenant management",
                   "Subcontractor flow-down",
@@ -684,13 +820,24 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <Button
-                  variant="outline"
-                  className="border-primary/40 text-primary hover:bg-primary/10 w-full mt-auto"
-                  onClick={() => setModalOpen(true)}
-                >
-                  Get Started <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
+                {svc.title === "CMMC Readiness Sprint" ? (
+                  <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="mt-auto">
+                    <Button
+                      variant="outline"
+                      className="border-primary/40 text-primary hover:bg-primary/10 w-full"
+                    >
+                      Book Your Urgent CMMC Readiness Call <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </a>
+                ) : (
+                  <Button
+                    variant="outline"
+                    className="border-primary/40 text-primary hover:bg-primary/10 w-full mt-auto"
+                    onClick={() => setModalOpen(true)}
+                  >
+                    Get Started <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                )}
               </motion.div>
             ))}
           </div>
@@ -700,7 +847,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           PROCESS — 3 numbered steps
       ═══════════════════════════════════════════════════════════════ */}
-      <Section className="py-20 px-4">
+      <Section id="process" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
@@ -771,8 +918,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
           <AlertTriangle className="w-8 h-8 text-destructive shrink-0" />
           <div className="flex-1">
-            <p className="font-heading font-bold text-foreground mb-1">CMMC 2.0 is now in effect for new DoD contracts.</p>
-            <p className="text-sm text-muted-foreground">Under 32 CFR Part 170 (effective December 16, 2024), DoD solicitations are beginning to include CMMC requirements. Contractors without a certification plan risk losing contract eligibility. SPRS score submission is required before contract award per DFARS 252.204-7019.</p>
+            <p className="font-heading font-bold text-foreground mb-1">If your next award requires CMMC proof, waiting is the risk.</p>
+            <p className="text-sm text-muted-foreground">CMMC requirements are in active rollout under 32 CFR Part 170 (effective December 16, 2024). Teams without a readiness plan, evidence package, and SPRS discipline are exposing pipeline revenue and renewal confidence.</p>
           </div>
           <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold shrink-0 px-7" onClick={() => setModalOpen(true)}>
             Start Now
@@ -786,12 +933,12 @@ export default function Home() {
       <Section id="pricing" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
-            <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">Transparent Pricing</p>
+            <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">Pricing / Entry Point</p>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
-              CMMC Compliance at a Fraction of <span className="text-primary">Traditional Consulting Cost</span>
+              Fixed-Price Start for <span className="text-primary">Small and Mid-Sized Contractors</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Traditional CMMC consulting runs $50K–$150K+. DefenseEye delivers expert advisory and AI automation at a predictable rate — free trial, no credit card required.
+              Start with a fixed-price CMMC readiness sprint, then scale only where needed. Built for teams that need speed and budget clarity.
             </p>
           </div>
 
@@ -886,46 +1033,37 @@ export default function Home() {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
-              Frequently Asked Questions About <span className="text-primary">CMMC 2.0</span>
+              CMMC Readiness FAQ <span className="text-primary">(Fast Answers)</span>
             </h2>
             <p className="text-muted-foreground">
-              Authoritative answers to the most common CMMC questions from DoD contractors —
-              sourced from DODCIO, NIST, Cyber AB, and DFARS.
+              Direct answers for defense contractors that need clarity and speed.
             </p>
           </div>
 
           <div className="space-y-3">
             <FAQItem
-              question="What is CMMC 2.0 and who needs it?"
-              answer="CMMC 2.0 (Cybersecurity Maturity Model Certification) is a DoD program codified as 32 CFR Part 170, effective December 16, 2024. Any Defense Industrial Base company that processes, stores, or transmits Controlled Unclassified Information (CUI) must achieve CMMC Level 2 certification via a third-party C3PAO assessment. The DoD estimates over 80,000 DIB companies require Level 2. (Source: DODCIO — dodcio.defense.gov/CMMC)"
+              question="Do I need CMMC Level 2?"
+              answer="If your company handles Controlled Unclassified Information (CUI), you typically need CMMC Level 2 and NIST 800-171 compliance evidence. If you handle only FCI, you may only need Level 1."
             />
             <FAQItem
-              question="What is the difference between CMMC Level 1 and Level 2?"
-              answer="CMMC Level 1 covers 17 basic practices from FAR 52.204-21 for companies handling only Federal Contract Information (FCI) — annual self-attestation is allowed. CMMC Level 2 covers all 110 practices from NIST SP 800-171 Rev. 2 for CUI contractors — a triennial C3PAO assessment is required for most contracts. SPRS score submission to sprs.apps.mil is mandatory before contract award at both levels per DFARS 252.204-7019."
+              question="How long does CMMC readiness take?"
+              answer="Most small-to-mid defense contractors can complete an initial CMMC readiness sprint in 2-4 weeks, then execute remediation based on identified gaps and scope complexity."
             />
             <FAQItem
-              question="What is an SPRS score and why does it matter?"
-              answer="The SPRS (Supplier Performance Risk System) cybersecurity score measures your NIST SP 800-171 compliance. Per the DoD Assessment Methodology: start at 110 points, deduct 1, 3, or 5 points for each unimplemented control. Contracting officers review your score before award. Scores below 70 are considered high risk. False submissions create False Claims Act liability — the DoJ Civil Cyber-Fraud Initiative actively pursues cases. (Source: DoD Assessment Methodology — dodcio.defense.gov)"
+              question="What happens if we are not compliant?"
+              answer="You risk losing eligibility for DoD opportunities that require CMMC evidence. Delays usually increase cost, disrupt pipeline momentum, and create avoidable rework."
             />
             <FAQItem
-              question="What is a C3PAO and how do I find one?"
-              answer="A C3PAO (Certified Third-Party Assessment Organization) is authorized by the Cyber AB to conduct official CMMC Level 2 assessments using NIST SP 800-171A procedures. Results are submitted to DoD's eMASS system. Verify authorized C3PAOs at cyberaccreditation.us/marketplace. Only C3PAOs can issue CMMC Level 2 certifications — RPOs and consultants cannot conduct formal assessments. (Source: Cyber AB — cyberaccreditation.us, DFARS 252.204-7021)"
+              question="What if we fail CMMC?"
+              answer="A failed or incomplete readiness posture can delay contract awards and force expensive remediation under pressure. A structured readiness sprint reduces this risk before formal assessment."
             />
             <FAQItem
-              question="How long does CMMC Level 2 certification take?"
-              answer="For a well-prepared organization, CMMC Level 2 certification typically takes 6–12 months from starting gap remediation to receiving the C3PAO certificate. The C3PAO assessment itself takes 6–16 weeks from engagement to certification decision. Organizations starting underprepared often spend an additional 3–6 months in remediation before re-assessment. DefenseEye's advisory and automation platform reduces preparation time by 60–80%."
+              question="How much does CMMC compliance cost?"
+              answer="Costs vary by your starting posture and environment complexity. DefenseEye starts with a fixed-price readiness sprint so you can scope investment before full remediation."
             />
             <FAQItem
-              question="Can I still get certified if I have open POA&M items?"
-              answer="Under 32 CFR Part 170.21, contractors can receive conditional CMMC Level 2 certification with certain open POA&M items and must close them within 180 days. However, critical controls — including MFA for privileged accounts (3.5.3), CUI encryption at rest/transit (3.13.8, 3.13.10), and audit logging (3.3.1) — cannot remain in POA&M status at initial certification. A proper POA&M includes specific control numbers, named owners, realistic timelines, and genuine compensating controls."
-            />
-            <FAQItem
-              question="Does Microsoft 365 GCC High satisfy CMMC Level 2 requirements?"
-              answer="M365 GCC High holds FedRAMP High authorization and inherits many CMMC Level 2 infrastructure controls per Microsoft's Customer Responsibility Matrix. However, GCC High alone is not sufficient — you must correctly configure MFA, Conditional Access, DLP, audit logging, and endpoint encryption, and document all 110 controls in your SSP. M365 Commercial does NOT satisfy CMMC requirements for CUI per DFARS 252.239-7010."
-            />
-            <FAQItem
-              question="How much does CMMC Level 2 certification cost?"
-              answer="A C3PAO assessment typically costs $30,000–$120,000 for small-to-mid-size companies. Pre-assessment consulting and remediation can add $25,000–$150,000+ depending on existing gaps. The DoD's regulatory analysis estimated average annual costs of ~$57,000 for already-compliant companies and significantly more for those with major gaps. DefenseEye's advisory and automation approach reduces preparation costs by 60–80% compared to traditional consulting engagements."
+              question="Can small companies pass CMMC?"
+              answer="Yes. Small companies can pass CMMC with proper scope, practical SSP and POA&M documentation, and a prioritized remediation plan matched to available IT capacity."
             />
           </div>
         </div>
@@ -941,11 +1079,10 @@ export default function Home() {
             <span className="text-xs font-medium text-accent tracking-wide uppercase">Response within 24 hours</span>
           </div>
           <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-5 text-foreground">
-            Ready to Start Your CMMC Journey?
+            Protect Your DoD Contracts Before It Is Too Late
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed mb-10 max-w-2xl mx-auto">
-            Book your free CMMC gap assessment. Our certified advisors will evaluate your current
-            posture, estimate your SPRS score, and deliver a prioritized roadmap to certification.
+            Get a fast CMMC readiness assessment with clear next steps for CMMC Level 2 and NIST 800-171 compliance.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button
@@ -953,7 +1090,7 @@ export default function Home() {
               className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-12 h-12 w-full sm:w-auto"
               onClick={() => setModalOpen(true)}
             >
-              Book Your Free Assessment
+              Get Your CMMC Readiness Assessment
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
             <Button
@@ -962,7 +1099,7 @@ export default function Home() {
               className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 text-base px-10 h-12 w-full sm:w-auto"
               onClick={() => setModalOpen(true)}
             >
-              Get Free Gap Analysis
+              Book a 30-min CMMC Call
             </Button>
           </div>
           <p className="text-xs text-muted-foreground mt-6">
@@ -993,11 +1130,11 @@ export default function Home() {
               <h4 className="font-heading font-semibold text-xs text-foreground mb-4 uppercase tracking-widest">Services</h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: "Free CMMC Assessment", href: "#contact" },
-                  { label: "Level 2 Readiness Program", href: "#services" },
-                  { label: "SPRS Score Improvement", href: "#services" },
+                  { label: "CMMC Readiness Sprint", href: "/services/cmmc-readiness-sprint" },
+                  { label: "Get CMMC Gap Assessment", href: "#contact" },
+                  { label: "CMMC Level 2 Support", href: "#services" },
+                  { label: "SSP and POA&M Support", href: "#services" },
                   { label: "C3PAO Assessment Prep", href: "#services" },
-                  { label: "Enterprise / MSSP", href: "#services" },
                 ].map((item) => (
                   <li key={item.label}>
                     <a href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{item.label}</a>
