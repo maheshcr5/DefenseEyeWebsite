@@ -388,31 +388,44 @@ export default function Home() {
       <LeadModal open={modalOpen} onClose={() => setModalOpen(false)} />
 
       {/* ═══════════════════════════════════════════════════════════════
-          NAVIGATION — ultra-minimal (logo + single CTA)
+          NAVIGATION — enterprise command style
       ═══════════════════════════════════════════════════════════════ */}
       <nav
-        className="fixed top-0 inset-x-0 z-40 bg-background/90 backdrop-blur-xl border-b border-border/30"
+        className="fixed top-0 inset-x-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border/20"
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           {/* Logo */}
           <DefenseEyeLogo href="/" />
 
-          {/* Desktop: minimal links + CTA */}
-          <div className="hidden md:flex items-center gap-8">
-            <a href="/services/cmmc-readiness-sprint" className="text-sm text-muted-foreground hover:text-foreground transition-colors">CMMC Sprint</a>
-            <a href="/cmmclens" className="text-sm text-muted-foreground hover:text-foreground transition-colors">CMMCLens</a>
-            <a href="#process" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Readiness Path</a>
-            <a href="/knowledge-hub" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Knowledge Hub</a>
-            <a href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Insights</a>
-            <a href="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
+          {/* Desktop links */}
+          <div className="hidden md:flex items-center gap-2 border border-border/40 bg-card/35 px-2 py-1 rounded-full">
+            {[
+              { label: "CMMC Sprint", href: "/services/cmmc-readiness-sprint" },
+              { label: "CMMCLens", href: "/cmmclens" },
+              { label: "Readiness Path", href: "#process" },
+              { label: "Knowledge Hub", href: "/knowledge-hub" },
+              { label: "Insights", href: "/blog" },
+              { label: "Pricing", href: "/pricing" },
+            ].map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-xs lg:text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-full hover:bg-card/70"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+
+          <div className="hidden md:flex items-center">
             <Button
               size="sm"
               className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-5"
               onClick={() => setModalOpen(true)}
             >
-              Book Free Assessment
+              Get Assessment
             </Button>
           </div>
 
@@ -457,95 +470,122 @@ export default function Home() {
       </nav>
 
       {/* ═══════════════════════════════════════════════════════════════
-          HERO — centered, full-width, no competing panels
+          HERO — Armada-style command center layout
       ═══════════════════════════════════════════════════════════════ */}
-      <header className="relative pt-36 pb-24 px-4 text-center overflow-hidden">
-        {/* Ambient glow behind hero */}
+      <header className="relative pt-32 pb-20 px-4 overflow-hidden">
         <div className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] rounded-full bg-primary/5 blur-[140px]" />
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] rounded-full bg-accent/[0.04] blur-[100px]" />
+          <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[1000px] h-[620px] rounded-full bg-primary/8 blur-[150px]" />
+          <div className="absolute top-24 left-1/4 w-[360px] h-[260px] rounded-full bg-accent/[0.08] blur-[110px]" />
+          <div className="absolute bottom-0 right-0 w-[360px] h-[260px] rounded-full bg-sky-400/[0.06] blur-[120px]" />
         </div>
         <motion.div
-          className="max-w-4xl mx-auto"
-          initial={{ opacity: 0, y: 32 }}
+          className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-8 items-center"
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          {/* Urgency badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-8">
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-xs font-medium text-primary tracking-wide uppercase">CMMC 2.0 Is Active in New Awards</span>
-          </div>
+          <div className="lg:col-span-7">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-6">
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-xs font-medium text-primary tracking-wide uppercase">CMMC 2.0 Is Active in New Awards</span>
+            </div>
 
-          <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.08] tracking-tight mb-6 text-foreground">
-            Get CMMC Ready in <span className="text-primary">2-4 Weeks</span>
-          </h1>
+            <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-5 text-foreground">
+              Urgent CMMC Readiness
+              <span className="block text-primary">Without the Chaos</span>
+            </h1>
+            <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mb-8">
+              Get assessment-ready in 2-4 weeks with CCP-led advisory and CMMC Level 2 automation that produces real-time SSP, POA&M, policies, procedures, standards, and evidence.
+            </p>
 
-          <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed mb-10 max-w-2xl mx-auto">
-            Protect your DoD contracts before it is too late. DefenseEye delivers a fast CMMC readiness
-            sprint for small-to-mid defense contractors that need clear compliance direction now.
-          </p>
-          <div className="mb-8 min-h-[28px]">
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={painIdx}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.25 }}
-                className="text-sm text-primary/90 font-medium"
-              >
-                {heroPainPoints[painIdx]}
-              </motion.p>
-            </AnimatePresence>
-          </div>
+            <div className="mb-7 min-h-[28px]">
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={painIdx}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.25 }}
+                  className="text-sm text-primary/90 font-medium"
+                >
+                  {heroPainPoints[painIdx]}
+                </motion.p>
+              </AnimatePresence>
+            </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-10 h-12 w-full sm:w-auto"
+                >
+                  Book Your Urgent CMMC Call
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </a>
               <Button
+                variant="outline"
                 size="lg"
-                className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-10 h-12 w-full sm:w-auto"
+                className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 text-base px-10 h-12 w-full sm:w-auto"
+                onClick={() => setModalOpen(true)}
               >
-                Book Your Urgent CMMC Readiness Call
-                <ArrowRight className="w-4 h-4 ml-2" />
+                Get CMMC Readiness Assessment
               </Button>
-            </a>
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 text-base px-10 h-12 w-full sm:w-auto"
-              onClick={() => setModalOpen(true)}
-            >
-              Get Immediate Help to Protect Your DoD Contracts
-            </Button>
+            </div>
+
+            <p className="text-xs text-muted-foreground/75 mt-5">
+              For U.S. defense subcontractors (10-150 employees), 1-3 IT staff, and active CUI contract pressure.
+            </p>
           </div>
 
-          <p className="text-xs text-muted-foreground/60 mt-5">
-            Built for U.S. defense subcontractors (10-150 employees) under contract pressure.
-          </p>
-          <p className="text-xs text-muted-foreground/80 mt-2 max-w-2xl mx-auto">
-            If you need urgent CMMC readiness help, book a call now:{" "}
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-              {CALENDLY_URL}
-            </a>
-            . Quick triage call (20-30 minutes) for teams handling CUI with active contract timelines.
-          </p>
-
-          {/* ── Key stats strip ── */}
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5 mt-14 pt-10 border-t border-border/20">
-            {[
-              { num: "24 hrs", label: "To get your first readiness map" },
-              { num: "110", label: "NIST 800-171 controls to evidence" },
-              { num: "180", label: "Days for conditional POA&M closure" },
-              { num: "60-80%", label: "Prep-time reduction with automation" },
-            ].map(({ num, label }) => (
-              <div key={num} className="text-center">
-                <p className="font-heading text-2xl font-bold text-foreground">{num}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">{label}</p>
+          <div className="lg:col-span-5">
+            <div className="bg-card/55 border border-primary/30 rounded-sm p-6 md:p-7 shadow-xl shadow-black/20">
+              <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-5">Assessment Command Center</p>
+              <div className="space-y-3 mb-6">
+                {[
+                  { icon: AlertTriangle, label: "Contract Risk Signal", value: "High", tone: "text-destructive" },
+                  { icon: BarChart3, label: "Readiness Snapshot", value: "24-Hour Gap Report", tone: "text-primary" },
+                  { icon: Zap, label: "Automation Output", value: "Real-Time SSP + POA&M", tone: "text-accent" },
+                  { icon: ClipboardCheck, label: "Assessment Posture", value: "C3PAO-Ready Package", tone: "text-emerald-400" },
+                ].map((row) => (
+                  <div key={row.label} className="flex items-center justify-between border border-border/40 bg-background/60 rounded-sm px-3 py-2.5">
+                    <div className="flex items-center gap-2.5">
+                      <row.icon className={`w-4 h-4 ${row.tone}`} />
+                      <span className="text-xs text-muted-foreground">{row.label}</span>
+                    </div>
+                    <span className={`text-xs font-semibold ${row.tone}`}>{row.value}</span>
+                  </div>
+                ))}
               </div>
-            ))}
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { num: "2-4 wks", label: "Sprint Timeline" },
+                  { num: "110", label: "Controls Mapped" },
+                  { num: "60-80%", label: "Manual Work Reduced" },
+                  { num: "24 hrs", label: "First Action Plan" },
+                ].map((metric) => (
+                  <div key={metric.label} className="border border-border/35 bg-background/65 rounded-sm p-3 text-center">
+                    <p className="font-heading text-lg font-bold text-foreground">{metric.num}</p>
+                    <p className="text-[11px] text-muted-foreground">{metric.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </motion.div>
+
+        <div className="max-w-7xl mx-auto mt-10 px-1">
+          <div className="border border-border/30 bg-card/30 rounded-sm p-4 md:p-5 flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground/70">Focused Defense Hubs</p>
+            <div className="flex flex-wrap items-center gap-2">
+              {["Seattle", "Washington D.C. Metro", "Huntsville", "San Diego", "U.S. Defense Industrial Base"].map((hub) => (
+                <span key={hub} className="text-xs px-2.5 py-1 rounded border border-border/40 text-muted-foreground bg-background/60">
+                  {hub}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
       </header>
 
       {/* ═══════════════════════════════════════════════════════════════
@@ -630,12 +670,12 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           PROBLEM SECTION
       ═══════════════════════════════════════════════════════════════ */}
-      <Section className="pb-16 px-4">
+      <Section className="pb-14 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-medium text-destructive uppercase tracking-widest mb-3">If This Sounds Familiar</p>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground mb-3">
-              You Are Not Behind Because You Do Not Care.
+              This Is Where Most Teams Stall
             </h2>
             <p className="text-muted-foreground max-w-3xl mx-auto">
               Most defense subcontractors we meet are under-resourced, under time pressure, and one CMMC question away from contract anxiety.
@@ -663,6 +703,12 @@ export default function Home() {
       ═══════════════════════════════════════════════════════════════ */}
       <section className="pb-20 px-4">
         <div className="max-w-6xl mx-auto">
+          <div className="mb-9 text-center">
+            <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">How We Move You Forward</p>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground">
+              What You Get in <span className="text-primary">One Unified Execution Model</span>
+            </h2>
+          </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               {
@@ -688,8 +734,8 @@ export default function Home() {
               },
               {
                 icon: ClipboardCheck,
-                iconColor: "text-violet-400",
-                iconBg: "bg-violet-400/10 border-violet-400/20",
+                iconColor: "text-sky-400",
+                iconBg: "bg-sky-400/10 border-sky-400/20",
                 title: "Assessment Preparation",
                 desc: "C3PAO-ready evidence packages, mock interviews, and executive-ready risk narratives.",
               },
@@ -700,7 +746,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="bg-card/50 border border-border/40 rounded-sm p-6 hover:border-primary/30 hover:bg-card/70 transition-all duration-300"
+                className="bg-card/50 border border-border/40 rounded-sm p-6 hover:border-primary/30 hover:bg-card/75 transition-all duration-300"
               >
                 <div className={`w-11 h-11 rounded-sm border ${card.iconBg} flex items-center justify-center mb-5`}>
                   <card.icon className={`w-5 h-5 ${card.iconColor}`} />
