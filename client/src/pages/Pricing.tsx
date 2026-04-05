@@ -62,6 +62,12 @@ export default function Pricing() {
       <header className="border-b border-border/30 bg-background/90 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <DefenseEyeLogo href="/" />
+          <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
+            <a href="/" className="hover:text-primary transition-colors">Home</a>
+            <a href="/services/cmmc-readiness-sprint" className="hover:text-primary transition-colors">CMMC Sprint</a>
+            <a href="/knowledge-hub" className="hover:text-primary transition-colors">Knowledge Hub</a>
+            <a href="/blog" className="hover:text-primary transition-colors">Blog</a>
+          </nav>
           <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
             <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
               Book Your Urgent CMMC Readiness Call
@@ -192,4 +198,3 @@ export default function Pricing() {
     </div>
   );
 }
-

@@ -251,7 +251,13 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [painIdx, setPainIdx] = useState(0);
   const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
+  const heroPainPoints = [
+    "“We might lose a DoD contract if we wait.”",
+    "“We handle CUI but still feel unprepared for CMMC Level 2.”",
+    "“Our IT team is overloaded and needs a clear plan now.”",
+  ];
 
   useSeo(
     "DefenseEye.ai — CMMC Readiness Experts for U.S. Defense Contractors",
@@ -345,6 +351,13 @@ export default function Home() {
     }
     return () => { document.getElementById(id)?.remove(); };
   }, []);
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      setPainIdx((i) => (i + 1) % heroPainPoints.length);
+    }, 2600);
+    return () => clearInterval(t);
+  }, [heroPainPoints.length]);
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -446,6 +459,20 @@ export default function Home() {
             Protect your DoD contracts before it is too late. DefenseEye delivers a fast CMMC readiness
             sprint for small-to-mid defense contractors that need clear compliance direction now.
           </p>
+          <div className="mb-8 min-h-[28px]">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={painIdx}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.25 }}
+                className="text-sm text-primary/90 font-medium"
+              >
+                {heroPainPoints[painIdx]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
@@ -708,13 +735,17 @@ export default function Home() {
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { icon: Award, label: "CCP-Led Support", sub: "Led by Certified CMMC Professionals (CCPs)" },
+              { image: "/ccp-badge.svg", label: "CCP-Led Support", sub: "Led by Certified CMMC Professionals (CCPs)" },
               { icon: Users, label: "Defense-Focused", sub: "Built for U.S. defense contractors handling CUI" },
               { icon: BookOpen, label: "Practical Outputs", sub: "SSP and POA&M deliverables your team can use now" },
               { icon: TrendingUp, label: "Fast Turnaround", sub: "Designed for contract-driven readiness timelines" },
             ].map((item) => (
               <div key={item.label} className="flex flex-col items-center text-center p-5 bg-card/30 border border-border/30 rounded-sm">
-                <item.icon className="w-6 h-6 text-primary mb-3" />
+                {item.image ? (
+                  <img src={item.image} alt="CMMC CCP badge" className="w-10 h-10 mb-3" />
+                ) : (
+                  "icon" in item ? <item.icon className="w-6 h-6 text-primary mb-3" /> : null
+                )}
                 <p className="font-heading font-semibold text-sm text-foreground mb-1">{item.label}</p>
                 <p className="text-xs text-muted-foreground">{item.sub}</p>
               </div>
