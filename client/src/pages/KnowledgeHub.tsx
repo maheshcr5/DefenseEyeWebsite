@@ -29,6 +29,7 @@ import {
 // ─── Nav (matches Home.tsx) ───────────────────────────────────────────────────
 const NAV_LINKS = [
   { label: "CMMC Sprint", href: "/services/cmmc-readiness-sprint" },
+  { label: "CMMCLens", href: "/cmmclens" },
   { label: "Readiness Path", href: "/#process" },
   { label: "Insights", href: "/blog" },
   { label: "Knowledge Hub", href: "/knowledge-hub" },
@@ -143,6 +144,8 @@ const ALL_TAGS: { label: string; href: string }[] = [
   { label: "GCC High", href: "/knowledge-hub/what-is-cmmc" },
   { label: "FIPS 140-2", href: "/knowledge-hub/evidence-mapping" },
   { label: "ITAR", href: "/knowledge-hub/what-is-cmmc" },
+  { label: "CMMCLens Automation", href: "/cmmclens" },
+  { label: "4-Week Sprint Guide", href: "/cmmc-readiness-sprint-guide" },
 ];
 
 export default function KnowledgeHub() {

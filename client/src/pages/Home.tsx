@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import {
   Target,
-  Shield,
+  ClipboardCheck,
   Zap,
   FileCheck,
   CheckCircle2,
@@ -300,6 +300,16 @@ export default function Home() {
           name: "Can small companies pass CMMC?",
           acceptedAnswer: { "@type": "Answer", text: "Yes. Small companies can pass CMMC with clear scope, a practical SSP and POA&M, and a prioritized remediation plan matched to available IT capacity." },
         },
+        {
+          "@type": "Question",
+          name: "What is CMMCLens automation?",
+          acceptedAnswer: { "@type": "Answer", text: "CMMCLens is DefenseEye's CMMC Level 2 automation for evidence collection, real-time risk remediation, and real-time SSP/POA&M documentation workflows." },
+        },
+        {
+          "@type": "Question",
+          name: "How can I get CMMC ready in 2-4 weeks?",
+          acceptedAnswer: { "@type": "Answer", text: "Use a scoped readiness sprint: prioritize high-risk gaps first, automate evidence and documentation, then package results for C3PAO readiness." },
+        },
       ],
     };
 
@@ -326,6 +336,16 @@ export default function Home() {
       knowsAbout: ["CMMC 2.0", "NIST 800-171", "DFARS compliance", "SPRS score", "C3PAO assessment", "DoD cybersecurity"],
     };
 
+    const productSchema = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: "CMMCLens",
+      brand: { "@type": "Brand", name: "DefenseEye" },
+      url: "https://defenseeye.ai/cmmclens",
+      category: "CMMC Level 2 Automation",
+      description: "CMMC Level 2 automation for defense contractors: real-time risk remediation plus real-time SSP/POA&M generation.",
+    };
+
     const videoSchema = {
       "@context": "https://schema.org",
       "@type": "VideoObject",
@@ -346,7 +366,7 @@ export default function Home() {
       const s = document.createElement("script");
       s.id = id;
       s.type = "application/ld+json";
-      s.text = JSON.stringify([faqSchema, serviceSchema, orgSchema, videoSchema]);
+      s.text = JSON.stringify([faqSchema, serviceSchema, orgSchema, productSchema, videoSchema]);
       document.head.appendChild(s);
     }
     return () => { document.getElementById(id)?.remove(); };
@@ -378,6 +398,7 @@ export default function Home() {
           {/* Desktop: minimal links + CTA */}
           <div className="hidden md:flex items-center gap-8">
             <a href="/services/cmmc-readiness-sprint" className="text-sm text-muted-foreground hover:text-foreground transition-colors">CMMC Sprint</a>
+            <a href="/cmmclens" className="text-sm text-muted-foreground hover:text-foreground transition-colors">CMMCLens</a>
             <a href="#process" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Readiness Path</a>
             <a href="/knowledge-hub" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Knowledge Hub</a>
             <a href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Insights</a>
@@ -413,6 +434,7 @@ export default function Home() {
               <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-3">
                 {[
                   { label: "CMMC Sprint", href: "/services/cmmc-readiness-sprint" },
+                  { label: "CMMCLens", href: "/cmmclens" },
                   { label: "Readiness Path", href: "#process" },
                   { label: "Knowledge Hub", href: "/knowledge-hub" },
                   { label: "Insights", href: "/blog" },
@@ -614,6 +636,9 @@ export default function Home() {
             <p className="text-muted-foreground max-w-3xl mx-auto">
               Most defense subcontractors we meet are under-resourced, under time pressure, and one CMMC question away from contract anxiety.
             </p>
+            <p className="text-xs text-muted-foreground mt-2">
+              CMMC Title 32 is active, and acquisition clause rollout is tightening bid windows through 2025-2026.
+            </p>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
             {[
@@ -658,7 +683,7 @@ export default function Home() {
                 desc: "Certified CMMC advisors for scoping, remediation, documentation, and C3PAO coordination.",
               },
               {
-                icon: Shield,
+                icon: ClipboardCheck,
                 iconColor: "text-violet-400",
                 iconBg: "bg-violet-400/10 border-violet-400/20",
                 title: "Assessment Preparation",
@@ -1098,6 +1123,14 @@ export default function Home() {
               question="Can small companies pass CMMC?"
               answer="Yes. Small companies can pass CMMC with proper scope, practical SSP and POA&M documentation, and a prioritized remediation plan matched to available IT capacity."
             />
+            <FAQItem
+              question="What is CMMCLens automation?"
+              answer="CMMCLens is DefenseEye's CMMC Level 2 automation capability for evidence mapping, real-time risk remediation, and real-time SSP/policies/procedures/standards workflows."
+            />
+            <FAQItem
+              question="How can I get CMMC ready in 2-4 weeks?"
+              answer="Use a scoped sprint: identify high-risk gaps, automate evidence and documentation, then prioritize remediation to produce a C3PAO-ready package fast."
+            />
           </div>
         </div>
       </Section>
@@ -1182,6 +1215,8 @@ export default function Home() {
               <ul className="space-y-2.5">
                 {[
                   { label: "CMMC Knowledge Hub", href: "/knowledge-hub" },
+                  { label: "CMMCLens Product Page", href: "/cmmclens" },
+                  { label: "4-Week Sprint Guide", href: "/cmmc-readiness-sprint-guide" },
                   { label: "What Is CMMC 2.0?", href: "/knowledge-hub/what-is-cmmc" },
                   { label: "SPRS Score Guide", href: "/knowledge-hub/sprs-score" },
                   { label: "C3PAO Assessment Guide", href: "/knowledge-hub/certification-process" },

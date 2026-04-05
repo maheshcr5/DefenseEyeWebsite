@@ -377,6 +377,9 @@ export default function Blog() {
             <Link href="/services/cmmc-readiness-sprint">
               <span className="hover:text-primary transition-colors cursor-pointer">CMMC Sprint</span>
             </Link>
+            <Link href="/cmmclens">
+              <span className="hover:text-primary transition-colors cursor-pointer">CMMCLens</span>
+            </Link>
             <Link href="/#process">
               <span className="hover:text-primary transition-colors cursor-pointer">Readiness Path</span>
             </Link>

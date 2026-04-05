@@ -65,6 +65,8 @@ export default function Pricing() {
           <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
             <a href="/" className="hover:text-primary transition-colors">Home</a>
             <a href="/services/cmmc-readiness-sprint" className="hover:text-primary transition-colors">CMMC Sprint</a>
+            <a href="/cmmclens" className="hover:text-primary transition-colors">CMMCLens</a>
+            <a href="/cmmc-readiness-sprint-guide" className="hover:text-primary transition-colors">4-Week Guide</a>
             <a href="/knowledge-hub" className="hover:text-primary transition-colors">Knowledge Hub</a>
             <a href="/blog" className="hover:text-primary transition-colors">Blog</a>
           </nav>
