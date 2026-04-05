@@ -172,7 +172,7 @@ export default function Pricing() {
         </section>
 
         <section className="max-w-6xl mx-auto py-12 border-y border-border/30">
-          <h2 className="font-heading text-3xl font-bold mb-6">Pricing FAQ (SEO / AEO / GEO)</h2>
+          <h2 className="font-heading text-3xl font-bold mb-6">Pricing FAQ</h2>
           <div className="space-y-3">
             {FAQS.map((f) => (
               <div key={f.q} className="bg-card/40 border border-border/30 p-5 rounded-sm">
