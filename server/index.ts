@@ -321,75 +321,95 @@ async function startServer() {
   // ─── Per-route meta for server-side injection (fixes duplicate meta / text ratio) ─
   const ROUTE_META: Record<string, { title: string; description: string }> = {
     "/": {
-      title: "DefenseEye.ai — AI-Powered CMMC 2.0 Compliance Automation | CMMC Lens",
-      description: "DefenseEye CMMC Lens automates CMMC 2.0 compliance for DoD contractors — AI-driven evidence collection, NIST 800-171 mapping, SSP/POA&M generation, SPRS score monitoring, and expert CMMC advisory consulting. Reduce documentation time by 80%.",
+      title: "CMMC Readiness for DoD Contractors | DefenseEye",
+      description: "CMMC readiness experts for DoD contractors: gap assessments, NIST 800-171 mapping, SSP and POA&M, SPRS improvement, and C3PAO prep.",
     },
     "/blog": {
       title: "CMMC Blog for Defense Contractors | DefenseEye.ai",
-      description: "Expert CMMC compliance guides, NIST 800-171 tutorials, SPRS score improvement tips, and C3PAO assessment advice for DoD contractors. Free resources to achieve CMMC Level 2 certification.",
+      description: "Practical CMMC guides for defense contractors: NIST 800-171, SPRS improvement, C3PAO assessment prep, and CMMC Level 2 readiness.",
     },
     "/case-studies": {
       title: "CMMC Contractor Profiles — DoD Compliance Scenarios | DefenseEye.ai",
-      description: "See how DoD contractors use DefenseEye CMMC Lens to achieve audit readiness. Real-world scenarios covering CMMC Level 2, CUI handling, SPRS score improvement, and C3PAO assessment preparation.",
+      description: "Representative defense contractor scenarios showing faster CMMC Level 2 readiness, CUI planning, and C3PAO preparation workflows.",
     },
     "/knowledge-hub": {
-      title: "CMMC Knowledge Hub — Authoritative Guides for DoD Contractors | DefenseEye.ai",
-      description: "Free CMMC 2.0 knowledge base for DoD contractors. Authoritative guides on CMMC levels, NIST 800-171 controls, SPRS scores, C3PAO assessments, and the full certification process.",
+      title: "CMMC Knowledge Hub | DefenseEye",
+      description: "Authoritative CMMC 2.0 guides for DoD contractors: levels, NIST 800-171 controls, SPRS scoring, and certification process.",
     },
     "/knowledge-hub/what-is-cmmc": {
-      title: "What is CMMC 2.0? Complete Guide for DoD Contractors (2025) | DefenseEye.ai",
-      description: "What is CMMC 2.0? Complete guide covering CMMC levels 1 and 2, FCI vs CUI protection, self-assessment vs C3PAO requirements, and how CMMC certification affects Defense Industrial Base contracts.",
+      title: "What Is CMMC 2.0? | DefenseEye",
+      description: "What CMMC 2.0 means for DoD contractors: levels, FCI vs CUI, assessment models, and contract impact in plain English.",
     },
     "/knowledge-hub/cmmc-levels": {
       title: "CMMC Level 1 vs Level 2: Which Do You Need? (2025) | DefenseEye.ai",
-      description: "CMMC Level 1 vs Level 2 fully explained. Compare 17 basic cybersecurity practices vs 110 NIST 800-171 controls, self-assessment vs C3PAO requirements, and who needs each certification level.",
+      description: "Compare CMMC Level 1 vs Level 2: required controls, assessment type, who needs each level, and how to scope correctly.",
     },
     "/knowledge-hub/evidence-mapping": {
       title: "Automated NIST 800-171 Evidence Mapping for CMMC | DefenseEye.ai",
-      description: "How to automate NIST 800-171 evidence mapping for CMMC Level 2. CMMC Lens collects and maps compliance evidence from Azure Commercial, Azure GCC, M365 Commercial, and M365 GCC High.",
+      description: "How automated evidence mapping supports CMMC Level 2 with NIST 800-171 traceability across Azure and Microsoft 365.",
     },
     "/knowledge-hub/sprs-score": {
-      title: "SPRS Score Explained: How to Calculate, Submit & Improve | DefenseEye.ai",
-      description: "What is an SPRS score? Learn how to calculate your score (-203 to 110), submit via PIEE, and improve your Supplier Performance Risk System score for DFARS 252.204-7012 and CMMC Level 2.",
+      title: "SPRS Score Guide | DefenseEye",
+      description: "Learn how SPRS scoring works, how to submit correctly, and which remediation priorities improve scores fastest for CMMC Level 2.",
     },
     "/knowledge-hub/certification-process": {
       title: "CMMC Certification Process Step-by-Step (2025) | DefenseEye.ai",
-      description: "Complete CMMC certification roadmap for 2025: gap assessment, SSP creation, POA&M, C3PAO selection, pre-assessment preparation, the assessment itself, and maintaining compliance post-certification.",
+      description: "Step-by-step CMMC certification path: gap assessment, SSP, POA&M, C3PAO preparation, and post-assessment sustainment.",
+    },
+    "/pricing": {
+      title: "CMMC Readiness Cost & Pricing | DefenseEye.ai",
+      description: "CMMC readiness pricing for small and mid-sized defense contractors with fixed-scope options, practical deliverables, and fast quote turnaround.",
+    },
+    "/cmmclens": {
+      title: "CMMCLens — CMMC Level 2 Automation Platform | DefenseEye.ai",
+      description: "CMMCLens automates CMMC Level 2 readiness with evidence collection, real-time remediation guidance, and SSP and POA&M workflows.",
+    },
+    "/services": {
+      title: "CMMC Readiness Sprint | DefenseEye.ai",
+      description: "Fixed-price CMMC Readiness Sprint in 2-4 weeks with gap assessment, NIST 800-171 mapping, SSP starter, POA&M, and roadmap.",
+    },
+    "/services/cmmc-readiness-sprint": {
+      title: "CMMC Readiness Sprint | DefenseEye.ai",
+      description: "Fixed-price CMMC Readiness Sprint in 2-4 weeks with gap assessment, NIST 800-171 mapping, SSP starter, POA&M, and roadmap.",
+    },
+    "/cmmc-readiness-sprint-guide": {
+      title: "4-Week CMMC Readiness Sprint Guide | DefenseEye.ai",
+      description: "A practical 4-week CMMC readiness guide for defense contractors: scope quickly, fix high-risk gaps, and prepare for C3PAO assessment.",
     },
   };
 
   const BLOG_SLUG_META: Record<string, { title: string; description: string }> = {
     "cmmc-level-2-compliance-checklist-2025": {
-      title: "CMMC Level 2 Compliance Checklist for DoD Contractors (2025) | DefenseEye.ai",
-      description: "Complete CMMC Level 2 compliance checklist for 2025. Covers all 110 NIST 800-171 practices, SSP requirements, POA&M guidance, C3PAO selection, and day-of-assessment preparation for DoD contractors.",
+      title: "CMMC Level 2 Checklist (2025) | DefenseEye",
+      description: "CMMC Level 2 checklist for DoD contractors covering all 110 controls, SSP and POA&M requirements, and C3PAO assessment preparation.",
     },
     "how-to-improve-sprs-score-fast": {
-      title: "How to Improve Your SPRS Score Fast — Defense Contractor Guide | DefenseEye.ai",
-      description: "Learn how to improve your SPRS score fast. Covers the SPRS scoring formula, highest-impact NIST 800-171 controls, quick wins vs long-term fixes, and a prioritized remediation roadmap for defense contractors.",
+      title: "Improve SPRS Score Fast | DefenseEye",
+      description: "Improve your SPRS score faster with high-impact NIST 800-171 priorities, quick wins, and a practical remediation roadmap for defense teams.",
     },
     "what-to-expect-c3pao-assessment": {
-      title: "What to Expect During a C3PAO Assessment: Step-by-Step Walkthrough | DefenseEye.ai",
-      description: "Everything defense contractors need to know about C3PAO assessments: how to find an assessor, assessment phases, what assessors look for, common failure points, POA&M responses, and the full timeline to CMMC Level 2.",
+      title: "C3PAO Assessment Walkthrough | DefenseEye",
+      description: "What to expect in a C3PAO assessment: assessor selection, assessment phases, common failure points, and timeline for CMMC Level 2.",
     },
     "what-counts-as-cui-plain-english-guide": {
-      title: "What Counts as CUI? Plain-English Guide for Defense Contractors | DefenseEye.ai",
-      description: "Plain-English guide to Controlled Unclassified Information (CUI) for DoD contractors. What counts as CUI, what doesn't, how to identify it in your environment, and what CMMC Level 2 protections it triggers.",
+      title: "What Counts as CUI? | DefenseEye",
+      description: "Plain-English CUI guide for DoD contractors: what counts as CUI, what does not, and which CMMC Level 2 protections are triggered.",
     },
     "cmmc-level-2-small-business-guide": {
-      title: "CMMC Level 2 for Small Businesses: What You Actually Need | DefenseEye.ai",
-      description: "CMMC Level 2 guide for small defense contractors. What 110 NIST 800-171 controls actually require for a 10–50 person company, what you can inherit from M365 GCC High, and affordable paths to compliance.",
+      title: "CMMC Level 2 for Small Business | DefenseEye",
+      description: "CMMC Level 2 guidance for small defense contractors: control expectations, inheritance options, and practical paths to affordable compliance.",
     },
     "gcc-high-vs-m365-commercial-cmmc": {
-      title: "GCC High vs M365 Commercial: Which Do You Need for CMMC Level 2? | DefenseEye.ai",
-      description: "Microsoft 365 GCC High vs Commercial vs GCC for CMMC Level 2 compliance. Which tenant do DoD contractors need, how CUI type affects the decision, cost differences, and how CMMC Lens works with each environment.",
+      title: "GCC High vs M365 for CMMC | DefenseEye",
+      description: "Compare GCC High vs M365 Commercial for CMMC Level 2: which tenant fits your CUI needs, cost tradeoffs, and implementation impact.",
     },
     "cmmc-poam-guide-what-assessors-want": {
       title: "CMMC POA&M: What Assessors Actually Look For | DefenseEye.ai",
-      description: "What C3PAO assessors look for in a CMMC POA&M — required fields, acceptable timelines, high-risk items that block certification, format tips, and the most common mistakes that turn a good program into a failed assessment.",
+      description: "What C3PAO assessors expect in a CMMC POA&M, including required fields, acceptable timelines, and mistakes that can block certification.",
     },
     "cmmc-consultant-red-flags": {
       title: "7 Red Flags When Hiring a CMMC Consultant | DefenseEye.ai",
-      description: "7 red flags to watch for when hiring a CMMC consultant or RPO. How to verify credentials, what questions to ask, and what legitimate CMMC advisory looks like versus firms that will waste your time and budget.",
+      description: "Seven red flags when hiring a CMMC consultant, with credential checks and interview questions to avoid costly misalignment.",
     },
   };
 
@@ -400,7 +420,7 @@ async function startServer() {
       if (BLOG_SLUG_META[slug]) return BLOG_SLUG_META[slug];
       return {
         title: "CMMC Compliance Guide | DefenseEye.ai",
-        description: "Expert CMMC compliance guidance for DoD contractors — NIST 800-171 controls, SPRS score improvement, CUI protection, C3PAO assessment preparation, and SSP documentation.",
+        description: "CMMC compliance guidance for DoD contractors covering NIST 800-171 controls, SPRS improvements, and C3PAO assessment preparation.",
       };
     }
     return ROUTE_META["/"];
@@ -422,6 +442,18 @@ async function startServer() {
       html = html.replace(
         /<link rel="canonical" href="[^"]*"/,
         `<link rel="canonical" href="${canonical}"`
+      );
+      html = html.replace(
+        /<meta property="og:title" content="[^"]*"/,
+        `<meta property="og:title" content="${meta.title.replace(/"/g, "&quot;")}"`
+      );
+      html = html.replace(
+        /<meta property="og:description" content="[^"]*"/,
+        `<meta property="og:description" content="${meta.description.replace(/"/g, "&quot;")}"`
+      );
+      html = html.replace(
+        /<meta property="og:url" content="[^"]*"/,
+        `<meta property="og:url" content="${canonical}"`
       );
       res.setHeader("Content-Type", "text/html; charset=utf-8");
       res.send(html);
