@@ -384,7 +384,7 @@ export default function Home() {
   }, [heroPainPoints.length]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden nvidia-grid-bg">
       <LeadModal open={modalOpen} onClose={() => setModalOpen(false)} />
 
       {/* ═══════════════════════════════════════════════════════════════
@@ -587,6 +587,68 @@ export default function Home() {
           </div>
         </div>
       </header>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          NVIDIA-STYLE PRODUCT STRIP
+      ═══════════════════════════════════════════════════════════════ */}
+      <Section className="pb-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">Platform Modules</p>
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground">
+                Built for Deadline-Driven CMMC Execution
+              </h2>
+            </div>
+            <a href="/cmmclens" className="hidden sm:inline-flex text-sm text-primary hover:underline">
+              Explore CMMCLens <ArrowRight className="w-4 h-4 ml-1" />
+            </a>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-5">
+            {[
+              {
+                icon: Bot,
+                title: "CMMC Level 2 Automation",
+                body: "Automate evidence collection, control mapping, and SSP plus POA&M workflows in one runtime.",
+                cta: "/cmmclens",
+                ctaLabel: "View Automation",
+                glow: "from-primary/20 via-primary/5 to-transparent",
+              },
+              {
+                icon: FileCheck,
+                title: "Assessment Preparation",
+                body: "Generate assessor-ready packages with interview prep, policy alignment, and evidence traceability.",
+                cta: "/services/cmmc-readiness-sprint",
+                ctaLabel: "View Sprint",
+                glow: "from-emerald-400/20 via-emerald-400/5 to-transparent",
+              },
+              {
+                icon: BarChart3,
+                title: "Real-Time Risk Prioritization",
+                body: "Prioritize remediation by contract impact, SPRS weight, and timeline pressure to move faster.",
+                cta: "/pricing",
+                ctaLabel: "View Pricing",
+                glow: "from-lime-300/20 via-lime-300/5 to-transparent",
+              },
+            ].map((card) => (
+              <div key={card.title} className="relative overflow-hidden border border-border/40 bg-card/55 rounded-sm p-6 hover:border-primary/40 transition-colors">
+                <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${card.glow}`} />
+                <div className="relative">
+                  <div className="w-10 h-10 rounded-sm border border-primary/30 bg-background/70 flex items-center justify-center mb-4">
+                    <card.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="font-heading text-xl font-bold text-foreground mb-2">{card.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-5 leading-relaxed">{card.body}</p>
+                  <a href={card.cta} className="inline-flex items-center text-sm font-semibold text-primary hover:underline">
+                    {card.ctaLabel} <ArrowRight className="w-4 h-4 ml-1.5" />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
 
       {/* ═══════════════════════════════════════════════════════════════
           VIDEO BRIEFING — trust + urgency for high-intent visitors
