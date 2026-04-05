@@ -650,6 +650,25 @@ export default function Home() {
         </div>
       </Section>
 
+      <div
+        className="relative"
+        style={{
+          ["--background" as any]: "oklch(0.985 0.002 255)",
+          ["--foreground" as any]: "oklch(0.23 0.01 255)",
+          ["--card" as any]: "oklch(0.995 0.001 255)",
+          ["--card-foreground" as any]: "oklch(0.23 0.01 255)",
+          ["--popover" as any]: "oklch(1 0 0)",
+          ["--popover-foreground" as any]: "oklch(0.23 0.01 255)",
+          ["--secondary" as any]: "oklch(0.96 0.003 255)",
+          ["--secondary-foreground" as any]: "oklch(0.28 0.01 255)",
+          ["--muted" as any]: "oklch(0.95 0.003 255)",
+          ["--muted-foreground" as any]: "oklch(0.46 0.01 255)",
+          ["--border" as any]: "oklch(0.88 0.004 255)",
+          ["--input" as any]: "oklch(0.90 0.004 255)",
+          ["--destructive-foreground" as any]: "oklch(0.985 0 0)",
+        }}
+      >
+
       {/* ═══════════════════════════════════════════════════════════════
           VIDEO BRIEFING — trust + urgency for high-intent visitors
       ═══════════════════════════════════════════════════════════════ */}
@@ -1378,6 +1397,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      </div>
     </div>
   );
 }
