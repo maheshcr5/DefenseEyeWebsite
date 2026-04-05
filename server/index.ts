@@ -316,7 +316,7 @@ async function startServer() {
       ? path.resolve(__dirname, "public")
       : path.resolve(__dirname, "..", "dist", "public");
 
-  app.use(express.static(staticPath));
+  app.use(express.static(staticPath, { index: false }));
 
   // ─── Per-route meta for server-side injection (fixes duplicate meta / text ratio) ─
   const ROUTE_META: Record<string, { title: string; description: string }> = {
