@@ -1,7 +1,7 @@
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
-import { CheckCircle2, ArrowRight, Shield, Clock, FileCheck } from "lucide-react";
+import { CheckCircle2, ArrowRight, Award, Clock, FileCheck } from "lucide-react";
 
 const FAQS = [
   {
@@ -141,7 +141,7 @@ export default function CMMCReadinessSprint() {
           <h2 className="font-heading text-3xl font-bold mb-7">Why DefenseEye</h2>
           <div className="grid md:grid-cols-4 gap-4">
             {[
-              { icon: Shield, title: "CCP-Led", body: "Led by Certified CMMC Professionals focused on defense contracting reality." },
+              { icon: Award, title: "CCP-Led", body: "Led by Certified CMMC Professionals focused on defense contracting reality." },
               { icon: Clock, title: "Fast Turnaround", body: "Designed for companies that need momentum in days, not quarters." },
               { icon: FileCheck, title: "Practical Deliverables", body: "SSP and POA&M outputs your team can immediately use." },
               { icon: CheckCircle2, title: "DoD-Aligned", body: "Built for U.S. defense contractors and NIST 800-171 compliance outcomes." },

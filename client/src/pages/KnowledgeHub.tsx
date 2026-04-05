@@ -11,7 +11,6 @@ import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import {
-  Shield,
   BookOpen,
   BarChart3,
   FileCheck,
@@ -75,7 +74,7 @@ function Nav() {
 // ─── Article cards data ───────────────────────────────────────────────────────
 const HUB_ARTICLES = [
   {
-    icon: Shield,
+    icon: BookOpen,
     title: "What is CMMC?",
     subtitle: "Start Here if Contracts Are at Risk",
     description: "A plain-English overview for teams under pressure: what CMMC changes in solicitations, who must certify, and what to do first to protect contract eligibility.",
@@ -357,7 +356,7 @@ export default function KnowledgeHub() {
 
               {/* CTA */}
               <div className="bracket-decoration bg-primary/5 border border-primary/20 p-5 text-center">
-                <Shield className="w-8 h-8 text-primary mx-auto mb-3" />
+                <FileCheck className="w-8 h-8 text-primary mx-auto mb-3" />
                 <h3 className="font-heading font-semibold text-foreground mb-2">Ready to Move Faster?</h3>
                 <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
                   Let CMMC Lens handle evidence collection, NIST mapping, and SSP/POA&M workflow automation.
@@ -413,7 +412,7 @@ export default function KnowledgeHub() {
         <div className="container flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded bg-primary/20 border border-primary/40 flex items-center justify-center">
-              <Shield className="w-3.5 h-3.5 text-primary" />
+              <Target className="w-3.5 h-3.5 text-primary" />
             </div>
             <span className="font-heading font-bold text-foreground">Defense<span className="text-primary">Eye</span></span>
           </div>

@@ -15,7 +15,6 @@ import {
   Building2,
   Users,
   MapPin,
-  Shield,
   TrendingUp,
   Clock,
   FileCheck,
@@ -294,7 +293,7 @@ function ProfileCard({ profile, index }: { profile: ContractorProfile; index: nu
                 {profile.region}
               </span>
               <span className="flex items-center gap-1">
-                <Shield className="w-3.5 h-3.5" />
+                <FileCheck className="w-3.5 h-3.5" />
                 {profile.cmmcLevel}
               </span>
             </div>
@@ -742,7 +741,7 @@ export default function CaseStudies() {
                 desc: "Track every open gap with assigned owners, due dates, and automated reminders. Never miss a remediation deadline.",
               },
               {
-                icon: <Shield className="w-5 h-5 text-primary" />,
+                icon: <FileCheck className="w-5 h-5 text-primary" />,
                 title: "Evidence Library",
                 desc: "Centralized, organized evidence artifacts for all 110 NIST 800-171 practices — structured the way C3PAO assessors need to see them.",
               },
@@ -809,7 +808,7 @@ export default function CaseStudies() {
                   desc: "Monthly calls with the product team. Your compliance challenges directly influence what we build next.",
                 },
                 {
-                  icon: <Shield className="w-5 h-5 text-accent" />,
+                  icon: <Building2 className="w-5 h-5 text-accent" />,
                   title: "White-Glove Onboarding",
                   desc: "Dedicated onboarding support to map your current environment and get your initial SPRS score calculated in your first week.",
                 },

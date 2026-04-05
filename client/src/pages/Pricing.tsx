@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
-import { CheckCircle2, ArrowRight, Clock, Shield, AlertTriangle } from "lucide-react";
+import { CheckCircle2, ArrowRight, Clock, FileCheck, AlertTriangle } from "lucide-react";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
@@ -162,7 +162,7 @@ export default function Pricing() {
               </p>
             </div>
             <div className="bg-card/40 border border-border/30 p-5 rounded-sm">
-              <Shield className="w-5 h-5 text-primary mb-3" />
+              <FileCheck className="w-5 h-5 text-primary mb-3" />
               <p className="font-heading font-semibold mb-1">Contract Protection</p>
               <p className="text-sm text-muted-foreground">
                 Prioritize controls that materially protect revenue and award confidence.

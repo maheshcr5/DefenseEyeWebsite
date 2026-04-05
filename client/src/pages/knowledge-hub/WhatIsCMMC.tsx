@@ -5,7 +5,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ArrowRight, Shield, CheckCircle2 } from "lucide-react";
+import { ChevronDown, ArrowRight, Zap, CheckCircle2 } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import KnowledgeHubLayout from "@/components/KnowledgeHubLayout";
@@ -539,7 +539,7 @@ export default function WhatIsCMMC() {
         <div className="bg-card/60 backdrop-blur-sm border border-primary/20 p-6 bracket-decoration">
           <div className="flex items-start gap-4 mb-5">
             <div className="w-10 h-10 rounded bg-primary/20 border border-primary/40 flex items-center justify-center shrink-0">
-              <Shield className="w-5 h-5 text-primary" />
+              <Zap className="w-5 h-5 text-primary" />
             </div>
             <div>
               <p className="font-heading font-bold text-foreground mb-1">

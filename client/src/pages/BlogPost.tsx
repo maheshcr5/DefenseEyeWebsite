@@ -21,7 +21,7 @@ import {
   Linkedin,
   ChevronRight,
   BookOpen,
-  Shield,
+  Bot,
   ExternalLink,
 } from "lucide-react";
 import { blogPosts, type BlogPost, type ContentBlock, type TableContent } from "@/data/blogPosts";
@@ -156,7 +156,7 @@ function CTABox({ variant = "inline" }: { variant?: "inline" | "bottom" }) {
       }`}
     >
       <div className="flex items-start gap-4">
-        <Shield className="w-8 h-8 text-primary shrink-0 mt-0.5" />
+        <Bot className="w-8 h-8 text-primary shrink-0 mt-0.5" />
         <div className="flex-1">
           <h3 className="font-heading text-lg md:text-xl font-bold text-foreground mb-2">
             Automate Your CMMC Readiness with CMMC Lens

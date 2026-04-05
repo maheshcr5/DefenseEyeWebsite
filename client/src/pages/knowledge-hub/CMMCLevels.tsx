@@ -5,7 +5,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ArrowRight, Shield, CheckCircle2 } from "lucide-react";
+import { ChevronDown, ArrowRight, FileCheck, CheckCircle2 } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import KnowledgeHubLayout from "@/components/KnowledgeHubLayout";
@@ -166,7 +166,7 @@ export default function CMMCLevels() {
         </p>
         <div className="bg-card/60 backdrop-blur-sm border border-border/40 p-5 mb-4">
           <h3 className="font-heading font-semibold text-foreground mb-4 flex items-center gap-2">
-            <Shield className="w-4 h-4 text-primary" />
+            <FileCheck className="w-4 h-4 text-primary" />
             All 17 CMMC Level 1 Practices
           </h3>
           <ul className="space-y-2">
@@ -474,7 +474,7 @@ export default function CMMCLevels() {
               className="bg-card/60 backdrop-blur-sm border border-border/40 p-5"
             >
               <h3 className="font-heading font-semibold text-foreground mb-3 flex items-center gap-2">
-                <Shield className="w-4 h-4 text-primary" />
+                <FileCheck className="w-4 h-4 text-primary" />
                 {item.title}
               </h3>
               <ul className="space-y-2">
