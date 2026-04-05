@@ -22,7 +22,6 @@ export default function CMMCLens() {
           "CMMC Level 2 automation platform for defense contractors. Supports automated evidence collection, real-time risk remediation, and real-time SSP/POA&M generation.",
         brand: { "@type": "Brand", name: "DefenseEye" },
         category: "CMMC Readiness Automation",
-        audience: { "@type": "Audience", audienceType: "U.S. defense contractors handling CUI" },
       },
       {
         "@context": "https://schema.org",
@@ -126,4 +125,3 @@ export default function CMMCLens() {
     </div>
   );
 }
-

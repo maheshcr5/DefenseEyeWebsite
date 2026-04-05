@@ -319,9 +319,13 @@ export default function Home() {
       name: "DefenseEye — CMMC Advisory & Compliance Automation",
       url: "https://defenseeye.ai",
       description: "DefenseEye provides CMMC readiness consulting for U.S. defense contractors. Services include fixed-price CMMC readiness sprints, CMMC gap assessments, NIST SP 800-171 mapping, SSP and POA&M support, and C3PAO preparation.",
-      serviceType: ["CMMC Readiness", "CMMC Consultant", "CMMC Gap Assessment", "NIST 800-171 Compliance", "SSP and POA&M", "CMMC Level 2 Readiness"],
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Seattle",
+        addressRegion: "WA",
+        addressCountry: "US",
+      },
       areaServed: { "@type": "Country", name: "United States" },
-      audience: { "@type": "Audience", audienceType: "Department of Defense contractors, defense subcontractors, Defense Industrial Base" },
       knowsAbout: ["CMMC 2.0 (32 CFR Part 170)", "NIST SP 800-171 Rev. 2", "DFARS 252.204-7012", "DFARS 252.204-7019", "DFARS 252.204-7021", "SPRS score", "C3PAO assessment", "CUI", "SSP", "POA&M", "Microsoft 365 GCC High CMMC", "Azure Government CMMC"],
     };
 
@@ -766,11 +770,14 @@ export default function Home() {
               { icon: TrendingUp, label: "Fast Turnaround", sub: "Designed for contract-driven readiness timelines" },
             ].map((item) => (
               <div key={item.label} className="flex flex-col items-center text-center p-5 bg-card/30 border border-border/30 rounded-sm">
-                {item.image ? (
-                  <img src={item.image} alt="CMMC CCP badge" className="w-10 h-10 mb-3" />
-                ) : (
-                  "icon" in item ? <item.icon className="w-6 h-6 text-primary mb-3" /> : null
-                )}
+                {(() => {
+                  const Icon = item.icon;
+                  return item.image ? (
+                    <img src={item.image} alt="CMMC CCP badge" className="w-10 h-10 mb-3" />
+                  ) : Icon ? (
+                    <Icon className="w-6 h-6 text-primary mb-3" />
+                  ) : null;
+                })()}
                 <p className="font-heading font-semibold text-sm text-foreground mb-1">{item.label}</p>
                 <p className="text-xs text-muted-foreground">{item.sub}</p>
               </div>

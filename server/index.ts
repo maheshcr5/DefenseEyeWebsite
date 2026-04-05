@@ -325,7 +325,7 @@ async function startServer() {
       description: "DefenseEye CMMC Lens automates CMMC 2.0 compliance for DoD contractors — AI-driven evidence collection, NIST 800-171 mapping, SSP/POA&M generation, SPRS score monitoring, and expert CMMC advisory consulting. Reduce documentation time by 80%.",
     },
     "/blog": {
-      title: "CMMC Compliance Blog — Expert Guides for Defense Contractors | DefenseEye.ai",
+      title: "CMMC Blog for Defense Contractors | DefenseEye.ai",
       description: "Expert CMMC compliance guides, NIST 800-171 tutorials, SPRS score improvement tips, and C3PAO assessment advice for DoD contractors. Free resources to achieve CMMC Level 2 certification.",
     },
     "/case-studies": {

@@ -307,7 +307,7 @@ export default function Blog() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
   useSeo(
-    "CMMC Blog & Resource Center | DefenseEye.ai",
+    "CMMC Blog for Defense Contractors | DefenseEye.ai",
     "Expert CMMC 2.0 guides, compliance checklists, and actionable advice for DoD contractors. Topics: SPRS scoring, C3PAO assessments, NIST 800-171, SSP/POA&M, and CUI protection."
   );
 

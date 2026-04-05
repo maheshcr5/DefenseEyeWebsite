@@ -354,10 +354,6 @@ export default function BlogPostPage() {
         description: "Cybersecurity Maturity Model Certification for DoD contractors under 32 CFR Part 170",
         sameAs: ["https://dodcio.defense.gov/CMMC/"],
       },
-      audience: {
-        "@type": "Audience",
-        audienceType: "Department of Defense contractors, defense subcontractors, Defense Industrial Base companies",
-      },
       image: {
         "@type": "ImageObject",
         url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028771419/EuH9Png2HimpzgUP2fBtWN/hero-dashboard-MRfN7kPE4hmjGfzaoj2jb9.png",
