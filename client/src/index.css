@@ -51,24 +51,25 @@
 
 :root {
   --radius: 0.5rem;
-  --background: oklch(0.12 0.01 255);
-  --foreground: oklch(0.95 0.01 255);
-  --card: oklch(0.16 0.01 255);
+  /* Deep navy blue — replaces near-black */
+  --background: oklch(0.17 0.06 252);
+  --foreground: oklch(0.96 0.01 255);
+  --card: oklch(0.21 0.06 250);
   --card-foreground: oklch(0.94 0.01 250);
-  --popover: oklch(0.16 0.01 255);
+  --popover: oklch(0.21 0.06 250);
   --popover-foreground: oklch(0.94 0.01 250);
   --primary: oklch(0.79 0.23 140);
   --primary-foreground: oklch(0.10 0.01 255);
-  --secondary: oklch(0.20 0.01 255);
+  --secondary: oklch(0.25 0.05 250);
   --secondary-foreground: oklch(0.85 0.01 250);
-  --muted: oklch(0.20 0.01 255);
-  --muted-foreground: oklch(0.77 0.01 255);
+  --muted: oklch(0.25 0.05 250);
+  --muted-foreground: oklch(0.73 0.02 255);
   --accent: oklch(0.85 0.22 138);
   --accent-foreground: oklch(0.10 0.01 255);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.29 0.01 255);
-  --input: oklch(0.24 0.01 255);
+  --border: oklch(0.30 0.05 248);
+  --input: oklch(0.25 0.05 250);
   --ring: oklch(0.79 0.23 140);
   --chart-1: oklch(0.79 0.23 140);
   --chart-2: oklch(0.71 0.18 142);
@@ -203,5 +204,40 @@
       linear-gradient(to right, oklch(1 0 0 / 0.04) 1px, transparent 1px),
       linear-gradient(to bottom, oklch(1 0 0 / 0.04) 1px, transparent 1px);
     background-size: 32px 32px;
+  }
+
+  /* ── Nvidia-style light sections ───────────────────────────────────────── */
+  /* White sections (middle content) */
+  .section-light {
+    background-color: #ffffff;
+    --foreground: oklch(0.13 0.02 255);
+    --card: oklch(0.97 0.005 248);
+    --card-foreground: oklch(0.13 0.02 255);
+    --muted: oklch(0.93 0.008 248);
+    --muted-foreground: oklch(0.46 0.015 255);
+    --border: oklch(0.87 0.01 245);
+    --input: oklch(0.95 0.005 248);
+    color: oklch(0.13 0.02 255);
+  }
+
+  /* Light-gray sections (alternating, e.g. FAQ, Pricing) */
+  .section-gray {
+    background-color: #f3f6fb;
+    --foreground: oklch(0.13 0.02 255);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.13 0.02 255);
+    --muted: oklch(0.93 0.008 248);
+    --muted-foreground: oklch(0.46 0.015 255);
+    --border: oklch(0.87 0.01 245);
+    --input: oklch(0.95 0.005 248);
+    color: oklch(0.13 0.02 255);
+  }
+
+  /* Ensure primary / accent keep brand colors on light backgrounds */
+  .section-light, .section-gray {
+    --primary: oklch(0.60 0.20 140);
+    --ring: oklch(0.60 0.20 140);
+    --accent: oklch(0.72 0.18 60);
+    --accent-foreground: oklch(0.10 0.01 255);
   }
 }

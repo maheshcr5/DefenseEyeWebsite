@@ -843,7 +843,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           KEY FEATURES — 2-column checklist
       ═══════════════════════════════════════════════════════════════ */}
-      <Section className="py-20 px-4 bg-card/20 border-y border-border/20">
+      <Section className="py-20 px-4 section-light">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">Solution</p>
@@ -919,7 +919,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           SERVICES — 3 detailed service cards
       ═══════════════════════════════════════════════════════════════ */}
-      <Section id="services" className="py-20 px-4 bg-card/20 border-y border-border/20">
+      <Section id="services" className="py-20 px-4 section-light">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Core Offer</p>
@@ -1039,7 +1039,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           PROCESS — 3 numbered steps
       ═══════════════════════════════════════════════════════════════ */}
-      <Section id="process" className="py-20 px-4">
+      <Section id="process" className="py-20 px-4 section-gray">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
@@ -1106,14 +1106,14 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           URGENCY BANNER — loss aversion for desperate contractors
       ═══════════════════════════════════════════════════════════════ */}
-      <section className="py-10 px-4 bg-destructive/5 border-y border-destructive/20">
+      <section className="py-10 px-4 bg-[#0D1B33] border-y border-[#FFB547]/30">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
-          <AlertTriangle className="w-8 h-8 text-destructive shrink-0" />
+          <AlertTriangle className="w-8 h-8 text-[#FFB547] shrink-0" />
           <div className="flex-1">
-            <p className="font-heading font-bold text-foreground mb-1">If your next award requires CMMC proof, waiting is the risk.</p>
-            <p className="text-sm text-muted-foreground">CMMC requirements are in active rollout under 32 CFR Part 170 (effective December 16, 2024). Teams without a readiness plan, evidence package, and SPRS discipline are exposing pipeline revenue and renewal confidence.</p>
+            <p className="font-heading font-bold text-white mb-1">If your next award requires CMMC proof, waiting is the risk.</p>
+            <p className="text-sm text-white/70">CMMC requirements are in active rollout under 32 CFR Part 170 (effective December 16, 2024). Teams without a readiness plan, evidence package, and SPRS discipline are exposing pipeline revenue and renewal confidence.</p>
           </div>
-          <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold shrink-0 px-7" onClick={() => setModalOpen(true)}>
+          <Button className="bg-[#FFB547] text-[#0D1B33] hover:bg-[#FFB547]/90 font-semibold shrink-0 px-7" onClick={() => setModalOpen(true)}>
             Start Now
           </Button>
         </div>
@@ -1122,7 +1122,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           PRICING
       ═══════════════════════════════════════════════════════════════ */}
-      <Section id="pricing" className="py-20 px-4">
+      <Section id="pricing" className="py-20 px-4 section-light">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">Pricing / Entry Point</p>
@@ -1221,7 +1221,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           FAQ — AEO / LLM citation optimized
       ═══════════════════════════════════════════════════════════════ */}
-      <Section id="faq" className="py-20 px-4 bg-card/20 border-y border-border/20">
+      <Section id="faq" className="py-20 px-4 section-gray">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
