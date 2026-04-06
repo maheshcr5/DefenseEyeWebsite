@@ -8,7 +8,6 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "wouter";
 import { motion, useInView, useScroll, useSpring } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { useSeo } from "@/hooks/useSeo";
 import {
   ArrowRight,
@@ -25,6 +24,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { blogPosts, type BlogPost, type ContentBlock, type TableContent } from "@/data/blogPosts";
+import NavBar from "@/components/NavBar";
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
@@ -395,34 +395,7 @@ export default function BlogPostPage() {
     <div className="min-h-screen bg-background text-foreground">
       <ReadingProgressBar />
 
-      {/* ── Navigation ── */}
-      <div className="border-b border-gray-200 bg-white/95 backdrop-blur-md sticky top-0 z-40 section-light">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <DefenseEyeLogo href="/" />
-          <nav className="hidden md:flex items-center gap-6 text-sm text-[#0D1B33]">
-            <Link href="/services/cmmc-readiness-sprint">
-              <span className="hover:text-primary transition-colors cursor-pointer">CMMC Sprint</span>
-            </Link>
-            <Link href="/cmmclens">
-              <span className="hover:text-primary transition-colors cursor-pointer">CMMCLens</span>
-            </Link>
-            <Link href="/services/cmmc-scoping">
-              <span className="hover:text-primary transition-colors cursor-pointer">Scoping</span>
-            </Link>
-            <Link href="/knowledge-hub">
-              <span className="hover:text-primary transition-colors cursor-pointer">Knowledge Hub</span>
-            </Link>
-            <Link href="/pricing">
-              <span className="hover:text-primary transition-colors cursor-pointer">Pricing</span>
-            </Link>
-          </nav>
-          <Link href="/#contact">
-            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-heading font-semibold">
-              Book Assessment
-            </Button>
-          </Link>
-        </div>
-      </div>
+      <NavBar />
 
       {/* ── Breadcrumb ── */}
       <div className="max-w-4xl mx-auto px-4 pt-8 pb-2">

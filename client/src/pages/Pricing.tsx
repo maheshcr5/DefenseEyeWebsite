@@ -3,6 +3,7 @@ import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
 import { CheckCircle2, ArrowRight, Clock, FileCheck, AlertTriangle } from "lucide-react";
+import NavBar from "@/components/NavBar";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
@@ -59,25 +60,7 @@ export default function Pricing() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* ── Nav ── */}
-      <header className="border-b border-gray-200 bg-white/95 backdrop-blur-md sticky top-0 z-40 section-light">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <DefenseEyeLogo href="/" />
-          <nav className="hidden md:flex items-center gap-6 text-sm text-[#0D1B33]">
-            <a href="/" className="hover:text-primary transition-colors">Home</a>
-            <a href="/services/cmmc-readiness-sprint" className="hover:text-primary transition-colors">CMMC Sprint</a>
-            <a href="/services/cmmc-scoping" className="hover:text-primary transition-colors">Scoping</a>
-            <a href="/cmmclens" className="hover:text-primary transition-colors">CMMCLens</a>
-            <a href="/knowledge-hub" className="hover:text-primary transition-colors">Knowledge Hub</a>
-            <a href="/blog" className="hover:text-primary transition-colors">Blog</a>
-          </nav>
-          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
-            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-              Book Your Urgent CMMC Readiness Call
-            </Button>
-          </a>
-        </div>
-      </header>
+      <NavBar />
 
       {/* ── Hero ── */}
       <section className="max-w-6xl mx-auto pt-14 pb-10 px-4 text-center section-navy" style={{ maxWidth: "100%" }}>

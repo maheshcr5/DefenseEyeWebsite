@@ -29,6 +29,7 @@ import {
   Target,
   Layers,
 } from "lucide-react";
+import NavBar from "@/components/NavBar";
 
 // ─── Section Wrapper ────────────────────────────────────────────────────────
 
@@ -609,32 +610,7 @@ export default function CaseStudies() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* ── Navigation ── */}
-      <div className="border-b border-gray-200 bg-white/95 backdrop-blur-md sticky top-0 z-40 section-light">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/">
-            <span className="font-heading font-bold text-primary text-lg cursor-pointer tracking-wider">
-              DefenseEye<span className="text-accent">.ai</span>
-            </span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm text-[#0D1B33]">
-            <Link href="/#services">
-              <span className="hover:text-primary transition-colors cursor-pointer">Services</span>
-            </Link>
-            <Link href="/knowledge-hub">
-              <span className="hover:text-primary transition-colors cursor-pointer">Resources</span>
-            </Link>
-            <Link href="/#pricing">
-              <span className="hover:text-primary transition-colors cursor-pointer">Pricing</span>
-            </Link>
-          </nav>
-          <Link href="/#contact">
-            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-heading font-semibold">
-              Book Assessment
-            </Button>
-          </Link>
-        </div>
-      </div>
+      <NavBar />
 
       {/* ── Hero ── */}
       <Section className="pt-20 pb-16 px-4 text-center border-b border-border/30">

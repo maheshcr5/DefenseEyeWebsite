@@ -19,6 +19,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
+import NavBar from "@/components/NavBar";
 import {
   Target,
   ClipboardCheck,
@@ -26,8 +27,6 @@ import {
   FileCheck,
   CheckCircle2,
   ArrowRight,
-  X,
-  Menu,
   BarChart3,
   Bot,
   Users,
@@ -219,7 +218,6 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 // ─── Main Page ───────────────────────────────────────────────────────────────
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [painIdx, setPainIdx] = useState(0);
   const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
   const heroPainPoints = [
@@ -358,91 +356,14 @@ export default function Home() {
       <LeadModal open={modalOpen} onClose={() => setModalOpen(false)} />
 
       {/* ═══════════════════════════════════════════════════════════════
-          NAVIGATION — enterprise command style
+          NAVIGATION
       ═══════════════════════════════════════════════════════════════ */}
-      <nav
-        className="fixed top-0 inset-x-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm section-light"
-        role="navigation"
-        aria-label="Main navigation"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          {/* Logo */}
-          <DefenseEyeLogo href="/" />
-
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-2 border border-border/40 bg-card/35 px-2 py-1 rounded-full">
-            {[
-              { label: "CMMC Sprint", href: "/services/cmmc-readiness-sprint" },
-              { label: "CMMCLens", href: "/cmmclens" },
-              { label: "Scoping", href: "/services/cmmc-scoping" },
-              { label: "Knowledge Hub", href: "/knowledge-hub" },
-              { label: "Pricing", href: "/pricing" },
-              { label: "Blog", href: "/blog" },
-            ].map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="text-xs lg:text-sm text-[#0D1B33] hover:text-primary transition-colors px-3 py-1.5 rounded-full hover:bg-card/70"
-              >
-                {item.label}
-              </a>
-            ))}
-          </div>
-
-          <div className="hidden md:flex items-center">
-            <Button
-              size="sm"
-              className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-5"
-              onClick={() => setModalOpen(true)}
-            >
-              Get Assessment
-            </Button>
-          </div>
-
-          {/* Mobile toggle */}
-          <button
-            className="md:hidden text-foreground"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {/* Mobile menu */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="md:hidden bg-white border-b border-gray-200 overflow-hidden"
-            >
-              <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-3">
-                {[
-                  { label: "CMMC Sprint", href: "/services/cmmc-readiness-sprint" },
-                  { label: "CMMCLens", href: "/cmmclens" },
-                  { label: "Scoping", href: "/services/cmmc-scoping" },
-                  { label: "Knowledge Hub", href: "/knowledge-hub" },
-                  { label: "Pricing", href: "/pricing" },
-                  { label: "Blog", href: "/blog" },
-                  { label: "FAQ", href: "/faq" },
-                ].map((l) => (
-                  <a key={l.href} href={l.href} className="text-sm font-medium text-[#0D1B33] hover:text-primary py-2" onClick={() => setMobileMenuOpen(false)}>{l.label}</a>
-                ))}
-                <Button className="bg-accent text-accent-foreground font-semibold w-full mt-2" onClick={() => { setMobileMenuOpen(false); setModalOpen(true); }}>
-                  Book Free Assessment
-                </Button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
+      <NavBar />
 
       {/* ═══════════════════════════════════════════════════════════════
           HERO — Armada-style command center layout
       ═══════════════════════════════════════════════════════════════ */}
-      <header className="relative pt-32 pb-20 px-4 overflow-hidden">
+      <header className="relative pt-20 pb-20 px-4 overflow-hidden">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[1000px] h-[620px] rounded-full bg-primary/8 blur-[150px]" />
           <div className="absolute top-24 left-1/4 w-[360px] h-[260px] rounded-full bg-accent/[0.08] blur-[110px]" />

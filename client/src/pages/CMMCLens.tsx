@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
 import { ArrowRight, CheckCircle2, Zap, FileCheck, Activity, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import NavBar from "@/components/NavBar";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
@@ -182,23 +182,7 @@ export default function CMMCLens() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-gray-200 bg-white/95 backdrop-blur-md sticky top-0 z-40 section-light">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <DefenseEyeLogo href="/" />
-          <nav className="hidden md:flex items-center gap-6 text-sm text-[#0D1B33]">
-            <a href="/" className="hover:text-primary transition-colors">Home</a>
-            <a href="/services/cmmc-readiness-sprint" className="hover:text-primary transition-colors">CMMC Sprint</a>
-            <a href="/services/cmmc-scoping" className="hover:text-primary transition-colors">Scoping</a>
-            <a href="/pricing" className="hover:text-primary transition-colors">Pricing</a>
-            <a href="/knowledge-hub" className="hover:text-primary transition-colors">Knowledge Hub</a>
-          </nav>
-          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
-            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-              Book Urgent CMMC Call
-            </Button>
-          </a>
-        </div>
-      </header>
+      <NavBar />
 
       <main className="px-4">
         {/* ── Hero ── */}

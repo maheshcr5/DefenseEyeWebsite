@@ -21,6 +21,7 @@ import {
   TrendingDown,
   ShieldCheck,
 } from "lucide-react";
+import NavBar from "@/components/NavBar";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
@@ -157,22 +158,7 @@ export default function CMMCScoping() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* ── Nav ── */}
-      <header className="border-b border-gray-200 bg-white/95 backdrop-blur-md sticky top-0 z-40 section-light">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <DefenseEyeLogo href="/" />
-          <nav className="hidden md:flex items-center gap-6 text-sm text-[#0D1B33]">
-            {NAV_LINKS.map((l) => (
-              <a key={l.href} href={l.href} className="hover:text-primary transition-colors">{l.label}</a>
-            ))}
-          </nav>
-          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
-            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-5">
-              Book Scoping Call
-            </Button>
-          </a>
-        </div>
-      </header>
+      <NavBar />
 
       {/* ── Hero ── */}
       <section className="py-20 px-4 section-navy">
