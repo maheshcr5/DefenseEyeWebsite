@@ -592,7 +592,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           NVIDIA-STYLE PRODUCT STRIP
       ═══════════════════════════════════════════════════════════════ */}
-      <Section className="pb-16 px-4">
+      <Section className="py-16 px-4 section-navy">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8 flex items-end justify-between gap-4">
             <div>
@@ -651,29 +651,11 @@ export default function Home() {
         </div>
       </Section>
 
-      <div
-        className="relative"
-        style={{
-          ["--background" as any]: "oklch(0.985 0.002 255)",
-          ["--foreground" as any]: "oklch(0.23 0.01 255)",
-          ["--card" as any]: "oklch(0.995 0.001 255)",
-          ["--card-foreground" as any]: "oklch(0.23 0.01 255)",
-          ["--popover" as any]: "oklch(1 0 0)",
-          ["--popover-foreground" as any]: "oklch(0.23 0.01 255)",
-          ["--secondary" as any]: "oklch(0.96 0.003 255)",
-          ["--secondary-foreground" as any]: "oklch(0.28 0.01 255)",
-          ["--muted" as any]: "oklch(0.95 0.003 255)",
-          ["--muted-foreground" as any]: "oklch(0.46 0.01 255)",
-          ["--border" as any]: "oklch(0.88 0.004 255)",
-          ["--input" as any]: "oklch(0.90 0.004 255)",
-          ["--destructive-foreground" as any]: "oklch(0.985 0 0)",
-        }}
-      >
 
       {/* ═══════════════════════════════════════════════════════════════
           VIDEO BRIEFING — trust + urgency for high-intent visitors
       ═══════════════════════════════════════════════════════════════ */}
-      <Section className="pb-20 px-4">
+      <Section className="py-20 px-4 section-light">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-5">
@@ -752,7 +734,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           PROBLEM SECTION
       ═══════════════════════════════════════════════════════════════ */}
-      <Section className="pb-14 px-4">
+      <Section className="py-20 px-4 section-navy">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-medium text-destructive uppercase tracking-widest mb-3">If This Sounds Familiar</p>
@@ -783,7 +765,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           4-COLUMN CAPABILITY CARDS — core value props
       ═══════════════════════════════════════════════════════════════ */}
-      <section className="pb-20 px-4">
+      <section className="py-20 px-4 section-light">
         <div className="max-w-6xl mx-auto">
           <div className="mb-9 text-center">
             <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">How We Move You Forward</p>
@@ -884,7 +866,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           WHO WE HELP — trust signal strip
       ═══════════════════════════════════════════════════════════════ */}
-      <Section className="py-16 px-4">
+      <Section className="py-16 px-4 section-gray">
         <div className="max-w-6xl mx-auto">
           <p className="text-center text-xs font-medium text-muted-foreground/50 uppercase tracking-widest mb-10">
             Why DefenseEye
@@ -1397,7 +1379,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-      </div>
     </div>
   );
 }
