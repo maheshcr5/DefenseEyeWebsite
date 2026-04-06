@@ -1,5 +1,6 @@
 /*
  * DefenseEyeLogo — Shared brand identity component
+ * Matches the official DefenseEye logo: dark navy badge + eye icon + wordmark
  *
  * Props:
  *   href?      — wraps in <a> when provided (for nav use)
@@ -26,32 +27,29 @@ function EyeIcon({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      <defs>
-        <linearGradient id="de-grad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#00D4FF" />
-          <stop offset="100%" stopColor="#27E39A" />
-        </linearGradient>
-      </defs>
-      {/* Badge background */}
-      <rect x="1" y="1" width="38" height="38" rx="10" fill="#050C19" stroke="url(#de-grad)" strokeWidth="1.8" />
-      {/* Shield panel */}
-      <path d="M20 6.5 L30.5 10.5 V18.8C30.5 25.5 26.2 31.4 20 33.7C13.8 31.4 9.5 25.5 9.5 18.8V10.5L20 6.5Z" fill="#081427" stroke="#00D4FF" strokeOpacity="0.45" strokeWidth="0.8" />
-      {/* Eye outer almond */}
+      {/* Badge — dark navy rounded square, no border stroke */}
+      <rect x="0" y="0" width="40" height="40" rx="9" fill="#0D1B33" />
+
+      {/* Eye almond — white outline */}
       <path
-        d="M11 20 C13.8 16 26.2 16 29 20 C26.2 24 13.8 24 11 20Z"
-        fill="none"
-        stroke="url(#de-grad)"
-        strokeWidth="1.6"
+        d="M8 20 C12 13.5 28 13.5 32 20 C28 26.5 12 26.5 8 20Z"
+        fill="#0D1B33"
+        stroke="white"
+        strokeWidth="1.5"
         strokeLinejoin="round"
       />
-      {/* Iris ring */}
-      <circle cx="20" cy="20" r="3.6" fill="none" stroke="#00D4FF" strokeWidth="1.1" />
-      {/* Pupil */}
-      <circle cx="20" cy="20" r="1.9" fill="#27E39A" />
-      {/* Inner dark pupil */}
-      <circle cx="20" cy="20" r="0.9" fill="#06101E" />
-      {/* Glint — adds depth */}
-      <circle cx="21.4" cy="18.9" r="0.7" fill="white" opacity="0.85" />
+
+      {/* Iris — blue fill */}
+      <circle cx="20" cy="20" r="5" fill="#1A6FDB" />
+
+      {/* Pupil — dark center */}
+      <circle cx="20" cy="20" r="2.6" fill="#0D1B33" />
+
+      {/* Teal highlight dot */}
+      <circle cx="20" cy="20" r="1.3" fill="#27D9F5" />
+
+      {/* Glint */}
+      <circle cx="22" cy="18.2" r="0.9" fill="white" opacity="0.9" />
     </svg>
   );
 }
@@ -78,10 +76,7 @@ export default function DefenseEyeLogo({
           className={`font-heading font-bold tracking-tight leading-none select-none ${textCls}`}
         >
           <span className="text-foreground">Defense</span>
-          <span className="text-[#27E39A]">Eye</span>
-          <span className="text-muted-foreground/50 font-normal text-[0.6em] align-super ml-px hidden sm:inline">
-            .ai
-          </span>
+          <span className="text-[#1A6FDB]">Eye</span>
         </span>
       )}
     </span>
@@ -89,7 +84,7 @@ export default function DefenseEyeLogo({
 
   if (href) {
     return (
-      <a href={href} aria-label="DefenseEye.ai — Home" className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded">
+      <a href={href} aria-label="DefenseEye — Home" className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded">
         {inner}
       </a>
     );

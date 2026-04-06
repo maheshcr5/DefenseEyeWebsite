@@ -68,8 +68,8 @@ export default function CMMCReadinessSprint() {
             Get CMMC Ready in 2-4 Weeks
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed mb-8">
-            For small-to-mid U.S. defense contractors (10-150 employees) under time pressure.
-            We help you protect DoD contracts with a fast, practical CMMC readiness plan.
+            For defense contractors seeking specialized help with CMMC assessment readiness.
+            We help you protect DoD contracts with a fast, practical CMMC assessment and implementation, so you stay compliant and contract-ready.
           </p>
           <p className="text-sm text-muted-foreground max-w-3xl mb-8">
             If you need urgent CMMC readiness help, book a call now:{" "}
