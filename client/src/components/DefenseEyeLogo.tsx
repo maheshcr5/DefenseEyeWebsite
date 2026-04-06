@@ -16,9 +16,9 @@ interface DefenseEyeLogoProps {
 }
 
 const SIZE_MAP = {
-  sm: "h-7",
+  sm: "h-8",
   md: "h-9",
-  lg: "h-11",
+  lg: "h-10",
 };
 
 export default function DefenseEyeLogo({
@@ -30,7 +30,7 @@ export default function DefenseEyeLogo({
     <img
       src="/defenseeye-logo.png"
       alt="DefenseEye"
-      className={`${SIZE_MAP[size]} w-auto object-contain ${className}`}
+      className={`${SIZE_MAP[size]} w-auto max-w-[200px] object-contain ${className}`}
       draggable={false}
     />
   );
@@ -52,7 +52,7 @@ export function DefenseEyeIcon({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
     <img
       src="/defenseeye-logo.png"
       alt="DefenseEye"
-      className={`${SIZE_MAP[size]} w-auto object-contain`}
+      className={`${SIZE_MAP[size]} w-auto max-w-[200px] object-contain`}
       draggable={false}
     />
   );
