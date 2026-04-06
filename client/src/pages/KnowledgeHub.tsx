@@ -38,7 +38,7 @@ const NAV_LINKS = [
 function Nav() {
   const [open, setOpen] = useState(false);
   return (
-    <nav className="fixed top-0 inset-x-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border/30" role="navigation" aria-label="Main navigation">
+    <nav className="fixed top-0 inset-x-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm section-light" role="navigation" aria-label="Main navigation">
       <div className="container flex items-center justify-between h-16">
         <DefenseEyeLogo href="/" />
         <div className="hidden md:flex items-center gap-7">
@@ -408,7 +408,7 @@ export default function KnowledgeHub() {
       </section>
 
       {/* ── Footer ───────────────────────────────────────────────────────────── */}
-      <footer className="py-10 border-t border-border/30" role="contentinfo">
+      <footer className="py-10 border-t border-gray-200 section-gray" role="contentinfo">
         <div className="container flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded bg-primary/20 border border-primary/40 flex items-center justify-center">

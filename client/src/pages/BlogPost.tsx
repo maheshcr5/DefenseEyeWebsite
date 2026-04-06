@@ -396,7 +396,7 @@ export default function BlogPostPage() {
       <ReadingProgressBar />
 
       {/* ── Navigation ── */}
-      <div className="border-b border-border/30 bg-background/80 backdrop-blur-md sticky top-0 z-40">
+      <div className="border-b border-gray-200 bg-white/95 backdrop-blur-md sticky top-0 z-40 section-light">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <DefenseEyeLogo href="/" />
           <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
@@ -561,7 +561,7 @@ export default function BlogPostPage() {
       )}
 
       {/* ── Footer ── */}
-      <footer className="border-t border-border/30 py-8 px-4">
+      <footer className="border-t border-gray-200 py-8 px-4 section-gray">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
           <span>&copy; {new Date().getFullYear()} DefenseEye.ai — All rights reserved.</span>
           <div className="flex items-center gap-6">

@@ -151,7 +151,7 @@ export default function KnowledgeHubLayout({
           NAVIGATION
       ══════════════════════════════════════════════════════════════ */}
       <nav
-        className="fixed top-0 inset-x-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border/30"
+        className="fixed top-0 inset-x-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm section-light"
         role="navigation"
         aria-label="Main navigation"
       >
@@ -202,7 +202,7 @@ export default function KnowledgeHubLayout({
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden bg-card border-b border-border overflow-hidden"
+              className="md:hidden bg-white border-b border-gray-200 overflow-hidden"
             >
               <div className="container py-4 flex flex-col gap-3">
                 {NAV_LINKS.map((link) => (
@@ -370,7 +370,7 @@ export default function KnowledgeHubLayout({
       {/* ══════════════════════════════════════════════════════════════
           FOOTER
       ══════════════════════════════════════════════════════════════ */}
-      <footer className="py-12 border-t border-border/30" role="contentinfo">
+      <footer className="py-12 border-t border-gray-200 section-gray" role="contentinfo">
         <div className="container">
           <div className="grid md:grid-cols-4 gap-8 mb-10">
             {/* Brand */}

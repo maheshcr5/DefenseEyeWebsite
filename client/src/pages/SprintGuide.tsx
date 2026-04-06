@@ -34,7 +34,7 @@ export default function SprintGuide() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-border/30 bg-background/90 backdrop-blur-md sticky top-0 z-40">
+      <header className="border-b border-gray-200 bg-white/95 backdrop-blur-md sticky top-0 z-40 section-light">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <DefenseEyeLogo href="/" />
           <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">

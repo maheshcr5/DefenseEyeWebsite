@@ -391,7 +391,7 @@ export default function Home() {
           NAVIGATION — enterprise command style
       ═══════════════════════════════════════════════════════════════ */}
       <nav
-        className="fixed top-0 inset-x-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border/20"
+        className="fixed top-0 inset-x-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm section-light"
         role="navigation"
         aria-label="Main navigation"
       >
@@ -446,7 +446,7 @@ export default function Home() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden bg-card border-b border-border overflow-hidden"
+              className="md:hidden bg-white border-b border-gray-200 overflow-hidden"
             >
               <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-3">
                 {[
@@ -1272,7 +1272,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           CONTACT / LEAD CAPTURE
       ═══════════════════════════════════════════════════════════════ */}
-      <Section id="contact" className="py-20 px-4">
+      <Section id="contact" className="py-20 px-4 section-light">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/30 bg-accent/5 mb-8">
             <Clock className="w-3.5 h-3.5 text-accent" />
@@ -1311,7 +1311,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           FOOTER
       ═══════════════════════════════════════════════════════════════ */}
-      <footer className="py-14 px-4 border-t border-border/30" role="contentinfo">
+      <footer className="py-14 px-4 border-t border-border/30 section-gray" role="contentinfo">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-4 gap-10 mb-12">
             {/* Brand */}
