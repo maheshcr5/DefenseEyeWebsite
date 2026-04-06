@@ -64,7 +64,7 @@ export default function CMMCReadinessSprint() {
           <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-4">
             CMMC Readiness Sprint
           </p>
-          <h1 className="font-heading text-4xl md:text-5xl font-bold leading-tight mb-5">
+          <h1 className="font-heading text-5xl md:text-6xl font-bold leading-tight mb-5">
             Get CMMC Ready in 2-4 Weeks
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed mb-8">
@@ -116,7 +116,7 @@ export default function CMMCReadinessSprint() {
         </section>
 
         <section className="max-w-6xl mx-auto py-14 border-y border-border/30">
-          <h2 className="font-heading text-3xl font-bold mb-4">What You Get in the Sprint</h2>
+          <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-4">What You Get in the Sprint</h2>
           <p className="text-muted-foreground mb-8 max-w-3xl">
             A fixed-price engagement designed for practical execution, not theoretical compliance decks.
           </p>
@@ -138,7 +138,7 @@ export default function CMMCReadinessSprint() {
         </section>
 
         <section className="max-w-6xl mx-auto py-14">
-          <h2 className="font-heading text-3xl font-bold mb-7">Why DefenseEye</h2>
+          <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-7">Why DefenseEye</h2>
           <div className="grid md:grid-cols-4 gap-4">
             {[
               { icon: Award, title: "CCP-Led", body: "Led by Certified CMMC Professionals focused on defense contracting reality." },
@@ -159,7 +159,7 @@ export default function CMMCReadinessSprint() {
         </section>
 
         <section className="max-w-6xl mx-auto py-14 border-y border-border/30">
-          <h2 className="font-heading text-3xl font-bold mb-7">CMMC Readiness FAQ</h2>
+          <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-7">CMMC Readiness FAQ</h2>
           <div className="space-y-3">
             {FAQS.map((f) => (
               <div key={f.q} className="bg-card/40 border border-border/30 p-5 rounded-sm">
@@ -171,7 +171,7 @@ export default function CMMCReadinessSprint() {
         </section>
 
         <section className="max-w-6xl mx-auto py-16 text-center">
-          <h2 className="font-heading text-3xl font-bold mb-3">Protect Your DoD Contracts Before It Is Too Late</h2>
+          <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-3">Protect Your DoD Contracts Before It Is Too Late</h2>
           <p className="text-muted-foreground mb-8">Start with a fixed-price CMMC readiness sprint built for small and mid-sized defense contractors.</p>
           <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
             <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-8">

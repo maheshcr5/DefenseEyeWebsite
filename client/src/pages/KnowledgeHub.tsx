@@ -28,10 +28,10 @@ import {
 // ─── Nav (matches Home.tsx) ───────────────────────────────────────────────────
 const NAV_LINKS = [
   { label: "CMMC Sprint", href: "/services/cmmc-readiness-sprint" },
+  { label: "Scoping", href: "/services/cmmc-scoping" },
   { label: "CMMCLens", href: "/cmmclens" },
-  { label: "Readiness Path", href: "/#process" },
-  { label: "Insights", href: "/blog" },
   { label: "Knowledge Hub", href: "/knowledge-hub" },
+  { label: "Blog", href: "/blog" },
   { label: "Pricing", href: "/pricing" },
 ];
 

@@ -406,8 +406,8 @@ export default function BlogPostPage() {
             <Link href="/cmmclens">
               <span className="hover:text-primary transition-colors cursor-pointer">CMMCLens</span>
             </Link>
-            <Link href="/#process">
-              <span className="hover:text-primary transition-colors cursor-pointer">Readiness Path</span>
+            <Link href="/services/cmmc-scoping">
+              <span className="hover:text-primary transition-colors cursor-pointer">Scoping</span>
             </Link>
             <Link href="/knowledge-hub">
               <span className="hover:text-primary transition-colors cursor-pointer">Knowledge Hub</span>

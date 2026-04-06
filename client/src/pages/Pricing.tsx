@@ -59,14 +59,15 @@ export default function Pricing() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* ── Nav ── */}
       <header className="border-b border-gray-200 bg-white/95 backdrop-blur-md sticky top-0 z-40 section-light">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <DefenseEyeLogo href="/" />
           <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
             <a href="/" className="hover:text-primary transition-colors">Home</a>
             <a href="/services/cmmc-readiness-sprint" className="hover:text-primary transition-colors">CMMC Sprint</a>
+            <a href="/services/cmmc-scoping" className="hover:text-primary transition-colors">Scoping</a>
             <a href="/cmmclens" className="hover:text-primary transition-colors">CMMCLens</a>
-            <a href="/cmmc-readiness-sprint-guide" className="hover:text-primary transition-colors">4-Week Guide</a>
             <a href="/knowledge-hub" className="hover:text-primary transition-colors">Knowledge Hub</a>
             <a href="/blog" className="hover:text-primary transition-colors">Blog</a>
           </nav>
@@ -78,20 +79,21 @@ export default function Pricing() {
         </div>
       </header>
 
-      <main className="px-4">
-        <section className="max-w-6xl mx-auto pt-16 pb-12 text-center">
+      {/* ── Hero ── */}
+      <section className="max-w-6xl mx-auto pt-14 pb-10 px-4 text-center section-navy" style={{ maxWidth: "100%" }}>
+        <div className="max-w-6xl mx-auto">
           <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-4">
             CMMC Readiness Cost and Pricing
           </p>
-          <h1 className="font-heading text-4xl md:text-5xl font-bold leading-tight mb-5">
+          <h1 className="font-heading text-5xl md:text-6xl font-bold leading-tight mb-5 text-white">
             Flexible, Transparent Pricing for
             <span className="text-primary"> Urgent CMMC Readiness</span>
           </h1>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-7">
+          <p className="text-lg text-white/75 max-w-3xl mx-auto leading-relaxed mb-7">
             Designed for small and mid-sized U.S. defense contractors that need fast, practical help.
             Invest in compliance before delay costs you contracts.
           </p>
-          <p className="text-sm text-muted-foreground max-w-3xl mx-auto mb-8">
+          <p className="text-sm text-white/60 max-w-3xl mx-auto mb-8">
             If you need urgent CMMC readiness help, book a call now:{" "}
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
               {CALENDLY_URL}
@@ -104,11 +106,14 @@ export default function Pricing() {
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </a>
-        </section>
+        </div>
+      </section>
 
-        <section className="max-w-6xl mx-auto py-12 border-y border-border/30">
-          <h2 className="font-heading text-3xl font-bold mb-3 text-center">Choose the Right Engagement Speed</h2>
-          <p className="text-muted-foreground text-center mb-8 max-w-3xl mx-auto">
+      {/* ── Tiers ── */}
+      <section className="px-4 py-14 section-light">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-3 text-center text-foreground">Choose the Right Engagement Speed</h2>
+          <p className="text-muted-foreground text-center mb-10 max-w-3xl mx-auto">
             No public price list for competitors. Clear scope, practical deliverables, and tailored quoting for your contract risk and timeline.
           </p>
           <div className="grid md:grid-cols-3 gap-5">
@@ -130,7 +135,7 @@ export default function Pricing() {
               },
             ].map((plan) => (
               <div key={plan.tier} className="bg-card/50 border border-border/40 p-6 rounded-sm">
-                <p className="font-heading text-xl font-bold mb-2">{plan.tier}</p>
+                <p className="font-heading text-xl font-bold mb-2 text-foreground">{plan.tier}</p>
                 <p className="text-sm text-muted-foreground mb-4">{plan.fit}</p>
                 <ul className="space-y-2.5">
                   {plan.items.map((item) => (
@@ -143,51 +148,58 @@ export default function Pricing() {
               </div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="max-w-6xl mx-auto py-12">
-          <div className="grid md:grid-cols-3 gap-5">
-            <div className="bg-card/40 border border-border/30 p-5 rounded-sm">
-              <AlertTriangle className="w-5 h-5 text-destructive mb-3" />
-              <p className="font-heading font-semibold mb-1">Cost of Delay</p>
-              <p className="text-sm text-muted-foreground">
-                Waiting can cost more than action if contract eligibility is at risk.
-              </p>
-            </div>
-            <div className="bg-card/40 border border-border/30 p-5 rounded-sm">
-              <Clock className="w-5 h-5 text-primary mb-3" />
-              <p className="font-heading font-semibold mb-1">Speed to Clarity</p>
-              <p className="text-sm text-muted-foreground">
-                Fast scoping reduces wasted spend and keeps internal IT focused.
-              </p>
-            </div>
-            <div className="bg-card/40 border border-border/30 p-5 rounded-sm">
-              <FileCheck className="w-5 h-5 text-primary mb-3" />
-              <p className="font-heading font-semibold mb-1">Contract Protection</p>
-              <p className="text-sm text-muted-foreground">
-                Prioritize controls that materially protect revenue and award confidence.
-              </p>
-            </div>
+      {/* ── Signals ── */}
+      <section className="px-4 py-10 section-gray">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-5">
+          <div className="bg-card/40 border border-border/30 p-5 rounded-sm">
+            <AlertTriangle className="w-5 h-5 text-destructive mb-3" />
+            <p className="font-heading font-semibold mb-1 text-foreground">Cost of Delay</p>
+            <p className="text-sm text-muted-foreground">
+              Waiting can cost more than action if contract eligibility is at risk.
+            </p>
           </div>
-        </section>
+          <div className="bg-card/40 border border-border/30 p-5 rounded-sm">
+            <Clock className="w-5 h-5 text-primary mb-3" />
+            <p className="font-heading font-semibold mb-1 text-foreground">Speed to Clarity</p>
+            <p className="text-sm text-muted-foreground">
+              Fast scoping reduces wasted spend and keeps internal IT focused.
+            </p>
+          </div>
+          <div className="bg-card/40 border border-border/30 p-5 rounded-sm">
+            <FileCheck className="w-5 h-5 text-primary mb-3" />
+            <p className="font-heading font-semibold mb-1 text-foreground">Contract Protection</p>
+            <p className="text-sm text-muted-foreground">
+              Prioritize controls that materially protect revenue and award confidence.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <section className="max-w-6xl mx-auto py-12 border-y border-border/30">
-          <h2 className="font-heading text-3xl font-bold mb-6">Pricing FAQ</h2>
+      {/* ── FAQ ── */}
+      <section className="px-4 py-14 section-light">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-8 text-foreground">Pricing FAQ</h2>
           <div className="space-y-3">
             {FAQS.map((f) => (
               <div key={f.q} className="bg-card/40 border border-border/30 p-5 rounded-sm">
-                <p className="font-heading font-semibold mb-2">{f.q}</p>
+                <p className="font-heading font-semibold mb-2 text-foreground">{f.q}</p>
                 <p className="text-sm text-muted-foreground">{f.a}</p>
               </div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="max-w-6xl mx-auto py-16 text-center">
-          <h2 className="font-heading text-3xl font-bold mb-3">
+      {/* ── Footer CTA ── */}
+      <section className="px-4 py-16 section-navy">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-3 text-white">
             Protect Your DoD Contracts Before Deadlines
           </h2>
-          <p className="text-muted-foreground mb-8">
+          <p className="text-white/70 mb-8">
             Book now to get a tailored CMMC readiness quote and clear next steps.
           </p>
           <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
@@ -195,8 +207,22 @@ export default function Pricing() {
               Schedule a Fast 30-Min Assessment Call <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </a>
-        </section>
-      </main>
+        </div>
+      </section>
+
+      {/* ── Footer ── */}
+      <footer className="border-t border-gray-200 py-8 px-4 section-gray">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+          <DefenseEyeLogo size="sm" />
+          <span>&copy; {new Date().getFullYear()} DefenseEye, Inc. All rights reserved.</span>
+          <div className="flex items-center gap-6">
+            <a href="/" className="hover:text-primary transition-colors">Home</a>
+            <a href="/faq" className="hover:text-primary transition-colors">FAQ</a>
+            <a href="/cmmclens" className="hover:text-primary transition-colors">CMMCLens</a>
+            <a href="/services/cmmc-readiness-sprint" className="hover:text-primary transition-colors">CMMC Sprint</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

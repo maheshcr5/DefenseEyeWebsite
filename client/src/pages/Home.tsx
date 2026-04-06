@@ -374,10 +374,10 @@ export default function Home() {
             {[
               { label: "CMMC Sprint", href: "/services/cmmc-readiness-sprint" },
               { label: "CMMCLens", href: "/cmmclens" },
-              { label: "Readiness Path", href: "#process" },
+              { label: "Scoping", href: "/services/cmmc-scoping" },
               { label: "Knowledge Hub", href: "/knowledge-hub" },
-              { label: "Insights", href: "/blog" },
               { label: "Pricing", href: "/pricing" },
+              { label: "Blog", href: "/blog" },
             ].map((item) => (
               <a
                 key={item.href}
@@ -422,11 +422,11 @@ export default function Home() {
                 {[
                   { label: "CMMC Sprint", href: "/services/cmmc-readiness-sprint" },
                   { label: "CMMCLens", href: "/cmmclens" },
-                  { label: "Readiness Path", href: "#process" },
+                  { label: "Scoping", href: "/services/cmmc-scoping" },
                   { label: "Knowledge Hub", href: "/knowledge-hub" },
-                  { label: "Insights", href: "/blog" },
-                  { label: "Case Studies", href: "/case-studies" },
                   { label: "Pricing", href: "/pricing" },
+                  { label: "Blog", href: "/blog" },
+                  { label: "FAQ", href: "/faq" },
                 ].map((l) => (
                   <a key={l.href} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-primary py-2" onClick={() => setMobileMenuOpen(false)}>{l.label}</a>
                 ))}
@@ -561,12 +561,12 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           NVIDIA-STYLE PRODUCT STRIP
       ═══════════════════════════════════════════════════════════════ */}
-      <Section className="py-16 px-4 section-navy">
+      <Section className="py-12 px-4 section-navy">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8 flex items-end justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">Platform Modules</p>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground">
+              <h2 className="font-heading text-4xl sm:text-5xl font-bold text-foreground">
                 The Tools That Accelerate CMMC Readiness
               </h2>
             </div>
@@ -621,93 +621,14 @@ export default function Home() {
       </Section>
 
 
-      {/* ═══════════════════════════════════════════════════════════════
-          VIDEO BRIEFING — trust + urgency for high-intent visitors
-      ═══════════════════════════════════════════════════════════════ */}
-      <Section className="py-20 px-4 section-light">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-5">
-                <PlayCircle className="w-3.5 h-3.5 text-primary" />
-                <span className="text-xs font-medium text-primary tracking-wide uppercase">Watch: CMMC Readiness Briefing</span>
-              </div>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold leading-tight mb-4 text-foreground">
-                See How DefenseEye Accelerates
-                <span className="text-primary"> CMMC Assessment Readiness</span>
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                If your team is under deadline pressure for CMMC consulting, advisory, or automation
-                like `cmmclensgov.azurewebsites.net`, this walkthrough shows the execution model
-                that turns uncertainty into assessment-ready progress.
-              </p>
-              <ul className="space-y-2.5 mb-8">
-                {[
-                  "What to fix first when contracts are at risk",
-                  "How advisory + automation shortens prep cycles",
-                  "How to organize evidence for C3PAO confidence",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                    <span className="text-sm text-muted-foreground">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mb-8">
-                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground/70 mb-2">Key Moments</p>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    { label: "00:00 Contract Risk", href: "https://www.youtube.com/watch?v=g3Yhk1nUb7s&t=0s" },
-                    { label: "01:10 CMMC Sprint", href: "https://www.youtube.com/watch?v=g3Yhk1nUb7s&t=70s" },
-                    { label: "02:20 SSP + POA&M", href: "https://www.youtube.com/watch?v=g3Yhk1nUb7s&t=140s" },
-                    { label: "03:30 C3PAO Prep", href: "https://www.youtube.com/watch?v=g3Yhk1nUb7s&t=210s" },
-                  ].map((item) => (
-                    <a
-                      key={item.label}
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs px-2.5 py-1 rounded border border-border/50 text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
-                    >
-                      {item.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
-              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
-                <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-                  Schedule a Fast 30-Min Assessment Call <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </a>
-            </div>
-
-            <div className="lg:col-span-7">
-              <div className="relative bracket-decoration bg-card/50 border border-border/40 p-3">
-                <div className="relative w-full overflow-hidden rounded-sm border border-border/30 bg-black aspect-video">
-                  <iframe
-                    className="absolute inset-0 w-full h-full"
-                    src="https://www.youtube.com/embed/g3Yhk1nUb7s?rel=0"
-                    title="CMMC Assessment Readiness Briefing"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* ═══════════════════════════════════════════════════════════════
+            {/* ═══════════════════════════════════════════════════════════════
           PROBLEM SECTION
       ═══════════════════════════════════════════════════════════════ */}
-      <Section className="py-20 px-4 section-navy">
+      <Section className="py-14 px-4 section-navy">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-medium text-destructive uppercase tracking-widest mb-3">If This Sounds Familiar</p>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground mb-3">
+            <h2 className="font-heading text-4xl sm:text-5xl font-bold text-foreground mb-3">
               This Is Where Most Teams Stall
             </h2>
             <p className="text-muted-foreground max-w-3xl mx-auto">
@@ -734,11 +655,11 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           4-COLUMN CAPABILITY CARDS — core value props
       ═══════════════════════════════════════════════════════════════ */}
-      <section className="py-20 px-4 section-light">
+      <section className="py-14 px-4 section-light">
         <div className="max-w-6xl mx-auto">
           <div className="mb-9 text-center">
             <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">How We Move You Forward</p>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground">
+            <h2 className="font-heading text-4xl sm:text-5xl font-bold text-foreground">
               What You Get in <span className="text-primary">One Unified Execution Model</span>
             </h2>
           </div>
@@ -795,11 +716,11 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           KEY FEATURES — 2-column checklist
       ═══════════════════════════════════════════════════════════════ */}
-      <Section className="py-20 px-4 section-light">
+      <Section className="py-14 px-4 section-light">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
+          <div className="text-center mb-10">
             <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">Solution</p>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
+            <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-3 text-foreground">
               Stop Firefighting CMMC.
               <span className="text-primary"> Start Operating Like a Program Your Prime Trusts</span>
             </h2>
@@ -835,7 +756,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           WHO WE HELP — trust signal strip
       ═══════════════════════════════════════════════════════════════ */}
-      <Section className="py-16 px-4 section-gray">
+      <Section className="py-12 px-4 section-gray">
         <div className="max-w-6xl mx-auto">
           <p className="text-center text-xs font-medium text-muted-foreground/50 uppercase tracking-widest mb-10">
             Why DefenseEye
@@ -870,15 +791,15 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           SERVICES — 3 detailed service cards
       ═══════════════════════════════════════════════════════════════ */}
-      <Section id="services" className="py-20 px-4 section-light">
+      <Section id="services" className="py-14 px-4 section-light">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
+          <div className="text-center mb-10">
             <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">How We Work</p>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
-              Start with the <span className="text-primary">CMMC Readiness Sprint</span>
+            <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-3 text-foreground">
+              Our <span className="text-primary">CMMC Services</span> — Scoping to Certification
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Fixed-price, scope-first, and designed for small-to-mid contractors that need speed without sacrificing quality.
+              Scope-first, fixed-price engagements designed for defense contractors that need speed, documentation, and C3PAO-ready outcomes.
             </p>
             <p className="text-sm text-muted-foreground mt-4">
               Urgent buyer?{" "}
@@ -889,8 +810,24 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-5">
             {[
+              {
+                badge: "Start Here",
+                badgeColor: "text-accent border-accent/40 bg-accent/5",
+                icon: Target,
+                iconColor: "text-accent",
+                title: "CMMC Scoping",
+                desc: "Define your CUI environment boundary before the gap assessment — the step most contractors skip that inflates cost and assessment risk.",
+                features: [
+                  "CUI boundary definition",
+                  "Asset inventory",
+                  "Control applicability map",
+                  "Pre-SSP scoping doc",
+                  "Scope reduction strategy",
+                ],
+              },
+
               {
                 badge: "Primary Entry Point",
                 badgeColor: "text-emerald-400 border-emerald-400/40 bg-emerald-400/5",
@@ -963,7 +900,13 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                {svc.title === "CMMC Readiness Sprint" ? (
+                {svc.title === "CMMC Scoping" ? (
+                  <a href="/services/cmmc-scoping" className="mt-auto">
+                    <Button variant="outline" className="border-accent/40 text-accent hover:bg-accent/10 w-full">
+                      Learn About Scoping <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </a>
+                ) : svc.title === "CMMC Readiness Sprint" ? (
                   <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="mt-auto">
                     <Button
                       variant="outline"
@@ -987,74 +930,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          PROCESS — 3 numbered steps
-      ═══════════════════════════════════════════════════════════════ */}
-      <Section id="process" className="py-20 px-4 section-gray">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
-              How We Get You <span className="text-primary">Certified</span>
-            </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              A structured, advisor-led process from your first call to your C3PAO assessment certificate.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[
-              {
-                step: "01",
-                icon: BarChart3,
-                title: "Free Gap Assessment",
-                desc: "We evaluate your current security posture against all 110 NIST SP 800-171 controls, calculate your estimated SPRS score, and deliver a prioritized gap report within 24 hours — no cost, no commitment.",
-              },
-              {
-                step: "02",
-                icon: FileCheck,
-                title: "Remediation & Documentation",
-                desc: "Our certified advisors guide technical remediation while CMMC Level 2 automation generates SSP, policies, procedures, standards, POA&M, and evidence packages in real time.",
-              },
-              {
-                step: "03",
-                icon: Award,
-                title: "C3PAO Assessment Ready",
-                desc: "We organize your complete evidence package, conduct a pre-assessment readiness review, prepare your staff for assessor interviews, and coordinate with your selected C3PAO for a smooth assessment.",
-              },
-            ].map((step, i) => (
-              <motion.div
-                key={step.step}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.12, duration: 0.4 }}
-                className="relative"
-              >
-                {/* Connector line */}
-                {i < 2 && (
-                  <div className="hidden md:block absolute top-6 left-[calc(100%+1rem)] w-8 h-px bg-border/50" />
-                )}
-                <div className="flex items-start gap-5">
-                  <div className="shrink-0">
-                    <div className="w-12 h-12 rounded-sm bg-primary/10 border border-primary/20 flex items-center justify-center">
-                      <span className="font-heading font-bold text-primary text-sm">{step.step}</span>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <step.icon className="w-4 h-4 text-primary" />
-                      <h3 className="font-heading font-bold text-foreground">{step.title}</h3>
-                    </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* ═══════════════════════════════════════════════════════════════
+            {/* ═══════════════════════════════════════════════════════════════
           URGENCY BANNER — loss aversion for desperate contractors
       ═══════════════════════════════════════════════════════════════ */}
       <section className="py-10 px-4 bg-[#0D1B33] border-y border-[#FFB547]/30">
@@ -1070,104 +946,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          PRICING
-      ═══════════════════════════════════════════════════════════════ */}
-      <Section id="pricing" className="py-20 px-4 section-light">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">Pricing / Entry Point</p>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
-              Fixed-Price Start for <span className="text-primary">Small and Mid-Sized Contractors</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Start with a fixed-price CMMC readiness sprint, then scale only where needed. Built for teams that need speed and budget clarity.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {[
-              {
-                tier: "Starter",
-                price: "Tailored",
-                period: "",
-                badge: null,
-                description: "For contractors starting CMMC readiness with urgent clarity needs.",
-                features: ["Initial CMMC scope and gap review", "Level 1 / Level 2 alignment", "SSP starter structure", "POA&M starter actions", "SPRS direction guidance", "Advisor support"],
-                cta: "Get Tailored Quote",
-                highlight: false,
-              },
-              {
-                tier: "Professional",
-                price: "Tailored",
-                period: "",
-                badge: "Most Popular",
-                description: "Full CMMC Level 2 automation for contractors handling CUI under deadlines.",
-                features: ["110-control NIST 800-171 mapping", "Real-time risk remediation", "Real-time SSP/policies/procedures/standards", "Full POA&M workflow", "C3PAO assessment prep package", "Real-time SPRS tracking", "Continuous monitoring", "Priority support"],
-                cta: "Book Urgent Readiness Call",
-                highlight: true,
-              },
-              {
-                tier: "Enterprise",
-                price: "Custom",
-                period: "",
-                badge: null,
-                description: "For prime contractors and MSSPs managing multiple clients.",
-                features: ["Unlimited users & environments", "Multi-tenant MSSP dashboard", "Dedicated Customer Success Manager", "Custom NIST 800-172 controls", "White-label option", "SLA-backed uptime", "On-site C3PAO coordination", "24/7 priority support"],
-                cta: "Request Custom Scope",
-                highlight: false,
-              },
-            ].map((plan, i) => (
-              <motion.div
-                key={plan.tier}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.4 }}
-                className={`relative flex flex-col rounded-sm border p-7 ${
-                  plan.highlight
-                    ? "border-primary/50 bg-card/80 shadow-lg shadow-primary/10"
-                    : "border-border/40 bg-card/40"
-                }`}
-              >
-                {plan.badge && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                      {plan.badge}
-                    </span>
-                  </div>
-                )}
-                <div className="mb-6">
-                  <p className="font-heading font-semibold text-xs text-muted-foreground uppercase tracking-widest mb-2">{plan.tier}</p>
-                  <div className="flex items-end gap-1 mb-3">
-                    <span className="font-heading text-4xl font-bold text-foreground">{plan.price}</span>
-                    {plan.period && <span className="text-muted-foreground text-sm mb-1">{plan.period}</span>}
-                  </div>
-                  <p className="text-sm text-muted-foreground">{plan.description}</p>
-                </div>
-                <ul className="space-y-2.5 mb-8 flex-1">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5">
-                      <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                      <span className="text-sm text-muted-foreground">{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  className={plan.highlight ? "bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full" : "border-primary/40 text-primary hover:bg-primary/10 w-full"}
-                  variant={plan.highlight ? undefined : "outline"}
-                  onClick={() => setModalOpen(true)}
-                >
-                  {plan.cta} <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </motion.div>
-            ))}
-          </div>
-          <p className="text-center text-xs text-muted-foreground mt-8">
-            Transparent scope, tailored quote, and a practical rollout path for urgent contract timelines.
-          </p>
+            {/* PRICING TEASER */}
+      <Section className="py-10 px-4 section-gray">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-heading text-2xl font-bold mb-2 text-foreground">Transparent, Fixed-Price Engagements</h2>
+          <p className="text-muted-foreground mb-5 text-sm">No hourly billing. No scope creep. Starter sprint from $8,000.</p>
+          <a href="/pricing" className="inline-flex items-center gap-2 text-primary font-semibold hover:underline">
+            See full pricing <ArrowRight className="w-4 h-4" />
+          </a>
         </div>
       </Section>
+
+
 
       {/* FAQ TEASER */}
       <Section className="py-12 px-4 section-gray">
@@ -1187,13 +977,13 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════
           CONTACT / LEAD CAPTURE
       ═══════════════════════════════════════════════════════════════ */}
-      <Section id="contact" className="py-20 px-4 section-light">
+      <Section id="contact" className="py-14 px-4 section-light">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/30 bg-accent/5 mb-8">
             <Clock className="w-3.5 h-3.5 text-accent" />
             <span className="text-xs font-medium text-accent tracking-wide uppercase">Response within 24 hours</span>
           </div>
-          <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-5 text-foreground">
+          <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-5 text-foreground">
             Protect Your DoD Contracts Before It Is Too Late
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed mb-10 max-w-2xl mx-auto">

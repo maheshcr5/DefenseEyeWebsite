@@ -188,6 +188,7 @@ export default function CMMCLens() {
           <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
             <a href="/" className="hover:text-primary transition-colors">Home</a>
             <a href="/services/cmmc-readiness-sprint" className="hover:text-primary transition-colors">CMMC Sprint</a>
+            <a href="/services/cmmc-scoping" className="hover:text-primary transition-colors">Scoping</a>
             <a href="/pricing" className="hover:text-primary transition-colors">Pricing</a>
             <a href="/knowledge-hub" className="hover:text-primary transition-colors">Knowledge Hub</a>
           </nav>

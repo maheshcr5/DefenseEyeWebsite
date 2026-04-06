@@ -15,6 +15,7 @@ const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
 const NAV_LINKS = [
   { label: "CMMC Sprint", href: "/services/cmmc-readiness-sprint" },
+  { label: "Scoping", href: "/services/cmmc-scoping" },
   { label: "CMMCLens", href: "/cmmclens" },
   { label: "Pricing", href: "/pricing" },
   { label: "Knowledge Hub", href: "/knowledge-hub" },
@@ -189,7 +190,7 @@ export default function FAQPage() {
             <BookOpen className="w-3.5 h-3.5 text-primary" />
             <span className="text-xs font-medium text-primary tracking-wide uppercase">CMMC Answers Without the Runaround</span>
           </div>
-          <h1 className="font-heading text-4xl sm:text-5xl font-bold leading-tight mb-4 text-foreground">
+          <h1 className="font-heading text-5xl sm:text-6xl font-bold leading-tight mb-4 text-foreground">
             CMMC Frequently Asked Questions
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
