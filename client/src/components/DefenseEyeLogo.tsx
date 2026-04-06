@@ -1,6 +1,6 @@
 /*
  * DefenseEyeLogo — Shared brand identity component
- * Matches the official DefenseEye logo: dark navy badge + eye icon + wordmark
+ * Clean blue eye icon + "DefenseEye" wordmark
  *
  * Props:
  *   href?      — wraps in <a> when provided (for nav use)
@@ -18,38 +18,28 @@ interface DefenseEyeLogoProps {
 
 function EyeIcon({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
   const cls =
-    size === "sm" ? "w-7 h-7" : size === "lg" ? "w-11 h-11" : "w-9 h-9";
+    size === "sm" ? "w-8 h-5" : size === "lg" ? "w-11 h-7" : "w-10 h-6";
   return (
     <svg
       className={cls}
-      viewBox="0 0 40 40"
+      viewBox="0 0 56 36"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      {/* Badge — dark navy rounded square, no border stroke */}
-      <rect x="0" y="0" width="40" height="40" rx="9" fill="#0D1B33" />
-
-      {/* Eye almond — white outline */}
+      {/* Outer blue eye/almond shape */}
       <path
-        d="M8 20 C12 13.5 28 13.5 32 20 C28 26.5 12 26.5 8 20Z"
-        fill="#0D1B33"
-        stroke="white"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
+        d="M3 18 C13 4, 43 4, 53 18 C43 32, 13 32, 3 18Z"
+        fill="#1565C0"
       />
-
-      {/* Iris — blue fill */}
-      <circle cx="20" cy="20" r="5" fill="#1A6FDB" />
-
-      {/* Pupil — dark center */}
-      <circle cx="20" cy="20" r="2.6" fill="#0D1B33" />
-
-      {/* Teal highlight dot */}
-      <circle cx="20" cy="20" r="1.3" fill="#27D9F5" />
-
+      {/* White inner area creates open-eye look */}
+      <ellipse cx="28" cy="18" rx="16" ry="10" fill="white" />
+      {/* Orange/amber iris */}
+      <circle cx="28" cy="18" r="6.5" fill="#E07800" />
+      {/* Dark pupil */}
+      <circle cx="28" cy="18" r="3.2" fill="#0D1B33" />
       {/* Glint */}
-      <circle cx="22" cy="18.2" r="0.9" fill="white" opacity="0.9" />
+      <circle cx="30.5" cy="15.5" r="1.4" fill="white" opacity="0.9" />
     </svg>
   );
 }
@@ -75,8 +65,8 @@ export default function DefenseEyeLogo({
         <span
           className={`font-heading font-bold tracking-tight leading-none select-none ${textCls}`}
         >
-          <span className="text-foreground">Defense</span>
-          <span className="text-[#1A6FDB]">Eye</span>
+          <span className="text-[#0D1B33]">Defense</span>
+          <span className="text-[#1565C0]">Eye</span>
         </span>
       )}
     </span>
