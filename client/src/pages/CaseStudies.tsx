@@ -617,7 +617,7 @@ export default function CaseStudies() {
               DefenseEye<span className="text-accent">.ai</span>
             </span>
           </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
+          <nav className="hidden md:flex items-center gap-6 text-sm text-[#0D1B33]">
             <Link href="/#services">
               <span className="hover:text-primary transition-colors cursor-pointer">Services</span>
             </Link>

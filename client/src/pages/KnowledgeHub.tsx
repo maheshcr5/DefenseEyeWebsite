@@ -43,7 +43,7 @@ function Nav() {
         <DefenseEyeLogo href="/" />
         <div className="hidden md:flex items-center gap-7">
           {NAV_LINKS.map((l) => (
-            <Link key={l.href} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200">
+            <Link key={l.href} href={l.href} className="text-sm font-medium text-[#0D1B33] hover:text-primary transition-colors duration-200">
               {l.label}
             </Link>
           ))}
@@ -59,7 +59,7 @@ function Nav() {
         <div className="md:hidden bg-card border-b border-border">
           <div className="container py-4 flex flex-col gap-3">
             {NAV_LINKS.map((l) => (
-              <Link key={l.href} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-primary py-2" onClick={() => setOpen(false)}>{l.label}</Link>
+              <Link key={l.href} href={l.href} className="text-sm font-medium text-[#0D1B33] hover:text-primary py-2" onClick={() => setOpen(false)}>{l.label}</Link>
             ))}
             <div className="pt-2 border-t border-border/50">
               <Link href="/#contact"><Button size="sm" className="bg-accent text-accent-foreground w-full font-semibold">Book Free Assessment</Button></Link>

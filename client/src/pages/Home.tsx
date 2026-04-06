@@ -382,7 +382,7 @@ export default function Home() {
               <a
                 key={item.href}
                 href={item.href}
-                className="text-xs lg:text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-full hover:bg-card/70"
+                className="text-xs lg:text-sm text-[#0D1B33] hover:text-primary transition-colors px-3 py-1.5 rounded-full hover:bg-card/70"
               >
                 {item.label}
               </a>
@@ -428,7 +428,7 @@ export default function Home() {
                   { label: "Blog", href: "/blog" },
                   { label: "FAQ", href: "/faq" },
                 ].map((l) => (
-                  <a key={l.href} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-primary py-2" onClick={() => setMobileMenuOpen(false)}>{l.label}</a>
+                  <a key={l.href} href={l.href} className="text-sm font-medium text-[#0D1B33] hover:text-primary py-2" onClick={() => setMobileMenuOpen(false)}>{l.label}</a>
                 ))}
                 <Button className="bg-accent text-accent-foreground font-semibold w-full mt-2" onClick={() => { setMobileMenuOpen(false); setModalOpen(true); }}>
                   Book Free Assessment

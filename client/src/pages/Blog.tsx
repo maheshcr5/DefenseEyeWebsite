@@ -373,7 +373,7 @@ export default function Blog() {
       <div className="border-b border-gray-200 bg-white/95 backdrop-blur-md sticky top-0 z-40 section-light">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <DefenseEyeLogo href="/" />
-          <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
+          <nav className="hidden md:flex items-center gap-6 text-sm text-[#0D1B33]">
             <Link href="/services/cmmc-readiness-sprint">
               <span className="hover:text-primary transition-colors cursor-pointer">CMMC Sprint</span>
             </Link>
