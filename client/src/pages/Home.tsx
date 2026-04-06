@@ -25,7 +25,6 @@ import {
   Zap,
   FileCheck,
   CheckCircle2,
-  ChevronDown,
   ArrowRight,
   X,
   Menu,
@@ -58,36 +57,6 @@ function Section({ children, className = "", id }: { children: React.ReactNode; 
     >
       {children}
     </motion.section>
-  );
-}
-
-// ─── FAQ accordion item ──────────────────────────────────────────────────────
-function FAQItem({ question, answer }: { question: string; answer: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="border border-border/50 bg-card/40 rounded-sm overflow-hidden">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-card/70 transition-colors duration-200"
-        aria-expanded={open}
-      >
-        <span className="font-heading font-semibold text-foreground pr-4 text-sm md:text-base">{question}</span>
-        <ChevronDown className={`w-4 h-4 text-primary shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
-      </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden"
-          >
-            <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">{answer}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
   );
 }
 
@@ -1200,54 +1169,18 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          FAQ — AEO / LLM citation optimized
-      ═══════════════════════════════════════════════════════════════ */}
-      <Section id="faq" className="py-20 px-4 section-gray">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
-              CMMC Readiness FAQ <span className="text-primary">(Fast Answers)</span>
-            </h2>
-            <p className="text-muted-foreground">
-              Direct answers for defense contractors that need clarity and speed.
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            <FAQItem
-              question="Do I need CMMC Level 2?"
-              answer="If your company handles Controlled Unclassified Information (CUI), you typically need CMMC Level 2 and NIST 800-171 compliance evidence. If you handle only FCI, you may only need Level 1."
-            />
-            <FAQItem
-              question="How long does CMMC readiness take?"
-              answer="Most small-to-mid defense contractors can complete an initial CMMC readiness sprint in 2-4 weeks, then execute remediation based on identified gaps and scope complexity."
-            />
-            <FAQItem
-              question="What happens if we are not compliant?"
-              answer="You risk losing eligibility for DoD opportunities that require CMMC evidence. Delays usually increase cost, disrupt pipeline momentum, and create avoidable rework."
-            />
-            <FAQItem
-              question="What if we fail CMMC?"
-              answer="A failed or incomplete readiness posture can delay contract awards and force expensive remediation under pressure. A structured readiness sprint reduces this risk before formal assessment."
-            />
-            <FAQItem
-              question="How much does CMMC compliance cost?"
-              answer="Costs vary by your starting posture and environment complexity. DefenseEye starts with a fixed-price readiness sprint so you can scope investment before full remediation."
-            />
-            <FAQItem
-              question="Can small companies pass CMMC?"
-              answer="Yes. Small companies can pass CMMC with proper scope, practical SSP and POA&M documentation, and a prioritized remediation plan matched to available IT capacity."
-            />
-            <FAQItem
-              question="What is CMMCLens automation?"
-              answer="CMMCLens is DefenseEye's CMMC Level 2 automation capability for evidence mapping, real-time risk remediation, and real-time SSP/policies/procedures/standards workflows."
-            />
-            <FAQItem
-              question="How can I get CMMC ready in 2-4 weeks?"
-              answer="Use a scoped sprint: identify high-risk gaps, automate evidence and documentation, then prioritize remediation to produce a C3PAO-ready package fast."
-            />
-          </div>
+      {/* FAQ TEASER */}
+      <Section className="py-12 px-4 section-gray">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-heading text-2xl font-bold mb-3 text-foreground">
+            Common CMMC Questions — Answered
+          </h2>
+          <p className="text-muted-foreground mb-5">
+            Level 1 vs Level 2, CUI scope, SPRS scores, C3PAO assessments, timelines, and costs — all in plain language.
+          </p>
+          <a href="/faq" className="inline-flex items-center gap-2 text-primary font-semibold hover:underline">
+            Browse the full CMMC FAQ <ArrowRight className="w-4 h-4" />
+          </a>
         </div>
       </Section>
 
@@ -1333,6 +1266,7 @@ export default function Home() {
                   { label: "CMMC Knowledge Hub", href: "/knowledge-hub" },
                   { label: "CMMCLens Product Page", href: "/cmmclens" },
                   { label: "4-Week Sprint Guide", href: "/cmmc-readiness-sprint-guide" },
+                  { label: "CMMC FAQ", href: "/faq" },
                   { label: "What Is CMMC 2.0?", href: "/knowledge-hub/what-is-cmmc" },
                   { label: "SPRS Score Guide", href: "/knowledge-hub/sprs-score" },
                   { label: "C3PAO Assessment Guide", href: "/knowledge-hub/certification-process" },
@@ -1371,6 +1305,8 @@ export default function Home() {
             </p>
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
               <a href="/knowledge-hub" className="hover:text-primary transition-colors">Knowledge Hub</a>
+              <span className="text-border">|</span>
+              <a href="/faq" className="hover:text-primary transition-colors">FAQ</a>
               <span className="text-border">|</span>
               <a href="/blog" className="hover:text-primary transition-colors">Blog</a>
               <span className="text-border">|</span>
