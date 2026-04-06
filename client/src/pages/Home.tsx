@@ -754,37 +754,67 @@ export default function Home() {
       </Section>
 
       {/* ═══════════════════════════════════════════════════════════════
-          WHO WE HELP — trust signal strip
+          WHY DEFENSEEYE — differentiation + trust
       ═══════════════════════════════════════════════════════════════ */}
-      <Section className="py-12 px-4 section-gray">
+      <Section className="py-14 px-4 section-gray">
         <div className="max-w-6xl mx-auto">
-          <p className="text-center text-xs font-medium text-muted-foreground/50 uppercase tracking-widest mb-10">
-            Why DefenseEye
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="text-center mb-10">
+            <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">Why DefenseEye</p>
+            <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-4 text-foreground">
+              The CMMC Specialists Defense Contractors<br className="hidden sm:block" />
+              <span className="text-primary"> Call When Contracts Are at Risk</span>
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-base leading-relaxed">
+              Generic IT consultants can read the same NIST frameworks you can. DefenseEye is built by CCPs specifically for defense contractors under contract pressure — not a general cybersecurity firm that added CMMC to the service menu.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { image: "/ccp-badge.svg", label: "CCP-Led Support", sub: "Led by Certified CMMC Professionals (CCPs)" },
-              { icon: Users, label: "Defense-Focused", sub: "Built for U.S. defense contractors handling CUI" },
-              { icon: BookOpen, label: "Practical Outputs", sub: "SSP and POA&M deliverables your team can use now" },
-              { icon: TrendingUp, label: "Fast Turnaround", sub: "Designed for contract-driven readiness timelines" },
+              {
+                image: "/ccp-badge.svg",
+                label: "CCP-Led, Not IT Generalists",
+                sub: "Led by Certified CMMC Professionals. We know the difference between what the standard says and what C3PAOs actually flag in the field.",
+              },
+              {
+                icon: Users,
+                label: "Built Only for Defense",
+                sub: "Not a broad MSP that added CMMC to the menu. Every engagement is scoped around CUI handling and active DoD contract risk.",
+              },
+              {
+                icon: BookOpen,
+                label: "Real Deliverables, Not Decks",
+                sub: "You get SSP drafts, POA&Ms, and scoping documents your team can act on immediately — not a 90-slide readiness presentation.",
+              },
+              {
+                icon: TrendingUp,
+                label: "Fast — Contracts Don't Wait",
+                sub: "Readiness sprints built for contractors with active deadlines. Clarity and a prioritized action plan in days, not quarters.",
+              },
             ].map((item) => (
-              <div key={item.label} className="flex flex-col items-center text-center p-5 bg-card/30 border border-border/30 rounded-sm">
+              <div key={item.label} className="flex flex-col p-6 bg-card border border-border/50 rounded-sm">
                 {(() => {
                   const Icon = item.icon;
                   return item.image ? (
-                    <img src={item.image} alt="CMMC CCP badge" className="w-10 h-10 mb-3" />
+                    <img src={item.image} alt="CMMC CCP badge" className="w-10 h-10 mb-4" />
                   ) : Icon ? (
-                    <Icon className="w-6 h-6 text-primary mb-3" />
+                    <Icon className="w-6 h-6 text-primary mb-4" />
                   ) : null;
                 })()}
-                <p className="font-heading font-semibold text-sm text-foreground mb-1">{item.label}</p>
-                <p className="text-xs text-muted-foreground">{item.sub}</p>
+                <p className="font-heading font-bold text-foreground mb-2 leading-snug">{item.label}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{item.sub}</p>
               </div>
             ))}
           </div>
-          <p className="text-center text-xs text-muted-foreground mt-6">
-            Built for defense contractors. Aligned with DoD requirements. Serving U.S. teams nationwide, including Washington and Seattle region suppliers.
-          </p>
+          <div className="mt-10 text-center">
+            <p className="text-sm text-muted-foreground mb-4">
+              Serving U.S. defense contractors nationwide — including Washington and Seattle-region suppliers handling CUI.
+            </p>
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+                See If We're the Right Fit — Book a 30-Min Call <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </a>
+          </div>
         </div>
       </Section>
 
