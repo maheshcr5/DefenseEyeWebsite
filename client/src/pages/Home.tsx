@@ -1022,17 +1022,19 @@ export default function Home() {
 
             {/* Authoritative Links */}
             <div>
-              <h4 className="font-heading font-semibold text-xs text-foreground mb-4 uppercase tracking-widest">Authoritative Sources</h4>
+              <h4 className="font-heading font-semibold text-xs text-foreground mb-4 uppercase tracking-widest">Company</h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: "DODCIO CMMC Program", href: "https://dodcio.defense.gov/CMMC/" },
-                  { label: "NIST SP 800-171", href: "https://csrc.nist.gov/publications/detail/sp/800-171/rev-2/final" },
-                  { label: "Cyber AB Marketplace", href: "https://cyberaccreditation.us/marketplace" },
-                  { label: "NARA CUI Registry", href: "https://www.archives.gov/cui" },
-                  { label: "DFARS 252.204-7012", href: "https://www.acquisition.gov/dfars/252.204-7012" },
+                  { label: "Why DefenseEye", href: "/why-defenseeye" },
+                  { label: "Case Studies", href: "/case-studies" },
+                  { label: "Pricing", href: "/pricing" },
+                  { label: "Contact Us", href: "/contact" },
+                  { label: "Support", href: "/support" },
+                  { label: "Privacy Policy", href: "/privacy-policy" },
+                  { label: "Terms of Service", href: "/terms" },
                 ].map((item) => (
                   <li key={item.label}>
-                    <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">{item.label}</a>
+                    <a href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{item.label}</a>
                   </li>
                 ))}
               </ul>
@@ -1044,14 +1046,14 @@ export default function Home() {
               &copy; {new Date().getFullYear()} DefenseEye, Inc. All rights reserved.
               CMMC Lens is a trademark of DefenseEye.
             </p>
-            <div className="flex items-center gap-4 text-xs text-muted-foreground">
-              <a href="/knowledge-hub" className="hover:text-primary transition-colors">Knowledge Hub</a>
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
+              <a href="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</a>
               <span className="text-border">|</span>
-              <a href="/faq" className="hover:text-primary transition-colors">FAQ</a>
+              <a href="/terms" className="hover:text-primary transition-colors">Terms of Service</a>
               <span className="text-border">|</span>
-              <a href="/blog" className="hover:text-primary transition-colors">Blog</a>
+              <a href="/support" className="hover:text-primary transition-colors">Support</a>
               <span className="text-border">|</span>
-              <a href="#contact" className="hover:text-primary transition-colors">Contact</a>
+              <a href="/contact" className="hover:text-primary transition-colors">Contact</a>
             </div>
           </div>
         </div>

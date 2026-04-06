@@ -25,6 +25,10 @@ const SprintGuide = lazy(() => import("./pages/SprintGuide"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const CMMCScoping = lazy(() => import("./pages/CMMCScoping"));
 const WhyDefenseEye = lazy(() => import("./pages/WhyDefenseEye"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const ContactUs = lazy(() => import("./pages/ContactUs"));
+const Support = lazy(() => import("./pages/Support"));
 
 // Minimal loading fallback that matches the dark theme
 function PageLoader() {
@@ -63,6 +67,10 @@ function Router() {
         <Route path="/cmmclens" component={CMMCLens} />
         <Route path="/cmmc-readiness-sprint-guide" component={SprintGuide} />
         <Route path="/faq" component={FAQ} />
+        <Route path="/privacy-policy" component={PrivacyPolicy} />
+        <Route path="/terms" component={TermsOfService} />
+        <Route path="/contact" component={ContactUs} />
+        <Route path="/support" component={Support} />
 
         {/* Fallback */}
         <Route path="/404" component={NotFound} />
