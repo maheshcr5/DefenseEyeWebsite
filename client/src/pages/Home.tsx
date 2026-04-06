@@ -254,9 +254,10 @@ export default function Home() {
   const [painIdx, setPainIdx] = useState(0);
   const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
   const heroPainPoints = [
-    "“We might lose a DoD contract if we wait.”",
-    "“We handle CUI but still feel unprepared for CMMC Level 2.”",
-    "“Our IT team is overloaded and needs a clear plan now.”",
+    "“We have a contract renewal in 90 days and still no CMMC plan.”",
+    "“Our prime is demanding proof of CUI compliance and we have nothing.”",
+    "“We’re a 3-person IT team trying to pass a CMMC Level 2 audit.”",
+    "“We paid for an assessment. Nobody told us what to actually fix first.”",
   ];
 
   useSeo(
@@ -487,15 +488,15 @@ export default function Home() {
           <div className="lg:col-span-7">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-6">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs font-medium text-primary tracking-wide uppercase">CMMC 2.0 Is Active in New Awards</span>
+              <span className="text-xs font-medium text-primary tracking-wide uppercase">CMMC 2.0 Requirements Are Now Active in New DoD Awards</span>
             </div>
 
             <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-5 text-foreground">
-              Urgent CMMC Readiness
-              <span className="block text-primary">Without the Chaos</span>
+              Your Next DoD Award
+              <span className="block text-primary">Requires CMMC Proof</span>
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mb-8">
-              Get assessment-ready in 2-4 weeks with CCP-led advisory and CMMC Level 2 automation that produces real-time SSP, POA&M, policies, procedures, standards, and evidence.
+              Defense contractors that work with DefenseEye don’t just survive CMMC audits—they walk in with a C3PAO-ready package, a defensible SPRS narrative, and evidence their prime can’t question. CCP-led advisory plus CMMC Level 2 automation that delivers your SSP, POA&M, policies, and evidence in 2–4 weeks.
             </p>
 
             <div className="mb-7 min-h-[28px]">
@@ -534,7 +535,7 @@ export default function Home() {
             </div>
 
             <p className="text-xs text-muted-foreground/75 mt-5">
-              For U.S. defense subcontractors (10-150 employees), 1-3 IT staff, and active CUI contract pressure.
+              Built for defense subcontractors under 150 employees with active CUI contract requirements or an upcoming C3PAO assessment. Not for federal agencies or large prime contractors.
             </p>
           </div>
 
@@ -597,7 +598,7 @@ export default function Home() {
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">Platform Modules</p>
               <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground">
-                Built for Deadline-Driven CMMC Execution
+                The Tools That Accelerate CMMC Readiness
               </h2>
             </div>
             <a href="/cmmclens" className="hidden sm:inline-flex text-sm text-primary hover:underline">
@@ -848,12 +849,11 @@ export default function Home() {
           <div className="text-center mb-14">
             <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">Solution</p>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
-              CMMC Readiness Sprint:
-              <span className="text-primary"> Fast, Structured, Practical</span>
+              Stop Firefighting CMMC.
+              <span className="text-primary"> Start Operating Like a Program Your Prime Trusts</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              A fixed-price readiness offer built for small and mid-sized defense contractors that need real outputs fast.
-              This is where CMMC consultant support and CMMC Level 2 automation work together.
+              After guiding dozens of defense contractors through gap assessments and C3PAO preparations, we built a structured approach that produces real deliverables—not slide decks. Fixed price. Defined scope. Contractor-sized speed.
             </p>
           </div>
 
@@ -922,7 +922,7 @@ export default function Home() {
       <Section id="services" className="py-20 px-4 section-light">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
-            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Core Offer</p>
+            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">How We Work</p>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground">
               Start with the <span className="text-primary">CMMC Readiness Sprint</span>
             </h2>
