@@ -63,7 +63,7 @@ ssh "$VPS_HOST" "cd $APP_DIR && bash deploy/update.sh"
 
 # ─── 5. Smoke test ────────────────────────────────────────────────────────────
 log "Smoke testing live site..."
-STATUS=$(ssh "$VPS_HOST" "curl -soI https://defenseeye.ai | head -1 | awk '{print \$2}'")
+STATUS=$(ssh "$VPS_HOST" "curl -s -o /dev/null -w '%{http_code}' https://defenseeye.ai")
 if [[ "$STATUS" == "200" ]]; then
   echo ""
   echo -e "${GREEN}═══════════════════════════════════════════════════${NC}"
