@@ -37,6 +37,7 @@ import {
   AlertTriangle,
   Lock,
   PlayCircle,
+  X,
 } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useSeo } from "@/hooks/useSeo";
