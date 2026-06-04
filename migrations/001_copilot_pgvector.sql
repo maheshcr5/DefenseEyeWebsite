@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS copilot_knowledge_chunks (
   chunk_index INTEGER NOT NULL,
   content TEXT NOT NULL,
   token_count INTEGER NOT NULL,
-  embedding vector(768),
+  embedding vector(3072),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
