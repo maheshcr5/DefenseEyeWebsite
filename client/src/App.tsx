@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import CookieConsent from "@/components/CookieConsent";
+import CopilotWidget from "@/components/CopilotWidget";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -29,6 +30,7 @@ const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const ContactUs = lazy(() => import("./pages/ContactUs"));
 const Support = lazy(() => import("./pages/Support"));
+const Copilot = lazy(() => import("./pages/Copilot"));
 
 // Minimal loading fallback that matches the dark theme
 function PageLoader() {
@@ -71,6 +73,7 @@ function Router() {
         <Route path="/terms" component={TermsOfService} />
         <Route path="/contact" component={ContactUs} />
         <Route path="/support" component={Support} />
+        <Route path="/copilot" component={Copilot} />
 
         {/* Fallback */}
         <Route path="/404" component={NotFound} />
@@ -92,10 +95,11 @@ function App() {
             href={calendlyUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="fixed bottom-4 right-4 z-[60] bg-accent text-accent-foreground text-xs sm:text-sm font-semibold px-4 py-2.5 rounded shadow-lg shadow-black/30 hover:bg-accent/90 transition-colors"
+            className="fixed bottom-4 left-4 right-auto z-[60] bg-accent text-accent-foreground text-xs sm:left-auto sm:right-4 sm:text-sm font-semibold px-4 py-2.5 rounded shadow-lg shadow-black/30 hover:bg-accent/90 transition-colors"
           >
             Urgent CMMC Help? Book Call
           </a>
+          <CopilotWidget />
           <CookieConsent />
         </TooltipProvider>
       </ThemeProvider>

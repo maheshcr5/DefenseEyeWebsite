@@ -1,9 +1,11 @@
+import "dotenv/config";
 import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import nodemailer from "nodemailer";
+import { registerCopilotRoutes } from "./copilot";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -129,6 +131,7 @@ async function startServer() {
   const server = createServer(app);
 
   app.use(express.json());
+  registerCopilotRoutes(app, rateLimit);
 
   // ─── CMMC Content API for AI Bot Ingestion ──────────────────────────────────
   /**

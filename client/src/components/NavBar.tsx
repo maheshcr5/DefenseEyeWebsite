@@ -17,6 +17,7 @@ const MENUS = [
     key: "products",
     items: [
       { label: "CMMCLens", desc: "AI-powered CMMC compliance automation", href: "/cmmclens" },
+      { label: "CMMC Copilot", desc: "Ask CMMC, DFARS, SPRS, and CUI questions", href: "/copilot" },
       { label: "Sprint Guide", desc: "4-week CMMC readiness playbook", href: "/cmmc-readiness-sprint-guide" },
     ],
   },
