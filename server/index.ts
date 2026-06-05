@@ -420,31 +420,43 @@ async function startServer() {
     },
   };
 
+  const LEGACY_REDIRECTS: Record<string, string> = {
+    "/home-stage": "/",
+    "/home-stage/": "/",
+  };
+
   function getRouteMeta(routePath: string) {
     if (ROUTE_META[routePath]) return ROUTE_META[routePath];
     if (routePath.startsWith("/blog/")) {
       const slug = routePath.replace("/blog/", "");
       if (BLOG_SLUG_META[slug]) return BLOG_SLUG_META[slug];
-      return {
-        title: "CMMC Compliance Guide | DefenseEye.ai",
-        description: "CMMC compliance guidance for DoD contractors covering NIST 800-171 controls, SPRS improvements, and C3PAO assessment preparation.",
-      };
     }
-    return ROUTE_META["/"];
+    return null;
   }
 
   // ─── SPA fallback — serve index.html with injected route-specific meta ────────
   app.get("*", (req, res) => {
+    const legacyRedirect = LEGACY_REDIRECTS[req.path];
+    if (legacyRedirect) {
+      res.redirect(301, legacyRedirect);
+      return;
+    }
+
     const indexPath = path.join(staticPath, "index.html");
     try {
       let html = fs.readFileSync(indexPath, "utf-8");
       const meta = getRouteMeta(req.path);
+      const isNotFound = !meta;
+      const routeMeta = meta ?? {
+        title: "404 Page Not Found | DefenseEye.ai",
+        description: "The requested DefenseEye page could not be found.",
+      };
       const canonical = `https://defenseeye.ai${req.path === "/" ? "/" : req.path}`;
       // Inject title, meta description, and canonical per-route
-      html = html.replace(/<title>[^<]*<\/title>/, `<title>${meta.title}</title>`);
+      html = html.replace(/<title>[^<]*<\/title>/, `<title>${routeMeta.title}</title>`);
       html = html.replace(
         /<meta name="description" content="[^"]*"/,
-        `<meta name="description" content="${meta.description.replace(/"/g, "&quot;")}"`
+        `<meta name="description" content="${routeMeta.description.replace(/"/g, "&quot;")}"`
       );
       html = html.replace(
         /<link rel="canonical" href="[^"]*"/,
@@ -452,18 +464,24 @@ async function startServer() {
       );
       html = html.replace(
         /<meta property="og:title" content="[^"]*"/,
-        `<meta property="og:title" content="${meta.title.replace(/"/g, "&quot;")}"`
+        `<meta property="og:title" content="${routeMeta.title.replace(/"/g, "&quot;")}"`
       );
       html = html.replace(
         /<meta property="og:description" content="[^"]*"/,
-        `<meta property="og:description" content="${meta.description.replace(/"/g, "&quot;")}"`
+        `<meta property="og:description" content="${routeMeta.description.replace(/"/g, "&quot;")}"`
       );
       html = html.replace(
         /<meta property="og:url" content="[^"]*"/,
         `<meta property="og:url" content="${canonical}"`
       );
+      if (isNotFound) {
+        html = html.replace(
+          /<meta name="robots" content="[^"]*"/,
+          `<meta name="robots" content="noindex, follow"`
+        );
+      }
       res.setHeader("Content-Type", "text/html; charset=utf-8");
-      res.send(html);
+      res.status(isNotFound ? 404 : 200).send(html);
     } catch {
       res.sendFile(path.join(staticPath, "index.html"));
     }
