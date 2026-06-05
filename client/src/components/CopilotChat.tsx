@@ -23,12 +23,16 @@ interface Citation {
   score: number;
 }
 
+const CMMCLENS_MARKETPLACE_URL =
+  "https://marketplace.microsoft.com/en-us/product/cmmc.defenseeye-cmmc-l2-continuous-compliance?tab=Overview";
+const PREVIEW_LENGTH = 760;
+
 const SUGGESTED_PROMPTS = [
-  "Explain AC.L2-3.1.1",
-  "How do I scope CUI?",
-  "What evidence is required for IA.L2-3.5.3?",
-  "What is an SSP?",
-  "What is an SPRS score?",
+  { label: "Learn more about CMMCLens", href: CMMCLENS_MARKETPLACE_URL },
+  { label: "Explain AC.L2-3.1.1" },
+  { label: "How do I scope CUI?" },
+  { label: "What evidence is required for IA.L2-3.5.3?" },
+  { label: "What is an SPRS score?" },
 ];
 
 function newId() {
@@ -37,6 +41,7 @@ function newId() {
 
 export function CopilotChat({ compact = false }: { compact?: boolean }) {
   const [input, setInput] = useState("");
+  const [expandedMessages, setExpandedMessages] = useState<Set<string>>(() => new Set());
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
     try {
       const saved = localStorage.getItem("defenseeye-copilot-history");
@@ -49,7 +54,7 @@ export function CopilotChat({ compact = false }: { compact?: boolean }) {
         id: newId(),
         role: "assistant",
         content:
-          "I can help with CMMC, NIST SP 800-171, DFARS, SPRS, CUI scoping, FedRAMP, RMF, and assessment readiness. Ask a control question or describe your compliance problem.",
+          `I can help with CMMC, NIST SP 800-171, DFARS, SPRS, CUI scoping, evidence, SSPs, POA&Ms, and assessment readiness. For automation, CMMCLens centralizes evidence, SSP/POA&M mappings, SPRS impact, and readiness tracking. Learn more: ${CMMCLENS_MARKETPLACE_URL}`,
       },
     ];
   });
@@ -181,12 +186,18 @@ export function CopilotChat({ compact = false }: { compact?: boolean }) {
               >
                 {message.content ? (
                   message.role === "assistant" ? (
-                    <Streamdown
-                      className="prose prose-invert max-w-none prose-p:my-2 prose-headings:mb-2 prose-headings:mt-3 prose-li:my-0.5 prose-a:text-primary"
-                      isAnimating={isStreaming}
-                    >
-                      {message.content}
-                    </Streamdown>
+                    <AssistantAnswer
+                      content={message.content}
+                      expanded={expandedMessages.has(message.id)}
+                      isStreaming={isStreaming}
+                      onExpand={() =>
+                        setExpandedMessages((current) => {
+                          const next = new Set(current);
+                          next.add(message.id);
+                          return next;
+                        })
+                      }
+                    />
                   ) : (
                     <p className="whitespace-pre-wrap">{message.content}</p>
                   )
@@ -232,14 +243,27 @@ export function CopilotChat({ compact = false }: { compact?: boolean }) {
           </div>
           <div className="flex flex-wrap gap-2">
             {SUGGESTED_PROMPTS.map((prompt) => (
-              <button
-                key={prompt}
-                type="button"
-                onClick={() => sendMessage(prompt)}
-                className="rounded-sm border border-border/50 px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
-              >
-                {prompt}
-              </button>
+              prompt.href ? (
+                <a
+                  key={prompt.label}
+                  href={prompt.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 rounded-sm border border-primary/40 px-2.5 py-1.5 text-xs font-medium text-primary transition-colors hover:border-primary hover:bg-primary/10"
+                >
+                  {prompt.label}
+                  <ExternalLink className="size-3" />
+                </a>
+              ) : (
+                <button
+                  key={prompt.label}
+                  type="button"
+                  onClick={() => sendMessage(prompt.label)}
+                  className="rounded-sm border border-border/50 px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+                >
+                  {prompt.label}
+                </button>
+              )
             ))}
           </div>
         </div>
@@ -272,6 +296,42 @@ export function CopilotChat({ compact = false }: { compact?: boolean }) {
         </Button>
       </form>
     </div>
+  );
+}
+
+function AssistantAnswer({
+  content,
+  expanded,
+  isStreaming,
+  onExpand,
+}: {
+  content: string;
+  expanded: boolean;
+  isStreaming: boolean;
+  onExpand: () => void;
+}) {
+  const shouldCollapse = !isStreaming && !expanded && content.length > PREVIEW_LENGTH;
+  const displayContent = shouldCollapse ? `${content.slice(0, PREVIEW_LENGTH).trim()}...` : content;
+
+  return (
+    <>
+      <Streamdown
+        className="prose prose-invert max-w-none prose-p:my-2 prose-headings:mb-2 prose-headings:mt-3 prose-li:my-0.5 prose-a:text-primary"
+        isAnimating={isStreaming}
+      >
+        {displayContent}
+      </Streamdown>
+      {shouldCollapse && (
+        <button
+          type="button"
+          onClick={onExpand}
+          className="mt-2 inline-flex items-center gap-1 rounded-sm border border-primary/40 px-2 py-1 text-xs font-medium text-primary transition-colors hover:border-primary hover:bg-primary/10"
+        >
+          Learn more
+          <ExternalLink className="size-3" />
+        </button>
+      )}
+    </>
   );
 }
 

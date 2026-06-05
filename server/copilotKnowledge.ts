@@ -314,6 +314,7 @@ export async function searchKnowledge(query: string, topK = copilotRetrievalConf
 
 export function getSuggestedPrompts() {
   return [
+    "Learn more about CMMCLens",
     "Explain AC.L2-3.1.1",
     "How do I scope CUI?",
     "What evidence is required for IA.L2-3.5.3?",
