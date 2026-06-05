@@ -235,53 +235,6 @@ export default function Home() {
 
   // ── Structured Data for GEO / AEO / SEO ──────────────────────────────────
   useEffect(() => {
-    const faqSchema = {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: [
-        {
-          "@type": "Question",
-          name: "Do I need CMMC Level 2?",
-          acceptedAnswer: { "@type": "Answer", text: "If your company handles Controlled Unclassified Information (CUI), you typically need CMMC Level 2 aligned to NIST SP 800-171 controls. Contractors handling only Federal Contract Information may only need Level 1." },
-        },
-        {
-          "@type": "Question",
-          name: "How long does CMMC readiness take?",
-          acceptedAnswer: { "@type": "Answer", text: "Most small-to-mid defense contractors can complete an initial CMMC readiness sprint in 2-4 weeks, then execute remediation based on identified gaps and scope complexity." },
-        },
-        {
-          "@type": "Question",
-          name: "What happens if we are not compliant?",
-          acceptedAnswer: { "@type": "Answer", text: "You risk losing eligibility for DoD contracts that require CMMC evidence, plus delays and higher remediation costs when compliance is deferred." },
-        },
-        {
-          "@type": "Question",
-          name: "What if we fail CMMC?",
-          acceptedAnswer: { "@type": "Answer", text: "A failed or incomplete readiness posture can delay contract awards and increase remediation cost under deadline pressure. Preparing early with a structured readiness sprint lowers that risk." },
-        },
-        {
-          "@type": "Question",
-          name: "How much does CMMC compliance cost?",
-          acceptedAnswer: { "@type": "Answer", text: "Cost depends on your current control maturity and environment. DefenseEye starts with a fixed-price CMMC readiness sprint so you can scope cost before full remediation." },
-        },
-        {
-          "@type": "Question",
-          name: "Can small companies pass CMMC?",
-          acceptedAnswer: { "@type": "Answer", text: "Yes. Small companies can pass CMMC with clear scope, a practical SSP and POA&M, and a prioritized remediation plan matched to available IT capacity." },
-        },
-        {
-          "@type": "Question",
-          name: "What is CMMCLens automation?",
-          acceptedAnswer: { "@type": "Answer", text: "CMMCLens is DefenseEye's CMMC Level 2 automation for evidence collection, real-time risk remediation, and real-time SSP/POA&M documentation workflows." },
-        },
-        {
-          "@type": "Question",
-          name: "How can I get CMMC ready in 2-4 weeks?",
-          acceptedAnswer: { "@type": "Answer", text: "Use a scoped readiness sprint: prioritize high-risk gaps first, automate evidence and documentation, then package results for C3PAO readiness." },
-        },
-      ],
-    };
-
     const serviceSchema = {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
@@ -309,37 +262,12 @@ export default function Home() {
       knowsAbout: ["CMMC 2.0", "NIST 800-171", "DFARS compliance", "SPRS score", "C3PAO assessment", "DoD cybersecurity"],
     };
 
-    const productSchema = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: "CMMCLens",
-      brand: { "@type": "Brand", name: "DefenseEye" },
-      url: "https://defenseeye.ai/cmmclens",
-      category: "CMMC Level 2 Automation",
-      description: "CMMC Level 2 automation for defense contractors: real-time risk remediation plus real-time SSP/POA&M generation.",
-    };
-
-    const videoSchema = {
-      "@context": "https://schema.org",
-      "@type": "VideoObject",
-      name: "CMMC Assessment Readiness Briefing for DoD Contractors",
-      description: "DefenseEye overview of CMMC consulting, advisory, and automation for faster CMMC assessment readiness.",
-      embedUrl: "https://www.youtube.com/embed/g3Yhk1nUb7s",
-      contentUrl: "https://www.youtube.com/watch?v=g3Yhk1nUb7s",
-      uploadDate: "2026-04-04",
-      publisher: {
-        "@type": "Organization",
-        name: "DefenseEye",
-        url: "https://defenseeye.ai",
-      },
-    };
-
     const id = "de-schema";
     if (!document.getElementById(id)) {
       const s = document.createElement("script");
       s.id = id;
       s.type = "application/ld+json";
-      s.text = JSON.stringify([faqSchema, serviceSchema, orgSchema, productSchema, videoSchema]);
+      s.text = JSON.stringify([serviceSchema, orgSchema]);
       document.head.appendChild(s);
     }
     return () => { document.getElementById(id)?.remove(); };
