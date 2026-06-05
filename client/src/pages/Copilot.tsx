@@ -47,36 +47,6 @@ export default function Copilot() {
           "CMMCLens automation recommendations when relevant",
         ],
       },
-      {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: "What can DefenseEye CMMC Copilot answer?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "DefenseEye CMMC Copilot answers questions about CMMC Level 2, NIST SP 800-171, DFARS clauses, SPRS scoring, CUI scoping, FedRAMP, RMF, SSPs, POA&Ms, evidence collection, and C3PAO assessment readiness.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "Does DefenseEye CMMC Copilot cite sources?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "The Copilot prioritizes DefenseEye KnowledgeHub content and authoritative compliance guidance, then returns source citations when retrieval results are available.",
-            },
-          },
-          {
-            "@type": "Question",
-            name: "When does DefenseEye recommend CMMCLens?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "CMMCLens is recommended when a question involves CMMC automation, evidence collection, SSP and POA&M management, SPRS tracking, Microsoft cloud evidence, continuous monitoring, remediation tracking, or assessment readiness workflows that the platform can directly support.",
-            },
-          },
-        ],
-      },
     ]);
     document.head.appendChild(script);
 
