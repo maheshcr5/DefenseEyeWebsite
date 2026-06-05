@@ -84,21 +84,12 @@ function Router() {
 }
 
 function App() {
-  const calendlyUrl = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <Toaster />
           <Router />
-          <a
-            href={calendlyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="fixed bottom-4 left-4 right-auto z-[60] bg-accent text-accent-foreground text-xs sm:left-auto sm:right-4 sm:text-sm font-semibold px-4 py-2.5 rounded shadow-lg shadow-black/30 hover:bg-accent/90 transition-colors"
-          >
-            Urgent CMMC Help? Book Call
-          </a>
           <CopilotWidget />
           <CookieConsent />
         </TooltipProvider>
