@@ -6,15 +6,83 @@ import { CopilotChat } from "@/components/CopilotChat";
 
 export default function Copilot() {
   useEffect(() => {
-    document.title = "DefenseEye CMMC Copilot | CMMC, NIST 800-171, DFARS, SPRS Help";
-    let metaDesc = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement("meta");
-      metaDesc.setAttribute("name", "description");
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.content =
-      "Ask DefenseEye CMMC Copilot questions about CMMC Level 2, NIST SP 800-171, DFARS, SPRS, CUI scoping, FedRAMP, RMF, evidence, SSP, POA&M, and assessment readiness.";
+    const title = "DefenseEye CMMC Copilot | CMMC, NIST 800-171, DFARS, SPRS Help";
+    const description =
+      "Ask DefenseEye CMMC Copilot questions about CMMC Level 2, NIST SP 800-171, DFARS, SPRS, CUI scoping, FedRAMP, RMF, evidence, SSP, POA&M, CMMCLens automation, and assessment readiness.";
+    const canonical = "https://defenseeye.ai/copilot";
+
+    document.title = title;
+    upsertMeta("name", "description", description);
+    upsertMeta("property", "og:title", title);
+    upsertMeta("property", "og:description", description);
+    upsertMeta("property", "og:url", canonical);
+    upsertMeta("name", "twitter:title", title);
+    upsertMeta("name", "twitter:description", description);
+    upsertCanonical(canonical);
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.setAttribute("data-page-schema", "copilot");
+    script.textContent = JSON.stringify([
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: "DefenseEye CMMC Copilot",
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Web",
+        url: canonical,
+        provider: {
+          "@type": "Organization",
+          name: "DefenseEye",
+          url: "https://defenseeye.ai",
+        },
+        description,
+        featureList: [
+          "CMMC Level 2 question answering",
+          "NIST SP 800-171 control explanations",
+          "DFARS and SPRS guidance",
+          "CUI scoping support",
+          "SSP, POA&M, and evidence readiness guidance",
+          "KnowledgeHub retrieval and source citations",
+          "CMMCLens automation recommendations when relevant",
+        ],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "What can DefenseEye CMMC Copilot answer?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "DefenseEye CMMC Copilot answers questions about CMMC Level 2, NIST SP 800-171, DFARS clauses, SPRS scoring, CUI scoping, FedRAMP, RMF, SSPs, POA&Ms, evidence collection, and C3PAO assessment readiness.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Does DefenseEye CMMC Copilot cite sources?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "The Copilot prioritizes DefenseEye KnowledgeHub content and authoritative compliance guidance, then returns source citations when retrieval results are available.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "When does DefenseEye recommend CMMCLens?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "CMMCLens is recommended when a question involves CMMC automation, evidence collection, SSP and POA&M management, SPRS tracking, Microsoft cloud evidence, continuous monitoring, remediation tracking, or assessment readiness workflows that the platform can directly support.",
+            },
+          },
+        ],
+      },
+    ]);
+    document.head.appendChild(script);
+
+    return () => {
+      document.querySelector('script[data-page-schema="copilot"]')?.remove();
+    };
   }, []);
 
   return (
@@ -61,4 +129,24 @@ export default function Copilot() {
       </main>
     </div>
   );
+}
+
+function upsertMeta(attribute: "name" | "property", key: string, content: string) {
+  let meta = document.querySelector<HTMLMetaElement>(`meta[${attribute}="${key}"]`);
+  if (!meta) {
+    meta = document.createElement("meta");
+    meta.setAttribute(attribute, key);
+    document.head.appendChild(meta);
+  }
+  meta.content = content;
+}
+
+function upsertCanonical(href: string) {
+  let link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  if (!link) {
+    link = document.createElement("link");
+    link.rel = "canonical";
+    document.head.appendChild(link);
+  }
+  link.href = href;
 }

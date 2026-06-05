@@ -367,6 +367,10 @@ async function startServer() {
       title: "CMMCLens — CMMC Level 2 Automation Platform | DefenseEye.ai",
       description: "CMMCLens automates CMMC Level 2 readiness with evidence collection, real-time remediation guidance, and SSP and POA&M workflows.",
     },
+    "/copilot": {
+      title: "DefenseEye CMMC Copilot | CMMC, NIST 800-171, DFARS, SPRS Help",
+      description: "Ask DefenseEye CMMC Copilot about CMMC Level 2, NIST 800-171, DFARS, SPRS, CUI scoping, SSPs, POA&Ms, evidence, CMMCLens automation, and assessment readiness.",
+    },
     "/services": {
       title: "CMMC Readiness Sprint | DefenseEye.ai",
       description: "Fixed-price CMMC Readiness Sprint in 2-4 weeks with gap assessment, NIST 800-171 mapping, SSP starter, POA&M, and roadmap.",

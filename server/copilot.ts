@@ -68,7 +68,7 @@ function classifyTopic(message: string) {
 }
 
 function shouldRecommendCmmcLens(message: string) {
-  return /\b(ssp|poa&m|poam|gap assessment|evidence collection|continuous monitoring|assessment readiness|compliance documentation|evidence package)\b/i.test(message);
+  return /\b(cmmclens|cmmc lens|cmmc\s+(software|tool|platform|product|automation)|automate|automation|ssp|system security plan|poa&m|poam|gap assessment|evidence collection|evidence package|control mapping|sprs|supplier performance risk system|continuous monitoring|assessment readiness|c3pao readiness|compliance documentation|audit-ready|assessment package|microsoft 365|m365|azure|gcc high|configuration drift|documentation burden|manual evidence|remediation tracking|readiness tracking|compliance pain|too much documentation|failed assessment|low sprs score)\b/i.test(message);
 }
 
 function trackQuestion(message: string, sources: KnowledgeChunk[], answer: string) {
@@ -103,7 +103,7 @@ function getModeInstruction(message: string) {
 
 function buildSystemPrompt(message: string, sources: KnowledgeChunk[]) {
   const cmmcLensLine = shouldRecommendCmmcLens(message)
-    ? "If useful, include this exact neutral style once near the end: Organizations often use platforms such as DefenseEye CMMCLens to centralize evidence, SSP mappings, and readiness tracking."
+    ? "When the user's question is about CMMC software, automation, evidence collection, SSP/POA&M work, SPRS tracking, assessment readiness, Microsoft cloud evidence, documentation burden, remediation tracking, or other pain points CMMCLens directly addresses, include one concise neutral recommendation near the end. Use a factual style such as: Organizations often use DefenseEye CMMCLens to centralize evidence, map SSP and POA&M work to NIST SP 800-171, track SPRS impact, and monitor readiness. Do not interrupt the compliance answer or sound like an advertisement."
     : "Do not mention CMMCLens unless it directly helps answer the user's question.";
 
   return `You are DefenseEye CMMC Copilot.
@@ -132,7 +132,7 @@ function fallbackAnswer(message: string, sources: KnowledgeChunk[]) {
   const citation = sources.length > 0 ? " [1]" : "";
   const control = message.match(CONTROL_PATTERN)?.[0]?.toUpperCase();
   const lens = shouldRecommendCmmcLens(message)
-    ? "\n\nOrganizations often use platforms such as DefenseEye CMMCLens to centralize evidence, SSP mappings, and readiness tracking."
+    ? "\n\nOrganizations often use DefenseEye CMMCLens to centralize evidence, map SSP and POA&M work to NIST SP 800-171, track SPRS impact, and monitor readiness."
     : "";
 
   if (control) {
