@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import NavBar from "@/components/NavBar";
+import { InfoTooltip } from "@/components/InfoTooltip";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
@@ -56,6 +57,8 @@ export default function SprintGuide() {
                   "Run CMMC gap assessment against NIST 800-171",
                   "Establish immediate contract-risk priorities",
                 ],
+                tooltip: "Before remediation, you need to know which systems actually handle CUI — your assessment boundary. Every system you legitimately exclude from scope eliminates dozens of controls you don't need to implement, document, or defend. Contractors who scope first routinely cut compliance overhead by 30–50% and avoid spending months fixing controls that never applied to their environment.",
+                controls: ["CUI Boundary", "NIST 3.1 AC", "DFARS 7012"],
               },
               {
                 title: "Week 2: Remediation Priority Plan",
@@ -64,6 +67,8 @@ export default function SprintGuide() {
                   "Launch real-time risk remediation tracking",
                   "Set owner/timeline for each open control",
                 ],
+                tooltip: "The 110 NIST controls carry unequal SPRS weight — some cost 5 points per gap, others just 1. A prioritized plan targets your highest-deduction controls first (MFA for privileged accounts: −5 pts, audit logging: −5 pts, boundary protection: −5 pts), so each hour of your lean IT team's time moves the SPRS score the most. Without priority order, contractors burn budget on low-weight gaps while high-weight ones stay open.",
+                controls: ["SPRS Priority", "NIST 3.5.3 IA", "NIST 3.3.1 AU"],
               },
               {
                 title: "Week 3: Documentation and Evidence",
@@ -72,6 +77,8 @@ export default function SprintGuide() {
                   "Generate policies, procedures, and standards",
                   "Map artifacts to control families",
                 ],
+                tooltip: "C3PAO assessors verify evidence for every claimed control — not just policy statements. An SSP that maps each of the 110 controls to specific technical artifacts (screenshots, config exports, logs), paired with a POA&M documenting all open gaps with credible closure dates, is what separates a passed assessment from a conditional or failed one. Starting with a structured template eliminates the 3–6 month blank-page problem most contractors face.",
+                controls: ["SSP", "POA&M", "C3PAO Evidence"],
               },
               {
                 title: "Week 4: C3PAO Readiness",
@@ -80,10 +87,15 @@ export default function SprintGuide() {
                   "Finalize evidence package quality checks",
                   "Lock a practical execution plan for remaining gaps",
                 ],
+                tooltip: "Most assessment failures aren't technical gaps — they're demonstration failures. Assessors ask your team to show controls working live, not just point at documents. A mock assessment walkthrough catches presentation gaps before they become official failures. C3PAO reassessments cost $20K–$80K per additional round — a pre-assessment review is the highest-ROI investment before booking your official date.",
+                controls: ["C3PAO Prep", "NIST 3.12 CA", "Mock Assessment"],
               },
             ].map((s) => (
               <div key={s.title} className="bg-card/50 border border-border/40 p-6 rounded-sm">
-                <h2 className="font-heading text-2xl font-bold mb-3">{s.title}</h2>
+                <div className="flex items-center gap-2.5 mb-3">
+                  <h2 className="font-heading text-2xl font-bold">{s.title}</h2>
+                  <InfoTooltip explanation={s.tooltip} controls={s.controls} side="right" />
+                </div>
                 <ul className="space-y-2">
                   {s.points.map((p) => (
                     <li key={p} className="flex items-start gap-2.5">

@@ -14,15 +14,6 @@ import NavBar from "@/components/NavBar";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
-const NAV_LINKS = [
-  { label: "CMMC Sprint", href: "/services/cmmc-readiness-sprint" },
-  { label: "Scoping", href: "/services/cmmc-scoping" },
-  { label: "CMMCLens", href: "/cmmclens" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "Knowledge Hub", href: "/knowledge-hub" },
-  { label: "Blog", href: "/blog" },
-];
-
 // ── FAQ data ──────────────────────────────────────────────────────────────────
 const FAQS: { category: string; q: string; a: string }[] = [
   // CMMC Basics

@@ -9,7 +9,7 @@ import { Link } from "wouter";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
-import DefenseEyeLogo from "@/components/DefenseEyeLogo";
+import NavBar from "@/components/NavBar";
 import {
   BookOpen,
   BarChart3,
@@ -18,58 +18,10 @@ import {
   Layers,
   ArrowRight,
   Clock,
-  Menu,
-  X,
   Mail,
   CheckCircle2,
   ChevronRight,
 } from "lucide-react";
-
-// ─── Nav (matches Home.tsx) ───────────────────────────────────────────────────
-const NAV_LINKS = [
-  { label: "CMMC Sprint", href: "/services/cmmc-readiness-sprint" },
-  { label: "Scoping", href: "/services/cmmc-scoping" },
-  { label: "CMMCLens", href: "/cmmclens" },
-  { label: "Knowledge Hub", href: "/knowledge-hub" },
-  { label: "Blog", href: "/blog" },
-  { label: "Pricing", href: "/pricing" },
-];
-
-function Nav() {
-  const [open, setOpen] = useState(false);
-  return (
-    <nav className="fixed top-0 inset-x-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm section-light" role="navigation" aria-label="Main navigation">
-      <div className="container flex items-center justify-between h-16">
-        <DefenseEyeLogo href="/" />
-        <div className="hidden md:flex items-center gap-7">
-          {NAV_LINKS.map((l) => (
-            <Link key={l.href} href={l.href} className="text-sm font-medium text-[#0D1B33] hover:text-primary transition-colors duration-200">
-              {l.label}
-            </Link>
-          ))}
-        </div>
-        <div className="hidden md:flex items-center gap-3">
-          <Link href="/#contact"><Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">Book Free Assessment</Button></Link>
-        </div>
-        <button className="md:hidden text-foreground" onClick={() => setOpen(!open)} aria-label="Toggle menu">
-          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
-      {open && (
-        <div className="md:hidden bg-card border-b border-border">
-          <div className="container py-4 flex flex-col gap-3">
-            {NAV_LINKS.map((l) => (
-              <Link key={l.href} href={l.href} className="text-sm font-medium text-[#0D1B33] hover:text-primary py-2" onClick={() => setOpen(false)}>{l.label}</Link>
-            ))}
-            <div className="pt-2 border-t border-border/50">
-              <Link href="/#contact"><Button size="sm" className="bg-accent text-accent-foreground w-full font-semibold">Book Free Assessment</Button></Link>
-            </div>
-          </div>
-        </div>
-      )}
-    </nav>
-  );
-}
 
 // ─── Article cards data ───────────────────────────────────────────────────────
 const HUB_ARTICLES = [
@@ -208,7 +160,7 @@ export default function KnowledgeHub() {
         <div className="scan-line absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
       </div>
 
-      <Nav />
+      <NavBar />
 
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <header className="relative pt-28 pb-16 lg:pt-36 lg:pb-20 border-b border-border/20">

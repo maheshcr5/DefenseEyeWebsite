@@ -1,3 +1,6 @@
+# Claude Code local settings (may contain server IPs / tool permissions)
+.claude/settings.local.json
+
 # Dependencies
 **/node_modules
 .pnpm-store/

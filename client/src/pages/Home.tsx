@@ -20,6 +20,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import NavBar from "@/components/NavBar";
+import { InfoTooltip } from "@/components/InfoTooltip";
 import {
   Target,
   ClipboardCheck,
@@ -434,6 +435,8 @@ export default function Home() {
                 cta: "/cmmclens",
                 ctaLabel: "View Automation",
                 glow: "from-primary/20 via-primary/5 to-transparent",
+                tooltip: "Manual evidence collection for 110 NIST controls takes 200–400 hours of analyst time. CMMCLens connects to your Microsoft 365 GCC High or Azure Government tenant, auto-collects evidence per control, and keeps your SSP current as configurations change — eliminating the largest single time bottleneck before C3PAO assessment and giving your lean IT team months back.",
+                tooltipControls: ["110 Controls", "M365 GCC High", "Auto-Evidence"],
               },
               {
                 icon: FileCheck,
@@ -442,6 +445,8 @@ export default function Home() {
                 cta: "/services/cmmc-readiness-sprint",
                 ctaLabel: "View Sprint",
                 glow: "from-emerald-400/20 via-emerald-400/5 to-transparent",
+                tooltip: "C3PAO assessors expect two things: control evidence and live demonstration. DefenseEye's assessment prep structures your evidence to CMMC Assessment Guide format, pre-populates assessor-facing response scripts, and conducts mock assessments that surface demonstration gaps before your official $20K–$80K assessment date.",
+                tooltipControls: ["C3PAO Prep", "CMMC Assess Guide", "Mock Assessment"],
               },
               {
                 icon: BarChart3,
@@ -450,6 +455,8 @@ export default function Home() {
                 cta: "/pricing",
                 ctaLabel: "View Pricing",
                 glow: "from-lime-300/20 via-lime-300/5 to-transparent",
+                tooltip: "The 110 NIST controls carry different SPRS weights — some deduct 5 points per gap, others just 1. DefenseEye's risk engine ranks open gaps by SPRS deduction × contract deadline urgency, ensuring your limited IT bandwidth closes the controls that most protect your next award — not just the ones that are easiest to fix.",
+                tooltipControls: ["SPRS Priority", "Contract Risk", "110 Controls"],
               },
             ].map((card) => (
               <div key={card.title} className="relative overflow-hidden border border-border/40 bg-card/55 rounded-sm p-6 hover:border-primary/40 transition-colors">
@@ -458,7 +465,10 @@ export default function Home() {
                   <div className="w-10 h-10 rounded-sm border border-primary/30 bg-background/70 flex items-center justify-center mb-4">
                     <card.icon className="w-5 h-5 text-primary" />
                   </div>
-                  <h3 className="font-heading text-xl font-bold text-foreground mb-2">{card.title}</h3>
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="font-heading text-xl font-bold text-foreground">{card.title}</h3>
+                    <InfoTooltip explanation={card.tooltip} controls={card.tooltipControls} />
+                  </div>
                   <p className="text-sm text-muted-foreground mb-5 leading-relaxed">{card.body}</p>
                   <a href={card.cta} className="inline-flex items-center text-sm font-semibold text-primary hover:underline">
                     {card.ctaLabel} <ArrowRight className="w-4 h-4 ml-1.5" />
@@ -521,6 +531,8 @@ export default function Home() {
                 iconBg: "bg-primary/10 border-primary/20",
                 title: "CMMC Gap Assessment",
                 desc: "Scored analysis against all 110 NIST SP 800-171 controls with SPRS estimate and prioritized gap report.",
+                tooltip: "A scored gap analysis is the foundation of defensible CMMC readiness. It maps your current state against all 110 NIST controls, estimates your SPRS score, and ranks gaps by contract risk — so your team knows exactly which fixes protect your next award first. Without this baseline, teams routinely spend budget on low-impact controls while high-deduction gaps stay open.",
+                tooltipControls: ["110 Controls", "SPRS Estimate", "Contract Risk"],
               },
               {
                 icon: Zap,
@@ -528,6 +540,8 @@ export default function Home() {
                 iconBg: "bg-accent/10 border-accent/20",
                 title: "CMMC Level 2 Automation",
                 desc: "Real-time risk remediation, real-time SSP/policies/procedures/standards generation, POA&M tracking, and continuous SPRS monitoring.",
+                tooltip: "Manual evidence collection for 110 controls typically takes 200–400 analyst hours. CMMCLens automates evidence collection from your M365 GCC High or Azure Gov tenant, generates SSP and POA&M in real time, and tracks your live SPRS score — compressing a 12-month manual prep timeline to 3–5 months.",
+                tooltipControls: ["M365 GCC High", "Auto-Evidence", "Real-Time SSP"],
               },
               {
                 icon: Target,
@@ -535,6 +549,8 @@ export default function Home() {
                 iconBg: "bg-emerald-400/10 border-emerald-400/20",
                 title: "Advisory & Consulting",
                 desc: "Certified CMMC advisors for scoping, remediation, documentation, and C3PAO coordination.",
+                tooltip: "CMMC advisory from CCPs (Certified CMMC Professionals) — not general IT consultants — means your scoping decisions, SSP language, and control implementations reflect what C3PAOs actually flag in the field, not just what the standard text says. CCP-led advisory directly reduces your assessment failure risk.",
+                tooltipControls: ["CCP-Led", "Scoping", "C3PAO Alignment"],
               },
               {
                 icon: ClipboardCheck,
@@ -542,6 +558,8 @@ export default function Home() {
                 iconBg: "bg-sky-400/10 border-sky-400/20",
                 title: "Assessment Preparation",
                 desc: "C3PAO-ready evidence packages, mock interviews, and executive-ready risk narratives.",
+                tooltip: "A C3PAO assessment runs $20K–$80K per round. DefenseEye's assessment prep builds your evidence package to the CMMC Assessment Guide format, prepares your staff for live control demonstrations, and conducts mock assessments — catching the gaps that cause official failures before you book your real assessment date.",
+                tooltipControls: ["C3PAO Evidence", "Mock Assessment", "Staff Prep"],
               },
             ].map((card, i) => (
               <motion.div
@@ -555,7 +573,10 @@ export default function Home() {
                 <div className={`w-11 h-11 rounded-sm border ${card.iconBg} flex items-center justify-center mb-5`}>
                   <card.icon className={`w-5 h-5 ${card.iconColor}`} />
                 </div>
-                <h3 className="font-heading font-bold text-foreground mb-2">{card.title}</h3>
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="font-heading font-bold text-foreground">{card.title}</h3>
+                  <InfoTooltip explanation={card.tooltip} controls={card.tooltipControls} />
+                </div>
                 <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
               </motion.div>
             ))}

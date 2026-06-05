@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
 import { CheckCircle2, ArrowRight, Award, Clock, FileCheck } from "lucide-react";
 import NavBar from "@/components/NavBar";
+import { InfoTooltip } from "@/components/InfoTooltip";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
@@ -102,16 +103,43 @@ export default function CMMCReadinessSprint() {
           </p>
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              "CMMC gap assessment (Level 1 / Level 2 aligned)",
-              "NIST SP 800-171 compliance mapping",
-              "SSP (System Security Plan) starter package",
-              "POA&M with prioritized actions",
-              "Prioritized remediation roadmap by business risk",
-              "Clear next-step plan for C3PAO assessment readiness",
+              {
+                text: "CMMC gap assessment (Level 1 / Level 2 aligned)",
+                tooltip: "A scored analysis tells you exactly which of the 110 controls are missing or incomplete, your estimated SPRS score, and — critically — which gaps to close first by contract risk. Without this baseline, teams routinely spend months on low-weight controls while 5-point SPRS deductions stay open, directly threatening upcoming award eligibility.",
+                controls: ["110 Controls", "SPRS Estimate", "Contract Risk"],
+              },
+              {
+                text: "NIST SP 800-171 compliance mapping",
+                tooltip: "Every control must connect from your policy statement → technical implementation → verifiable evidence artifact. This triple-mapping is exactly what your C3PAO verifies during assessment. A pre-built control mapping eliminates the 6–12 months most teams spend manually linking NIST controls to their actual system configurations.",
+                controls: ["NIST 800-171", "C3PAO Evidence", "Control Traceability"],
+              },
+              {
+                text: "SSP (System Security Plan) starter package",
+                tooltip: "Your SSP is the primary document C3PAO assessors review before and during your assessment. An SSP structured to the CMMC Assessment Guide format — covering all 110 controls with implementation descriptions and evidence references — eliminates the blank-page problem that delays most contractors by 3–6 months. Assessors can't certify what they can't read.",
+                controls: ["SSP", "32 CFR 170", "C3PAO Submission"],
+              },
+              {
+                text: "POA&M with prioritized actions",
+                tooltip: "A Plan of Action & Milestones is mandatory for any unimplemented control included in your SPRS submission (DFARS 252.204-7019). Without a credible POA&M — with specific control IDs, responsible owners, and realistic closure dates — your SPRS score is indefensible to contracting officers and prime contractors demanding compliance proof.",
+                controls: ["POA&M", "DFARS 7019", "SPRS Defensibility"],
+              },
+              {
+                text: "Prioritized remediation roadmap by business risk",
+                tooltip: "With 110 controls and a lean IT team, you cannot fix everything at once. A roadmap ordered by SPRS weight × contract deadline pressure ensures the controls that most threaten your next award renewal get closed first — not the ones that are simply easiest to implement.",
+                controls: ["SPRS Priority", "Contract Risk", "Remediation Order"],
+              },
+              {
+                text: "Clear next-step plan for C3PAO assessment readiness",
+                tooltip: "C3PAO assessments run $20K–$80K for a single pass, with additional cost for reassessment rounds. A readiness plan structured around the CMMC Assessment Guide's scoring methodology identifies exactly which gaps must be closed before scheduling your official date — preventing avoidable failures and repeat assessment fees.",
+                controls: ["C3PAO Readiness", "32 CFR 170.21", "Assessment Cost"],
+              },
             ].map((item) => (
-              <div key={item} className="flex items-start gap-3 bg-card border border-border/50 p-4 rounded-sm">
+              <div key={item.text} className="flex items-start gap-3 bg-card border border-border/50 p-4 rounded-sm">
                 <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                <p className="text-sm text-muted-foreground">{item}</p>
+                <div className="flex items-start gap-2 flex-1 min-w-0">
+                  <p className="text-sm text-muted-foreground flex-1">{item.text}</p>
+                  <InfoTooltip explanation={item.tooltip} controls={item.controls} side="top" align="end" />
+                </div>
               </div>
             ))}
           </div>

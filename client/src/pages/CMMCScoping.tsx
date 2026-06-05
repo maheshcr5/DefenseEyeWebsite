@@ -22,48 +22,52 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import NavBar from "@/components/NavBar";
+import { InfoTooltip } from "@/components/InfoTooltip";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
-
-const NAV_LINKS = [
-  { label: "CMMC Sprint", href: "/services/cmmc-readiness-sprint" },
-  { label: "Scoping", href: "/services/cmmc-scoping" },
-  { label: "CMMCLens", href: "/cmmclens" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "Knowledge Hub", href: "/knowledge-hub" },
-  { label: "Blog", href: "/blog" },
-];
 
 const SCOPE_AREAS = [
   {
     icon: Users,
     title: "People & Roles",
     desc: "Identify every person, role, and team that creates, processes, stores, or transmits CUI — including contractors, subcontractors, and third-party staff.",
+    tooltip: "Every person with access to CUI must be documented in your SSP under Access Control (NIST 3.1.x). Missing a contractor, temp worker, or remote employee creates an undocumented access path — one of the most common assessment failures. Role documentation is also required to demonstrate least-privilege enforcement (3.1.3), which is among the top-10 failed controls in C3PAO assessments.",
+    controls: ["NIST 3.1 AC", "NIST 3.1.3", "Least Privilege"],
   },
   {
     icon: Network,
     title: "Networks & Boundaries",
     desc: "Define the CUI enclave: which networks, VLANs, and communication paths carry CUI. Isolate in-scope assets from out-of-scope infrastructure.",
+    tooltip: "Boundary protection (NIST 3.13.1) carries a 5-point SPRS deduction if undefined. An undefined network perimeter forces assessors to treat your entire IT estate as in-scope — meaning all 110 controls apply to every system you operate, not just CUI-handling ones. Clear network segmentation is the highest-ROI single decision in CUI scoping.",
+    controls: ["NIST 3.13.1 SC", "5-pt SPRS", "Network Segmentation"],
   },
   {
     icon: Monitor,
     title: "Systems & Endpoints",
     desc: "Inventory workstations, servers, cloud instances, and mobile devices that touch CUI. Determine which systems carry CMMC Level 2 control obligations.",
+    tooltip: "Each in-scope endpoint requires configuration baseline documentation (3.4.1), flaw remediation evidence (3.14.1), and audit logging (3.3.1). An explicit system inventory prevents assessors from finding undocumented CUI-touching devices and flagging them as control failures across multiple NIST families simultaneously — amplifying your deficiency count.",
+    controls: ["NIST 3.4 CM", "NIST 3.14 SI", "NIST 3.3 AU"],
   },
   {
     icon: FileText,
     title: "CUI Flows & Data Paths",
     desc: "Map exactly how CUI enters, moves through, and exits your environment — email, file shares, cloud storage, contractor portals, and removable media.",
+    tooltip: "NIST 800-171 requires CUI protection at rest and in transit (3.13.8, 3.13.10). Without mapped data flows, you cannot prove CUI is encrypted where it travels. Email chains, shared drives, and contractor portals are the most common failure points in C3PAO assessments. Data flow diagrams are also required SSP artifacts under 32 CFR Part 170.",
+    controls: ["NIST 3.13.8", "NIST 3.13.10", "CUI in Transit"],
   },
   {
     icon: Globe,
     title: "Third-Party & External Access",
     desc: "Assess external system access, managed service providers, cloud platforms, and any technology that touches CUI — each carries flow-down obligations.",
+    tooltip: "Under DFARS 252.204-7021, every service provider touching CUI must be documented and their compliance verified. An undocumented MSP, cloud platform, or IT support role with CUI access creates automatic failures in SC and CA control families. Flow-down means your vendors' compliance gaps become your certification failures.",
+    controls: ["DFARS 7021", "NIST 3.13 SC", "NIST 3.12 CA"],
   },
   {
     icon: Building2,
     title: "Physical Locations",
     desc: "Identify offices, labs, secure rooms, and remote work environments where CUI is physically accessed or stored. Include facility controls in scope.",
+    tooltip: "Physical protection controls (NIST 3.10.x) require documented facility controls for every location where CUI is physically accessed or stored. Remote work locations added since 2020 are the most frequently missed physical scope items — assessors specifically ask about home offices, off-site storage, and locations where physical CUI documents are handled.",
+    controls: ["NIST 3.10 PE", "Physical CUI", "Remote Work Sites"],
   },
 ];
 
@@ -72,16 +76,22 @@ const BENEFITS = [
     icon: TrendingDown,
     title: "Smaller Scope = Lower Cost",
     desc: "Every system out of scope is a control you don't have to document, implement, or defend. Proper scoping routinely reduces total compliance overhead by 30–50%.",
+    tooltip: "Every system inside your CUI boundary requires full 110-control documentation, implementation evidence, and C3PAO scrutiny. One workstation legitimately excluded from scope can eliminate dozens of control documentation hours. Contractors who define a tight, defensible boundary before remediation consistently cut total compliance costs by 30–50% and reduce C3PAO assessment duration.",
+    controls: ["Scope Reduction", "Cost Optimization", "110 Controls"],
   },
   {
     icon: ShieldCheck,
     title: "Better SPRS Score",
     desc: "A tightly defined, correctly scoped environment means fewer applicable controls flagged as missing. Your NIST 800-171 self-assessment score improves before you implement a single fix.",
+    tooltip: "Your SPRS score is computed only against controls applicable to your defined environment. Controls that are 'Not Applicable' because systems are legitimately out of scope are excluded from the score calculation — not counted as gaps. A tighter scope means a better starting SPRS score before you change a single technical configuration.",
+    controls: ["SPRS Score", "DFARS 7019", "NA Controls"],
   },
   {
     icon: Target,
     title: "Fewer Failed Controls",
     desc: "Assessors only evaluate what's in scope. Undefined boundaries force assessors to assume the worst — broad scope, maximum controls. Scoping protects your assessment outcome.",
+    tooltip: "C3PAO assessors evaluate only your scoped environment. An undefined or over-broad boundary forces assessors to test systems you didn't intend to document, creating failures from controls on systems that could have been legitimately excluded. Your scope document is your legal and contractual boundary protection during the assessment.",
+    controls: ["C3PAO Assessment", "Scope Boundary", "Assessment Risk"],
   },
 ];
 
@@ -233,7 +243,10 @@ export default function CMMCScoping() {
             {SCOPE_AREAS.map((area) => (
               <div key={area.title} className="bg-card border border-border/50 rounded-sm p-6">
                 <area.icon className="w-5 h-5 text-primary mb-3" />
-                <h3 className="font-heading font-bold text-foreground mb-2">{area.title}</h3>
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="font-heading font-bold text-foreground">{area.title}</h3>
+                  <InfoTooltip explanation={area.tooltip} controls={area.controls} />
+                </div>
                 <p className="text-sm text-muted-foreground leading-relaxed">{area.desc}</p>
               </div>
             ))}
@@ -257,7 +270,10 @@ export default function CMMCScoping() {
             {BENEFITS.map((b) => (
               <div key={b.title} className="bg-card border border-border/50 rounded-sm p-6">
                 <b.icon className="w-6 h-6 text-primary mb-3" />
-                <h3 className="font-heading font-bold text-foreground mb-2">{b.title}</h3>
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="font-heading font-bold text-foreground">{b.title}</h3>
+                  <InfoTooltip explanation={b.tooltip} controls={b.controls} />
+                </div>
                 <p className="text-sm text-muted-foreground leading-relaxed">{b.desc}</p>
               </div>
             ))}
