@@ -19,20 +19,32 @@ const pages = {
     icon: Bot,
     directAnswer:
       "AI governance gives organizations a repeatable way to approve, monitor, secure, and improve AI systems. It connects policies, risk decisions, controls, human accountability, and evidence so AI can be adopted responsibly.",
+    executiveSummary:
+      "DefenseEye helps organizations turn AI governance from policy language into an operating model: use-case intake, risk review, model oversight, security controls, policy evidence, and accountable human decision-making.",
+    keyOutcomes: [
+      "Defined decision rights for AI use cases, vendors, data, and model behavior",
+      "NIST AI RMF-aligned controls that can be explained to leaders, auditors, and procurement teams",
+      "Human accountability and oversight built into AI-assisted workflows",
+      "Evidence that supports responsible AI, cybersecurity, privacy, and compliance expectations",
+    ],
+    whyItMatters:
+      "AI programs fail when ownership, data access, model behavior, security review, and policy expectations are handled separately. Governance gives leaders a practical way to approve AI use, monitor risk, preserve explainability, and keep humans accountable for consequential decisions.",
     sections: [
       {
-        heading: "What the program covers",
+        heading: "Implementation focus",
         points: [
           "NIST AI RMF alignment and practical governance structure",
           "Responsible AI principles translated into operating controls",
           "AI risk management for use cases, vendors, data, and model behavior",
           "AI governance frameworks that fit enterprise and public sector oversight needs",
           "AI policy development for acceptable use, review, approval, and monitoring",
+          "Model governance for lifecycle, data, output quality, and change oversight",
+          "AI security review for prompts, permissions, integrations, and sensitive data exposure",
           "Human accountability for AI-assisted decisions and high-risk workflows",
         ],
       },
       {
-        heading: "Business outcomes",
+        heading: "Key outcomes",
         points: [
           "Clearer decision rights for AI initiatives",
           "Reduced risk from unmanaged AI adoption",
@@ -73,9 +85,19 @@ const pages = {
     icon: Sparkles,
     directAnswer:
       "AI transformation is the disciplined use of AI to improve business processes, decision support, employee productivity, and operational outcomes. It works best when adoption, governance, security, and value measurement are designed together.",
+    executiveSummary:
+      "DefenseEye helps teams identify practical AI opportunities, prioritize use cases, enable Microsoft Copilot responsibly, automate selected workflows, and measure whether AI adoption is improving operational performance.",
+    keyOutcomes: [
+      "Prioritized AI opportunities tied to business value, feasibility, risk, and data readiness",
+      "Adoption roadmaps that connect implementation, governance, security, and ownership",
+      "Microsoft Copilot enablement that addresses permissions, data exposure, and user workflows",
+      "Automation plans focused on cycle time, manual effort, consistency, and decision visibility",
+    ],
+    whyItMatters:
+      "AI adoption creates value when it improves real work. A practical transformation program identifies where AI can reduce friction, protects sensitive data, measures outcomes, and gives teams a path from experimentation to governed implementation.",
     sections: [
       {
-        heading: "What the engagement covers",
+        heading: "Implementation focus",
         points: [
           "AI opportunity identification across business, operations, security, compliance, and customer workflows",
           "AI adoption roadmaps with practical sequencing and ownership",
@@ -86,7 +108,7 @@ const pages = {
         ],
       },
       {
-        heading: "Business outcomes",
+        heading: "Key outcomes",
         points: [
           "Faster movement from AI ideas to approved use cases",
           "Better alignment between AI investments and operational value",
@@ -145,6 +167,24 @@ export default function SolutionPage() {
           acceptedAnswer: { "@type": "Answer", text: faq.answer },
         })),
       },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://defenseeye.ai/",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: page.eyebrow,
+            item: `https://defenseeye.ai${location}`,
+          },
+        ],
+      },
     ];
     const id = "solution-page-schema";
     document.getElementById(id)?.remove();
@@ -183,8 +223,27 @@ export default function SolutionPage() {
 
         <section className="max-w-6xl mx-auto pb-14">
           <div className="bg-primary/5 border border-primary/20 rounded-sm p-6">
-            <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-3">Direct Answer</p>
-            <p className="text-foreground leading-relaxed max-w-4xl">{page.directAnswer}</p>
+            <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-3">Executive Summary</p>
+            <p className="text-foreground leading-relaxed max-w-4xl mb-4">{page.executiveSummary}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-4xl">{page.directAnswer}</p>
+          </div>
+        </section>
+
+        <section className="max-w-6xl mx-auto pb-14">
+          <div className="grid lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-5">
+              <Target className="w-6 h-6 text-primary mb-4" />
+              <h2 className="font-heading text-2xl font-bold text-foreground mb-3">Why It Matters</h2>
+              <p className="text-muted-foreground leading-relaxed">{page.whyItMatters}</p>
+            </div>
+            <div className="lg:col-span-7 grid sm:grid-cols-2 gap-4">
+              {page.keyOutcomes.map((outcome) => (
+                <div key={outcome} className="bg-card/50 border border-border/40 rounded-sm p-4">
+                  <CheckCircle2 className="w-5 h-5 text-primary mb-3" />
+                  <p className="text-sm text-muted-foreground leading-relaxed">{outcome}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 

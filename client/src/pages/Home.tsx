@@ -7,9 +7,7 @@ import {
   BarChart3,
   Bot,
   CheckCircle2,
-  Cloud,
   FileCheck,
-  Landmark,
   Network,
   ShieldCheck,
   Sparkles,
@@ -190,40 +188,103 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 
 const servicePortfolio = [
   {
-    icon: Sparkles,
-    title: "AI Transformation & Automation",
-    text: "Identify practical AI opportunities, prioritize use cases, automate workflows, and create adoption roadmaps tied to measurable business value.",
+    icon: Network,
+    title: "AI Transformation",
+    challenge: "Organizations need useful AI adoption without disconnected pilots or unmanaged data exposure.",
+    approach: "DefenseEye identifies practical use cases, sequences adoption roadmaps, and connects automation to governance and operations.",
+    outcome: "Teams move from AI interest to approved, measurable implementation.",
     href: "/solutions/ai-transformation",
   },
   {
     icon: Bot,
-    title: "AI Governance & Responsible AI",
-    text: "Build AI governance programs that improve oversight, accountability, policy alignment, risk visibility, and responsible deployment.",
+    title: "AI Governance",
+    challenge: "AI use is expanding faster than policies, oversight, and accountability models.",
+    approach: "DefenseEye builds governance programs aligned to NIST AI RMF, responsible AI, risk controls, explainability, and human accountability.",
+    outcome: "Leaders gain a repeatable model for approving, monitoring, and governing AI systems.",
     href: "/solutions/ai-governance",
   },
   {
     icon: ShieldCheck,
-    title: "AI Security & Cybersecurity",
-    text: "Reduce security risk across AI systems, cloud environments, identity, data access, and Microsoft security operations.",
+    title: "AI Security",
+    challenge: "Generative AI introduces new risks across prompts, data access, model behavior, and connected workflows.",
+    approach: "DefenseEye assesses AI security architecture, threat scenarios, identity boundaries, and Security Copilot readiness.",
+    outcome: "Organizations reduce AI-related security risk before adoption scales.",
     href: "/insights/security-copilot-cybersecurity-operations",
   },
   {
-    icon: Cloud,
-    title: "Cloud Security & Modernization",
-    text: "Modernize Microsoft cloud environments with secure architecture, identity controls, Zero Trust patterns, and operational readiness.",
-    href: "/#microsoft",
+    icon: Activity,
+    title: "Cybersecurity & Risk",
+    challenge: "Security teams need clearer risk visibility across operations, controls, systems, and decision points.",
+    approach: "DefenseEye connects cybersecurity architecture, risk management, control evidence, and remediation planning.",
+    outcome: "Programs become easier to govern, explain, and improve over time.",
+    href: "/why-defenseeye",
   },
   {
-    icon: Activity,
+    icon: FileCheck,
     title: "Compliance Automation",
-    text: "Reduce manual compliance work with evidence automation, control monitoring, documentation consistency, and remediation workflows.",
+    challenge: "Manual evidence collection and documentation work slows assessments and increases inconsistency.",
+    approach: "DefenseEye automates evidence workflows, control traceability, documentation preparation, and readiness monitoring.",
+    outcome: "Teams reduce preparation effort and improve audit readiness.",
     href: "/insights/ai-automated-evidence-collection",
   },
   {
-    icon: Landmark,
-    title: "CMMC Readiness & Continuous Compliance",
-    text: "Improve audit readiness, reduce evidence collection burden, and sustain compliance across CMMC, RMF, FedRAMP, and related frameworks.",
+    icon: Network,
+    title: "Cloud Security",
+    challenge: "Regulated cloud environments require secure architecture, identity controls, and compliance-aware implementation.",
+    approach: "DefenseEye supports Azure, Azure Government, GCC High patterns, Zero Trust, and secure modernization.",
+    outcome: "Cloud programs align security, compliance, and operational readiness.",
+    href: "/#microsoft",
+  },
+  {
+    icon: BarChart3,
+    title: "CMMCLens Platform",
+    challenge: "Readiness programs often depend on fragmented evidence, manual tracking, and inconsistent documentation.",
+    approach: "CMMCLens centralizes evidence, traces controls, identifies gaps, and supports AI-assisted SSP and policy generation.",
+    outcome: "Organizations improve continuous readiness without making CMMC the only focus.",
     href: "/cmmclens",
+  },
+];
+
+const executiveSummary = [
+  {
+    title: "What We Do",
+    text: "DefenseEye helps organizations adopt AI securely, govern AI responsibly, strengthen cybersecurity, automate compliance work, and improve readiness.",
+  },
+  {
+    title: "Who We Help",
+    text: "Government agencies, defense contractors, regulated industries, prime contractors, and enterprise teams operating in Microsoft-centered environments.",
+  },
+  {
+    title: "Why DefenseEye",
+    text: "Combined experience across cybersecurity, federal compliance, cloud security, AI governance, privacy, regulatory response, and automation.",
+  },
+];
+
+const outcomes = [
+  {
+    icon: Sparkles,
+    title: "Accelerate AI Adoption",
+    text: "Identify, prioritize, and implement practical AI use cases aligned to business objectives.",
+  },
+  {
+    icon: Bot,
+    title: "Improve Governance",
+    text: "Establish responsible AI, cybersecurity, privacy, and compliance controls with clear accountability.",
+  },
+  {
+    icon: FileCheck,
+    title: "Reduce Manual Effort",
+    text: "Automate evidence collection, documentation preparation, and readiness assessments.",
+  },
+  {
+    icon: Activity,
+    title: "Increase Operational Visibility",
+    text: "Provide monitoring, analytics, and risk-informed decision support for program owners.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Strengthen Readiness",
+    text: "Improve cybersecurity, compliance, and audit preparedness across regulated environments.",
   },
 ];
 
@@ -292,6 +353,18 @@ export default function Home() {
           "Federal cybersecurity advisory",
           "Cloud security architecture",
           "Data governance and privacy",
+        ],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://defenseeye.ai/",
+          },
         ],
       },
       {
@@ -393,7 +466,7 @@ export default function Home() {
                   { icon: Bot, label: "AI" },
                   { icon: ShieldCheck, label: "Cybersecurity" },
                   { icon: Network, label: "GRC" },
-                  { icon: Cloud, label: "Microsoft" },
+                  { icon: Award, label: "Microsoft" },
                 ].map((item) => (
                   <div key={item.label} className="bg-background/60 border border-border/40 rounded-sm p-4">
                     <item.icon className="w-5 h-5 text-primary mb-3" />
@@ -408,50 +481,12 @@ export default function Home() {
 
       <Section className="py-12 px-4 section-light">
         <div className="max-w-6xl mx-auto">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {[
-              "Microsoft ISV",
-              "Azure Marketplace Presence",
-              "Azure Expertise",
-              "GCC High Experience",
-              "NMSDC Certified MBE",
-            ].map((item) => (
-              <div key={item} className="bg-card border border-border/50 rounded-sm p-5">
+          <div className="grid md:grid-cols-3 gap-5">
+            {executiveSummary.map((item) => (
+              <div key={item.title} className="bg-card border border-border/50 rounded-sm p-6">
                 <CheckCircle2 className="w-5 h-5 text-primary mb-3" />
-                <p className="font-heading font-semibold text-sm text-foreground">{item}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      <Section id="microsoft" className="py-16 px-4 section-gray">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-12 gap-8 items-start">
-          <div className="lg:col-span-5">
-            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Microsoft Ecosystem</p>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4 text-foreground">
-              Microsoft credibility for AI, security, governance, and compliance work
-            </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              DefenseEye supports Microsoft-centered programs where AI adoption, identity, cloud security, governance, and evidence
-              management must meet enterprise and federal expectations.
-            </p>
-            <a href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary font-semibold hover:underline mt-5">
-              View the CMMCLens Microsoft Marketplace listing <ArrowRight className="w-4 h-4" />
-            </a>
-          </div>
-          <div className="lg:col-span-7 grid sm:grid-cols-2 gap-4">
-            {[
-              "Microsoft Independent Software Vendor (ISV)",
-              "Azure Marketplace presence through CMMCLens",
-              "Azure expertise for secure cloud architecture and modernization",
-              "GCC High experience for regulated and defense environments",
-              "AI, security, governance, and compliance capabilities",
-              "Microsoft-aligned evidence automation and audit readiness support",
-            ].map((item) => (
-              <div key={item} className="bg-card/50 border border-border/40 rounded-sm p-5">
-                <Cloud className="w-5 h-5 text-primary mb-3" />
-                <p className="text-sm text-muted-foreground leading-relaxed">{item}</p>
+                <h2 className="font-heading font-semibold text-lg text-foreground mb-2">{item.title}</h2>
+                <p className="text-sm text-muted-foreground leading-relaxed">{item.text}</p>
               </div>
             ))}
           </div>
@@ -461,12 +496,12 @@ export default function Home() {
       <Section id="services" className="py-16 px-4 section-light">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
-            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Service Portfolio</p>
+            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">What We Do</p>
             <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-3 text-foreground">
-              Services organized around adoption, governance, security, and readiness
+              Services organized for executive evaluation and operational delivery
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              We help teams move from AI interest to governed, secure, measurable implementation while reducing compliance and audit friction.
+              Each service connects a business challenge to a practical implementation path and a measurable operational outcome.
             </p>
           </div>
 
@@ -482,7 +517,11 @@ export default function Home() {
               >
                 <svc.icon className="w-6 h-6 text-primary mb-4" />
                 <h3 className="font-heading font-bold text-foreground mb-2">{svc.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-5">{svc.text}</p>
+                <div className="space-y-3 mb-5">
+                  <p className="text-sm text-muted-foreground leading-relaxed"><span className="text-foreground font-medium">Challenge:</span> {svc.challenge}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed"><span className="text-foreground font-medium">Approach:</span> {svc.approach}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed"><span className="text-foreground font-medium">Outcome:</span> {svc.outcome}</p>
+                </div>
                 <a href={svc.href} className="mt-auto inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
                   Learn more <ArrowRight className="w-3.5 h-3.5" />
                 </a>
@@ -492,16 +531,71 @@ export default function Home() {
         </div>
       </Section>
 
+      <Section className="py-16 px-4 section-gray">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Outcomes We Deliver</p>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground mb-3">
+              Operational outcomes leaders can evaluate
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              DefenseEye focuses on measurable progress: adoption, governance, automation, visibility, and readiness.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {outcomes.map((item) => (
+              <div key={item.title} className="bg-card/50 border border-border/40 rounded-sm p-5">
+                <item.icon className="w-5 h-5 text-primary mb-3" />
+                <h3 className="font-heading font-semibold text-sm text-foreground mb-2">{item.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      <Section id="microsoft" className="py-16 px-4 section-light">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-12 gap-8 items-start">
+          <div className="lg:col-span-5">
+            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Microsoft Ecosystem Experience</p>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4 text-foreground">
+              Microsoft-aligned delivery experience for regulated environments
+            </h2>
+            <p className="text-muted-foreground leading-relaxed">
+              DefenseEye supports Microsoft-centered programs where cloud security, identity, governance, compliance automation, and AI adoption must be implemented with evidence and accountability.
+            </p>
+            <a href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary font-semibold hover:underline mt-5">
+              View the CMMCLens Azure Marketplace listing <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
+          <div className="lg:col-span-7 grid sm:grid-cols-2 gap-4">
+            {[
+              "Microsoft Independent Software Vendor (ISV)",
+              "Azure Marketplace presence through CMMCLens",
+              "Azure expertise for secure architecture and modernization",
+              "Azure Government and GCC High experience",
+              "Microsoft security technologies and identity-aware integrations",
+              "Microsoft 365 and Copilot experience",
+              "Cloud security and compliance automation expertise",
+            ].map((item) => (
+              <div key={item} className="bg-card/50 border border-border/40 rounded-sm p-5">
+                <Award className="w-5 h-5 text-primary mb-3" />
+                <p className="text-sm text-muted-foreground leading-relaxed">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
       <Section id="cmmclens" className="py-16 px-4 section-gray">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-5">
-            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Flagship Platform</p>
+            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Featured Solutions</p>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4 text-foreground">
-              CMMCLens is a compliance intelligence and evidence automation platform
+              CMMCLens is a flagship platform within the broader DefenseEye portfolio
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-5">
-              CMMCLens supports broader cybersecurity and governance objectives, not only CMMC. It helps teams reduce manual
-              evidence work, improve traceability, maintain documentation consistency, and accelerate assessment readiness.
+              CMMCLens supports evidence automation, continuous readiness, and compliance analytics across cybersecurity and governance programs. CMMC is an important use case, but the platform is designed to support broader readiness and traceability needs.
             </p>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6">
               Internal implementations have demonstrated approximately 80% reduction in manual evidence collection effort where
@@ -523,13 +617,13 @@ export default function Home() {
           <div className="lg:col-span-7 grid sm:grid-cols-2 gap-4">
             {[
               "Automated evidence collection",
-              "Automated gap assessments",
               "Continuous readiness monitoring",
-              "AI-generated SSPs",
-              "AI-generated policies and procedures",
+              "Gap identification",
               "Risk remediation workflows",
               "Evidence traceability",
-              "Assessment readiness acceleration",
+              "AI-assisted SSP generation",
+              "AI-assisted policy generation",
+              "Compliance analytics",
             ].map((item) => (
               <div key={item} className="flex items-start gap-3 bg-card/50 border border-border/40 rounded-sm p-4">
                 <FileCheck className="w-5 h-5 text-primary shrink-0 mt-0.5" />
@@ -545,8 +639,11 @@ export default function Home() {
           <div className="text-center mb-10">
             <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Trust and Credibility</p>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground mb-3">
-              Credibility through capabilities and operational outcomes
+              Why Organizations Choose DefenseEye
             </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              DefenseEye combines advisory, architecture, governance, and automation experience without relying on biography-heavy claims.
+            </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
@@ -681,7 +778,6 @@ export default function Home() {
               <ul className="space-y-2.5">
                 <li><a href="/cmmclens" className="text-sm text-muted-foreground hover:text-primary transition-colors">CMMCLens</a></li>
                 <li><a href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-primary transition-colors">Microsoft Marketplace</a></li>
-                <li><a href="/copilot" className="text-sm text-muted-foreground hover:text-primary transition-colors">CMMC Copilot</a></li>
                 <li><a href="/knowledge-hub" className="text-sm text-muted-foreground hover:text-primary transition-colors">Knowledge Hub</a></li>
               </ul>
             </div>
