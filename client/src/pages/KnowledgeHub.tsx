@@ -26,6 +26,86 @@ import {
 // ─── Article cards data ───────────────────────────────────────────────────────
 const HUB_ARTICLES = [
   {
+    icon: Target,
+    title: "What is CMMC Level 2?",
+    subtitle: "Direct Answer for CUI Contractors",
+    description: "A concise explanation of CMMC Level 2, who needs it, what evidence is required, and how readiness work should be organized.",
+    href: "/insights/what-is-cmmc-level-2",
+    readTime: "5 min",
+    tags: ["CMMC Level 2", "CUI", "NIST 800-171"],
+    featured: true,
+  },
+  {
+    icon: FileCheck,
+    title: "What is RMF readiness?",
+    subtitle: "Federal Authorization Preparation",
+    description: "How teams prepare system boundaries, controls, evidence, risk decisions, and continuous monitoring for RMF authorization work.",
+    href: "/insights/what-is-rmf-readiness",
+    readTime: "5 min",
+    tags: ["RMF", "Authorization", "SSP"],
+    featured: false,
+  },
+  {
+    icon: Layers,
+    title: "What is NIST AI RMF?",
+    subtitle: "AI Governance Foundation",
+    description: "A plain-English summary of NIST AI RMF and how it helps govern, map, measure, and manage AI system risk.",
+    href: "/insights/what-is-nist-ai-rmf",
+    readTime: "5 min",
+    tags: ["NIST AI RMF", "Responsible AI", "AI Risk"],
+    featured: true,
+  },
+  {
+    icon: BarChart3,
+    title: "How can AI automate evidence collection?",
+    subtitle: "Compliance Automation",
+    description: "Where AI helps with evidence classification, control mapping, traceability, and missing evidence detection.",
+    href: "/insights/ai-automated-evidence-collection",
+    readTime: "6 min",
+    tags: ["Evidence", "AI", "Automation"],
+    featured: true,
+  },
+  {
+    icon: BookOpen,
+    title: "How can organizations implement AI governance?",
+    subtitle: "Program Design",
+    description: "Practical steps for AI inventories, risk tiering, role definition, control requirements, and governance evidence.",
+    href: "/insights/implement-ai-governance",
+    readTime: "6 min",
+    tags: ["AI Governance", "Responsible AI", "Data"],
+    featured: false,
+  },
+  {
+    icon: Target,
+    title: "How can Security Copilot improve cybersecurity operations?",
+    subtitle: "Microsoft Security",
+    description: "How Security Copilot can support alert triage, investigation, hunting, playbooks, and analyst workflows with governance.",
+    href: "/insights/security-copilot-cybersecurity-operations",
+    readTime: "6 min",
+    tags: ["Security Copilot", "SOC", "Microsoft"],
+    featured: false,
+  },
+  {
+    icon: FileCheck,
+    title: "What is continuous compliance monitoring?",
+    subtitle: "Always-On Readiness",
+    description: "How teams monitor control status, evidence freshness, configuration drift, and remediation work between audits.",
+    href: "/insights/continuous-compliance-monitoring",
+    readTime: "5 min",
+    tags: ["Continuous Compliance", "Controls", "Risk"],
+    featured: false,
+  },
+  {
+    icon: BarChart3,
+    title: "How can AI improve audit readiness?",
+    subtitle: "Audit Preparation",
+    description: "How AI can organize evidence, draft control narratives, find missing documentation, and support human-reviewed readiness.",
+    href: "/insights/ai-audit-readiness",
+    readTime: "6 min",
+    tags: ["Audit Readiness", "AI", "Evidence"],
+    featured: false,
+  },
+  {
     icon: BookOpen,
     title: "What is CMMC?",
     subtitle: "Start Here if Contracts Are at Risk",
@@ -193,7 +273,7 @@ export default function KnowledgeHub() {
             <div className="flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
               <div className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /><span>No signup required</span></div>
               <div className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /><span>Updated April 2026</span></div>
-              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /><span>5 in-depth guides</span></div>
+              <div className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-primary" /><span>{HUB_ARTICLES.length} in-depth guides</span></div>
             </div>
           </motion.div>
         </div>

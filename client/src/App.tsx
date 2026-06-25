@@ -31,6 +31,7 @@ const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const ContactUs = lazy(() => import("./pages/ContactUs"));
 const Support = lazy(() => import("./pages/Support"));
 const Copilot = lazy(() => import("./pages/Copilot"));
+const ThoughtLeadership = lazy(() => import("./pages/ThoughtLeadership"));
 
 // Minimal loading fallback that matches the dark theme
 function PageLoader() {
@@ -74,6 +75,7 @@ function Router() {
         <Route path="/contact" component={ContactUs} />
         <Route path="/support" component={Support} />
         <Route path="/copilot" component={Copilot} />
+        <Route path="/insights/:slug" component={ThoughtLeadership} />
 
         {/* Fallback */}
         <Route path="/404" component={NotFound} />
