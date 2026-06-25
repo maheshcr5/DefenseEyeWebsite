@@ -16,7 +16,7 @@ const MENUS = [
     label: "Products",
     key: "products",
     items: [
-      { label: "CMMCLens", desc: "AI-powered CMMC compliance automation", href: "/cmmclens" },
+      { label: "CMMCLens", desc: "AI-assisted evidence and compliance automation", href: "/cmmclens" },
       { label: "CMMC Copilot", desc: "Ask CMMC, DFARS, SPRS, and CUI questions", href: "/copilot" },
       { label: "Sprint Guide", desc: "4-week CMMC readiness playbook", href: "/cmmc-readiness-sprint-guide" },
     ],
@@ -25,6 +25,8 @@ const MENUS = [
     label: "Solutions",
     key: "solutions",
     items: [
+      { label: "AI Transformation", desc: "Adoption roadmaps, automation, and Copilot enablement", href: "/solutions/ai-transformation" },
+      { label: "AI Governance", desc: "Responsible AI, NIST AI RMF, controls, and oversight", href: "/solutions/ai-governance" },
       { label: "CMMC Readiness Sprint", desc: "Gap assessment to C3PAO-ready in 2–4 weeks", href: "/services/cmmc-readiness-sprint" },
       { label: "CMMC Scoping", desc: "Define your CUI boundary before the assessment", href: "/services/cmmc-scoping" },
     ],
@@ -152,7 +154,7 @@ export default function NavBar() {
         <div className="hidden md:flex">
           <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
             <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-5">
-              Book a Call
+              Schedule Consultation
             </Button>
           </a>
         </div>
@@ -229,7 +231,7 @@ export default function NavBar() {
               <div className="pt-2 border-t border-gray-100 mt-1">
                 <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)}>
                   <Button className="bg-accent text-accent-foreground font-semibold w-full">
-                    Book a Call
+                    Schedule Consultation
                   </Button>
                 </a>
               </div>

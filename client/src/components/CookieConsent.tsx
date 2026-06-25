@@ -43,30 +43,28 @@ export default function CookieConsent() {
           role="dialog"
           aria-label="Cookie consent"
           aria-live="polite"
-          className="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:bottom-6 md:max-w-md z-[60]
-                     bg-card border border-border/60 shadow-2xl backdrop-blur-xl p-5"
+          className="fixed bottom-3 left-3 right-20 z-[60] bg-card border border-border/60 shadow-2xl backdrop-blur-xl p-3
+                     sm:right-auto sm:bottom-5 sm:left-5 sm:max-w-sm"
         >
           {/* Dismiss */}
           <button
             onClick={decline}
             aria-label="Dismiss cookie banner"
-            className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors"
+            className="absolute top-2.5 right-2.5 text-muted-foreground hover:text-foreground transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
 
-          <div className="flex items-start gap-3 mb-4">
-            <div className="w-9 h-9 rounded bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-              <Cookie className="w-4.5 h-4.5 text-primary" />
+          <div className="flex items-start gap-2.5 mb-3 pr-5">
+            <div className="w-8 h-8 rounded bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+              <Cookie className="w-4 h-4 text-primary" />
             </div>
             <div>
               <p className="font-heading font-semibold text-sm text-foreground mb-1">
                 We use cookies
               </p>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                We use essential cookies for site functionality and optional analytics
-                cookies (Google Analytics) to understand how visitors use our site.
-                Umami analytics are always active — they collect no personal data.
+              <p className="text-xs text-muted-foreground leading-snug">
+                Essential cookies keep the site working. Optional analytics help us improve the site.
                 Read our{" "}
                 <a href="/privacy-policy" className="text-primary hover:underline">
                   Privacy Policy
@@ -79,7 +77,7 @@ export default function CookieConsent() {
           <div className="flex items-center gap-2">
             <Button
               size="sm"
-              className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold flex-1"
+              className="h-8 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold flex-1 text-xs"
               onClick={accept}
             >
               <ShieldCheck className="w-3.5 h-3.5 mr-1.5" />
@@ -88,7 +86,7 @@ export default function CookieConsent() {
             <Button
               size="sm"
               variant="outline"
-              className="border-border/60 text-muted-foreground flex-1"
+              className="h-8 border-border/60 text-muted-foreground flex-1 text-xs"
               onClick={decline}
             >
               Essential Only

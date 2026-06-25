@@ -10,7 +10,6 @@ import {
   Cloud,
   FileCheck,
   Landmark,
-  Lock,
   Network,
   ShieldCheck,
   Sparkles,
@@ -177,7 +176,7 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
                 <div className="flex items-center justify-between pt-1">
                   <p className="text-xs text-muted-foreground">No commitment. Practical next steps.</p>
                   <Button type="submit" disabled={submitting} className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 disabled:opacity-60">
-                    {submitting ? "Sending..." : "Request Consultation"}
+                    {submitting ? "Sending..." : "Schedule Consultation"}
                   </Button>
                 </div>
               </form>
@@ -191,34 +190,40 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 
 const servicePortfolio = [
   {
+    icon: Sparkles,
+    title: "AI Transformation & Automation",
+    text: "Identify practical AI opportunities, prioritize use cases, automate workflows, and create adoption roadmaps tied to measurable business value.",
+    href: "/solutions/ai-transformation",
+  },
+  {
     icon: Bot,
     title: "AI Governance & Responsible AI",
-    text: "NIST AI RMF alignment, governance programs, AI risk assessments, and responsible AI readiness.",
+    text: "Build AI governance programs that improve oversight, accountability, policy alignment, risk visibility, and responsible deployment.",
+    href: "/solutions/ai-governance",
   },
   {
     icon: ShieldCheck,
-    title: "AI Security",
-    text: "Generative AI security assessments, LLM threat modeling, AI architecture reviews, and Security Copilot readiness.",
-  },
-  {
-    icon: Activity,
-    title: "Cybersecurity & Compliance Automation",
-    text: "Continuous compliance, evidence automation, control monitoring, and risk remediation workflows.",
-  },
-  {
-    icon: Landmark,
-    title: "Federal Cybersecurity",
-    text: "RMF, FedRAMP, CMMC, SSP development, POA&M management, and authorization readiness.",
+    title: "AI Security & Cybersecurity",
+    text: "Reduce security risk across AI systems, cloud environments, identity, data access, and Microsoft security operations.",
+    href: "/insights/security-copilot-cybersecurity-operations",
   },
   {
     icon: Cloud,
-    title: "Cloud Security Architecture",
-    text: "Azure security, identity security, Zero Trust, and secure cloud modernization.",
+    title: "Cloud Security & Modernization",
+    text: "Modernize Microsoft cloud environments with secure architecture, identity controls, Zero Trust patterns, and operational readiness.",
+    href: "/#microsoft",
   },
   {
-    icon: Lock,
-    title: "Data Governance & Privacy",
-    text: "Data governance, privacy programs, regulatory readiness, and information protection.",
+    icon: Activity,
+    title: "Compliance Automation",
+    text: "Reduce manual compliance work with evidence automation, control monitoring, documentation consistency, and remediation workflows.",
+    href: "/insights/ai-automated-evidence-collection",
+  },
+  {
+    icon: Landmark,
+    title: "CMMC Readiness & Continuous Compliance",
+    text: "Improve audit readiness, reduce evidence collection burden, and sustain compliance across CMMC, RMF, FedRAMP, and related frameworks.",
+    href: "/cmmclens",
   },
 ];
 
@@ -226,6 +231,8 @@ const thoughtLeadership = [
   ["What is CMMC Level 2?", "/insights/what-is-cmmc-level-2"],
   ["What is RMF readiness?", "/insights/what-is-rmf-readiness"],
   ["What is NIST AI RMF?", "/insights/what-is-nist-ai-rmf"],
+  ["AI Governance Services", "/solutions/ai-governance"],
+  ["AI Transformation Services", "/solutions/ai-transformation"],
   ["How can AI automate evidence collection?", "/insights/ai-automated-evidence-collection"],
   ["How can organizations implement AI governance?", "/insights/implement-ai-governance"],
   ["How can Security Copilot improve cybersecurity operations?", "/insights/security-copilot-cybersecurity-operations"],
@@ -237,8 +244,8 @@ export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
 
   useSeo(
-    "DefenseEye.ai — AI-Powered Cybersecurity, Governance, Risk, and Compliance Automation",
-    "DefenseEye helps government agencies, defense contractors, and regulated organizations accelerate cybersecurity readiness, governance, risk management, and compliance through AI-enabled automation, Microsoft-aligned cloud security, and evidence-driven decision support."
+    "DefenseEye.ai — AI Transformation, AI Governance, Cybersecurity, Risk, and Compliance Automation",
+    "DefenseEye helps government agencies, defense contractors, regulated industries, and enterprise teams adopt AI responsibly, improve governance, reduce operational risk, automate compliance work, and increase audit readiness."
   );
 
   useEffect(() => {
@@ -250,8 +257,9 @@ export default function Home() {
         alternateName: "DefenseEye.ai",
         url: "https://defenseeye.ai",
         description:
-          "DefenseEye is an AI-powered cybersecurity, governance, risk, compliance, and automation company serving government agencies, defense contractors, regulated enterprises, and Microsoft ecosystem partners.",
+          "DefenseEye is an AI transformation, AI governance, cybersecurity, risk, and compliance automation company serving government agencies, defense contractors, regulated enterprises, and Microsoft ecosystem partners.",
         knowsAbout: [
+          "AI transformation",
           "AI governance",
           "Responsible AI",
           "NIST AI RMF",
@@ -265,16 +273,19 @@ export default function Home() {
           "Azure GCC High",
           "Microsoft Managed Identity",
           "Data governance",
+          "Security Copilot",
+          "Audit readiness",
         ],
         sameAs: ["https://www.linkedin.com/company/defenseeye"],
       },
       {
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
-        name: "DefenseEye AI Cybersecurity and Compliance Automation Services",
+        name: "DefenseEye AI Transformation, Cybersecurity, and Compliance Automation Services",
         url: "https://defenseeye.ai",
         areaServed: { "@type": "Country", name: "United States" },
         serviceType: [
+          "AI transformation",
           "AI governance",
           "AI security",
           "Cybersecurity compliance automation",
@@ -326,21 +337,21 @@ export default function Home() {
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-6">
               <Sparkles className="w-3.5 h-3.5 text-primary" />
               <span className="text-xs font-medium text-primary tracking-wide uppercase">
-                Microsoft-aligned AI cybersecurity and GRC automation
+                Microsoft-aligned AI transformation, security, and governance
               </span>
             </div>
 
             <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight mb-5 text-foreground">
-              AI-Powered Cybersecurity, Governance, Risk, and
+              AI Transformation, AI Governance, Cybersecurity, Risk, and
               <span className="block text-primary"> Compliance Automation</span>
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mb-8">
-              Helping government agencies, defense contractors, and regulated organizations accelerate cybersecurity readiness,
-              governance, risk management, and compliance through AI-enabled automation and evidence-driven decision support.
+              DefenseEye helps government agencies, defense contractors, regulated industries, and enterprise teams adopt AI responsibly,
+              improve governance, reduce operational risk, automate compliance activities, and prepare for audits with clearer evidence.
             </p>
 
             <div className="flex flex-wrap gap-2 mb-8">
-              {["AI Governance", "Cybersecurity", "Compliance Automation", "Microsoft Ecosystem", "Government + Enterprise"].map((tag) => (
+              {["AI Adoption", "AI Governance", "Cybersecurity", "Risk Reduction", "Audit Readiness", "Microsoft Ecosystem"].map((tag) => (
                 <span key={tag} className="text-xs px-3 py-1.5 rounded-full border border-border/50 bg-card/40 text-muted-foreground">
                   {tag}
                 </span>
@@ -350,12 +361,12 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row items-center gap-4">
               <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
                 <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-10 h-12 w-full sm:w-auto">
-                  Book a Consultation <ArrowRight className="w-4 h-4 ml-2" />
+                  Schedule Consultation <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </a>
-              <a href="/cmmclens" className="w-full sm:w-auto">
+              <a href="#services" className="w-full sm:w-auto">
                 <Button variant="outline" size="lg" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 text-base px-10 h-12 w-full sm:w-auto">
-                  Explore CMMCLens
+                  Explore Solutions
                 </Button>
               </a>
             </div>
@@ -366,10 +377,10 @@ export default function Home() {
               <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-5">Operational Focus</p>
               <div className="space-y-3 mb-6">
                 {[
-                  ["AI risk decisions", "Explainable governance"],
-                  ["Evidence readiness", "Automated collection"],
-                  ["Microsoft cloud", "Azure Government + GCC High"],
-                  ["Federal programs", "RMF, FedRAMP, CMMC"],
+                  ["What we do", "AI, security, governance, and automation"],
+                  ["Who we help", "Government, defense, regulated enterprise"],
+                  ["Why credible", "Microsoft ISV + federal compliance experience"],
+                  ["Business outcome", "Responsible adoption and audit readiness"],
                 ].map(([label, value]) => (
                   <div key={label} className="flex items-center justify-between py-3 border-b border-border/30 last:border-b-0">
                     <span className="text-sm text-muted-foreground">{label}</span>
@@ -400,9 +411,9 @@ export default function Home() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {[
               "Microsoft ISV",
-              "Microsoft Marketplace Solution",
-              "Azure Government Experience",
-              "Azure GCC High Integrations",
+              "Azure Marketplace Presence",
+              "Azure Expertise",
+              "GCC High Experience",
               "NMSDC Certified MBE",
             ].map((item) => (
               <div key={item} className="bg-card border border-border/50 rounded-sm p-5">
@@ -419,11 +430,11 @@ export default function Home() {
           <div className="lg:col-span-5">
             <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Microsoft Ecosystem</p>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4 text-foreground">
-              Built for Microsoft-aligned cybersecurity and compliance programs
+              Microsoft credibility for AI, security, governance, and compliance work
             </h2>
             <p className="text-muted-foreground leading-relaxed">
-              DefenseEye works in Microsoft environments where identity, cloud security, data protection, and evidence collection
-              must support federal and enterprise compliance obligations.
+              DefenseEye supports Microsoft-centered programs where AI adoption, identity, cloud security, governance, and evidence
+              management must meet enterprise and federal expectations.
             </p>
             <a href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary font-semibold hover:underline mt-5">
               View the CMMCLens Microsoft Marketplace listing <ArrowRight className="w-4 h-4" />
@@ -432,11 +443,11 @@ export default function Home() {
           <div className="lg:col-span-7 grid sm:grid-cols-2 gap-4">
             {[
               "Microsoft Independent Software Vendor (ISV)",
-              "Microsoft Marketplace solution availability for CMMCLens",
-              "Azure Government architecture and compliance experience",
-              "Azure GCC High and Microsoft 365 GCC High integrations",
-              "Managed Identity integrations for secure service access",
-              "Microsoft-aligned evidence and compliance automation",
+              "Azure Marketplace presence through CMMCLens",
+              "Azure expertise for secure cloud architecture and modernization",
+              "GCC High experience for regulated and defense environments",
+              "AI, security, governance, and compliance capabilities",
+              "Microsoft-aligned evidence automation and audit readiness support",
             ].map((item) => (
               <div key={item} className="bg-card/50 border border-border/40 rounded-sm p-5">
                 <Cloud className="w-5 h-5 text-primary mb-3" />
@@ -452,10 +463,10 @@ export default function Home() {
           <div className="text-center mb-10">
             <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Service Portfolio</p>
             <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-3 text-foreground">
-              Advisory and automation for regulated organizations
+              Services organized around adoption, governance, security, and readiness
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Capability-based support across AI governance, cybersecurity, federal compliance, cloud architecture, data governance, and automation.
+              We help teams move from AI interest to governed, secure, measurable implementation while reducing compliance and audit friction.
             </p>
           </div>
 
@@ -471,7 +482,10 @@ export default function Home() {
               >
                 <svc.icon className="w-6 h-6 text-primary mb-4" />
                 <h3 className="font-heading font-bold text-foreground mb-2">{svc.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{svc.text}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-5">{svc.text}</p>
+                <a href={svc.href} className="mt-auto inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
+                  Learn more <ArrowRight className="w-3.5 h-3.5" />
+                </a>
               </motion.div>
             ))}
           </div>
@@ -541,7 +555,7 @@ export default function Home() {
               "Government and enterprise cybersecurity experience",
               "Compliance automation expertise across federal and regulated environments",
               "Secure cloud architecture experience for Microsoft and Azure environments",
-              "AI governance, responsible AI, and risk management capabilities",
+              "AI transformation, responsible AI, governance, and risk management capabilities",
             ].map((item) => (
               <div key={item} className="bg-card border border-border/50 rounded-sm p-6">
                 <Award className="w-5 h-5 text-primary mb-4" />
@@ -575,6 +589,8 @@ export default function Home() {
               "AI governance",
               "Privacy and regulatory response",
               "Enterprise AI platforms",
+              "AI transformation roadmaps",
+              "Microsoft Copilot enablement",
               "Data governance",
               "Compliance automation",
               "Identity security",
@@ -618,20 +634,22 @@ export default function Home() {
             <span className="text-xs font-medium text-accent tracking-wide uppercase">Consulting, advisory, platform, and partner opportunities</span>
           </div>
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-5 text-foreground">
-            Build a stronger cybersecurity, AI governance, and compliance operating model
+            Schedule a practical conversation about AI, security, governance, and compliance
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed mb-10 max-w-2xl mx-auto">
-            Talk with DefenseEye about AI governance, cybersecurity readiness, Microsoft-aligned architecture, federal compliance, or CMMCLens automation.
+            Talk with DefenseEye about responsible AI adoption, governance, cybersecurity readiness, Microsoft-aligned architecture, federal compliance, or CMMCLens automation.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-12 h-12 w-full sm:w-auto">
-                Book a Consultation <ArrowRight className="w-4 h-4 ml-2" />
+                Schedule Consultation <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </a>
-            <Button variant="outline" size="lg" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 text-base px-10 h-12 w-full sm:w-auto" onClick={() => setModalOpen(true)}>
-              Send Project Context
-            </Button>
+            <a href="#services" className="w-full sm:w-auto">
+              <Button variant="outline" size="lg" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 text-base px-10 h-12 w-full sm:w-auto">
+                Explore Solutions
+              </Button>
+            </a>
           </div>
         </div>
       </Section>
@@ -644,14 +662,14 @@ export default function Home() {
                 <DefenseEyeLogo />
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                AI-powered cybersecurity, governance, risk, compliance, and automation for government, defense, and regulated organizations.
+                AI transformation, AI governance, cybersecurity, risk, compliance, and automation for government, defense, and regulated organizations.
               </p>
               <p className="text-xs text-muted-foreground/60">NAICS: 541512, 541519 · SAM Registered · NMSDC Certified MBE</p>
             </div>
             <div>
               <h4 className="font-heading font-semibold text-xs text-foreground mb-4 uppercase tracking-widest">Services</h4>
               <ul className="space-y-2.5">
-                {["AI Governance", "AI Security", "Compliance Automation", "Federal Cybersecurity", "Cloud Security Architecture"].map((label) => (
+                {["AI Transformation", "AI Governance", "AI Security", "Cloud Security", "Compliance Automation", "CMMC Readiness"].map((label) => (
                   <li key={label}>
                     <a href="#services" className="text-sm text-muted-foreground hover:text-primary transition-colors">{label}</a>
                   </li>

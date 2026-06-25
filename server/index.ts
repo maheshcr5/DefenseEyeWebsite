@@ -251,7 +251,7 @@ async function startServer() {
           <h1 style="color:#00D4FF;font-size:22px;margin:0;">We received your request, ${firstName}!</h1>
         </div>
         <p style="color:#cbd5e1;line-height:1.7;">
-          Thank you for reaching out to <strong style="color:#00D4FF;">DefenseEye</strong>. Our certified CMMC professionals will review your request and contact you within <strong>24 business hours</strong> to discuss your CMMC compliance roadmap.
+          Thank you for reaching out to <strong style="color:#00D4FF;">DefenseEye</strong>. Our team will review your request and contact you within <strong>24 business hours</strong> to discuss your AI, cybersecurity, governance, risk, or compliance automation goals.
         </p>
         <div style="background:#131f35;border:1px solid #1e3a5f;border-radius:6px;padding:20px;margin:24px 0;">
           <p style="margin:0 0 8px;font-size:13px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Your submission summary</p>
@@ -263,7 +263,7 @@ async function startServer() {
           While you wait, explore our free <a href="https://defenseeye.ai/knowledge-hub" style="color:#00D4FF;">CMMC Knowledge Hub</a> — plain-English guides on CMMC Level 2, NIST 800-171, SPRS scoring, and C3PAO assessment preparation.
         </p>
         <hr style="border:none;border-top:1px solid #1e2d4a;margin:28px 0;"/>
-        <p style="font-size:12px;color:#6b7280;text-align:center;">DefenseEye, Inc. · defenseeye.ai · CMMC Certified Professionals</p>
+        <p style="font-size:12px;color:#6b7280;text-align:center;">DefenseEye, Inc. · defenseeye.ai · AI, cybersecurity, governance, risk, and compliance automation</p>
       </div>
     `;
 
@@ -295,7 +295,7 @@ async function startServer() {
         await transporter.sendMail({
           from: `"DefenseEye Team" <${fromAddr}>`,
           to: email,
-          subject: `We received your CMMC inquiry — DefenseEye.ai`,
+          subject: `We received your DefenseEye inquiry`,
           html: confirmationHtml,
         });
         console.log("[contact] Confirmation email sent successfully.");
@@ -324,8 +324,8 @@ async function startServer() {
   // ─── Per-route meta for server-side injection (fixes duplicate meta / text ratio) ─
   const ROUTE_META: Record<string, { title: string; description: string }> = {
     "/": {
-      title: "DefenseEye.ai — AI-Powered Cybersecurity, Governance, Risk, and Compliance Automation",
-      description: "DefenseEye helps government agencies, defense contractors, and regulated organizations accelerate cybersecurity readiness, governance, risk management, and compliance through AI-enabled automation and evidence-driven decision support.",
+      title: "DefenseEye.ai — AI Transformation, AI Governance, Cybersecurity, Risk, and Compliance Automation",
+      description: "DefenseEye helps government agencies, defense contractors, regulated industries, and enterprise teams adopt AI responsibly, improve governance, reduce operational risk, automate compliance work, and increase audit readiness.",
     },
     "/blog": {
       title: "CMMC Blog for Defense Contractors | DefenseEye.ai",
@@ -382,6 +382,14 @@ async function startServer() {
     "/cmmc-readiness-sprint-guide": {
       title: "4-Week CMMC Readiness Sprint Guide | DefenseEye.ai",
       description: "A practical 4-week CMMC readiness guide for defense contractors: scope quickly, fix high-risk gaps, and prepare for C3PAO assessment.",
+    },
+    "/solutions/ai-governance": {
+      title: "AI Governance and Responsible AI Services | DefenseEye",
+      description: "AI governance services covering NIST AI RMF, responsible AI, AI risk management, policy development, AI controls, oversight, and human accountability.",
+    },
+    "/solutions/ai-transformation": {
+      title: "AI Transformation and Automation Services | DefenseEye",
+      description: "AI transformation services covering opportunity identification, AI adoption roadmaps, business process automation, Microsoft Copilot enablement, use-case prioritization, and value realization.",
     },
     "/insights/what-is-cmmc-level-2": {
       title: "What is CMMC Level 2? | DefenseEye",

@@ -9,8 +9,8 @@ const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
 export default function ContactUs() {
   useSeo(
-    "Contact DefenseEye | CMMC Advisory and Support",
-    "Contact DefenseEye for CMMC advisory services, CMMCLens support, or to book a free consultation call. Reach us at support@defenseeye.ai."
+    "Contact DefenseEye | AI, Cybersecurity, Governance, and Compliance Support",
+    "Contact DefenseEye for AI transformation, AI governance, cybersecurity, compliance automation, CMMCLens support, or a consultation. Reach us at support@defenseeye.ai."
   );
 
   return (
@@ -25,7 +25,7 @@ export default function ContactUs() {
             Contact DefenseEye
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Whether you have a contract deadline, a scoping question, or need CMMCLens support — we respond within one business day.
+            Whether you have an AI adoption question, a governance need, a compliance deadline, or need CMMCLens support, we respond within one business day.
           </p>
         </div>
       </section>
@@ -34,16 +34,16 @@ export default function ContactUs() {
       <section className="py-16 px-4 section-light">
         <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-6">
 
-          {/* Book a Call */}
+          {/* Schedule Consultation */}
           <div className="bg-card/50 border border-border/40 rounded-sm p-7 flex flex-col">
             <Calendar className="w-7 h-7 text-primary mb-4" />
-            <h2 className="font-heading text-xl font-bold mb-2">Book a Call</h2>
+            <h2 className="font-heading text-xl font-bold mb-2">Schedule Consultation</h2>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
-              Schedule a 60-minute CMMC consultation directly on Mahesh's calendar. No sales pitch — just answers to your specific situation.
+              Schedule a 60-minute consultation on AI, cybersecurity, governance, compliance automation, or CMMCLens fit for your environment.
             </p>
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
-                Book a Free Call <ArrowRight className="w-4 h-4 ml-2" />
+                Schedule Consultation <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </a>
           </div>
@@ -89,11 +89,11 @@ export default function ContactUs() {
             {[
               {
                 heading: "Initial response",
-                body: "We respond to all inquiries within one business day. For urgent contract-deadline situations, note that in your email and we will prioritize your response.",
+                body: "We respond to all inquiries within one business day. For urgent contract, audit, security, or AI governance situations, note that in your email and we will prioritize your response.",
               },
               {
                 heading: "Free consultation",
-                body: "Your first call is free. We'll discuss your contracts, CUI environment, and CMMC requirements — no strings attached and no commitment to purchase.",
+                body: "Your first call is free. We'll discuss your goals, constraints, environment, and next practical steps, with no commitment to purchase.",
               },
               {
                 heading: "CMMC Sprint kickoff",

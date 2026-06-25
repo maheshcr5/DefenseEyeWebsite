@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 const DEFAULT_DESCRIPTION =
-  "DefenseEye.ai's CMMC Lens automates CMMC 2.0 compliance readiness for DoD contractors. AI-driven evidence collection, NIST 800-171 assessment mapping, SPRS score improvement, and continuous monitoring. Reduce documentation time by 80%.";
+  "DefenseEye helps organizations adopt AI responsibly, improve AI governance, strengthen cybersecurity, automate compliance evidence, and increase audit readiness. CMMCLens is DefenseEye's flagship compliance intelligence platform.";
 
 /**
  * Sets document.title and injects/updates <meta name="description">.
