@@ -1,0 +1,85 @@
+name: Deploy DefenseEye.ai
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: defenseeye-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy to VPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      HAS_DEPLOY_SECRETS: ${{ secrets.VPS_HOST != '' && secrets.VPS_PORT != '' && secrets.VPS_USER != '' && secrets.VPS_SSH_KEY != '' }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Set up pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.4.1 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type check
+        run: pnpm run check
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Skip deploy until VPS secrets are configured
+        if: env.HAS_DEPLOY_SECRETS != 'true'
+        run: |
+          echo "Build passed, but deployment was skipped because one or more VPS secrets are missing."
+          echo "Required repository secrets: VPS_HOST, VPS_PORT, VPS_USER, VPS_SSH_KEY."
+
+      - name: Configure SSH
+        if: env.HAS_DEPLOY_SECRETS == 'true'
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          test -n "$VPS_HOST"
+          test -n "$VPS_PORT"
+          test -n "$VPS_USER"
+          test -n "$VPS_SSH_KEY"
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/defenseeye_deploy_key
+          chmod 600 ~/.ssh/defenseeye_deploy_key
+          ssh-keyscan -p "$VPS_PORT" "$VPS_HOST" >> ~/.ssh/known_hosts
+          cat > ~/.ssh/config << SSH_CONFIG
+          Host defenseeye-vps
+            HostName $VPS_HOST
+            Port $VPS_PORT
+            User $VPS_USER
+            IdentityFile ~/.ssh/defenseeye_deploy_key
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+          SSH_CONFIG
+
+      - name: Deploy on VPS
+        if: env.HAS_DEPLOY_SECRETS == 'true'
+        run: ssh defenseeye-vps "cd /var/www/defenseeye && bash deploy/update.sh"
+
+      - name: Smoke test live site
+        if: env.HAS_DEPLOY_SECRETS == 'true'
+        run: |
+          status="$(curl -sS -o /dev/null -w '%{http_code}' https://defenseeye.ai)"
+          test "$status" = "200"
