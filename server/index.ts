@@ -324,8 +324,8 @@ async function startServer() {
   // ─── Per-route meta for server-side injection (fixes duplicate meta / text ratio) ─
   const ROUTE_META: Record<string, { title: string; description: string }> = {
     "/": {
-      title: "CMMC Readiness for DoD Contractors | DefenseEye",
-      description: "CMMC readiness experts for DoD contractors: gap assessments, NIST 800-171 mapping, SSP and POA&M, SPRS improvement, and C3PAO prep.",
+      title: "DefenseEye.ai — AI-Powered Cybersecurity, Governance, Risk, and Compliance Automation",
+      description: "DefenseEye helps government agencies, defense contractors, and regulated organizations accelerate cybersecurity readiness, governance, risk management, and compliance through AI-enabled automation and evidence-driven decision support.",
     },
     "/blog": {
       title: "CMMC Blog for Defense Contractors | DefenseEye.ai",
@@ -364,8 +364,8 @@ async function startServer() {
       description: "CMMC readiness pricing for small and mid-sized defense contractors with fixed-scope options, practical deliverables, and fast quote turnaround.",
     },
     "/cmmclens": {
-      title: "CMMCLens — CMMC Level 2 Automation Platform | DefenseEye.ai",
-      description: "CMMCLens automates CMMC Level 2 readiness with evidence collection, real-time remediation guidance, and SSP and POA&M workflows.",
+      title: "CMMCLens — AI-Assisted Compliance Intelligence and Evidence Automation | DefenseEye",
+      description: "CMMCLens is DefenseEye's AI-assisted cybersecurity and compliance automation platform for evidence collection, gap assessments, continuous readiness monitoring, AI-generated SSPs, policies, procedures, risk workflows, and evidence traceability.",
     },
     "/copilot": {
       title: "DefenseEye CMMC Copilot | CMMC, NIST 800-171, DFARS, SPRS Help",
@@ -382,6 +382,38 @@ async function startServer() {
     "/cmmc-readiness-sprint-guide": {
       title: "4-Week CMMC Readiness Sprint Guide | DefenseEye.ai",
       description: "A practical 4-week CMMC readiness guide for defense contractors: scope quickly, fix high-risk gaps, and prepare for C3PAO assessment.",
+    },
+    "/insights/what-is-cmmc-level-2": {
+      title: "What is CMMC Level 2? | DefenseEye",
+      description: "Plain-English explanation of CMMC Level 2 for defense contractors handling CUI, including evidence, SSP, POA&M, and assessment readiness requirements.",
+    },
+    "/insights/what-is-rmf-readiness": {
+      title: "What is RMF readiness? | DefenseEye",
+      description: "A practical explanation of RMF readiness for federal systems, authorization programs, control evidence, risk decisions, and continuous monitoring.",
+    },
+    "/insights/what-is-nist-ai-rmf": {
+      title: "What is NIST AI RMF? | DefenseEye",
+      description: "Plain-English guide to the NIST AI Risk Management Framework and how organizations govern, map, measure, and manage AI system risk.",
+    },
+    "/insights/ai-automated-evidence-collection": {
+      title: "How can AI automate evidence collection? | DefenseEye",
+      description: "How AI and workflow automation can reduce compliance evidence collection effort through control mapping, traceability, gap detection, and human-reviewed documentation.",
+    },
+    "/insights/implement-ai-governance": {
+      title: "How can organizations implement AI governance? | DefenseEye",
+      description: "Practical steps for implementing AI governance, responsible AI programs, AI inventories, risk tiering, role definition, and governance evidence.",
+    },
+    "/insights/security-copilot-cybersecurity-operations": {
+      title: "How can Security Copilot improve cybersecurity operations? | DefenseEye",
+      description: "How Microsoft Security Copilot can support alert triage, investigation, threat hunting, response playbooks, and analyst workflows with governance.",
+    },
+    "/insights/continuous-compliance-monitoring": {
+      title: "What is continuous compliance monitoring? | DefenseEye",
+      description: "Definition and practical value of continuous compliance monitoring for controls, evidence freshness, configuration drift, remediation, and audit readiness.",
+    },
+    "/insights/ai-audit-readiness": {
+      title: "How can AI improve audit readiness? | DefenseEye",
+      description: "How AI can support audit readiness through evidence organization, control narrative drafting, gap detection, source traceability, and human review.",
     },
   };
 
