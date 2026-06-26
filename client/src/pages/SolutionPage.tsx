@@ -42,7 +42,7 @@ const commonFaq = {
 const pages: Record<string, PageConfig> = {
   "/solutions/ai-transformation": page({
     eyebrow: "AI Transformation",
-    title: "AI transformation with governance built into implementation",
+    title: "Secure AI Transformation Consulting",
     description:
       "DefenseEye helps organizations identify practical AI opportunities, prioritize use cases, prepare data and workflows, enable Copilot and Azure OpenAI, and measure operational value.",
     seoTitle: "AI Transformation Consulting and Adoption Roadmaps | DefenseEye",
@@ -50,7 +50,7 @@ const pages: Record<string, PageConfig> = {
       "AI transformation consulting for AI opportunity discovery, adoption roadmaps, Microsoft Copilot enablement, Azure OpenAI readiness, automation, data readiness, and value realization.",
     icon: Network,
     summary:
-      "DefenseEye helps teams move from AI experimentation to governed adoption by connecting use-case discovery, workflow modernization, data readiness, security, and measurable outcomes.",
+      "DefenseEye helps organizations identify practical AI opportunities, prioritize high-value use cases, prepare Microsoft and cloud environments, and implement AI adoption roadmaps with governance and security built in.",
     challenge:
       "AI programs often stall when experimentation is disconnected from governance, security, data readiness, and operational ownership.",
     howHelps: [
@@ -78,7 +78,7 @@ const pages: Record<string, PageConfig> = {
   }),
   "/solutions/ai-governance": page({
     eyebrow: "AI Governance",
-    title: "AI governance programs for responsible and explainable adoption",
+    title: "AI Governance Consulting for Regulated Organizations",
     description:
       "DefenseEye helps organizations implement AI governance, responsible AI controls, human accountability, AI policy, model oversight, Copilot governance, and AI vendor risk practices.",
     seoTitle: "AI Governance, NIST AI RMF, and ISO 42001 Readiness | DefenseEye",
@@ -86,7 +86,7 @@ const pages: Record<string, PageConfig> = {
       "AI governance consulting for NIST AI RMF, ISO 42001 readiness, responsible AI, AI risk management, human accountability, model governance, policy development, and Copilot governance.",
     icon: Bot,
     summary:
-      "DefenseEye helps organizations turn AI governance from policy language into an operating model for use-case intake, risk review, model governance, oversight, security, explainability, and evidence.",
+      "DefenseEye helps organizations move from AI experimentation to governed adoption by implementing practical oversight, risk management, accountability, explainability, policy, and security controls.",
     challenge:
       "AI use is expanding faster than risk ownership, acceptable-use rules, data controls, vendor review, and human accountability practices.",
     howHelps: [
@@ -157,6 +157,42 @@ const pages: Record<string, PageConfig> = {
     why: "Copilot creates value when data, access, workflows, and accountability are ready before broad deployment.",
     faqs: [
       { question: "How is Copilot enablement different from buying licenses?", answer: "Enablement includes data governance, permissions, security controls, use-case guidance, adoption planning, and oversight. Licenses alone do not create governed value." },
+      commonFaq.supplier,
+    ],
+  }),
+  "/solutions/microsoft-copilot-readiness": page({
+    eyebrow: "Microsoft Copilot Readiness",
+    title: "Microsoft Copilot Readiness Consulting",
+    description:
+      "DefenseEye helps organizations prepare Microsoft 365, identity, data governance, privacy, security, and user adoption controls before Copilot usage expands.",
+    seoTitle: "Microsoft Copilot Readiness Consulting | DefenseEye",
+    seoDescription:
+      "Microsoft Copilot readiness consulting for governance, permissions, data exposure, Microsoft 365, Purview, Entra, Defender, privacy, security, and adoption planning.",
+    icon: Sparkles,
+    summary:
+      "DefenseEye helps organizations assess whether Microsoft 365, identity, information governance, and operating controls are ready for safer Copilot adoption.",
+    challenge:
+      "Copilot can expose overshared content, weak permissions, unclear retention practices, and unmanaged AI usage if readiness work is skipped.",
+    howHelps: [
+      "Review Microsoft 365 permissions, sensitive data exposure, and information governance",
+      "Assess Entra, Purview, Defender, Sentinel, and policy alignment",
+      "Define Copilot governance, adoption guardrails, and human accountability expectations",
+      "Create a practical readiness roadmap for staged deployment",
+    ],
+    outcomes: [
+      "Reduced data exposure risk",
+      "Clearer Copilot governance and adoption guardrails",
+      "Better alignment between productivity goals and security controls",
+      "Improved readiness for enterprise and regulated AI adoption",
+    ],
+    engagements: ["Copilot readiness assessment", "Microsoft 365 data exposure review", "Copilot governance model", "Security Copilot readiness planning"],
+    frameworks: ["Microsoft 365", "Microsoft Copilot", "Microsoft Entra", "Microsoft Purview", "Microsoft Defender", "Microsoft Sentinel"],
+    deliverables: ["Readiness findings", "Governance recommendations", "Adoption guardrails", "Risk-prioritized roadmap"],
+    why:
+      "Copilot readiness helps organizations adopt AI tools with clearer ownership, data protection, security monitoring, and accountable use.",
+    faqs: [
+      { question: "What should be reviewed before Microsoft Copilot rollout?", answer: "Organizations should review permissions, overshared content, sensitive data handling, identity controls, user guidance, logging, governance workflows, and adoption priorities." },
+      { question: "Does Copilot readiness include AI governance?", answer: "Yes. Copilot readiness should include AI use policies, accountability expectations, risk review, data governance, and controls for responsible adoption." },
       commonFaq.supplier,
     ],
   }),

@@ -299,11 +299,11 @@ async function startServer() {
 
         const fromAddr = process.env.SMTP_FROM || process.env.SMTP_USER;
 
-        console.log(`[contact] Sending notification to mahesh@defenseeye.ai from ${fromAddr}...`);
+        console.log(`[contact] Sending notification to enterprise@defenseeye.ai from ${fromAddr}...`);
         await transporter.sendMail({
           from: `"DefenseEye Contact Form" <${fromAddr}>`,
-          to: "mahesh@defenseeye.ai",
-          cc: "sujatha@defenseeye.ai",
+          to: "enterprise@defenseeye.ai",
+          cc: "partners@defenseeye.ai",
           replyTo: email,
           subject,
           html: htmlBody,
@@ -350,13 +350,13 @@ async function startServer() {
       title: "CMMC Blog for Defense Contractors | DefenseEye.ai",
       description: "Practical CMMC guides for defense contractors: NIST 800-171, SPRS improvement, C3PAO assessment prep, and CMMC Level 2 readiness.",
     },
-      "/representative-engagements": {
+    "/representative-engagements": {
       title: "Representative Engagements for AI, Cybersecurity, and Compliance | DefenseEye.ai",
       description: "Examples of engagement types DefenseEye is positioned to support. These are representative scenarios, not completed customer case studies.",
     },
     "/supplier-readiness": {
-      title: "Supplier Readiness | Minority-Owned AI and Cybersecurity Supplier | DefenseEye",
-      description: "DefenseEye supplier readiness page with CAGE, UEI, DUNS, NAICS, OMWBE-MBE, NMSDC-MBE, WA State SBE, CMMC Level 1, AI governance, cybersecurity, cloud security, and compliance automation capabilities.",
+      title: "DefenseEye Supplier Readiness | AI, Cybersecurity, CMMC, and Microsoft Cloud Consulting",
+      description: "DefenseEye is a Redmond, WA-based minority-owned AI, cybersecurity, Microsoft cloud, and compliance automation firm available for enterprise supplier, subcontracting, advisory, implementation, and staff augmentation opportunities.",
     },
     "/capability-statement": {
       title: "DefenseEye Capability Statement | AI, Cybersecurity, and Compliance Automation",
@@ -367,8 +367,8 @@ async function startServer() {
       description: "How DefenseEye structures advisory, implementation, staff augmentation, subcontracting, and CMMCLens-enabled automation engagements.",
     },
     "/microsoft-ecosystem": {
-      title: "Microsoft Ecosystem Experience | DefenseEye",
-      description: "DefenseEye capabilities for Azure, Azure Government, GCC High, Microsoft 365, Copilot, Entra, Defender, Sentinel, Purview, Azure OpenAI, and CMMCLens Marketplace presence.",
+      title: "Microsoft Ecosystem Experience | DefenseEye AI Governance, Copilot, Azure Security, and Compliance",
+      description: "DefenseEye supports Microsoft-centered environments through AI governance, Copilot readiness, Azure security, Microsoft cloud compliance, CMMC readiness, and compliance automation.",
     },
     "/knowledge-hub": {
       title: "CMMC Knowledge Hub | DefenseEye",
@@ -399,12 +399,16 @@ async function startServer() {
       description: "CMMC readiness pricing for small and mid-sized defense contractors with fixed-scope options, practical deliverables, and fast quote turnaround.",
     },
     "/cmmclens": {
-      title: "CMMCLens — AI-Assisted Compliance Intelligence and Evidence Automation | DefenseEye",
-      description: "CMMCLens is DefenseEye's AI-assisted cybersecurity and compliance automation platform for evidence collection, gap assessments, continuous readiness monitoring, AI-generated SSPs, policies, procedures, risk workflows, and evidence traceability.",
+      title: "CMMCLens Compliance Automation Platform | DefenseEye",
+      description: "CMMCLens is DefenseEye's flagship compliance automation platform for CMMC and NIST SP 800-171 readiness, evidence automation, control mapping, gap tracking, SSP and POA&M workflows, policy support, and readiness visibility.",
     },
     "/copilot": {
       title: "DefenseEye Advisor | AI Governance, Cybersecurity, Cloud Security, and Compliance Guidance",
       description: "Ask DefenseEye Advisor about secure AI adoption, AI governance, Microsoft Copilot readiness, Azure security, CMMC, NIST SP 800-171, compliance automation, and supplier readiness.",
+    },
+    "/contact": {
+      title: "Contact DefenseEye | AI Governance, Cybersecurity, Supplier, and Compliance Inquiries",
+      description: "Contact DefenseEye for supplier opportunities, partnerships, subcontracting, AI governance consulting, Microsoft Copilot readiness, CMMC readiness, cloud security, compliance automation, and CMMCLens inquiries.",
     },
     "/services": {
       title: "CMMC Readiness Sprint | DefenseEye.ai",
@@ -439,12 +443,12 @@ async function startServer() {
       description: "A practical 4-week CMMC readiness guide for defense contractors: scope quickly, fix high-risk gaps, and prepare for C3PAO assessment.",
     },
     "/solutions/ai-governance": {
-      title: "AI Governance and Responsible AI Services | DefenseEye",
-      description: "AI governance services covering NIST AI RMF, responsible AI, AI risk management, policy development, AI controls, oversight, and human accountability.",
+      title: "AI Governance Consulting for Regulated Organizations | DefenseEye",
+      description: "DefenseEye helps organizations move from AI experimentation to governed adoption through oversight, risk management, accountability, explainability, policy, and security controls.",
     },
     "/solutions/ai-transformation": {
-      title: "AI Transformation and Automation Services | DefenseEye",
-      description: "AI transformation services covering opportunity identification, AI adoption roadmaps, business process automation, Microsoft Copilot enablement, use-case prioritization, and value realization.",
+      title: "Secure AI Transformation Consulting | DefenseEye",
+      description: "DefenseEye helps organizations identify practical AI opportunities, prioritize high-value use cases, prepare Microsoft and cloud environments, and implement governed AI adoption roadmaps.",
     },
     "/solutions/ai-security": {
       title: "AI Security Services | DefenseEye",
@@ -453,6 +457,10 @@ async function startServer() {
     "/solutions/microsoft-copilot-enablement": {
       title: "Microsoft Copilot Enablement and Governance | DefenseEye",
       description: "Microsoft Copilot readiness, governance, identity, data protection, security operations alignment, adoption support, and risk-informed enablement.",
+    },
+    "/solutions/microsoft-copilot-readiness": {
+      title: "Microsoft Copilot Readiness Consulting | DefenseEye",
+      description: "Microsoft Copilot readiness consulting for governance, permissions, data exposure, Microsoft 365, Purview, Entra, Defender, privacy, security, and adoption planning.",
     },
     "/solutions/cybersecurity-risk": {
       title: "Cybersecurity and Risk Services | DefenseEye",
@@ -574,6 +582,8 @@ async function startServer() {
   const LEGACY_REDIRECTS: Record<string, string> = {
     "/home-stage": "/",
     "/home-stage/": "/",
+    "/case-studies": "/representative-engagements",
+    "/case-studies/": "/representative-engagements",
   };
 
   function getRouteMeta(routePath: string) {

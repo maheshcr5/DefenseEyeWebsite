@@ -4,13 +4,13 @@ import NavBar from "@/components/NavBar";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { useSeo } from "@/hooks/useSeo";
 
-const SUPPORT_EMAIL = "support@defenseeye.ai";
+const SUPPORT_EMAIL = "enterprise@defenseeye.ai";
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
 export default function Support() {
   useSeo(
     "Support | DefenseEye",
-    "Get support for DefenseEye advisory services, AI governance work, compliance automation, and the CMMCLens platform. Email support@defenseeye.ai or browse our Knowledge Hub."
+    "Get support for DefenseEye advisory services, AI governance work, compliance automation, and the CMMCLens platform. Email enterprise@defenseeye.ai or browse our Knowledge Hub."
   );
 
   return (

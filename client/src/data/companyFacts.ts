@@ -2,10 +2,14 @@ export const COMPANY = {
   name: "DefenseEye",
   legalName: "DefenseEye, Inc.",
   website: "https://www.defenseeye.ai",
-  location: "Redmond, Washington",
-  email: "mahesh@defenseeye.ai",
+  location: "Redmond, WA",
+  locationLong: "Redmond, Washington",
+  email: "enterprise@defenseeye.ai",
+  enterpriseEmail: "enterprise@defenseeye.ai",
+  partnersEmail: "partners@defenseeye.ai",
+  contactEmail: "contact@defenseeye.ai",
   phone: "425-533-4112",
-  address: "9921 187th Ct NE, Redmond, WA 98052",
+  address: "Redmond, WA",
 };
 
 export const SUPPLIER_IDENTIFIERS = [

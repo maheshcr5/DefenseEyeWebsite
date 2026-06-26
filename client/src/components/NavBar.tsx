@@ -26,7 +26,7 @@ const MENUS = [
     items: [
       { label: "AI Transformation", desc: "Adoption roadmaps, automation, and Copilot enablement", href: "/solutions/ai-transformation" },
       { label: "AI Governance", desc: "Responsible AI, NIST AI RMF, controls, and oversight", href: "/solutions/ai-governance" },
-      { label: "Copilot Enablement", desc: "Microsoft Copilot readiness, governance, and security", href: "/solutions/microsoft-copilot-enablement" },
+      { label: "Copilot Readiness", desc: "Microsoft Copilot readiness, governance, and security", href: "/solutions/microsoft-copilot-readiness" },
       { label: "Microsoft Ecosystem", desc: "Azure, Microsoft 365, Security, Copilot, and compliance alignment", href: "/microsoft-ecosystem" },
       { label: "CMMC Readiness Sprint", desc: "Gap assessment to C3PAO-ready in 2–4 weeks", href: "/services/cmmc-readiness-sprint" },
       { label: "CMMC Scoping", desc: "Define your CUI boundary before the assessment", href: "/services/cmmc-scoping" },

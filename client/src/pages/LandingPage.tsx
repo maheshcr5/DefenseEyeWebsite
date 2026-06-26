@@ -98,9 +98,9 @@ export default function LandingPage() {
   useSeo(`${config.title} | DefenseEye`, config.desc);
 
   useEffect(() => {
-    if (location.includes("ai-governance")) trackConversion("ai_governance_landing_page_visit", { location });
-    if (location.includes("microsoft-supplier")) trackConversion("microsoft_supplier_page_visit", { location });
-    if (location.includes("cmmc")) trackConversion("cmmc_readiness_page_visit", { location });
+    if (location.includes("ai-governance")) trackConversion("ai_governance_view", { location });
+    if (location.includes("microsoft-supplier")) trackConversion("microsoft_ecosystem_view", { location });
+    if (location.includes("cmmc")) trackConversion("cmmc_readiness_view", { location });
     const id = "landing-page-schema";
     document.getElementById(id)?.remove();
     const script = document.createElement("script");

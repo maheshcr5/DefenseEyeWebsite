@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
-import { CAPABILITY_STATEMENT_URL, MARKETPLACE_URL } from "@/data/companyFacts";
+import { CALENDLY_URL, CAPABILITY_STATEMENT_URL } from "@/data/companyFacts";
 
 const matrix = [
   ["Azure", "Cloud security, secure architecture, governance, compliance automation"],
@@ -21,9 +22,53 @@ const matrix = [
 
 export default function MicrosoftEcosystem() {
   useSeo(
-    "Microsoft Ecosystem Experience | DefenseEye",
-    "DefenseEye capabilities for Microsoft-centered environments including Azure, Microsoft 365, Copilot, Entra, Defender, Sentinel, Purview, Azure OpenAI, Azure Government, GCC High, and CMMCLens Marketplace presence."
+    "Microsoft Ecosystem Experience | DefenseEye AI Governance, Copilot, Azure Security, and Compliance",
+    "DefenseEye supports Microsoft-centered environments through AI governance, Copilot readiness, Azure security, Microsoft cloud compliance, CMMC readiness, and compliance automation."
   );
+
+  useEffect(() => {
+    const id = "microsoft-ecosystem-schema";
+    document.getElementById(id)?.remove();
+    const script = document.createElement("script");
+    script.id = id;
+    script.type = "application/ld+json";
+    script.text = JSON.stringify([
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        name: "Microsoft ecosystem AI governance, cloud security, and compliance support",
+        provider: { "@type": "Organization", name: "DefenseEye", url: "https://defenseeye.ai" },
+        areaServed: "United States",
+        serviceType: ["Microsoft Copilot readiness", "Azure security consulting", "Microsoft cloud compliance", "AI governance consulting"],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "Does DefenseEye support Microsoft Copilot readiness?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. DefenseEye supports Copilot readiness through governance, permissions, privacy, security, data protection, and adoption planning." },
+          },
+          {
+            "@type": "Question",
+            name: "Does DefenseEye claim Microsoft supplier approval?",
+            acceptedAnswer: { "@type": "Answer", text: "No. DefenseEye describes Microsoft ecosystem experience and CMMCLens marketplace presence without claiming Microsoft supplier approval, endorsement, or partner level." },
+          },
+        ],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://defenseeye.ai/" },
+          { "@type": "ListItem", position: 2, name: "Microsoft Ecosystem", item: "https://defenseeye.ai/microsoft-ecosystem" },
+        ],
+      },
+    ]);
+    document.head.appendChild(script);
+    return () => document.getElementById(id)?.remove();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -36,11 +81,11 @@ export default function MicrosoftEcosystem() {
             DefenseEye is positioned for organizations operating in Microsoft-centered environments, including Azure, Microsoft 365, Microsoft Security, Copilot, Azure Government, and GCC High patterns.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8">
-            <a href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer">
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">View CMMCLens Marketplace <ArrowRight className="w-4 h-4 ml-2" /></Button>
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">Discuss Microsoft Ecosystem Support <ArrowRight className="w-4 h-4 ml-2" /></Button>
             </a>
             <a href={CAPABILITY_STATEMENT_URL}>
-              <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">Capability Statement</Button>
+              <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">Request Capability Statement</Button>
             </a>
           </div>
         </div>

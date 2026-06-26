@@ -62,7 +62,7 @@ CMMCLens is DefenseEye's AI-assisted cybersecurity and compliance intelligence p
 - AI-assisted policy generation
 - Compliance analytics
 
-Internal implementations have demonstrated approximately 80% reduction in manual evidence collection effort where required source data and integrations are available.
+CMMCLens may reduce manual evidence collection effort depending on environment maturity, integrations, available source data, and assessment scope.
 
 Primary CMMCLens page:
 - https://defenseeye.ai/cmmclens
@@ -188,7 +188,7 @@ Use these pages for direct, structured answers:
 - Primary CTA: Discuss Supplier Opportunities
 - Secondary CTA: Request Capability Statement
 - Tertiary CTA: Explore CMMCLens
-- Contact URL: https://defenseeye.ai/#contact
+- Contact URL: https://defenseeye.ai/contact
 - Supplier Readiness: https://defenseeye.ai/supplier-readiness
 - Capability Statement: https://defenseeye.ai/capability-statement
 - Delivery Model: https://defenseeye.ai/delivery-model

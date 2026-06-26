@@ -11,7 +11,7 @@ export default function CopilotWidget() {
   useEffect(() => {
     const handler = () => {
       setOpen(true);
-      trackConversion("defenseeye_advisor_opened", { trigger: "custom_event" });
+      trackConversion("advisor_opened", { trigger: "custom_event" });
     };
     window.addEventListener("defenseeye:open-advisor", handler);
     return () => window.removeEventListener("defenseeye:open-advisor", handler);
@@ -32,7 +32,7 @@ export default function CopilotWidget() {
         onClick={() => {
           setOpen((value) => {
             const next = !value;
-            if (next) trackConversion("defenseeye_advisor_opened", { trigger: "floating_button" });
+            if (next) trackConversion("advisor_opened", { trigger: "floating_button" });
             return next;
           });
         }}

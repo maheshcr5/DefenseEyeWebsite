@@ -8,8 +8,8 @@ import { trackConversion } from "@/lib/tracking";
 
 export default function SupplierReadiness() {
   useSeo(
-    "Supplier Readiness | Minority-Owned AI, Cybersecurity, and Compliance Supplier | DefenseEye",
-    "DefenseEye supplier readiness details for procurement teams: CAGE, UEI, DUNS, NAICS, OMWBE-MBE, NMSDC-MBE, CMMC Level 1, AI governance, cybersecurity, cloud security, and compliance automation capabilities."
+    "DefenseEye Supplier Readiness | AI, Cybersecurity, CMMC, and Microsoft Cloud Consulting",
+    "DefenseEye is a Redmond, WA-based minority-owned AI, cybersecurity, Microsoft cloud, and compliance automation firm available for enterprise supplier, subcontracting, advisory, implementation, and staff augmentation opportunities."
   );
 
   useEffect(() => {
@@ -28,14 +28,34 @@ export default function SupplierReadiness() {
         telephone: COMPANY.phone,
         address: {
           "@type": "PostalAddress",
-          streetAddress: "9921 187th Ct NE",
           addressLocality: "Redmond",
           addressRegion: "WA",
-          postalCode: "98052",
           addressCountry: "US",
         },
         identifier: SUPPLIER_IDENTIFIERS.map(([name, value]) => ({ "@type": "PropertyValue", name, value })),
         serviceType: CORE_COMPETENCIES,
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "Is DefenseEye available for supplier and subcontracting opportunities?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Yes. DefenseEye is available for advisory, project delivery, staff augmentation, specialized subcontracting, platform-enabled consulting, and compliance automation support.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What supplier identifiers does DefenseEye provide?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "DefenseEye provides WA State UBI 605-582-526, CAGE 9ZDL5, UEI E4DYPCKN7YN8, DUNS 119330734, and NAICS codes 541512, 541519, 541690, and 561621.",
+            },
+          },
+        ],
       },
       {
         "@context": "https://schema.org",
@@ -58,10 +78,10 @@ export default function SupplierReadiness() {
           <div className="max-w-5xl mx-auto">
             <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-4">Supplier Readiness</p>
             <h1 className="font-heading text-4xl sm:text-5xl font-bold leading-tight mb-5">
-              Minority-owned AI, cybersecurity, cloud security, and compliance automation supplier
+              Supplier-Ready AI, Cybersecurity, and Compliance Expertise
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
-              DefenseEye is available for advisory, implementation, subcontracting, staff augmentation, platform-enabled consulting, and compliance automation support across enterprise, government, defense contractor, and regulated environments.
+              DefenseEye is a Redmond, WA-based minority-owned AI governance, cybersecurity, Microsoft cloud, CMMC, and compliance automation firm available for enterprise supplier, subcontracting, advisory, implementation, and staff augmentation opportunities.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 mt-8">
               <a href={CAPABILITY_STATEMENT_PDF_URL} onClick={() => trackConversion("capability_statement_download", { location: "supplier_readiness_hero" })}>
@@ -83,14 +103,16 @@ export default function SupplierReadiness() {
             <InfoPanel title="Company Snapshot" icon={<Building2 className="w-5 h-5 text-primary" />}>
               <p>DefenseEye</p>
               <p>{COMPANY.location}</p>
-              <p>AI, cybersecurity, compliance automation, and Microsoft cloud consulting</p>
+              <p>AI governance, cybersecurity, Microsoft cloud security, CMMC, and compliance automation</p>
               <p>Minority-owned business</p>
+              <p>Available for advisory, project delivery, staff augmentation, specialized subcontracting, and platform-enabled consulting</p>
             </InfoPanel>
             <InfoPanel title="Engagement Models" icon={<ShieldCheck className="w-5 h-5 text-primary" />}>
               {ENGAGEMENT_MODELS.map((item) => <p key={item}>{item}</p>)}
             </InfoPanel>
             <InfoPanel title="Contact" icon={<Mail className="w-5 h-5 text-primary" />}>
-              <a href={`mailto:${COMPANY.email}`} onClick={() => trackConversion("email_click", { location: "supplier_readiness" })}>{COMPANY.email}</a>
+              <a href={`mailto:${COMPANY.enterpriseEmail}`} onClick={() => trackConversion("email_click", { location: "supplier_readiness" })}>{COMPANY.enterpriseEmail}</a>
+              <a href={`mailto:${COMPANY.partnersEmail}`} onClick={() => trackConversion("email_click", { location: "supplier_readiness_partners" })}>{COMPANY.partnersEmail}</a>
               <a href={`tel:${COMPANY.phone.replace(/[^0-9]/g, "")}`} onClick={() => trackConversion("phone_click", { location: "supplier_readiness" })}>{COMPANY.phone}</a>
               <p>{COMPANY.address}</p>
             </InfoPanel>

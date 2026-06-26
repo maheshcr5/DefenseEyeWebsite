@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { ArrowRight, ClipboardCheck } from "lucide-react";
 import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
@@ -20,13 +21,56 @@ export default function RepresentativeEngagements() {
     "Representative engagement types DefenseEye is positioned to support, including Copilot governance, AI governance, CMMC readiness, evidence automation, Azure security, and AI security assessments."
   );
 
+  useEffect(() => {
+    const id = "representative-engagements-schema";
+    document.getElementById(id)?.remove();
+    const script = document.createElement("script");
+    script.id = id;
+    script.type = "application/ld+json";
+    script.text = JSON.stringify([
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        name: "Representative AI, cybersecurity, cloud security, and compliance engagements",
+        provider: { "@type": "Organization", name: "DefenseEye", url: "https://defenseeye.ai" },
+        serviceType: engagements.map(([title]) => title),
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "Are these completed DefenseEye customer case studies?",
+            acceptedAnswer: { "@type": "Answer", text: "No. They are representative engagement types DefenseEye is positioned to support and are not presented as completed customer case studies." },
+          },
+          {
+            "@type": "Question",
+            name: "Can DefenseEye support subcontracting and staff augmentation?",
+            acceptedAnswer: { "@type": "Answer", text: "Yes. DefenseEye is positioned to support advisory, implementation, subcontracting, staff augmentation, and platform-enabled consulting engagements." },
+          },
+        ],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://defenseeye.ai/" },
+          { "@type": "ListItem", position: 2, name: "Representative Engagements", item: "https://defenseeye.ai/representative-engagements" },
+        ],
+      },
+    ]);
+    document.head.appendChild(script);
+    return () => document.getElementById(id)?.remove();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <NavBar />
       <section className="pt-16 pb-14 px-4 section-navy">
         <div className="max-w-5xl mx-auto">
           <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-4">Representative Engagements</p>
-          <h1 className="font-heading text-4xl sm:text-5xl font-bold leading-tight mb-5">Examples of engagement types DefenseEye is positioned to support</h1>
+          <h1 className="font-heading text-4xl sm:text-5xl font-bold leading-tight mb-5">Representative Engagements</h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
             These examples describe possible engagement structures and deliverables. They are not completed customer case studies or performance claims.
           </p>
@@ -48,7 +92,7 @@ export default function RepresentativeEngagements() {
           ))}
         </div>
         <div className="max-w-4xl mx-auto text-center mt-12">
-          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_booking_click", { location: "representative_engagements" })}>
+          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "representative_engagements" })}>
             <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
               Discuss an Engagement Model <ArrowRight className="w-4 h-4 ml-2" />
             </Button>

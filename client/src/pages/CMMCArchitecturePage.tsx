@@ -79,7 +79,7 @@ export default function CMMCArchitecturePage() {
           </div>
         </div>
         <div className="text-center mt-10">
-          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_booking_click", { location })}>
+          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location })}>
             <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">Assess Readiness <ArrowRight className="w-4 h-4 ml-2" /></Button>
           </a>
         </div>

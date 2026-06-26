@@ -2,7 +2,7 @@ import NavBar from "@/components/NavBar";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { useSeo } from "@/hooks/useSeo";
 
-const SUPPORT_EMAIL = "support@defenseeye.ai";
+const SUPPORT_EMAIL = "enterprise@defenseeye.ai";
 const EFFECTIVE_DATE = "April 1, 2026";
 const LAST_UPDATED = "April 1, 2026";
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";

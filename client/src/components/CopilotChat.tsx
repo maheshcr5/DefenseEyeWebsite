@@ -260,7 +260,7 @@ export function CopilotChat({ compact = false }: { compact?: boolean }) {
                   key={prompt.label}
                   type="button"
                   onClick={() => {
-                    trackConversion("chatbot_topic_selected", { topic: prompt.label });
+                    trackConversion("advisor_topic_selected", { topic: prompt.label });
                     sendMessage(prompt.label);
                   }}
                   className="rounded-sm border border-border/50 px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"

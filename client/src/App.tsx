@@ -71,6 +71,7 @@ function Router() {
         <Route path="/blog/:slug" component={BlogPost} />
 
         {/* Representative engagements */}
+        <Route path="/case-studies" component={LegacyRepresentativeEngagementsRedirect} />
         <Route path="/services" component={CMMCReadinessSprint} />
         <Route path="/services/cmmc-readiness-sprint" component={CMMCReadinessSprint} />
         <Route path="/services/cmmc-scoping" component={CMMCScoping} />
@@ -93,6 +94,7 @@ function Router() {
         <Route path="/solutions/ai-transformation" component={SolutionPage} />
         <Route path="/solutions/ai-security" component={SolutionPage} />
         <Route path="/solutions/microsoft-copilot-enablement" component={SolutionPage} />
+        <Route path="/solutions/microsoft-copilot-readiness" component={SolutionPage} />
         <Route path="/solutions/cybersecurity-risk" component={SolutionPage} />
         <Route path="/solutions/compliance-automation" component={SolutionPage} />
         <Route path="/solutions/cloud-security" component={SolutionPage} />
@@ -120,6 +122,16 @@ function Router() {
   );
 }
 
+function LegacyRepresentativeEngagementsRedirect() {
+  const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    setLocation("/representative-engagements", { replace: true });
+  }, [setLocation]);
+
+  return <PageLoader />;
+}
+
 function RouteAnalytics() {
   const [location] = useLocation();
 
@@ -128,9 +140,10 @@ function RouteAnalytics() {
   }, []);
 
   useEffect(() => {
-    if (location === "/supplier-readiness") trackConversion("supplier_readiness_page_visit");
-    if (location.includes("microsoft") || location === "/microsoft-ecosystem") trackConversion("microsoft_supplier_page_visit", { location });
-    if (location.includes("cmmc")) trackConversion("cmmc_readiness_page_visit", { location });
+    if (location === "/supplier-readiness") trackConversion("supplier_readiness_view");
+    if (location.includes("microsoft") || location === "/microsoft-ecosystem") trackConversion("microsoft_ecosystem_view", { location });
+    if (location.includes("cmmc")) trackConversion("cmmc_readiness_view", { location });
+    if (location === "/solutions/ai-governance" || location === "/lp/ai-governance-consulting") trackConversion("ai_governance_view", { location });
   }, [location]);
 
   return null;

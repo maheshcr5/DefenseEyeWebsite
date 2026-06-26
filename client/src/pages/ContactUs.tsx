@@ -1,18 +1,18 @@
+import { useState } from "react";
 import { ArrowRight, Mail, Calendar, MessageSquare, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { useSeo } from "@/hooks/useSeo";
-import { CAPABILITY_STATEMENT_PDF_URL } from "@/data/companyFacts";
-import { trackConversion } from "@/lib/tracking";
+import { CAPABILITY_STATEMENT_PDF_URL, COMPANY } from "@/data/companyFacts";
+import { getStoredAttribution, trackConversion } from "@/lib/tracking";
 
-const SUPPORT_EMAIL = "support@defenseeye.ai";
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
 export default function ContactUs() {
   useSeo(
     "Contact DefenseEye | AI, Cybersecurity, Governance, and Compliance Support",
-    "Contact DefenseEye for AI transformation, AI governance, cybersecurity, compliance automation, CMMCLens support, or a consultation. Reach us at support@defenseeye.ai."
+    "Contact DefenseEye for AI transformation, AI governance, Microsoft Copilot readiness, cybersecurity, compliance automation, supplier opportunities, partnership inquiries, or CMMCLens support."
   );
 
   return (
@@ -70,9 +70,9 @@ export default function ContactUs() {
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
               Send us your question, contract situation, or support request. We respond within one business day — usually faster.
             </p>
-            <a href={`mailto:${SUPPORT_EMAIL}`}>
+            <a href={`mailto:${COMPANY.enterpriseEmail}`} onClick={() => trackConversion("email_click", { location: "contact_enterprise" })}>
               <Button variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
-                {SUPPORT_EMAIL}
+                {COMPANY.enterpriseEmail}
               </Button>
             </a>
           </div>
@@ -82,16 +82,18 @@ export default function ContactUs() {
             <MessageSquare className="w-7 h-7 text-primary mb-4" />
             <h2 className="font-heading text-xl font-bold mb-2">Platform Support</h2>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
-              CMMCLens subscribers: for technical issues, access problems, or questions about automation outputs, email us with "CMMCLens Support" in the subject line.
+              For supplier, partnership, subcontracting, or CMMCLens platform inquiries, email the partnerships mailbox with relevant context.
             </p>
-            <a href={`mailto:${SUPPORT_EMAIL}?subject=CMMCLens Support`}>
+            <a href={`mailto:${COMPANY.partnersEmail}?subject=DefenseEye Supplier or Platform Inquiry`} onClick={() => trackConversion("email_click", { location: "contact_partners" })}>
               <Button variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
-                CMMCLens Support
+                {COMPANY.partnersEmail}
               </Button>
             </a>
           </div>
         </div>
       </section>
+
+      <ContactFormSection />
 
       {/* Response time + what to expect */}
       <section className="py-16 px-4 section-gray">
@@ -141,6 +143,123 @@ export default function ContactUs() {
         </div>
       </footer>
     </div>
+  );
+}
+
+function ContactFormSection() {
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    company: "",
+    title: "",
+    inquiryType: "",
+    timeline: "",
+    message: "",
+    phone: "",
+  });
+
+  const inputCls =
+    "w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/20";
+  const labelCls = "text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block";
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    setSubmitting(true);
+    setError("");
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, attribution: getStoredAttribution() }),
+      });
+      if (!response.ok) throw new Error("Contact form failed");
+      trackConversion("contact_form_submit", { form: "contact_page", inquiryType: form.inquiryType });
+      setSubmitted(true);
+    } catch {
+      setError("Something went wrong. Please email enterprise@defenseeye.ai or partners@defenseeye.ai.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
+  };
+
+  return (
+    <section className="py-16 px-4 section-light">
+      <div className="max-w-3xl mx-auto">
+        <div className="mb-8">
+          <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-3">Inquiry Form</p>
+          <h2 className="font-heading text-3xl font-bold mb-3">Tell us what you need</h2>
+          <p className="text-muted-foreground leading-relaxed">
+            Use this form for supplier, partnership, subcontracting, AI governance, Microsoft Copilot, cybersecurity, cloud security, CMMC, compliance automation, or CMMCLens inquiries.
+          </p>
+        </div>
+        {submitted ? (
+          <div className="bg-card/50 border border-border/40 rounded-sm p-8 text-center">
+            <h3 className="font-heading text-xl font-bold mb-2">Thank you.</h3>
+            <p className="text-sm text-muted-foreground">DefenseEye will review your inquiry and respond through the appropriate enterprise or partner channel.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="bg-card/50 border border-border/40 rounded-sm p-6 space-y-5">
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div><label className={labelCls}>Name *</label><input required name="firstName" value={form.firstName} onChange={handleChange} className={inputCls} placeholder="First name" /></div>
+              <div><label className={labelCls}>Last Name *</label><input required name="lastName" value={form.lastName} onChange={handleChange} className={inputCls} placeholder="Last name" /></div>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div><label className={labelCls}>Work Email *</label><input required type="email" name="email" value={form.email} onChange={handleChange} className={inputCls} /></div>
+              <div><label className={labelCls}>Organization *</label><input required name="company" value={form.company} onChange={handleChange} className={inputCls} /></div>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div><label className={labelCls}>Role *</label><input required name="title" value={form.title} onChange={handleChange} className={inputCls} /></div>
+              <div><label className={labelCls}>Optional Phone</label><input name="phone" value={form.phone} onChange={handleChange} className={inputCls} /></div>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelCls}>Inquiry Type *</label>
+                <select required name="inquiryType" value={form.inquiryType} onChange={handleChange} className={inputCls}>
+                  <option value="">Select inquiry type...</option>
+                  <option>Supplier / procurement inquiry</option>
+                  <option>Partnership / subcontracting</option>
+                  <option>AI governance consulting</option>
+                  <option>Microsoft Copilot readiness</option>
+                  <option>CMMC readiness</option>
+                  <option>Compliance automation</option>
+                  <option>Cloud security</option>
+                  <option>Staff augmentation</option>
+                  <option>CMMCLens demo</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label className={labelCls}>Timeline *</label>
+                <select required name="timeline" value={form.timeline} onChange={handleChange} className={inputCls}>
+                  <option value="">Select timeline...</option>
+                  <option>Immediate</option>
+                  <option>30-60 days</option>
+                  <option>This quarter</option>
+                  <option>Next quarter</option>
+                  <option>Exploring options</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label className={labelCls}>Message *</label>
+              <textarea required name="message" value={form.message} onChange={handleChange} rows={5} className={`${inputCls} resize-none`} />
+            </div>
+            {error && <p className="text-sm text-destructive">{error}</p>}
+            <Button type="submit" disabled={submitting} className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+              {submitting ? "Sending..." : "Submit Inquiry"}
+            </Button>
+          </form>
+        )}
+      </div>
+    </section>
   );
 }
 

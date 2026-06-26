@@ -77,7 +77,7 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
         body: JSON.stringify({ ...form, attribution: getStoredAttribution() }),
       });
       if (!res.ok) throw new Error("Server error");
-      trackConversion("contact_form_submission", { form: "home_lead_modal", inquiryType: form.inquiryType || form.need });
+      trackConversion("contact_form_submit", { form: "home_lead_modal", inquiryType: form.inquiryType || form.need });
       setSubmitted(true);
     } catch {
       setSubmitError("Something went wrong. Please try again or email us directly.");
@@ -248,7 +248,7 @@ const servicePortfolio = [
     challenge: "Copilot adoption can expose overshared data, unclear ownership, and unmanaged AI usage.",
     approach: "DefenseEye assesses permissions, governance, data readiness, user workflows, and security controls before rollout.",
     outcome: "Copilot enablement that supports productivity while reducing governance and data exposure risk.",
-    href: "/solutions/microsoft-copilot-enablement",
+    href: "/solutions/microsoft-copilot-readiness",
   },
   {
     icon: Activity,
@@ -369,25 +369,6 @@ const supplierReadiness = [
 
 const foundationalExperience = FOUNDATIONAL_EXPERIENCE;
 
-const deliveryModel = [
-  ["Discover", "Understand business goals, regulatory requirements, AI use cases, cloud environment, and current risk posture."],
-  ["Assess", "Evaluate controls, workflows, governance gaps, cybersecurity risks, compliance readiness, and automation opportunities."],
-  ["Prioritize", "Develop a practical roadmap based on risk, business impact, implementation effort, and supplier or customer requirements."],
-  ["Implement", "Deploy governance processes, automation workflows, security improvements, policies, dashboards, and documentation support."],
-  ["Operationalize", "Support adoption, ownership, reporting, continuous monitoring, and readiness improvement."],
-  ["Improve", "Measure outcomes, refine controls, reduce manual effort, and maintain readiness over time."],
-];
-
-const engagementModels = [
-  "Advisory consulting",
-  "Implementation projects",
-  "Staff augmentation",
-  "Fractional leadership",
-  "Subcontracting",
-  "Platform-enabled consulting",
-  "Compliance automation support",
-];
-
 const representativeEngagements = [
   {
     title: "AI governance readiness assessment",
@@ -503,10 +484,8 @@ export default function Home() {
         telephone: COMPANY.phone,
         address: {
           "@type": "PostalAddress",
-          streetAddress: "9921 187th Ct NE",
           addressLocality: "Redmond",
           addressRegion: "WA",
-          postalCode: "98052",
           addressCountry: "US",
         },
         identifier: SUPPLIER_IDENTIFIERS.map(([name, value]) => ({ "@type": "PropertyValue", name, value })),
@@ -520,10 +499,8 @@ export default function Home() {
         telephone: COMPANY.phone,
         address: {
           "@type": "PostalAddress",
-          streetAddress: "9921 187th Ct NE",
           addressLocality: "Redmond",
           addressRegion: "WA",
-          postalCode: "98052",
           addressCountry: "US",
         },
       },
@@ -626,12 +603,18 @@ export default function Home() {
               <span className="block text-primary"> for Regulated Organizations</span>
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mb-8">
-              DefenseEye helps enterprise, government, and regulated organizations adopt AI securely, govern AI responsibly,
+              DefenseEye helps enterprise, government, defense contractor, and regulated organizations adopt AI securely, govern AI responsibly,
               strengthen cybersecurity, and automate compliance readiness across Microsoft cloud and modern enterprise environments.
             </p>
 
             <div className="flex flex-wrap gap-2 mb-8">
-              {["Secure AI Adoption", "AI Governance", "Microsoft Copilot", "Cloud Security", "Supplier Readiness", "Compliance Automation"].map((tag) => (
+              {[
+                "AI governance and responsible AI implementation",
+                "Microsoft Copilot and Azure AI readiness",
+                "CMMC, NIST 800-171, FedRAMP, and compliance automation",
+                "Cloud security, cybersecurity, and risk management",
+                "Supplier-ready consulting, subcontracting, and staff augmentation",
+              ].map((tag) => (
                 <span key={tag} className="text-xs px-3 py-1.5 rounded-full border border-border/50 bg-card/40 text-muted-foreground">
                   {tag}
                 </span>
@@ -639,7 +622,7 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4">
-              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" onClick={() => trackConversion("consultation_booking_click", { location: "home_hero" })}>
+              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" onClick={() => trackConversion("consultation_click", { location: "home_hero" })}>
                 <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-10 h-12 w-full sm:w-auto">
                   Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -864,8 +847,7 @@ export default function Home() {
               CMMCLens supports evidence automation, continuous readiness, and compliance analytics across cybersecurity and governance programs. CMMC is an important use case, but the platform is designed to support broader readiness and traceability needs.
             </p>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-              Internal implementations have demonstrated approximately 80% reduction in manual evidence collection effort where
-              the required source data and integrations are available.
+              CMMCLens may reduce manual evidence collection effort depending on environment maturity, integrations, available source data, and assessment scope.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <a href="/cmmclens">
@@ -1018,36 +1000,6 @@ export default function Home() {
       <Section className="py-16 px-4 section-light">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
-            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Delivery Model</p>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground mb-3">
-              Practical phases for advisory, implementation, and subcontracting work
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Engagements can be structured as advisory consulting, implementation projects, staff augmentation, fractional leadership, subcontracting, platform-enabled consulting, or compliance automation support.
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            {deliveryModel.map(([phase, text]) => (
-              <div key={phase} className="bg-card/50 border border-border/40 rounded-sm p-5">
-                <Target className="w-5 h-5 text-primary mb-3" />
-                <h3 className="font-heading font-semibold text-foreground mb-2">{phase}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{text}</p>
-              </div>
-            ))}
-          </div>
-          <div className="flex flex-wrap justify-center gap-2">
-            {engagementModels.map((item) => (
-              <span key={item} className="text-xs px-3 py-1.5 rounded-full border border-border/50 bg-card/40 text-muted-foreground">
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      <Section className="py-16 px-4 section-light">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
             <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Representative Engagements</p>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground mb-3">
               Engagement types DefenseEye is positioned to support
@@ -1096,7 +1048,7 @@ export default function Home() {
               <button
                 className="inline-flex items-center text-sm font-semibold text-primary hover:underline"
                 onClick={() => {
-                  trackConversion("defenseeye_advisor_opened", { location: "home_section" });
+                  trackConversion("advisor_opened", { location: "home_section" });
                   window.dispatchEvent(new CustomEvent("defenseeye:open-advisor"));
                 }}
               >
@@ -1146,7 +1098,7 @@ export default function Home() {
             Available for advisory, implementation, subcontracting, staff augmentation, platform-enabled consulting, and compliance automation support.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" onClick={() => trackConversion("consultation_booking_click", { location: "home_final_cta" })}>
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" onClick={() => trackConversion("consultation_click", { location: "home_final_cta" })}>
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-12 h-12 w-full sm:w-auto">
                 Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
@@ -1175,7 +1127,12 @@ export default function Home() {
               <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                 AI transformation, AI governance, cybersecurity, risk, compliance, and automation for government, defense, and regulated organizations.
               </p>
-              <p className="text-xs text-muted-foreground/60">NAICS: 541512, 541519 · SAM Registered · NMSDC Certified MBE</p>
+              <div className="space-y-1 text-xs text-muted-foreground/70">
+                <p>AI · Security · Compliance</p>
+                <p>Redmond, WA</p>
+                <p><a href={`mailto:${COMPANY.enterpriseEmail}`} className="hover:text-primary transition-colors">{COMPANY.enterpriseEmail}</a></p>
+                <p>Supplier and partnership inquiries: <a href={`mailto:${COMPANY.partnersEmail}`} className="hover:text-primary transition-colors">{COMPANY.partnersEmail}</a></p>
+              </div>
             </div>
             <div>
               <h4 className="font-heading font-semibold text-xs text-foreground mb-4 uppercase tracking-widest">Services</h4>
@@ -1202,6 +1159,7 @@ export default function Home() {
                   { label: "Why DefenseEye", href: "/why-defenseeye" },
                   { label: "Supplier Readiness", href: "/supplier-readiness" },
                   { label: "Capability Statement", href: "/capability-statement" },
+                  { label: "Microsoft Ecosystem", href: "/microsoft-ecosystem" },
                   { label: "Delivery Model", href: "/delivery-model" },
                   { label: "Representative Engagements", href: "/representative-engagements" },
                   { label: "Pricing", href: "/pricing" },

@@ -22,7 +22,7 @@ const FAQ_ITEMS = [
   {
     question: "How does CMMCLens reduce manual evidence collection effort?",
     answer:
-      "CMMCLens connects evidence sources, organizes artifacts, maps them to controls and readiness objectives, and keeps traceability available for review. Internal implementations have shown approximately 80% reduction in manual evidence collection effort where source systems, required data, and integrations are available.",
+      "CMMCLens connects evidence sources, organizes artifacts, maps them to controls and readiness objectives, and keeps traceability available for review. It may reduce manual evidence collection effort depending on environment maturity, integrations, available source data, and scope.",
   },
   {
     question: "What Microsoft environments does CMMCLens support?",
@@ -67,8 +67,8 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 
 export default function CMMCLens() {
   useSeo(
-    "CMMCLens — AI-Assisted Compliance Intelligence and Evidence Automation | DefenseEye",
-    "CMMCLens is DefenseEye's AI-assisted cybersecurity and compliance automation platform for evidence collection, gap assessments, continuous readiness monitoring, AI-generated SSPs, policies, procedures, risk workflows, and evidence traceability."
+    "CMMCLens Compliance Automation Platform | DefenseEye",
+    "CMMCLens is DefenseEye's flagship compliance automation platform for CMMC and NIST 800-171 readiness, evidence automation, control mapping, gap tracking, SSP and POA&M workflows, policy support, and readiness visibility."
   );
 
   useEffect(() => {
@@ -92,6 +92,14 @@ export default function CMMCLens() {
           name: item.question,
           acceptedAnswer: { "@type": "Answer", text: item.answer },
         })),
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://defenseeye.ai/" },
+          { "@type": "ListItem", position: 2, name: "CMMCLens", item: "https://defenseeye.ai/cmmclens" },
+        ],
       },
     ];
     const id = "cmmclens-schema";
@@ -123,11 +131,10 @@ export default function CMMCLens() {
         <section className="max-w-6xl mx-auto pt-16 pb-12">
           <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-4">Flagship Platform</p>
           <h1 className="font-heading text-4xl md:text-5xl font-bold leading-tight mb-5">
-            CMMCLens: AI-assisted compliance intelligence and evidence automation
+            CMMCLens Compliance Automation Platform
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed mb-8">
-            CMMCLens helps cybersecurity, governance, and compliance teams automate evidence collection, improve traceability,
-            generate consistent documentation, manage risk remediation, and accelerate readiness for assessments and audits.
+            CMMCLens is DefenseEye's flagship compliance automation platform for CMMC and NIST 800-171 readiness. It supports evidence automation, control mapping, gap tracking, SSP/POA&M workflows, policy support, and readiness visibility.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">

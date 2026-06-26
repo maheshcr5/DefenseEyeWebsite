@@ -2,18 +2,18 @@ const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_c
 
 export type ConversionName =
   | "capability_statement_download"
-  | "supplier_readiness_page_visit"
-  | "contact_form_submission"
-  | "consultation_booking_click"
+  | "supplier_readiness_view"
+  | "contact_form_submit"
+  | "consultation_click"
   | "cmmclens_click"
-  | "defenseeye_advisor_opened"
-  | "chatbot_topic_selected"
+  | "advisor_opened"
+  | "advisor_topic_selected"
   | "landing_page_cta_click"
   | "email_click"
   | "phone_click"
-  | "microsoft_supplier_page_visit"
-  | "cmmc_readiness_page_visit"
-  | "ai_governance_landing_page_visit";
+  | "microsoft_ecosystem_view"
+  | "cmmc_readiness_view"
+  | "ai_governance_view";
 
 export function captureUtmParameters() {
   if (typeof window === "undefined") return;
