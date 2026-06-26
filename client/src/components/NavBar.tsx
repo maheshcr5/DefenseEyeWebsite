@@ -26,6 +26,7 @@ const MENUS = [
     items: [
       { label: "AI Transformation", desc: "Adoption roadmaps, automation, and Copilot enablement", href: "/solutions/ai-transformation" },
       { label: "AI Governance", desc: "Responsible AI, NIST AI RMF, controls, and oversight", href: "/solutions/ai-governance" },
+      { label: "Copilot Enablement", desc: "Microsoft Copilot readiness, governance, and security", href: "/solutions/microsoft-copilot-enablement" },
       { label: "CMMC Readiness Sprint", desc: "Gap assessment to C3PAO-ready in 2–4 weeks", href: "/services/cmmc-readiness-sprint" },
       { label: "CMMC Scoping", desc: "Define your CUI boundary before the assessment", href: "/services/cmmc-scoping" },
     ],
@@ -34,9 +35,9 @@ const MENUS = [
     label: "Why DefenseEye?",
     key: "why",
     items: [
-      { label: "Why Us", desc: "CCP-led, defense-only, real deliverables", href: "/why-defenseeye" },
-      { label: "Case Studies", desc: "How defense contractors got CMMC-ready", href: "/case-studies" },
-      { label: "FAQ", desc: "Common CMMC questions answered directly", href: "/faq" },
+      { label: "Why Us", desc: "AI, cybersecurity, cloud security, and compliance capability", href: "/why-defenseeye" },
+      { label: "Representative Engagements", desc: "Engagement types DefenseEye is positioned to support", href: "/case-studies" },
+      { label: "FAQ", desc: "AI, governance, cybersecurity, and compliance questions", href: "/faq" },
     ],
   },
   {
@@ -153,7 +154,7 @@ export default function NavBar() {
         <div className="hidden md:flex">
           <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
             <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-5">
-              Schedule Consultation
+              Discuss Supplier Opportunities
             </Button>
           </a>
         </div>
@@ -230,7 +231,7 @@ export default function NavBar() {
               <div className="pt-2 border-t border-gray-100 mt-1">
                 <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)}>
                   <Button className="bg-accent text-accent-foreground font-semibold w-full">
-                    Schedule Consultation
+                    Discuss Supplier Opportunities
                   </Button>
                 </a>
               </div>

@@ -61,7 +61,7 @@ function Router() {
         <Route path="/blog" component={Blog} />
         <Route path="/blog/:slug" component={BlogPost} />
 
-        {/* Case Studies */}
+        {/* Representative engagements */}
         <Route path="/case-studies" component={CaseStudies} />
         <Route path="/services" component={CMMCReadinessSprint} />
         <Route path="/services/cmmc-readiness-sprint" component={CMMCReadinessSprint} />
@@ -78,6 +78,12 @@ function Router() {
         <Route path="/copilot" component={Copilot} />
         <Route path="/solutions/ai-governance" component={SolutionPage} />
         <Route path="/solutions/ai-transformation" component={SolutionPage} />
+        <Route path="/solutions/ai-security" component={SolutionPage} />
+        <Route path="/solutions/microsoft-copilot-enablement" component={SolutionPage} />
+        <Route path="/solutions/cybersecurity-risk" component={SolutionPage} />
+        <Route path="/solutions/compliance-automation" component={SolutionPage} />
+        <Route path="/solutions/cloud-security" component={SolutionPage} />
+        <Route path="/solutions/cmmclens-platform" component={SolutionPage} />
         <Route path="/insights/:slug" component={ThoughtLeadership} />
 
         {/* Fallback */}

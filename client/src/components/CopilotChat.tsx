@@ -23,16 +23,16 @@ interface Citation {
   score: number;
 }
 
-const CMMCLENS_MARKETPLACE_URL =
-  "https://marketplace.microsoft.com/en-us/product/cmmc.defenseeye-cmmc-l2-continuous-compliance?tab=Overview";
 const PREVIEW_LENGTH = 760;
 
-const SUGGESTED_PROMPTS = [
-  { label: "Learn more about CMMCLens", href: CMMCLENS_MARKETPLACE_URL },
-  { label: "Explain AC.L2-3.1.1" },
-  { label: "How do I scope CUI?" },
-  { label: "What evidence is required for IA.L2-3.5.3?" },
-  { label: "What is an SPRS score?" },
+const SUGGESTED_PROMPTS: Array<{ label: string; href?: string }> = [
+  { label: "Secure AI Adoption" },
+  { label: "AI Governance / ISO 42001" },
+  { label: "Microsoft Copilot Readiness" },
+  { label: "CMMC / NIST SP 800-171" },
+  { label: "Azure / Microsoft Cloud Security" },
+  { label: "Compliance Automation" },
+  { label: "Supplier Readiness" },
 ];
 
 function newId() {
@@ -54,7 +54,7 @@ export function CopilotChat({ compact = false }: { compact?: boolean }) {
         id: newId(),
         role: "assistant",
         content:
-          `I can help with CMMC, NIST SP 800-171, DFARS, SPRS, CUI scoping, evidence, SSPs, POA&Ms, and assessment readiness. For automation, CMMCLens centralizes evidence, SSP/POA&M mappings, SPRS impact, and readiness tracking. Learn more: ${CMMCLENS_MARKETPLACE_URL}`,
+          "What is your primary focus today? Choose a topic below or ask about secure AI adoption, AI governance, Microsoft Copilot readiness, cloud security, compliance automation, CMMC / NIST SP 800-171, or supplier readiness.",
       },
     ];
   });
@@ -161,8 +161,8 @@ export function CopilotChat({ compact = false }: { compact?: boolean }) {
             <ShieldCheck className="size-4 text-primary" />
           </div>
           <div>
-            <h2 className="font-heading text-base font-semibold leading-none">CMMC Copilot</h2>
-            <p className="mt-1 text-xs text-muted-foreground">Grounded on DefenseEye KnowledgeHub and authoritative sources</p>
+            <h2 className="font-heading text-base font-semibold leading-none">DefenseEye Advisor</h2>
+            <p className="mt-1 text-xs text-muted-foreground">Practical guidance for AI, cybersecurity, cloud security, and readiness</p>
           </div>
         </div>
       </div>
@@ -239,7 +239,7 @@ export function CopilotChat({ compact = false }: { compact?: boolean }) {
         <div className="border-t border-border/30 px-4 py-3">
           <div className="mb-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground">
             <Sparkles className="size-3.5 text-primary" />
-            Suggested prompts
+            What is your primary focus today?
           </div>
           <div className="flex flex-wrap gap-2">
             {SUGGESTED_PROMPTS.map((prompt) => (
@@ -287,7 +287,7 @@ export function CopilotChat({ compact = false }: { compact?: boolean }) {
               sendMessage();
             }
           }}
-          placeholder="Ask about CMMC, DFARS, SPRS, CUI, or assessment readiness..."
+          placeholder="Ask about AI governance, Copilot readiness, cloud security, supplier readiness, CMMC, or compliance automation..."
           className="max-h-32 min-h-11 resize-none bg-background/80 text-sm"
           maxLength={3000}
         />

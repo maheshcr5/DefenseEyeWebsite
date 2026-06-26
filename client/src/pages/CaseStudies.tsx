@@ -1,5 +1,5 @@
 /*
- * DefenseEye.ai — Case Studies / Contractor Profiles Page
+ * DefenseEye.ai — Representative Engagement Profiles Page
  * Route: /case-studies
  * NOTE: DefenseEye has no real customers yet. These are representative
  * contractor archetypes based on common DIB challenges — NOT testimonials.
@@ -461,7 +461,7 @@ function EarlyAccessForm() {
           </h3>
           <p className="text-muted-foreground">
             We'll be in touch within 48 hours to discuss your compliance environment and schedule
-            your onboarding. Welcome to the DefenseEye founding cohort.
+            a practical next-step discussion.
           </p>
         </motion.div>
       ) : (
@@ -558,7 +558,7 @@ function EarlyAccessForm() {
 export default function CaseStudies() {
   useSeo(
     "CMMC Compliance Scenarios — Who CMMC Lens Is Built For | DefenseEye.ai",
-    "See how DefenseEye CMMC Lens solves real compliance challenges for DoD prime contractors, defense subcontractors, and MSSPs handling CUI under DFARS 252.204-7012."
+    "Representative engagement profiles showing common CMMC, cybersecurity, and compliance readiness challenges DefenseEye is positioned to support."
   );
 
   // Schema.org FAQ JSON-LD
@@ -618,25 +618,24 @@ export default function CaseStudies() {
           {/* Honest framing badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-heading font-semibold bg-amber-400/10 text-amber-400 border border-amber-400/20 uppercase tracking-wider mb-6">
             <BookOpen className="w-3.5 h-3.5" />
-            Representative Contractor Profiles — Not Customer Testimonials
+            Representative Engagement Profiles — Not Customer Testimonials
           </div>
 
           <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-5 leading-tight">
-            Built for Contractors Like You —{" "}
-            <span className="text-primary">See How CMMC Lens</span> Solves Real DoD Compliance
-            Challenges
+            Representative Readiness Scenarios for{" "}
+            <span className="text-primary">CMMCLens and Compliance Automation</span>
           </h1>
           <p className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-3xl mx-auto mb-6">
             DefenseEye is in early access. These are representative contractor archetypes based on
-            the most common challenges we hear from the Defense Industrial Base — not case studies
-            from paying customers. We believe in being transparent about where we are in our
-            journey.
+            common Defense Industrial Base readiness challenges, not completed customer case
+            studies. The profiles show engagement types DefenseEye and CMMCLens are positioned to
+            support.
           </p>
           <div className="inline-flex items-center gap-2.5 px-4 py-3 rounded bg-primary/10 border border-primary/20 text-sm text-primary">
             <CheckCircle2 className="w-4 h-4 shrink-0" />
             <span>
-              <strong>Founding Cohort:</strong> We are actively onboarding our first group of
-              contractors. Join early, get 6 months free, and shape the product roadmap.
+              <strong>Early Access:</strong> DefenseEye is evaluating early CMMCLens participants
+              and supplier-readiness opportunities with organizations that have active compliance needs.
             </span>
           </div>
         </div>
@@ -674,9 +673,9 @@ export default function CaseStudies() {
               Which Profile Fits Your Organization?
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              These profiles are drawn from hundreds of conversations with DIB contractors across
-              size ranges, industries, and compliance maturity levels. Each reflects real challenges
-              — and the specific ways CMMC Lens is designed to address them.
+              These profiles reflect common DIB readiness patterns across size ranges, industries,
+              and compliance maturity levels. Each describes a situation, likely approach, and
+              expected deliverable for review and planning purposes.
             </p>
           </div>
 
@@ -762,12 +761,12 @@ export default function CaseStudies() {
               Early Access Program
             </div>
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Join the DefenseEye Founding Contractor Cohort
+              Join the DefenseEye Early Access Program
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-6 leading-relaxed">
-              We're inviting a limited group of defense contractors to join our founding customer
-              cohort. Early access members get 6 months of CMMC Lens at no cost, direct access to
-              the product team, and a meaningful voice in shaping the roadmap.
+              DefenseEye is evaluating a limited group of defense contractors for early CMMCLens
+              access. Participants receive guided onboarding, direct product feedback channels, and
+              a meaningful voice in shaping the roadmap.
             </p>
 
             {/* Benefits list */}
@@ -811,7 +810,7 @@ export default function CaseStudies() {
 
           <div className="mt-6 text-center">
             <p className="text-muted-foreground/70 text-sm">
-              Founding cohort is limited to 50 contractors. Applications are reviewed within 48
+              Early access participation is limited. Applications are reviewed within 48
               hours. Priority given to contractors with active DoD contracts requiring CMMC Level
               2 certification.
             </p>

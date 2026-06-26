@@ -1,167 +1,277 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
-import { ArrowRight, Bot, CheckCircle2, ClipboardCheck, Network, ShieldCheck, Sparkles, Target } from "lucide-react";
+import { Activity, ArrowRight, BarChart3, Bot, CheckCircle2, ClipboardCheck, FileCheck, Network, ShieldCheck, Sparkles, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import { useSeo } from "@/hooks/useSeo";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
+const MARKETPLACE_URL = "https://marketplace.microsoft.com/en-us/search?search=CMMCLens";
 
-const pages = {
-  "/solutions/ai-governance": {
-    eyebrow: "AI Governance & Responsible AI",
-    title: "AI governance programs built for responsible adoption",
+type PageConfig = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  seoTitle: string;
+  seoDescription: string;
+  icon: typeof Bot;
+  summary: string;
+  challenge: string;
+  howHelps: string[];
+  outcomes: string[];
+  engagements: string[];
+  frameworks: string[];
+  deliverables: string[];
+  why: string;
+  faqs: Array<{ question: string; answer: string }>;
+  cta?: { label: string; href: string };
+};
+
+function page(config: PageConfig) {
+  return config;
+}
+
+const commonFaq = {
+  supplier: {
+    question: "Does DefenseEye support supplier, subcontractor, and staff augmentation models?",
+    answer:
+      "Yes. DefenseEye is positioned to support advisory consulting, implementation projects, subcontracting, staff augmentation, fractional leadership, and platform-enabled consulting models.",
+  },
+};
+
+const pages: Record<string, PageConfig> = {
+  "/solutions/ai-transformation": page({
+    eyebrow: "AI Transformation",
+    title: "AI transformation with governance built into implementation",
     description:
-      "DefenseEye helps organizations create practical AI governance programs that define accountability, manage risk, guide responsible AI use, and support secure, explainable deployment.",
-    seoTitle: "AI Governance and Responsible AI Services | DefenseEye",
+      "DefenseEye helps organizations identify practical AI opportunities, prioritize use cases, prepare data and workflows, enable Copilot and Azure OpenAI, and measure operational value.",
+    seoTitle: "AI Transformation Consulting and Adoption Roadmaps | DefenseEye",
     seoDescription:
-      "AI governance services covering NIST AI RMF, responsible AI, AI risk management, policy development, AI controls, oversight, and human accountability.",
+      "AI transformation consulting for AI opportunity discovery, adoption roadmaps, Microsoft Copilot enablement, Azure OpenAI readiness, automation, data readiness, and value realization.",
+    icon: Network,
+    summary:
+      "DefenseEye helps teams move from AI experimentation to governed adoption by connecting use-case discovery, workflow modernization, data readiness, security, and measurable outcomes.",
+    challenge:
+      "AI programs often stall when experimentation is disconnected from governance, security, data readiness, and operational ownership.",
+    howHelps: [
+      "Identify AI opportunities across business, security, compliance, and operational workflows",
+      "Prioritize use cases by value, feasibility, data readiness, risk, and implementation effort",
+      "Create adoption roadmaps for Microsoft Copilot, Azure OpenAI, and business process automation",
+      "Build governance-by-design into AI implementation planning",
+    ],
+    outcomes: [
+      "Clearer AI investment priorities",
+      "Reduced risk from ungoverned experimentation",
+      "Workflow modernization tied to measurable operational value",
+      "Stronger readiness for enterprise AI platforms",
+    ],
+    engagements: ["AI opportunity discovery", "AI adoption roadmap", "Copilot enablement planning", "Workflow automation assessment"],
+    frameworks: ["NIST AI RMF", "ISO 42001 readiness", "Azure OpenAI", "Microsoft Copilot", "Data governance"],
+    deliverables: ["Use-case inventory", "Prioritized roadmap", "Governance considerations", "Implementation plan", "Value measurement model"],
+    why:
+      "AI adoption creates durable value when it improves real work, protects sensitive data, and gives leaders a governed path from idea to operation.",
+    faqs: [
+      { question: "Where should organizations start with AI transformation?", answer: "Start by identifying workflows where AI can reduce manual effort, improve decision quality, or increase consistency, then prioritize by value, risk, feasibility, and data readiness." },
+      { question: "How does DefenseEye avoid generic AI consulting?", answer: "DefenseEye focuses on implementation conditions: use-case value, data access, governance controls, security implications, ownership, and measurable operating outcomes." },
+      commonFaq.supplier,
+    ],
+  }),
+  "/solutions/ai-governance": page({
+    eyebrow: "AI Governance",
+    title: "AI governance programs for responsible and explainable adoption",
+    description:
+      "DefenseEye helps organizations implement AI governance, responsible AI controls, human accountability, AI policy, model oversight, Copilot governance, and AI vendor risk practices.",
+    seoTitle: "AI Governance, NIST AI RMF, and ISO 42001 Readiness | DefenseEye",
+    seoDescription:
+      "AI governance consulting for NIST AI RMF, ISO 42001 readiness, responsible AI, AI risk management, human accountability, model governance, policy development, and Copilot governance.",
     icon: Bot,
-    directAnswer:
-      "AI governance gives organizations a repeatable way to approve, monitor, secure, and improve AI systems. It connects policies, risk decisions, controls, human accountability, and evidence so AI can be adopted responsibly.",
-    executiveSummary:
-      "DefenseEye helps organizations turn AI governance from policy language into an operating model: use-case intake, risk review, model oversight, security controls, policy evidence, and accountable human decision-making.",
-    keyOutcomes: [
-      "Defined decision rights for AI use cases, vendors, data, and model behavior",
-      "NIST AI RMF-aligned controls that can be explained to leaders, auditors, and procurement teams",
-      "Human accountability and oversight built into AI-assisted workflows",
-      "Evidence that supports responsible AI, cybersecurity, privacy, and compliance expectations",
+    summary:
+      "DefenseEye helps organizations turn AI governance from policy language into an operating model for use-case intake, risk review, model governance, oversight, security, explainability, and evidence.",
+    challenge:
+      "AI use is expanding faster than risk ownership, acceptable-use rules, data controls, vendor review, and human accountability practices.",
+    howHelps: [
+      "Align governance practices to NIST AI RMF and ISO 42001 readiness",
+      "Define AI policy, use-case review, oversight roles, and human accountability",
+      "Assess shadow AI, AI vendor risk, model governance, and explainability needs",
+      "Integrate Copilot governance with data protection, permissions, and security operations",
     ],
-    whyItMatters:
-      "AI programs fail when ownership, data access, model behavior, security review, and policy expectations are handled separately. Governance gives leaders a practical way to approve AI use, monitor risk, preserve explainability, and keep humans accountable for consequential decisions.",
-    sections: [
-      {
-        heading: "Implementation focus",
-        points: [
-          "NIST AI RMF alignment and practical governance structure",
-          "Responsible AI principles translated into operating controls",
-          "AI risk management for use cases, vendors, data, and model behavior",
-          "AI governance frameworks that fit enterprise and public sector oversight needs",
-          "AI policy development for acceptable use, review, approval, and monitoring",
-          "Model governance for lifecycle, data, output quality, and change oversight",
-          "AI security review for prompts, permissions, integrations, and sensitive data exposure",
-          "Human accountability for AI-assisted decisions and high-risk workflows",
-        ],
-      },
-      {
-        heading: "Key outcomes",
-        points: [
-          "Clearer decision rights for AI initiatives",
-          "Reduced risk from unmanaged AI adoption",
-          "Better explainability for leaders, auditors, and customers",
-          "Stronger oversight of AI systems, data use, and outputs",
-          "More consistent governance evidence for procurement and regulatory requests",
-          "Responsible AI deployment without unnecessary process burden",
-        ],
-      },
+    outcomes: [
+      "Clear AI decision rights and review criteria",
+      "Improved explainability and accountability for AI-enabled workflows",
+      "Reduced risk from unmanaged AI adoption and shadow AI",
+      "Governance evidence that supports procurement and assurance reviews",
     ],
+    engagements: ["AI governance readiness assessment", "AI policy and oversight model", "AI inventory and use-case review", "Copilot governance assessment"],
+    frameworks: ["NIST AI RMF", "ISO 42001 readiness", "Responsible AI", "AI vendor risk", "Microsoft Purview"],
+    deliverables: ["Governance model", "Policy outline", "Risk assessment approach", "AI inventory structure", "Oversight controls"],
+    why:
+      "AI governance matters because leaders need a practical way to approve AI use, monitor risk, preserve explainability, and keep humans accountable for consequential decisions.",
     faqs: [
-      {
-        question: "What is AI governance?",
-        answer:
-          "AI governance is the set of roles, policies, controls, oversight processes, and evidence that help an organization use AI responsibly and manage AI-related risk.",
-      },
-      {
-        question: "How does NIST AI RMF fit into AI governance?",
-        answer:
-          "NIST AI RMF provides a structured way to govern, map, measure, and manage AI risks. DefenseEye uses it as a practical reference for governance design, risk assessment, control development, and oversight.",
-      },
-      {
-        question: "Who should be accountable for AI systems?",
-        answer:
-          "Accountability should include business owners, technology teams, security, privacy, legal, compliance, and executive oversight. Human accountability remains necessary for AI-assisted decisions.",
-      },
+      { question: "What is AI governance?", answer: "AI governance is the set of roles, policies, controls, oversight processes, and evidence used to manage AI systems responsibly and reduce AI-related risk." },
+      { question: "How can organizations prepare for ISO 42001?", answer: "Start with AI inventory, risk ownership, policy development, oversight roles, lifecycle controls, monitoring practices, and evidence that shows governance is operating." },
+      commonFaq.supplier,
     ],
-    related: ["NIST AI RMF", "Responsible AI", "AI risk management", "AI policy development", "AI controls"],
-  },
-  "/solutions/ai-transformation": {
-    eyebrow: "AI Transformation & Automation",
-    title: "AI transformation that starts with practical business value",
+  }),
+  "/solutions/ai-security": page({
+    eyebrow: "AI Security",
+    title: "AI security assessments for generative AI and enterprise AI platforms",
     description:
-      "DefenseEye helps organizations identify useful AI opportunities, prioritize use cases, create adoption roadmaps, automate business processes, and enable Microsoft Copilot responsibly.",
-    seoTitle: "AI Transformation and Automation Services | DefenseEye",
+      "DefenseEye helps teams assess prompt, data, identity, integration, model, and workflow risks before AI adoption scales.",
+    seoTitle: "AI Security and Generative AI Risk Consulting | DefenseEye",
     seoDescription:
-      "AI transformation services covering opportunity identification, AI adoption roadmaps, business process automation, Microsoft Copilot enablement, use-case prioritization, and value realization.",
-    icon: Sparkles,
-    directAnswer:
-      "AI transformation is the disciplined use of AI to improve business processes, decision support, employee productivity, and operational outcomes. It works best when adoption, governance, security, and value measurement are designed together.",
-    executiveSummary:
-      "DefenseEye helps teams identify practical AI opportunities, prioritize use cases, enable Microsoft Copilot responsibly, automate selected workflows, and measure whether AI adoption is improving operational performance.",
-    keyOutcomes: [
-      "Prioritized AI opportunities tied to business value, feasibility, risk, and data readiness",
-      "Adoption roadmaps that connect implementation, governance, security, and ownership",
-      "Microsoft Copilot enablement that addresses permissions, data exposure, and user workflows",
-      "Automation plans focused on cycle time, manual effort, consistency, and decision visibility",
-    ],
-    whyItMatters:
-      "AI adoption creates value when it improves real work. A practical transformation program identifies where AI can reduce friction, protects sensitive data, measures outcomes, and gives teams a path from experimentation to governed implementation.",
-    sections: [
-      {
-        heading: "Implementation focus",
-        points: [
-          "AI opportunity identification across business, operations, security, compliance, and customer workflows",
-          "AI adoption roadmaps with practical sequencing and ownership",
-          "Business process automation for repetitive, evidence-heavy, and knowledge-work tasks",
-          "Microsoft Copilot enablement with governance, permissions, and data readiness",
-          "AI use-case prioritization based on value, risk, feasibility, and readiness",
-          "AI value realization through measurable outcomes and operational adoption",
-        ],
-      },
-      {
-        heading: "Key outcomes",
-        points: [
-          "Faster movement from AI ideas to approved use cases",
-          "Better alignment between AI investments and operational value",
-          "Reduced risk from ungoverned AI experimentation",
-          "Clearer automation opportunities in compliance and knowledge workflows",
-          "Stronger readiness for Microsoft Copilot and enterprise AI platforms",
-          "A repeatable model for responsible AI deployment",
-        ],
-      },
-    ],
+      "AI security consulting for generative AI risk assessments, LLM threat modeling, Azure AI security consulting, Copilot security, identity controls, and regulated AI adoption.",
+    icon: ShieldCheck,
+    summary:
+      "DefenseEye evaluates AI systems through a cybersecurity lens: data exposure, permissions, prompt and output risks, connected workflows, monitoring, and operational controls.",
+    challenge:
+      "Generative AI can expand access to sensitive data, introduce unclear outputs, and connect business workflows before security controls are ready.",
+    howHelps: ["Assess AI threat scenarios", "Review identity and data access boundaries", "Evaluate Copilot and Azure AI security posture", "Recommend monitoring and governance controls"],
+    outcomes: ["Reduced AI-related security risk", "Clearer control priorities", "Better alignment between AI adoption and security operations", "Stronger readiness for regulated use cases"],
+    engagements: ["Generative AI security assessment", "LLM threat modeling", "Copilot security review", "AI security architecture review"],
+    frameworks: ["NIST AI RMF", "OWASP LLM Top 10", "Microsoft Entra", "Defender", "Sentinel", "Purview"],
+    deliverables: ["Risk findings", "Threat scenarios", "Security recommendations", "Control roadmap"],
+    why: "AI security makes adoption more durable by reducing avoidable risk before sensitive workflows and enterprise users depend on AI systems.",
     faqs: [
-      {
-        question: "Where should an organization start with AI transformation?",
-        answer:
-          "Start by identifying business processes where AI can reduce manual effort, improve decisions, or increase consistency, then prioritize those use cases by value, risk, feasibility, and data readiness.",
-      },
-      {
-        question: "How is Microsoft Copilot enablement different from a license rollout?",
-        answer:
-          "Copilot enablement includes permissions, data governance, security controls, use-case training, adoption planning, and oversight. Licenses alone do not create measurable value.",
-      },
-      {
-        question: "How should AI value be measured?",
-        answer:
-          "AI value should be measured through operational outcomes such as cycle time reduction, improved documentation quality, lower manual effort, better decision visibility, and stronger governance evidence.",
-      },
+      { question: "What does an AI security assessment cover?", answer: "It typically covers data exposure, identity and permissions, prompt and output risks, integration paths, logging, monitoring, model behavior, and governance controls." },
+      commonFaq.supplier,
     ],
-    related: ["AI transformation", "AI adoption roadmap", "Microsoft Copilot", "Business process automation", "AI value realization"],
-  },
-} as const;
+  }),
+  "/solutions/microsoft-copilot-enablement": page({
+    eyebrow: "Microsoft Copilot Enablement",
+    title: "Microsoft Copilot readiness with governance, security, and adoption planning",
+    description:
+      "DefenseEye helps organizations prepare Microsoft 365 and security environments for Copilot adoption with data governance, access controls, user workflows, and oversight.",
+    seoTitle: "Microsoft Copilot Governance Consulting and Readiness | DefenseEye",
+    seoDescription:
+      "Microsoft Copilot governance consulting for permissions, data readiness, Microsoft 365, Purview, Entra, Defender, Security Copilot readiness, adoption planning, and oversight.",
+    icon: Sparkles,
+    summary:
+      "DefenseEye supports Copilot enablement as more than a license rollout: data readiness, permissions, governance, security controls, user workflows, and operational measurement.",
+    challenge:
+      "Copilot can surface overshared information, reveal weak data governance, and create AI usage patterns before oversight is mature.",
+    howHelps: ["Review Microsoft 365 permissions and data exposure", "Assess Purview, Entra, Defender, and governance alignment", "Define Copilot use cases and adoption controls", "Create a readiness roadmap"],
+    outcomes: ["Lower data exposure risk", "More controlled adoption", "Clearer user guidance", "Improved executive confidence in rollout readiness"],
+    engagements: ["Copilot readiness assessment", "Copilot governance model", "Security Copilot readiness", "Microsoft 365 data exposure review"],
+    frameworks: ["Microsoft 365", "Copilot", "Security Copilot", "Entra", "Purview", "Defender", "Sentinel"],
+    deliverables: ["Readiness findings", "Governance recommendations", "Use-case priorities", "Rollout controls"],
+    why: "Copilot creates value when data, access, workflows, and accountability are ready before broad deployment.",
+    faqs: [
+      { question: "How is Copilot enablement different from buying licenses?", answer: "Enablement includes data governance, permissions, security controls, use-case guidance, adoption planning, and oversight. Licenses alone do not create governed value." },
+      commonFaq.supplier,
+    ],
+  }),
+  "/solutions/cybersecurity-risk": page({
+    eyebrow: "Cybersecurity & Risk",
+    title: "Cybersecurity and risk support for regulated enterprise environments",
+    description:
+      "DefenseEye helps organizations improve cybersecurity posture, risk visibility, remediation planning, and compliance preparedness across enterprise and federal contractor environments.",
+    seoTitle: "Cybersecurity Risk Consulting for Regulated Environments | DefenseEye",
+    seoDescription:
+      "Cybersecurity and risk consulting for regulated industries, federal contractors, identity controls, threat visibility, remediation planning, and compliance preparedness.",
+    icon: Activity,
+    summary:
+      "DefenseEye connects cybersecurity architecture, risk management, control evidence, and remediation planning so teams can govern and improve security posture over time.",
+    challenge: "Security programs often have tool data, findings, and compliance requirements without a clear operating view of risk and remediation priorities.",
+    howHelps: ["Review control and risk posture", "Prioritize remediation by business impact", "Align evidence to compliance requirements", "Improve reporting for leadership and assurance needs"],
+    outcomes: ["Clearer risk visibility", "Prioritized remediation", "Improved compliance preparedness", "Better leadership reporting"],
+    engagements: ["Cybersecurity risk assessment", "Security dashboard implementation", "Identity controls review", "Remediation roadmap"],
+    frameworks: ["NIST CSF", "NIST SP 800-171", "RMF", "FedRAMP", "Zero Trust"],
+    deliverables: ["Risk register", "Control findings", "Remediation roadmap", "Dashboard requirements"],
+    why: "Risk-informed cybersecurity helps teams focus limited time on the issues that matter most to operations, customers, and assurance reviews.",
+    faqs: [{ question: "How does DefenseEye support cybersecurity readiness?", answer: "DefenseEye reviews controls, risk themes, identity and cloud posture, evidence, and remediation priorities to improve readiness and operational visibility." }, commonFaq.supplier],
+  }),
+  "/solutions/compliance-automation": page({
+    eyebrow: "Compliance Automation",
+    title: "Compliance evidence automation and readiness workflows",
+    description:
+      "DefenseEye helps organizations reduce manual compliance work through evidence automation, control mapping, documentation support, dashboards, and readiness workflows.",
+    seoTitle: "Compliance Evidence Automation and Readiness Consulting | DefenseEye",
+    seoDescription:
+      "Compliance evidence automation for CMMC Level 2 readiness automation, NIST SP 800-171 compliance automation, control mapping, documentation preparation, and audit readiness.",
+    icon: FileCheck,
+    summary:
+      "DefenseEye helps compliance teams reduce manual evidence collection and improve traceability through workflow design, control mapping, automation planning, and platform-enabled consulting.",
+    challenge: "Manual evidence work slows readiness, creates inconsistent documentation, and makes leadership visibility difficult.",
+    howHelps: ["Map evidence sources to controls", "Identify automation opportunities", "Design readiness workflows and dashboards", "Assess CMMCLens fit when relevant"],
+    outcomes: ["Reduced manual preparation effort", "Improved evidence traceability", "More consistent documentation", "Better audit and supplier readiness"],
+    engagements: ["Evidence automation implementation", "Control mapping design", "SSP and policy automation", "Compliance dashboard implementation"],
+    frameworks: ["CMMC", "NIST SP 800-171", "FedRAMP", "RMF", "ISO 42001 readiness"],
+    deliverables: ["Evidence map", "Automation design", "Workflow backlog", "Dashboard requirements", "CMMCLens fit assessment"],
+    why: "Compliance automation improves readiness by making evidence easier to find, explain, refresh, and connect to control expectations.",
+    faqs: [
+      { question: "How does AI automate compliance evidence collection?", answer: "AI and workflow automation can map artifacts to controls, organize evidence, identify gaps, draft documentation, and improve traceability for human review." },
+      commonFaq.supplier,
+    ],
+  }),
+  "/solutions/cloud-security": page({
+    eyebrow: "Cloud Security",
+    title: "Cloud security architecture for Microsoft and regulated environments",
+    description:
+      "DefenseEye helps teams strengthen Azure, Azure Government, GCC High, Microsoft 365, identity, Zero Trust, monitoring, and compliance-aligned cloud security.",
+    seoTitle: "Azure Cloud Security and GCC High Compliance Consulting | DefenseEye",
+    seoDescription:
+      "Azure Government compliance consulting, GCC High security and compliance, Microsoft Entra, Defender, Sentinel, Purview, Azure security, and regulated cloud security architecture.",
+    icon: Network,
+    summary:
+      "DefenseEye supports secure cloud modernization by aligning identity, monitoring, governance, security architecture, and compliance expectations.",
+    challenge: "Regulated cloud environments need secure architecture, visibility, identity controls, and evidence without slowing modernization.",
+    howHelps: ["Review Azure and Microsoft 365 security posture", "Assess Entra, Defender, Sentinel, and Purview alignment", "Evaluate GCC High and Azure Government patterns", "Prioritize secure modernization actions"],
+    outcomes: ["Improved cloud security posture", "Stronger identity and monitoring controls", "Better regulated environment readiness", "Clearer modernization priorities"],
+    engagements: ["Azure security posture review", "GCC High readiness review", "Identity controls review", "Cloud compliance architecture assessment"],
+    frameworks: ["Azure", "Azure Government", "GCC High", "Entra", "Defender", "Sentinel", "Purview", "Zero Trust"],
+    deliverables: ["Security posture findings", "Architecture recommendations", "Remediation roadmap", "Evidence considerations"],
+    why: "Cloud security is foundational for regulated AI adoption, compliance preparedness, and enterprise supplier confidence.",
+    faqs: [{ question: "How can Microsoft cloud environments support regulated AI adoption?", answer: "They can support regulated AI adoption through identity controls, data governance, security monitoring, policy management, logging, and compliance-aligned architecture." }, commonFaq.supplier],
+  }),
+  "/solutions/cmmclens-platform": page({
+    eyebrow: "CMMCLens Platform",
+    title: "CMMCLens evidence automation for compliance readiness",
+    description:
+      "CMMCLens is DefenseEye's flagship compliance automation platform for evidence collection, control traceability, readiness monitoring, SSP support, and policy automation.",
+    seoTitle: "CMMCLens Compliance Automation Platform | DefenseEye",
+    seoDescription:
+      "CMMCLens supports CMMC Level 2 readiness, NIST SP 800-171 alignment, automated evidence collection, continuous readiness, gap identification, SSP generation, and policy automation.",
+    icon: BarChart3,
+    summary:
+      "CMMCLens supports evidence automation, continuous readiness, executive visibility, and compliance traceability within DefenseEye's broader AI governance, cybersecurity, and compliance automation portfolio.",
+    challenge: "Readiness programs often rely on fragmented artifacts, manual evidence work, and inconsistent documentation.",
+    howHelps: ["Automate evidence collection", "Support NIST SP 800-171 and CMMC Level 2 traceability", "Identify gaps and remediation workflows", "Support AI-assisted SSP and policy generation"],
+    outcomes: ["Reduced manual evidence effort", "Improved readiness visibility", "Stronger evidence traceability", "More consistent documentation"],
+    engagements: ["CMMCLens fit assessment", "Evidence automation implementation", "SSP and policy documentation automation", "Compliance dashboard implementation"],
+    frameworks: ["CMMC Level 2", "NIST SP 800-171", "SPRS", "SSP", "POA&M"],
+    deliverables: ["Platform fit assessment", "Evidence workflow design", "Readiness dashboard", "Control traceability model"],
+    why: "Compliance programs become more sustainable when evidence, gaps, remediation, and documentation are connected in a repeatable workflow.",
+    cta: { label: "Explore CMMCLens", href: "/cmmclens" },
+    faqs: [
+      { question: "How does CMMCLens support NIST SP 800-171 and CMMC readiness?", answer: "CMMCLens supports evidence collection, control traceability, gap identification, readiness monitoring, and AI-assisted SSP and policy generation." },
+      { question: "Can CMMCLens reduce manual evidence collection effort?", answer: "Where required source data and integrations are available, CMMCLens may reduce manual evidence collection effort by automating collection, mapping, and traceability workflows." },
+      commonFaq.supplier,
+    ],
+  }),
+};
 
 export default function SolutionPage() {
   const [location] = useLocation();
-  const page = pages[location as keyof typeof pages] ?? pages["/solutions/ai-governance"];
-  const Icon = page.icon;
+  const config = pages[location] ?? pages["/solutions/ai-governance"];
+  const Icon = config.icon;
 
-  useSeo(page.seoTitle, page.seoDescription);
+  useSeo(config.seoTitle, config.seoDescription);
 
   useEffect(() => {
     const schema = [
       {
         "@context": "https://schema.org",
         "@type": "Service",
-        name: page.eyebrow,
+        name: config.eyebrow,
         provider: { "@type": "Organization", name: "DefenseEye", url: "https://defenseeye.ai" },
-        description: page.seoDescription,
+        description: config.seoDescription,
         areaServed: { "@type": "Country", name: "United States" },
-        about: page.related.map((name) => ({ "@type": "Thing", name })),
+        about: config.frameworks.map((name) => ({ "@type": "Thing", name })),
       },
       {
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        mainEntity: page.faqs.map((faq) => ({
+        mainEntity: config.faqs.map((faq) => ({
           "@type": "Question",
           name: faq.question,
           acceptedAnswer: { "@type": "Answer", text: faq.answer },
@@ -171,18 +281,8 @@ export default function SolutionPage() {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "Home",
-            item: "https://defenseeye.ai/",
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: page.eyebrow,
-            item: `https://defenseeye.ai${location}`,
-          },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://defenseeye.ai/" },
+          { "@type": "ListItem", position: 2, name: config.eyebrow, item: `https://defenseeye.ai${location}` },
         ],
       },
     ];
@@ -194,7 +294,7 @@ export default function SolutionPage() {
     s.text = JSON.stringify(schema);
     document.head.appendChild(s);
     return () => document.getElementById(id)?.remove();
-  }, [page]);
+  }, [config, location]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -203,19 +303,19 @@ export default function SolutionPage() {
         <section className="max-w-6xl mx-auto pt-16 pb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-5">
             <Icon className="w-3.5 h-3.5 text-primary" />
-            <span className="text-xs font-medium text-primary tracking-wide uppercase">{page.eyebrow}</span>
+            <span className="text-xs font-medium text-primary tracking-wide uppercase">{config.eyebrow}</span>
           </div>
-          <h1 className="font-heading text-4xl md:text-5xl font-bold leading-tight mb-5 max-w-4xl">{page.title}</h1>
-          <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed mb-8">{page.description}</p>
+          <h1 className="font-heading text-4xl md:text-5xl font-bold leading-tight mb-5 max-w-4xl">{config.title}</h1>
+          <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed mb-8">{config.description}</p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-                Schedule Consultation <ArrowRight className="w-4 h-4 ml-2" />
+                Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </a>
-            <a href="/#services">
+            <a href={config.cta?.href ?? "/contact"}>
               <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
-                Explore Solutions
+                {config.cta?.label ?? "Request Capability Statement"}
               </Button>
             </a>
           </div>
@@ -224,23 +324,22 @@ export default function SolutionPage() {
         <section className="max-w-6xl mx-auto pb-14">
           <div className="bg-primary/5 border border-primary/20 rounded-sm p-6">
             <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-3">Executive Summary</p>
-            <p className="text-foreground leading-relaxed max-w-4xl mb-4">{page.executiveSummary}</p>
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-4xl">{page.directAnswer}</p>
+            <p className="text-foreground leading-relaxed max-w-4xl">{config.summary}</p>
           </div>
         </section>
 
-        <section className="max-w-6xl mx-auto pb-14">
+        <section className="max-w-6xl mx-auto py-14 border-t border-border/30">
           <div className="grid lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-5">
+            <div className="lg:col-span-4">
               <Target className="w-6 h-6 text-primary mb-4" />
-              <h2 className="font-heading text-2xl font-bold text-foreground mb-3">Why It Matters</h2>
-              <p className="text-muted-foreground leading-relaxed">{page.whyItMatters}</p>
+              <h2 className="font-heading text-2xl font-bold text-foreground mb-3">Business Challenge</h2>
+              <p className="text-muted-foreground leading-relaxed">{config.challenge}</p>
             </div>
-            <div className="lg:col-span-7 grid sm:grid-cols-2 gap-4">
-              {page.keyOutcomes.map((outcome) => (
-                <div key={outcome} className="bg-card/50 border border-border/40 rounded-sm p-4">
-                  <CheckCircle2 className="w-5 h-5 text-primary mb-3" />
-                  <p className="text-sm text-muted-foreground leading-relaxed">{outcome}</p>
+            <div className="lg:col-span-8 grid sm:grid-cols-2 gap-4">
+              {config.howHelps.map((item) => (
+                <div key={item} className="bg-card/50 border border-border/40 rounded-sm p-4">
+                  <ClipboardCheck className="w-5 h-5 text-primary mb-3" />
+                  <p className="text-sm text-muted-foreground leading-relaxed">{item}</p>
                 </div>
               ))}
             </div>
@@ -249,23 +348,18 @@ export default function SolutionPage() {
 
         <section className="max-w-6xl mx-auto py-14 border-t border-border/30">
           <div className="grid lg:grid-cols-2 gap-8">
-            {page.sections.map((section, index) => {
-              const SectionIcon = index === 0 ? ClipboardCheck : Target;
-              return (
-                <div key={section.heading}>
-                  <SectionIcon className="w-6 h-6 text-primary mb-4" />
-                  <h2 className="font-heading text-2xl font-bold text-foreground mb-5">{section.heading}</h2>
-                  <div className="space-y-3">
-                    {section.points.map((point) => (
-                      <div key={point} className="flex items-start gap-3 bg-card/50 border border-border/40 rounded-sm p-4">
-                        <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                        <p className="text-sm text-muted-foreground leading-relaxed">{point}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+            <Panel title="Key Outcomes" icon={CheckCircle2} items={config.outcomes} />
+            <Panel title="Representative Engagements" icon={Network} items={config.engagements} />
+            <Panel title="Relevant Frameworks / Technologies" icon={ShieldCheck} items={config.frameworks} />
+            <Panel title="Deliverables" icon={FileCheck} items={config.deliverables} />
+          </div>
+        </section>
+
+        <section className="max-w-6xl mx-auto py-14 border-t border-border/30">
+          <div className="bg-card/50 border border-border/40 rounded-sm p-6">
+            <Target className="w-6 h-6 text-primary mb-4" />
+            <h2 className="font-heading text-2xl font-bold text-foreground mb-3">Why It Matters</h2>
+            <p className="text-muted-foreground leading-relaxed max-w-4xl">{config.why}</p>
           </div>
         </section>
 
@@ -273,12 +367,10 @@ export default function SolutionPage() {
           <div className="mb-8">
             <Network className="w-6 h-6 text-primary mb-4" />
             <h2 className="font-heading text-3xl font-bold text-foreground mb-3">Frequently asked questions</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Short answers for buyers, program owners, and governance teams evaluating how to move forward.
-            </p>
+            <p className="text-muted-foreground leading-relaxed">Concise answers for buyers, supplier teams, program owners, and governance leaders.</p>
           </div>
           <div className="space-y-4">
-            {page.faqs.map((faq) => (
+            {config.faqs.map((faq) => (
               <div key={faq.question} className="bg-card/40 border border-border/40 rounded-sm p-5">
                 <h3 className="font-heading font-semibold text-foreground mb-2">{faq.question}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
@@ -291,19 +383,36 @@ export default function SolutionPage() {
           <div className="bg-card/50 border border-border/40 rounded-sm p-6 flex flex-col md:flex-row md:items-center gap-5">
             <ShieldCheck className="w-8 h-8 text-primary shrink-0" />
             <div className="flex-1">
-              <h2 className="font-heading text-xl font-bold text-foreground mb-2">Build with governance from the start</h2>
+              <h2 className="font-heading text-xl font-bold text-foreground mb-2">Available for enterprise supplier evaluation</h2>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                DefenseEye helps teams connect AI adoption, security, compliance evidence, and operational ownership so programs can scale with less risk.
+                DefenseEye supports advisory, implementation, subcontracting, staff augmentation, and platform-enabled consulting opportunities.
               </p>
             </div>
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-                Schedule Consultation <ArrowRight className="w-4 h-4 ml-2" />
+                Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </a>
           </div>
         </section>
       </main>
+    </div>
+  );
+}
+
+function Panel({ title, icon: Icon, items }: { title: string; icon: typeof Bot; items: string[] }) {
+  return (
+    <div>
+      <Icon className="w-6 h-6 text-primary mb-4" />
+      <h2 className="font-heading text-2xl font-bold text-foreground mb-5">{title}</h2>
+      <div className="space-y-3">
+        {items.map((item) => (
+          <div key={item} className="flex items-start gap-3 bg-card/50 border border-border/40 rounded-sm p-4">
+            <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+            <p className="text-sm text-muted-foreground leading-relaxed">{item}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

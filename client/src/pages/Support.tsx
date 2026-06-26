@@ -51,13 +51,13 @@ export default function Support() {
 
             <div className="bg-card/50 border border-border/40 rounded-sm p-7 flex flex-col">
               <Calendar className="w-7 h-7 text-primary mb-4" />
-              <h3 className="font-heading text-lg font-bold mb-2">Urgent Issues — Schedule Consultation</h3>
+              <h3 className="font-heading text-lg font-bold mb-2">Urgent Issues — Discuss Next Steps</h3>
               <p className="text-sm text-muted-foreground leading-relaxed mb-5 flex-1">
                 For time-sensitive contract deadlines, governance needs, security concerns, or critical platform issues, schedule a direct call. We prioritize active subscribers and clients under deadline pressure.
               </p>
               <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
                 <Button variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
-                  Schedule Consultation <ArrowRight className="w-4 h-4 ml-2" />
+                  Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </a>
             </div>

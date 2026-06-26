@@ -34,16 +34,16 @@ export default function ContactUs() {
       <section className="py-16 px-4 section-light">
         <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-6">
 
-          {/* Schedule Consultation */}
+          {/* Supplier opportunities */}
           <div className="bg-card/50 border border-border/40 rounded-sm p-7 flex flex-col">
             <Calendar className="w-7 h-7 text-primary mb-4" />
-            <h2 className="font-heading text-xl font-bold mb-2">Schedule Consultation</h2>
+            <h2 className="font-heading text-xl font-bold mb-2">Discuss Supplier Opportunities</h2>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
-              Schedule a 60-minute consultation on AI, cybersecurity, governance, compliance automation, or CMMCLens fit for your environment.
+              Schedule a 60-minute discussion on AI, cybersecurity, governance, compliance automation, subcontracting, staff augmentation, or CMMCLens fit.
             </p>
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
-                Schedule Consultation <ArrowRight className="w-4 h-4 ml-2" />
+                Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </a>
           </div>

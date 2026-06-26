@@ -344,7 +344,7 @@ export default function KnowledgeHubLayout({
                     href: "/knowledge-hub/sprs-score",
                   },
                   { label: "Blog", href: "/blog" },
-                  { label: "Case Studies", href: "/case-studies" },
+                  { label: "Representative Engagements", href: "/case-studies" },
                 ].map((item) => (
                   <li key={item.label}>
                     <a

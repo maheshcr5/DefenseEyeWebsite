@@ -332,8 +332,8 @@ async function startServer() {
       description: "Practical CMMC guides for defense contractors: NIST 800-171, SPRS improvement, C3PAO assessment prep, and CMMC Level 2 readiness.",
     },
     "/case-studies": {
-      title: "CMMC Contractor Profiles — DoD Compliance Scenarios | DefenseEye.ai",
-      description: "Representative defense contractor scenarios showing faster CMMC Level 2 readiness, CUI planning, and C3PAO preparation workflows.",
+      title: "Representative Engagements for AI, Cybersecurity, and Compliance | DefenseEye.ai",
+      description: "Representative engagement types DefenseEye is positioned to support, including AI governance, Copilot readiness, Azure security, compliance automation, CMMC readiness, and advisory support.",
     },
     "/knowledge-hub": {
       title: "CMMC Knowledge Hub | DefenseEye",
@@ -368,8 +368,8 @@ async function startServer() {
       description: "CMMCLens is DefenseEye's AI-assisted cybersecurity and compliance automation platform for evidence collection, gap assessments, continuous readiness monitoring, AI-generated SSPs, policies, procedures, risk workflows, and evidence traceability.",
     },
     "/copilot": {
-      title: "DefenseEye CMMC Copilot | CMMC, NIST 800-171, DFARS, SPRS Help",
-      description: "Ask DefenseEye CMMC Copilot about CMMC Level 2, NIST 800-171, DFARS, SPRS, CUI scoping, SSPs, POA&Ms, evidence, CMMCLens automation, and assessment readiness.",
+      title: "DefenseEye Advisor | AI Governance, Cybersecurity, Cloud Security, and Compliance Guidance",
+      description: "Ask DefenseEye Advisor about secure AI adoption, AI governance, Microsoft Copilot readiness, Azure security, CMMC, NIST SP 800-171, compliance automation, and supplier readiness.",
     },
     "/services": {
       title: "CMMC Readiness Sprint | DefenseEye.ai",
@@ -390,6 +390,30 @@ async function startServer() {
     "/solutions/ai-transformation": {
       title: "AI Transformation and Automation Services | DefenseEye",
       description: "AI transformation services covering opportunity identification, AI adoption roadmaps, business process automation, Microsoft Copilot enablement, use-case prioritization, and value realization.",
+    },
+    "/solutions/ai-security": {
+      title: "AI Security Services | DefenseEye",
+      description: "AI security services for generative AI risk, LLM threat modeling, AI application security, security architecture review, and governed adoption.",
+    },
+    "/solutions/microsoft-copilot-enablement": {
+      title: "Microsoft Copilot Enablement and Governance | DefenseEye",
+      description: "Microsoft Copilot readiness, governance, identity, data protection, security operations alignment, adoption support, and risk-informed enablement.",
+    },
+    "/solutions/cybersecurity-risk": {
+      title: "Cybersecurity and Risk Services | DefenseEye",
+      description: "Cybersecurity and risk services covering threat visibility, identity controls, risk prioritization, security operations, control maturity, and regulated readiness.",
+    },
+    "/solutions/compliance-automation": {
+      title: "Compliance Automation Services | DefenseEye",
+      description: "Compliance automation services for evidence collection, control mapping, readiness workflows, documentation support, dashboards, and audit preparedness.",
+    },
+    "/solutions/cloud-security": {
+      title: "Cloud Security and Modernization Services | DefenseEye",
+      description: "Cloud security services for Azure, Microsoft 365, identity, Zero Trust, secure architecture, regulated cloud readiness, and modernization.",
+    },
+    "/solutions/cmmclens-platform": {
+      title: "CMMCLens Platform | Compliance Evidence Automation | DefenseEye",
+      description: "CMMCLens is DefenseEye's flagship compliance automation platform for evidence collection, gap identification, continuous readiness, AI-assisted SSP and policy generation, and executive visibility.",
     },
     "/insights/what-is-cmmc-level-2": {
       title: "What is CMMC Level 2? | DefenseEye",

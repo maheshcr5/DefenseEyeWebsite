@@ -512,7 +512,7 @@ export default function Blog() {
               <span className="hover:text-primary transition-colors cursor-pointer">Knowledge Hub</span>
             </Link>
             <Link href="/case-studies">
-              <span className="hover:text-primary transition-colors cursor-pointer">Case Studies</span>
+              <span className="hover:text-primary transition-colors cursor-pointer">Representative Engagements</span>
             </Link>
             <Link href="/">
               <span className="hover:text-primary transition-colors cursor-pointer">Home</span>
