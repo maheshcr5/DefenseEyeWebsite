@@ -17,8 +17,8 @@ const engagements = [
 
 export default function RepresentativeEngagements() {
   useSeo(
-    "Representative Engagements | DefenseEye",
-    "Representative engagement types DefenseEye is positioned to support, including Copilot governance, AI governance, CMMC readiness, evidence automation, Azure security, and AI security assessments."
+    "Representative Engagements | DefenseEye AI, Cybersecurity, Microsoft Cloud, and CMMC Support",
+    "Explore representative engagement types DefenseEye is positioned to support, including AI governance, Microsoft Copilot readiness, CMMC readiness, compliance automation, Azure security, and AI security assessments."
   );
 
   useEffect(() => {
@@ -72,7 +72,7 @@ export default function RepresentativeEngagements() {
           <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-4">Representative Engagements</p>
           <h1 className="font-heading text-4xl sm:text-5xl font-bold leading-tight mb-5">Representative Engagements</h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
-            These examples describe possible engagement structures and deliverables. They are not completed customer case studies or performance claims.
+            The examples below describe engagement types DefenseEye is positioned to support. They are not presented as completed customer case studies.
           </p>
         </div>
       </section>
@@ -94,7 +94,7 @@ export default function RepresentativeEngagements() {
         <div className="max-w-4xl mx-auto text-center mt-12">
           <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "representative_engagements" })}>
             <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-              Discuss an Engagement Model <ArrowRight className="w-4 h-4 ml-2" />
+              Discuss a Representative Engagement <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </a>
         </div>

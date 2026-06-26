@@ -3,7 +3,7 @@ import { Award, Building2, Download, Mail, Phone, ShieldCheck } from "lucide-rea
 import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
-import { CAPABILITY_STATEMENT_PDF_URL, CERTIFICATIONS, COMPANY, CORE_COMPETENCIES, ENGAGEMENT_MODELS, SUPPLIER_IDENTIFIERS } from "@/data/companyFacts";
+import { CAPABILITY_STATEMENT_URL, CERTIFICATIONS, COMPANY, CORE_COMPETENCIES, ENGAGEMENT_MODELS, SUPPLIER_IDENTIFIERS } from "@/data/companyFacts";
 import { trackConversion } from "@/lib/tracking";
 
 export default function SupplierReadiness() {
@@ -84,14 +84,14 @@ export default function SupplierReadiness() {
               DefenseEye is a Redmond, WA-based minority-owned AI governance, cybersecurity, Microsoft cloud, CMMC, and compliance automation firm available for enterprise supplier, subcontracting, advisory, implementation, and staff augmentation opportunities.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 mt-8">
-              <a href={CAPABILITY_STATEMENT_PDF_URL} onClick={() => trackConversion("capability_statement_download", { location: "supplier_readiness_hero" })}>
+              <a href={CAPABILITY_STATEMENT_URL} onClick={() => trackConversion("capability_statement_download", { location: "supplier_readiness_hero" })}>
                 <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-                  Open Capability Statement <Download className="w-4 h-4 ml-2" />
+                  Request Capability Statement <Download className="w-4 h-4 ml-2" />
                 </Button>
               </a>
-              <a href="/contact">
+              <a href="/contact?inquiry=supplier" onClick={() => trackConversion("partners_email_click", { location: "supplier_readiness_cta" })}>
                 <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
-                  Request Supplier Review
+                  Discuss Supplier Opportunities
                 </Button>
               </a>
             </div>
@@ -111,8 +111,8 @@ export default function SupplierReadiness() {
               {ENGAGEMENT_MODELS.map((item) => <p key={item}>{item}</p>)}
             </InfoPanel>
             <InfoPanel title="Contact" icon={<Mail className="w-5 h-5 text-primary" />}>
-              <a href={`mailto:${COMPANY.enterpriseEmail}`} onClick={() => trackConversion("email_click", { location: "supplier_readiness" })}>{COMPANY.enterpriseEmail}</a>
-              <a href={`mailto:${COMPANY.partnersEmail}`} onClick={() => trackConversion("email_click", { location: "supplier_readiness_partners" })}>{COMPANY.partnersEmail}</a>
+              <a href={`mailto:${COMPANY.enterpriseEmail}`} onClick={() => trackConversion("enterprise_email_click", { location: "supplier_readiness" })}>{COMPANY.enterpriseEmail}</a>
+              <a href={`mailto:${COMPANY.partnersEmail}`} onClick={() => trackConversion("partners_email_click", { location: "supplier_readiness_partners" })}>{COMPANY.partnersEmail}</a>
               <a href={`tel:${COMPANY.phone.replace(/[^0-9]/g, "")}`} onClick={() => trackConversion("phone_click", { location: "supplier_readiness" })}>{COMPANY.phone}</a>
               <p>{COMPANY.address}</p>
             </InfoPanel>
@@ -121,7 +121,7 @@ export default function SupplierReadiness() {
 
         <section className="py-16 px-4 section-gray">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8">
-            <CardBlock title="Supplier Identifiers" items={SUPPLIER_IDENTIFIERS.map(([label, value]) => `${label}: ${value}`)} />
+            <SupplierTable />
             <CardBlock title="Certifications & Status" items={CERTIFICATIONS} />
           </div>
         </section>
@@ -143,6 +143,26 @@ export default function SupplierReadiness() {
           </div>
         </section>
       </main>
+    </div>
+  );
+}
+
+function SupplierTable() {
+  return (
+    <div className="bg-card/50 border border-border/40 rounded-sm p-6">
+      <h2 className="font-heading text-2xl font-bold text-foreground mb-5">Supplier Identifiers</h2>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <tbody>
+            {SUPPLIER_IDENTIFIERS.map(([label, value]) => (
+              <tr key={label} className="border-b border-border/30 last:border-0">
+                <th className="text-left font-medium text-foreground py-3 pr-4">{label}</th>
+                <td className="text-muted-foreground py-3">{value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

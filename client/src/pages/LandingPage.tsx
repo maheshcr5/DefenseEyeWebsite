@@ -130,6 +130,14 @@ export default function LandingPage() {
           },
         ],
       },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://defenseeye.ai/" },
+          { "@type": "ListItem", position: 2, name: config.title, item: `https://defenseeye.ai${location}` },
+        ],
+      },
     ]);
     document.head.appendChild(script);
     return () => document.getElementById(id)?.remove();
@@ -165,6 +173,18 @@ export default function LandingPage() {
           <div className="bg-card/50 border border-border/40 rounded-sm p-6">
             <h2 className="font-heading text-xl font-bold mb-3">Relevant Credentials</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">{CERTIFICATIONS.slice(0, 5).join(" · ")}</p>
+          </div>
+        </div>
+      </section>
+      <section className="py-14 px-4 section-light">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-5">
+          <div className="bg-card/50 border border-border/40 rounded-sm p-6">
+            <h2 className="font-heading text-xl font-bold mb-3">How can DefenseEye help?</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">{config.helps.join(" ")}</p>
+          </div>
+          <div className="bg-card/50 border border-border/40 rounded-sm p-6">
+            <h2 className="font-heading text-xl font-bold mb-3">What outcome should buyers expect?</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">{config.outcomes.join(" ")}</p>
           </div>
         </div>
       </section>

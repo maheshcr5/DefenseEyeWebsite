@@ -3,14 +3,15 @@ import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { useSeo } from "@/hooks/useSeo";
+import { trackConversion } from "@/lib/tracking";
 
-const SUPPORT_EMAIL = "enterprise@defenseeye.ai";
+const SUPPORT_EMAIL = "support@defenseeye.ai";
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
 export default function Support() {
   useSeo(
     "Support | DefenseEye",
-    "Get support for DefenseEye advisory services, AI governance work, compliance automation, and the CMMCLens platform. Email enterprise@defenseeye.ai or browse our Knowledge Hub."
+    "Get support for CMMCLens product support, marketplace support, advisory service follow-up, and customer issue reporting. Email support@defenseeye.ai or browse our Knowledge Hub."
   );
 
   return (
@@ -42,7 +43,7 @@ export default function Support() {
               <p className="text-sm text-muted-foreground leading-relaxed mb-5 flex-1">
                 For CMMCLens platform issues, billing questions, advisory service follow-up, or any other request — email us and we'll respond within one business day.
               </p>
-              <a href={`mailto:${SUPPORT_EMAIL}`}>
+              <a href={`mailto:${SUPPORT_EMAIL}`} onClick={() => trackConversion("support_email_click", { location: "support_hero" })}>
                 <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
                   <Mail className="w-4 h-4 mr-2" /> {SUPPORT_EMAIL}
                 </Button>
@@ -57,7 +58,7 @@ export default function Support() {
               </p>
               <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
                 <Button variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
-                  Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
+                  Schedule Support Discussion <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </a>
             </div>

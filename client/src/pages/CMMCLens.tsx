@@ -4,6 +4,7 @@ import { Activity, ArrowRight, Bot, CheckCircle2, ChevronDown, FileCheck, GitBra
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import { useSeo } from "@/hooks/useSeo";
+import { trackConversion } from "@/lib/tracking";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 const MARKETPLACE_URL = "https://marketplace.microsoft.com/en-us/search?search=CMMCLens";
@@ -137,12 +138,12 @@ export default function CMMCLens() {
             CMMCLens is DefenseEye's flagship compliance automation platform for CMMC and NIST 800-171 readiness. It supports evidence automation, control mapping, gap tracking, SSP/POA&M workflows, policy support, and readiness visibility.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("cmmclens_click", { location: "cmmclens_hero_briefing" })}>
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
                 Request CMMCLens Briefing <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </a>
-            <a href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer">
+            <a href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("cmmclens_click", { location: "cmmclens_marketplace" })}>
               <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
                 Microsoft Marketplace Listing
               </Button>
@@ -240,7 +241,7 @@ export default function CMMCLens() {
             <p className="text-muted-foreground text-sm mb-6 max-w-md mx-auto">
               Discuss evidence sources, Microsoft integrations, readiness objectives, and the best path for a pilot or advisory engagement.
             </p>
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("cmmclens_click", { location: "cmmclens_final_briefing" })}>
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8">
                 Book a CMMCLens Briefing <ArrowRight className="w-4 h-4 ml-2" />
               </Button>

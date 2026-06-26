@@ -19,8 +19,8 @@ const formats = ["2-4 week readiness sprint", "30/60/90-day roadmap engagement",
 
 export default function DeliveryModel() {
   useSeo(
-    "Delivery Model | DefenseEye",
-    "How DefenseEye works with enterprise, government, regulated, and supplier teams through discover, assess, prioritize, implement, operationalize, and improve phases."
+    "DefenseEye Delivery Model | AI, Cybersecurity, CMMC, and Compliance Automation Engagements",
+    "DefenseEye supports advisory, project delivery, staff augmentation, subcontracting, and platform-enabled consulting engagements across AI governance, cybersecurity, CMMC, Microsoft cloud, and compliance automation."
   );
 
   useEffect(() => {
@@ -74,7 +74,7 @@ export default function DeliveryModel() {
           <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-4">Delivery Model</p>
           <h1 className="font-heading text-4xl sm:text-5xl font-bold leading-tight mb-5">DefenseEye Delivery Model</h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
-            DefenseEye structures engagements so enterprise buyers can understand scope, deliverables, ownership, and operating outcomes before work begins.
+            DefenseEye supports structured advisory, implementation, staff augmentation, subcontracting, and platform-enabled consulting engagements for enterprise, government, defense contractor, and regulated environments.
           </p>
         </div>
       </section>
@@ -100,7 +100,7 @@ export default function DeliveryModel() {
           <div className="text-center">
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "delivery_model" })}>
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-                Discuss Delivery Fit <ArrowRight className="w-4 h-4 ml-2" />
+                Discuss an Engagement Model <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </a>
           </div>

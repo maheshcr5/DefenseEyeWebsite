@@ -4,6 +4,7 @@ import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
 import { CALENDLY_URL, CAPABILITY_STATEMENT_URL } from "@/data/companyFacts";
+import { trackConversion } from "@/lib/tracking";
 
 const matrix = [
   ["Azure", "Cloud security, secure architecture, governance, compliance automation"],
@@ -76,12 +77,12 @@ export default function MicrosoftEcosystem() {
       <section className="pt-16 pb-14 px-4 section-navy">
         <div className="max-w-5xl mx-auto">
           <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-4">Microsoft Ecosystem Experience</p>
-          <h1 className="font-heading text-4xl sm:text-5xl font-bold leading-tight mb-5">Microsoft-centered security, AI governance, and compliance automation support</h1>
+          <h1 className="font-heading text-4xl sm:text-5xl font-bold leading-tight mb-5">Microsoft Ecosystem Experience</h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
             DefenseEye is positioned for organizations operating in Microsoft-centered environments, including Azure, Microsoft 365, Microsoft Security, Copilot, Azure Government, and GCC High patterns.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("microsoft_ecosystem_view", { action: "discuss_support" })}>
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">Discuss Microsoft Ecosystem Support <ArrowRight className="w-4 h-4 ml-2" /></Button>
             </a>
             <a href={CAPABILITY_STATEMENT_URL}>
@@ -103,7 +104,11 @@ export default function MicrosoftEcosystem() {
       </section>
       <section className="py-14 px-4 section-gray">
         <div className="max-w-4xl mx-auto">
-          <h2 className="font-heading text-3xl font-bold mb-4">Enterprise and Multi-Cloud AI Consulting</h2>
+          <h2 className="font-heading text-3xl font-bold mb-4">Procurement-Safe Positioning</h2>
+          <p className="text-muted-foreground leading-relaxed mb-6">
+            DefenseEye does not claim Microsoft supplier approval, preferred supplier status, or Microsoft endorsement unless separately verified.
+          </p>
+          <h2 className="font-heading text-2xl font-bold mb-4">Enterprise and Multi-Cloud AI Consulting</h2>
           <p className="text-muted-foreground leading-relaxed">
             DefenseEye's governance and security approach is cloud-aware and can support Microsoft-centered, Google-aligned, and multi-cloud enterprise AI programs. AI governance, responsible AI frameworks, AI risk assessments, vendor risk management, data governance, ISO 42001 readiness, NIST AI RMF alignment, and secure generative AI adoption apply across enterprise cloud environments.
           </p>

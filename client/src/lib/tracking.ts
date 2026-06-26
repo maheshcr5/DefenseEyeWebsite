@@ -13,7 +13,10 @@ export type ConversionName =
   | "phone_click"
   | "microsoft_ecosystem_view"
   | "cmmc_readiness_view"
-  | "ai_governance_view";
+  | "ai_governance_view"
+  | "support_email_click"
+  | "partners_email_click"
+  | "enterprise_email_click";
 
 export function captureUtmParameters() {
   if (typeof window === "undefined") return;

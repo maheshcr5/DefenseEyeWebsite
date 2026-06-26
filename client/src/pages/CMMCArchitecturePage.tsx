@@ -1,4 +1,5 @@
 import { useLocation } from "wouter";
+import { useEffect } from "react";
 import { ArrowRight, FileCheck, ShieldCheck } from "lucide-react";
 import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
@@ -43,6 +44,44 @@ export default function CMMCArchitecturePage() {
   const [location] = useLocation();
   const page = pages[location] ?? pages["/cmmc"];
   useSeo(`${page.title} | DefenseEye`, page.desc);
+
+  useEffect(() => {
+    const id = "cmmc-architecture-schema";
+    document.getElementById(id)?.remove();
+    const script = document.createElement("script");
+    script.id = id;
+    script.type = "application/ld+json";
+    script.text = JSON.stringify([
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        name: page.title,
+        description: page.desc,
+        provider: { "@type": "Organization", name: "DefenseEye", url: "https://defenseeye.ai" },
+        serviceType: page.points,
+        areaServed: { "@type": "Country", name: "United States" },
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: page.faqs.map(([question, answer]) => ({
+          "@type": "Question",
+          name: question,
+          acceptedAnswer: { "@type": "Answer", text: answer },
+        })),
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://defenseeye.ai/" },
+          { "@type": "ListItem", position: 2, name: page.title, item: `https://defenseeye.ai${location}` },
+        ],
+      },
+    ]);
+    document.head.appendChild(script);
+    return () => document.getElementById(id)?.remove();
+  }, [location, page]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">

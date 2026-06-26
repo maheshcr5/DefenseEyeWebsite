@@ -359,12 +359,12 @@ async function startServer() {
       description: "DefenseEye is a Redmond, WA-based minority-owned AI, cybersecurity, Microsoft cloud, and compliance automation firm available for enterprise supplier, subcontracting, advisory, implementation, and staff augmentation opportunities.",
     },
     "/capability-statement": {
-      title: "DefenseEye Capability Statement | AI, Cybersecurity, and Compliance Automation",
-      description: "DefenseEye capability statement with company overview, core competencies, supplier identifiers, certifications, engagement models, and contact information.",
+      title: "DefenseEye Capability Statement | AI, Cybersecurity, CMMC, and Compliance Automation",
+      description: "DefenseEye provides AI governance, cybersecurity, CMMC advisory, Microsoft cloud security, compliance automation, and CMMCLens platform capability for enterprise, government, and regulated environments.",
     },
     "/delivery-model": {
-      title: "Delivery Model | DefenseEye",
-      description: "How DefenseEye structures advisory, implementation, staff augmentation, subcontracting, and CMMCLens-enabled automation engagements.",
+      title: "DefenseEye Delivery Model | AI, Cybersecurity, CMMC, and Compliance Automation Engagements",
+      description: "DefenseEye supports advisory, project delivery, staff augmentation, subcontracting, and platform-enabled consulting engagements across AI governance, cybersecurity, CMMC, Microsoft cloud, and compliance automation.",
     },
     "/microsoft-ecosystem": {
       title: "Microsoft Ecosystem Experience | DefenseEye AI Governance, Copilot, Azure Security, and Compliance",
@@ -401,10 +401,6 @@ async function startServer() {
     "/cmmclens": {
       title: "CMMCLens Compliance Automation Platform | DefenseEye",
       description: "CMMCLens is DefenseEye's flagship compliance automation platform for CMMC and NIST SP 800-171 readiness, evidence automation, control mapping, gap tracking, SSP and POA&M workflows, policy support, and readiness visibility.",
-    },
-    "/copilot": {
-      title: "DefenseEye Advisor | AI Governance, Cybersecurity, Cloud Security, and Compliance Guidance",
-      description: "Ask DefenseEye Advisor about secure AI adoption, AI governance, Microsoft Copilot readiness, Azure security, CMMC, NIST SP 800-171, compliance automation, and supplier readiness.",
     },
     "/contact": {
       title: "Contact DefenseEye | AI Governance, Cybersecurity, Supplier, and Compliance Inquiries",
@@ -451,8 +447,8 @@ async function startServer() {
       description: "DefenseEye helps organizations identify practical AI opportunities, prioritize high-value use cases, prepare Microsoft and cloud environments, and implement governed AI adoption roadmaps.",
     },
     "/solutions/ai-security": {
-      title: "AI Security Services | DefenseEye",
-      description: "AI security services for generative AI risk, LLM threat modeling, AI application security, security architecture review, and governed adoption.",
+      title: "AI Security Consulting | DefenseEye",
+      description: "DefenseEye helps organizations reduce risks introduced by generative AI, LLMs, AI agents, sensitive data exposure, prompt injection, identity misuse, and inadequate monitoring.",
     },
     "/solutions/microsoft-copilot-enablement": {
       title: "Microsoft Copilot Enablement and Governance | DefenseEye",
@@ -463,16 +459,16 @@ async function startServer() {
       description: "Microsoft Copilot readiness consulting for governance, permissions, data exposure, Microsoft 365, Purview, Entra, Defender, privacy, security, and adoption planning.",
     },
     "/solutions/cybersecurity-risk": {
-      title: "Cybersecurity and Risk Services | DefenseEye",
-      description: "Cybersecurity and risk services covering threat visibility, identity controls, risk prioritization, security operations, control maturity, and regulated readiness.",
+      title: "Cybersecurity and Risk Consulting | DefenseEye",
+      description: "DefenseEye helps regulated organizations evaluate cybersecurity risk, prioritize remediation, improve visibility, and prepare for customer, supplier, and audit expectations.",
     },
     "/solutions/compliance-automation": {
-      title: "Compliance Automation Services | DefenseEye",
-      description: "Compliance automation services for evidence collection, control mapping, readiness workflows, documentation support, dashboards, and audit preparedness.",
+      title: "Compliance Automation Consulting | DefenseEye",
+      description: "DefenseEye helps organizations reduce manual compliance work through evidence automation, control mapping, readiness dashboards, SSP and POA&M support, and GRC workflow automation.",
     },
     "/solutions/cloud-security": {
-      title: "Cloud Security and Modernization Services | DefenseEye",
-      description: "Cloud security services for Azure, Microsoft 365, identity, Zero Trust, secure architecture, regulated cloud readiness, and modernization.",
+      title: "Microsoft Cloud Security and Compliance Consulting | DefenseEye",
+      description: "DefenseEye helps organizations strengthen Microsoft cloud environments through secure architecture, identity controls, security monitoring, compliance alignment, and governance.",
     },
     "/solutions/cmmclens-platform": {
       title: "CMMCLens Platform | Compliance Evidence Automation | DefenseEye",
@@ -584,6 +580,8 @@ async function startServer() {
     "/home-stage/": "/",
     "/case-studies": "/representative-engagements",
     "/case-studies/": "/representative-engagements",
+    "/copilot": "/",
+    "/copilot/": "/",
   };
 
   function getRouteMeta(routePath: string) {

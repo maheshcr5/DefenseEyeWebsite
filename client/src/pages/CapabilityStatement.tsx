@@ -3,7 +3,7 @@ import { Download, Mail, Phone } from "lucide-react";
 import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
-import { CAPABILITY_STATEMENT_PDF_URL, CERTIFICATIONS, COMPANY, CORE_COMPETENCIES, ENGAGEMENT_MODELS, SUPPLIER_IDENTIFIERS } from "@/data/companyFacts";
+import { CERTIFICATIONS, COMPANY, CORE_COMPETENCIES, ENGAGEMENT_MODELS, SUPPLIER_IDENTIFIERS } from "@/data/companyFacts";
 import { trackConversion } from "@/lib/tracking";
 
 const DIFFERENTIATORS = [
@@ -16,8 +16,8 @@ const DIFFERENTIATORS = [
 
 export default function CapabilityStatement() {
   useSeo(
-    "DefenseEye Capability Statement | AI, Cybersecurity, Cloud Security, and Compliance Automation",
-    "HTML capability statement for DefenseEye with core competencies, supplier identifiers, certifications, engagement models, and contact information."
+    "DefenseEye Capability Statement | AI, Cybersecurity, CMMC, and Compliance Automation",
+    "DefenseEye provides AI governance, cybersecurity, CMMC advisory, Microsoft cloud security, compliance automation, and CMMCLens platform capability for enterprise, government, and regulated environments."
   );
 
   useEffect(() => {
@@ -26,8 +26,9 @@ export default function CapabilityStatement() {
     const script = document.createElement("script");
     script.id = id;
     script.type = "application/ld+json";
-    script.text = JSON.stringify({
-      "@context": "https://schema.org",
+    script.text = JSON.stringify([
+      {
+        "@context": "https://schema.org",
         "@type": "AboutPage",
         name: "DefenseEye Capability Statement",
         url: "https://defenseeye.ai/capability-statement",
@@ -35,17 +36,34 @@ export default function CapabilityStatement() {
           "@type": "Organization",
           name: COMPANY.legalName,
           url: "https://defenseeye.ai",
-        email: COMPANY.enterpriseEmail,
-        telephone: COMPANY.phone,
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: "Redmond",
-          addressRegion: "WA",
-          addressCountry: "US",
+          email: COMPANY.enterpriseEmail,
+          telephone: COMPANY.phone,
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Redmond",
+            addressRegion: "WA",
+            addressCountry: "US",
+          },
+          identifier: SUPPLIER_IDENTIFIERS.map(([name, value]) => ({ "@type": "PropertyValue", name, value })),
         },
-        identifier: SUPPLIER_IDENTIFIERS.map(([name, value]) => ({ "@type": "PropertyValue", name, value })),
       },
-    });
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        name: "DefenseEye",
+        url: "https://defenseeye.ai",
+        email: COMPANY.enterpriseEmail,
+        address: { "@type": "PostalAddress", addressLocality: "Redmond", addressRegion: "WA", addressCountry: "US" },
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://defenseeye.ai/" },
+          { "@type": "ListItem", position: 2, name: "Capability Statement", item: "https://defenseeye.ai/capability-statement" },
+        ],
+      },
+    ]);
     document.head.appendChild(script);
     return () => document.getElementById(id)?.remove();
   }, []);
@@ -63,9 +81,10 @@ export default function CapabilityStatement() {
             <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
               AI, cybersecurity, Microsoft cloud, CMMC, and compliance automation capability for enterprise, government, defense contractor, and regulated environments.
             </p>
-            <a href={CAPABILITY_STATEMENT_PDF_URL} onClick={() => trackConversion("capability_statement_download", { location: "capability_statement_page" })}>
+            {/* TODO: Publish a corrected PDF only after confirming it contains no residential street address or personal email. */}
+            <a href="/contact?inquiry=supplier" onClick={() => trackConversion("capability_statement_download", { location: "capability_statement_page_request" })}>
               <Button className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-                Open Capability Statement <Download className="w-4 h-4 ml-2" />
+                Request PDF Capability Statement <Download className="w-4 h-4 ml-2" />
               </Button>
             </a>
           </div>
@@ -91,11 +110,14 @@ export default function CapabilityStatement() {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="font-heading text-3xl font-bold mb-4">Contact Information</h2>
             <div className="flex flex-col sm:flex-row justify-center gap-4 text-sm text-muted-foreground">
-              <a className="inline-flex items-center justify-center gap-2 hover:text-primary" href={`mailto:${COMPANY.enterpriseEmail}`} onClick={() => trackConversion("email_click", { location: "capability_statement" })}>
+              <a className="inline-flex items-center justify-center gap-2 hover:text-primary" href={`mailto:${COMPANY.enterpriseEmail}`} onClick={() => trackConversion("enterprise_email_click", { location: "capability_statement" })}>
                 <Mail className="w-4 h-4" /> {COMPANY.enterpriseEmail}
               </a>
-              <a className="inline-flex items-center justify-center gap-2 hover:text-primary" href={`mailto:${COMPANY.partnersEmail}`} onClick={() => trackConversion("email_click", { location: "capability_statement_partners" })}>
+              <a className="inline-flex items-center justify-center gap-2 hover:text-primary" href={`mailto:${COMPANY.partnersEmail}`} onClick={() => trackConversion("partners_email_click", { location: "capability_statement_partners" })}>
                 <Mail className="w-4 h-4" /> {COMPANY.partnersEmail}
+              </a>
+              <a className="inline-flex items-center justify-center gap-2 hover:text-primary" href={`mailto:${COMPANY.supportEmail}`} onClick={() => trackConversion("support_email_click", { location: "capability_statement_support" })}>
+                <Mail className="w-4 h-4" /> {COMPANY.supportEmail}
               </a>
               <a className="inline-flex items-center justify-center gap-2 hover:text-primary" href={`tel:${COMPANY.phone.replace(/[^0-9]/g, "")}`} onClick={() => trackConversion("phone_click", { location: "capability_statement" })}>
                 <Phone className="w-4 h-4" /> {COMPANY.phone}

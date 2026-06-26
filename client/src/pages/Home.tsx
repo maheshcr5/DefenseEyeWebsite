@@ -20,7 +20,6 @@ import NavBar from "@/components/NavBar";
 import { useSeo } from "@/hooks/useSeo";
 import {
   CALENDLY_URL,
-  CAPABILITY_STATEMENT_PDF_URL,
   CERTIFICATIONS,
   COMPANY,
   FOUNDATIONAL_EXPERIENCE,
@@ -622,12 +621,12 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4">
-              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" onClick={() => trackConversion("consultation_click", { location: "home_hero" })}>
+              <a href="/contact?inquiry=supplier" className="w-full sm:w-auto" onClick={() => trackConversion("consultation_click", { location: "home_hero_supplier" })}>
                 <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-10 h-12 w-full sm:w-auto">
                   Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </a>
-              <a href={CAPABILITY_STATEMENT_PDF_URL} className="w-full sm:w-auto" onClick={() => trackConversion("capability_statement_download", { location: "home_hero" })}>
+              <a href="/capability-statement" className="w-full sm:w-auto" onClick={() => trackConversion("capability_statement_download", { location: "home_hero" })}>
                 <Button variant="outline" size="lg" className="border-primary/40 text-primary hover:bg-primary/10 text-base px-10 h-12 w-full sm:w-auto">
                   Request Capability Statement
                 </Button>
@@ -1038,22 +1037,16 @@ export default function Home() {
               </div>
             </div>
             <div className="bg-card/50 border border-border/40 rounded-sm p-6">
-              <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">DefenseEye Advisor</p>
+              <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Authority Pages</p>
               <h2 className="font-heading text-2xl font-bold text-foreground mb-4">
-                One collapsed advisor for practical readiness questions
+                Deeper guidance for regulated AI and CMMC programs
               </h2>
               <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                DefenseEye Advisor stays collapsed until selected and supports secure AI adoption, AI governance, Copilot readiness, Azure security, compliance automation, CMMC, NIST 800-171, and supplier/subcontracting inquiries.
+                Dedicated pages cover CMMC readiness, NIST SP 800-171, evidence automation, AI governance, Copilot readiness, Microsoft cloud security, and compliance automation without turning the homepage into a glossary.
               </p>
-              <button
-                className="inline-flex items-center text-sm font-semibold text-primary hover:underline"
-                onClick={() => {
-                  trackConversion("advisor_opened", { location: "home_section" });
-                  window.dispatchEvent(new CustomEvent("defenseeye:open-advisor"));
-                }}
-              >
-                Open DefenseEye Advisor <ArrowRight className="w-4 h-4 ml-1" />
-              </button>
+              <a href="/cmmc" className="inline-flex items-center text-sm font-semibold text-primary hover:underline">
+                Review CMMC guidance <ArrowRight className="w-4 h-4 ml-1" />
+              </a>
             </div>
           </div>
 
@@ -1130,8 +1123,9 @@ export default function Home() {
               <div className="space-y-1 text-xs text-muted-foreground/70">
                 <p>AI · Security · Compliance</p>
                 <p>Redmond, WA</p>
-                <p><a href={`mailto:${COMPANY.enterpriseEmail}`} className="hover:text-primary transition-colors">{COMPANY.enterpriseEmail}</a></p>
+                <p>Enterprise inquiries: <a href={`mailto:${COMPANY.enterpriseEmail}`} className="hover:text-primary transition-colors">{COMPANY.enterpriseEmail}</a></p>
                 <p>Supplier and partnership inquiries: <a href={`mailto:${COMPANY.partnersEmail}`} className="hover:text-primary transition-colors">{COMPANY.partnersEmail}</a></p>
+                <p>Support: <a href={`mailto:${COMPANY.supportEmail}`} className="hover:text-primary transition-colors">{COMPANY.supportEmail}</a></p>
               </div>
             </div>
             <div>

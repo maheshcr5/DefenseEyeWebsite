@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, Mail, Calendar, MessageSquare, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { useSeo } from "@/hooks/useSeo";
-import { CAPABILITY_STATEMENT_PDF_URL, COMPANY } from "@/data/companyFacts";
+import { CAPABILITY_STATEMENT_URL, COMPANY } from "@/data/companyFacts";
 import { getStoredAttribution, trackConversion } from "@/lib/tracking";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
@@ -34,7 +34,7 @@ export default function ContactUs() {
 
       {/* Contact options */}
       <section className="py-16 px-4 section-light">
-        <div className="max-w-5xl mx-auto grid md:grid-cols-4 gap-6">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-5 gap-6">
 
           {/* Supplier opportunities */}
           <div className="bg-card/50 border border-border/40 rounded-sm p-7 flex flex-col">
@@ -56,7 +56,7 @@ export default function ContactUs() {
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
               Review DefenseEye's supplier capability statement for identifiers, certifications, engagement models, and core competencies.
             </p>
-            <a href={CAPABILITY_STATEMENT_PDF_URL} onClick={() => trackConversion("capability_statement_download", { location: "contact_page" })}>
+            <a href={CAPABILITY_STATEMENT_URL} onClick={() => trackConversion("capability_statement_download", { location: "contact_page" })}>
               <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 font-semibold w-full">
                 Open
               </Button>
@@ -66,13 +66,26 @@ export default function ContactUs() {
           {/* Email */}
           <div className="bg-card/50 border border-border/40 rounded-sm p-7 flex flex-col">
             <Mail className="w-7 h-7 text-primary mb-4" />
-            <h2 className="font-heading text-xl font-bold mb-2">Email Us</h2>
+            <h2 className="font-heading text-xl font-bold mb-2">Enterprise Inquiries</h2>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
-              Send us your question, contract situation, or support request. We respond within one business day — usually faster.
+              Use this mailbox for enterprise AI consulting, AI governance, Copilot readiness, cybersecurity, and compliance automation inquiries.
             </p>
-            <a href={`mailto:${COMPANY.enterpriseEmail}`} onClick={() => trackConversion("email_click", { location: "contact_enterprise" })}>
+            <a href={`mailto:${COMPANY.enterpriseEmail}`} onClick={() => trackConversion("enterprise_email_click", { location: "contact_enterprise" })}>
               <Button variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
                 {COMPANY.enterpriseEmail}
+              </Button>
+            </a>
+          </div>
+
+          <div className="bg-card/50 border border-border/40 rounded-sm p-7 flex flex-col">
+            <MessageSquare className="w-7 h-7 text-primary mb-4" />
+            <h2 className="font-heading text-xl font-bold mb-2">Support</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
+              For marketplace, SaaS, CMMCLens customer support, billing, cancellation, or product issue reporting, use the support mailbox.
+            </p>
+            <a href={`mailto:${COMPANY.supportEmail}?subject=DefenseEye Support Request`} onClick={() => trackConversion("support_email_click", { location: "contact_support" })}>
+              <Button variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
+                {COMPANY.supportEmail}
               </Button>
             </a>
           </div>
@@ -80,11 +93,11 @@ export default function ContactUs() {
           {/* CMMCLens Support */}
           <div className="bg-card/50 border border-border/40 rounded-sm p-7 flex flex-col">
             <MessageSquare className="w-7 h-7 text-primary mb-4" />
-            <h2 className="font-heading text-xl font-bold mb-2">Platform Support</h2>
+            <h2 className="font-heading text-xl font-bold mb-2">Supplier & Partner</h2>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
-              For supplier, partnership, subcontracting, or CMMCLens platform inquiries, email the partnerships mailbox with relevant context.
+              For supplier, partnership, subcontracting, prime contractor, Microsoft, Google, or Meta procurement outreach, use the partnerships mailbox.
             </p>
-            <a href={`mailto:${COMPANY.partnersEmail}?subject=DefenseEye Supplier or Platform Inquiry`} onClick={() => trackConversion("email_click", { location: "contact_partners" })}>
+            <a href={`mailto:${COMPANY.partnersEmail}?subject=DefenseEye Supplier or Partner Inquiry`} onClick={() => trackConversion("partners_email_click", { location: "contact_partners" })}>
               <Button variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
                 {COMPANY.partnersEmail}
               </Button>
@@ -162,6 +175,28 @@ function ContactFormSection() {
     phone: "",
   });
 
+  useEffect(() => {
+    const inquiry = new URLSearchParams(window.location.search).get("inquiry");
+    const map: Record<string, string> = {
+      supplier: "Supplier / procurement inquiry",
+      partner: "Partnership / subcontracting",
+      "ai-transformation": "AI governance consulting",
+      "ai-governance": "AI governance consulting",
+      "ai-security": "AI governance consulting",
+      "microsoft-copilot-readiness": "Microsoft Copilot readiness",
+      cmmc: "CMMC readiness",
+      "compliance-automation": "Compliance automation",
+      "cybersecurity-risk": "Cloud security",
+      "cloud-security": "Cloud security",
+      "staff-augmentation": "Staff augmentation",
+      cmmclens: "CMMCLens demo",
+      support: "Product support",
+    };
+    if (inquiry && map[inquiry]) {
+      setForm((current) => ({ ...current, inquiryType: map[inquiry] }));
+    }
+  }, []);
+
   const inputCls =
     "w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/20";
   const labelCls = "text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block";
@@ -197,7 +232,7 @@ function ContactFormSection() {
           <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-3">Inquiry Form</p>
           <h2 className="font-heading text-3xl font-bold mb-3">Tell us what you need</h2>
           <p className="text-muted-foreground leading-relaxed">
-            Use this form for supplier, partnership, subcontracting, AI governance, Microsoft Copilot, cybersecurity, cloud security, CMMC, compliance automation, or CMMCLens inquiries.
+            Use this form for supplier, partnership, subcontracting, AI governance, Microsoft Copilot, cybersecurity, cloud security, CMMC, compliance automation, product support, or CMMCLens inquiries.
           </p>
         </div>
         {submitted ? (
@@ -233,6 +268,7 @@ function ContactFormSection() {
                   <option>Cloud security</option>
                   <option>Staff augmentation</option>
                   <option>CMMCLens demo</option>
+                  <option>Product support</option>
                   <option>Other</option>
                 </select>
               </div>

@@ -8,6 +8,10 @@ export const COMPANY = {
   enterpriseEmail: "enterprise@defenseeye.ai",
   partnersEmail: "partners@defenseeye.ai",
   contactEmail: "contact@defenseeye.ai",
+  supportEmail: "support@defenseeye.ai",
+  securityEmail: "security@defenseeye.ai",
+  privacyEmail: "privacy@defenseeye.ai",
+  legalEmail: "legal@defenseeye.ai",
   phone: "425-533-4112",
   address: "Redmond, WA",
 };

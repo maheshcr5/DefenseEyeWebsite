@@ -32,7 +32,6 @@ const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const ContactUs = lazy(() => import("./pages/ContactUs"));
 const Support = lazy(() => import("./pages/Support"));
-const Copilot = lazy(() => import("./pages/Copilot"));
 const ThoughtLeadership = lazy(() => import("./pages/ThoughtLeadership"));
 const SolutionPage = lazy(() => import("./pages/SolutionPage"));
 const SupplierReadiness = lazy(() => import("./pages/SupplierReadiness"));
@@ -84,7 +83,6 @@ function Router() {
         <Route path="/terms" component={TermsOfService} />
         <Route path="/contact" component={ContactUs} />
         <Route path="/support" component={Support} />
-        <Route path="/copilot" component={Copilot} />
         <Route path="/supplier-readiness" component={SupplierReadiness} />
         <Route path="/capability-statement" component={CapabilityStatement} />
         <Route path="/delivery-model" component={DeliveryModel} />

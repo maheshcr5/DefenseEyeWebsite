@@ -24,7 +24,7 @@ type PageConfig = {
   deliverables: string[];
   why: string;
   faqs: Array<{ question: string; answer: string }>;
-  cta?: { label: string; href: string };
+  cta: { label: string; href: string };
 };
 
 function page(config: PageConfig) {
@@ -70,6 +70,7 @@ const pages: Record<string, PageConfig> = {
     deliverables: ["Use-case inventory", "Prioritized roadmap", "Governance considerations", "Implementation plan", "Value measurement model"],
     why:
       "AI adoption creates durable value when it improves real work, protects sensitive data, and gives leaders a governed path from idea to operation.",
+    cta: { label: "Plan a Secure AI Adoption Roadmap", href: "/contact?inquiry=ai-transformation" },
     faqs: [
       { question: "Where should organizations start with AI transformation?", answer: "Start by identifying workflows where AI can reduce manual effort, improve decision quality, or increase consistency, then prioritize by value, risk, feasibility, and data readiness." },
       { question: "How does DefenseEye avoid generic AI consulting?", answer: "DefenseEye focuses on implementation conditions: use-case value, data access, governance controls, security implications, ownership, and measurable operating outcomes." },
@@ -106,6 +107,7 @@ const pages: Record<string, PageConfig> = {
     deliverables: ["Governance model", "Policy outline", "Risk assessment approach", "AI inventory structure", "Oversight controls"],
     why:
       "AI governance matters because leaders need a practical way to approve AI use, monitor risk, preserve explainability, and keep humans accountable for consequential decisions.",
+    cta: { label: "Discuss AI Governance Readiness", href: "/contact?inquiry=ai-governance" },
     faqs: [
       { question: "What is AI governance?", answer: "AI governance is the set of roles, policies, controls, oversight processes, and evidence used to manage AI systems responsibly and reduce AI-related risk." },
       { question: "How can organizations prepare for ISO 42001?", answer: "Start with AI inventory, risk ownership, policy development, oversight roles, lifecycle controls, monitoring practices, and evidence that shows governance is operating." },
@@ -114,23 +116,24 @@ const pages: Record<string, PageConfig> = {
   }),
   "/solutions/ai-security": page({
     eyebrow: "AI Security",
-    title: "AI security assessments for generative AI and enterprise AI platforms",
+    title: "AI Security Consulting",
     description:
-      "DefenseEye helps teams assess prompt, data, identity, integration, model, and workflow risks before AI adoption scales.",
+      "DefenseEye helps organizations reduce risks introduced by generative AI, LLMs, AI agents, sensitive data exposure, prompt injection, identity misuse, and inadequate monitoring.",
     seoTitle: "AI Security and Generative AI Risk Consulting | DefenseEye",
     seoDescription:
       "AI security consulting for generative AI risk assessments, LLM threat modeling, Azure AI security consulting, Copilot security, identity controls, and regulated AI adoption.",
     icon: ShieldCheck,
     summary:
-      "DefenseEye evaluates AI systems through a cybersecurity lens: data exposure, permissions, prompt and output risks, connected workflows, monitoring, and operational controls.",
+      "DefenseEye helps organizations reduce risks introduced by generative AI, LLMs, AI agents, sensitive data exposure, prompt injection, identity misuse, and inadequate monitoring.",
     challenge:
       "Generative AI can expand access to sensitive data, introduce unclear outputs, and connect business workflows before security controls are ready.",
-    howHelps: ["Assess AI threat scenarios", "Review identity and data access boundaries", "Evaluate Copilot and Azure AI security posture", "Recommend monitoring and governance controls"],
+    howHelps: ["Assess AI threat modeling scenarios", "Review guardrails, logging, monitoring, access controls, and data protection", "Evaluate LLM workflows and AI agent risk", "Recommend secure AI adoption controls"],
     outcomes: ["Reduced AI-related security risk", "Clearer control priorities", "Better alignment between AI adoption and security operations", "Stronger readiness for regulated use cases"],
     engagements: ["Generative AI security assessment", "LLM threat modeling", "Copilot security review", "AI security architecture review"],
     frameworks: ["NIST AI RMF", "OWASP LLM Top 10", "Microsoft Entra", "Defender", "Sentinel", "Purview"],
     deliverables: ["Risk findings", "Threat scenarios", "Security recommendations", "Control roadmap"],
     why: "AI security makes adoption more durable by reducing avoidable risk before sensitive workflows and enterprise users depend on AI systems.",
+    cta: { label: "Assess AI Security Risk", href: "/contact?inquiry=ai-security" },
     faqs: [
       { question: "What does an AI security assessment cover?", answer: "It typically covers data exposure, identity and permissions, prompt and output risks, integration paths, logging, monitoring, model behavior, and governance controls." },
       commonFaq.supplier,
@@ -155,6 +158,7 @@ const pages: Record<string, PageConfig> = {
     frameworks: ["Microsoft 365", "Copilot", "Security Copilot", "Entra", "Purview", "Defender", "Sentinel"],
     deliverables: ["Readiness findings", "Governance recommendations", "Use-case priorities", "Rollout controls"],
     why: "Copilot creates value when data, access, workflows, and accountability are ready before broad deployment.",
+    cta: { label: "Assess Copilot Readiness", href: "/contact?inquiry=microsoft-copilot-readiness" },
     faqs: [
       { question: "How is Copilot enablement different from buying licenses?", answer: "Enablement includes data governance, permissions, security controls, use-case guidance, adoption planning, and oversight. Licenses alone do not create governed value." },
       commonFaq.supplier,
@@ -190,6 +194,7 @@ const pages: Record<string, PageConfig> = {
     deliverables: ["Readiness findings", "Governance recommendations", "Adoption guardrails", "Risk-prioritized roadmap"],
     why:
       "Copilot readiness helps organizations adopt AI tools with clearer ownership, data protection, security monitoring, and accountable use.",
+    cta: { label: "Assess Copilot Readiness", href: "/contact?inquiry=microsoft-copilot-readiness" },
     faqs: [
       { question: "What should be reviewed before Microsoft Copilot rollout?", answer: "Organizations should review permissions, overshared content, sensitive data handling, identity controls, user guidance, logging, governance workflows, and adoption priorities." },
       { question: "Does Copilot readiness include AI governance?", answer: "Yes. Copilot readiness should include AI use policies, accountability expectations, risk review, data governance, and controls for responsible adoption." },
@@ -198,27 +203,28 @@ const pages: Record<string, PageConfig> = {
   }),
   "/solutions/cybersecurity-risk": page({
     eyebrow: "Cybersecurity & Risk",
-    title: "Cybersecurity and risk support for regulated enterprise environments",
+    title: "Cybersecurity and Risk Consulting",
     description:
-      "DefenseEye helps organizations improve cybersecurity posture, risk visibility, remediation planning, and compliance preparedness across enterprise and federal contractor environments.",
+      "DefenseEye helps regulated organizations evaluate cybersecurity risk, prioritize remediation, improve visibility, and prepare for customer, supplier, and audit expectations.",
     seoTitle: "Cybersecurity Risk Consulting for Regulated Environments | DefenseEye",
     seoDescription:
       "Cybersecurity and risk consulting for regulated industries, federal contractors, identity controls, threat visibility, remediation planning, and compliance preparedness.",
     icon: Activity,
     summary:
-      "DefenseEye connects cybersecurity architecture, risk management, control evidence, and remediation planning so teams can govern and improve security posture over time.",
+      "DefenseEye helps regulated organizations evaluate cybersecurity risk, prioritize remediation, improve visibility, and prepare for customer, supplier, and audit expectations.",
     challenge: "Security programs often have tool data, findings, and compliance requirements without a clear operating view of risk and remediation priorities.",
     howHelps: ["Review control and risk posture", "Prioritize remediation by business impact", "Align evidence to compliance requirements", "Improve reporting for leadership and assurance needs"],
     outcomes: ["Clearer risk visibility", "Prioritized remediation", "Improved compliance preparedness", "Better leadership reporting"],
     engagements: ["Cybersecurity risk assessment", "Security dashboard implementation", "Identity controls review", "Remediation roadmap"],
     frameworks: ["NIST CSF", "NIST SP 800-171", "RMF", "FedRAMP", "Zero Trust"],
     deliverables: ["Risk register", "Control findings", "Remediation roadmap", "Dashboard requirements"],
-    why: "Risk-informed cybersecurity helps teams focus limited time on the issues that matter most to operations, customers, and assurance reviews.",
+    why: "Risk-informed cybersecurity helps teams focus limited time on the issues that matter most to operations, customers, supplier reviews, and assurance expectations.",
+    cta: { label: "Assess Cybersecurity Risk", href: "/contact?inquiry=cybersecurity-risk" },
     faqs: [{ question: "How does DefenseEye support cybersecurity readiness?", answer: "DefenseEye reviews controls, risk themes, identity and cloud posture, evidence, and remediation priorities to improve readiness and operational visibility." }, commonFaq.supplier],
   }),
   "/solutions/compliance-automation": page({
     eyebrow: "Compliance Automation",
-    title: "Compliance evidence automation and readiness workflows",
+    title: "Compliance Automation Consulting",
     description:
       "DefenseEye helps organizations reduce manual compliance work through evidence automation, control mapping, documentation support, dashboards, and readiness workflows.",
     seoTitle: "Compliance Evidence Automation and Readiness Consulting | DefenseEye",
@@ -234,6 +240,7 @@ const pages: Record<string, PageConfig> = {
     frameworks: ["CMMC", "NIST SP 800-171", "FedRAMP", "RMF", "ISO 42001 readiness"],
     deliverables: ["Evidence map", "Automation design", "Workflow backlog", "Dashboard requirements", "CMMCLens fit assessment"],
     why: "Compliance automation improves readiness by making evidence easier to find, explain, refresh, and connect to control expectations.",
+    cta: { label: "Automate Compliance Readiness", href: "/contact?inquiry=compliance-automation" },
     faqs: [
       { question: "How does AI automate compliance evidence collection?", answer: "AI and workflow automation can map artifacts to controls, organize evidence, identify gaps, draft documentation, and improve traceability for human review." },
       commonFaq.supplier,
@@ -241,7 +248,7 @@ const pages: Record<string, PageConfig> = {
   }),
   "/solutions/cloud-security": page({
     eyebrow: "Cloud Security",
-    title: "Cloud security architecture for Microsoft and regulated environments",
+    title: "Microsoft Cloud Security and Compliance Consulting",
     description:
       "DefenseEye helps teams strengthen Azure, Azure Government, GCC High, Microsoft 365, identity, Zero Trust, monitoring, and compliance-aligned cloud security.",
     seoTitle: "Azure Cloud Security and GCC High Compliance Consulting | DefenseEye",
@@ -249,7 +256,7 @@ const pages: Record<string, PageConfig> = {
       "Azure Government compliance consulting, GCC High security and compliance, Microsoft Entra, Defender, Sentinel, Purview, Azure security, and regulated cloud security architecture.",
     icon: Network,
     summary:
-      "DefenseEye supports secure cloud modernization by aligning identity, monitoring, governance, security architecture, and compliance expectations.",
+      "DefenseEye helps organizations strengthen Microsoft cloud environments through secure architecture, identity controls, security monitoring, compliance alignment, and governance.",
     challenge: "Regulated cloud environments need secure architecture, visibility, identity controls, and evidence without slowing modernization.",
     howHelps: ["Review Azure and Microsoft 365 security posture", "Assess Entra, Defender, Sentinel, and Purview alignment", "Evaluate GCC High and Azure Government patterns", "Prioritize secure modernization actions"],
     outcomes: ["Improved cloud security posture", "Stronger identity and monitoring controls", "Better regulated environment readiness", "Clearer modernization priorities"],
@@ -257,6 +264,7 @@ const pages: Record<string, PageConfig> = {
     frameworks: ["Azure", "Azure Government", "GCC High", "Entra", "Defender", "Sentinel", "Purview", "Zero Trust"],
     deliverables: ["Security posture findings", "Architecture recommendations", "Remediation roadmap", "Evidence considerations"],
     why: "Cloud security is foundational for regulated AI adoption, compliance preparedness, and enterprise supplier confidence.",
+    cta: { label: "Review Cloud Security Readiness", href: "/contact?inquiry=cloud-security" },
     faqs: [{ question: "How can Microsoft cloud environments support regulated AI adoption?", answer: "They can support regulated AI adoption through identity controls, data governance, security monitoring, policy management, logging, and compliance-aligned architecture." }, commonFaq.supplier],
   }),
   "/solutions/cmmclens-platform": page({
@@ -344,14 +352,14 @@ export default function SolutionPage() {
           <h1 className="font-heading text-4xl md:text-5xl font-bold leading-tight mb-5 max-w-4xl">{config.title}</h1>
           <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed mb-8">{config.description}</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+            <a href={config.cta.href}>
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-                Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
+                {config.cta.label} <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </a>
-            <a href={config.cta?.href ?? "/contact"}>
+            <a href="/capability-statement">
               <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
-                {config.cta?.label ?? "Request Capability Statement"}
+                Request Capability Statement
               </Button>
             </a>
           </div>
