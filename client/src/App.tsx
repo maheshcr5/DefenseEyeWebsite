@@ -8,6 +8,9 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import { lazy, Suspense } from "react";
+import { useEffect } from "react";
+import { useLocation } from "wouter";
+import { captureUtmParameters, trackConversion } from "@/lib/tracking";
 
 // Lazy-load all secondary pages to keep initial bundle small
 const KnowledgeHub = lazy(() => import("./pages/KnowledgeHub"));
@@ -18,7 +21,6 @@ const SPRSScore = lazy(() => import("./pages/knowledge-hub/SPRSScore"));
 const CertificationProcess = lazy(() => import("./pages/knowledge-hub/CertificationProcess"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
-const CaseStudies = lazy(() => import("./pages/CaseStudies"));
 const CMMCReadinessSprint = lazy(() => import("./pages/CMMCReadinessSprint"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const CMMCLens = lazy(() => import("./pages/CMMCLens"));
@@ -33,6 +35,13 @@ const Support = lazy(() => import("./pages/Support"));
 const Copilot = lazy(() => import("./pages/Copilot"));
 const ThoughtLeadership = lazy(() => import("./pages/ThoughtLeadership"));
 const SolutionPage = lazy(() => import("./pages/SolutionPage"));
+const SupplierReadiness = lazy(() => import("./pages/SupplierReadiness"));
+const CapabilityStatement = lazy(() => import("./pages/CapabilityStatement"));
+const DeliveryModel = lazy(() => import("./pages/DeliveryModel"));
+const RepresentativeEngagements = lazy(() => import("./pages/RepresentativeEngagements"));
+const MicrosoftEcosystem = lazy(() => import("./pages/MicrosoftEcosystem"));
+const CMMCArchitecturePage = lazy(() => import("./pages/CMMCArchitecturePage"));
+const LandingPage = lazy(() => import("./pages/LandingPage"));
 
 // Minimal loading fallback that matches the dark theme
 function PageLoader() {
@@ -62,7 +71,6 @@ function Router() {
         <Route path="/blog/:slug" component={BlogPost} />
 
         {/* Representative engagements */}
-        <Route path="/case-studies" component={CaseStudies} />
         <Route path="/services" component={CMMCReadinessSprint} />
         <Route path="/services/cmmc-readiness-sprint" component={CMMCReadinessSprint} />
         <Route path="/services/cmmc-scoping" component={CMMCScoping} />
@@ -76,6 +84,11 @@ function Router() {
         <Route path="/contact" component={ContactUs} />
         <Route path="/support" component={Support} />
         <Route path="/copilot" component={Copilot} />
+        <Route path="/supplier-readiness" component={SupplierReadiness} />
+        <Route path="/capability-statement" component={CapabilityStatement} />
+        <Route path="/delivery-model" component={DeliveryModel} />
+        <Route path="/representative-engagements" component={RepresentativeEngagements} />
+        <Route path="/microsoft-ecosystem" component={MicrosoftEcosystem} />
         <Route path="/solutions/ai-governance" component={SolutionPage} />
         <Route path="/solutions/ai-transformation" component={SolutionPage} />
         <Route path="/solutions/ai-security" component={SolutionPage} />
@@ -84,6 +97,19 @@ function Router() {
         <Route path="/solutions/compliance-automation" component={SolutionPage} />
         <Route path="/solutions/cloud-security" component={SolutionPage} />
         <Route path="/solutions/cmmclens-platform" component={SolutionPage} />
+        <Route path="/cmmc" component={CMMCArchitecturePage} />
+        <Route path="/cmmc-level-2-readiness" component={CMMCArchitecturePage} />
+        <Route path="/cmmc-readiness-sprint" component={CMMCArchitecturePage} />
+        <Route path="/cmmc-evidence-automation" component={CMMCArchitecturePage} />
+        <Route path="/nist-800-171" component={CMMCArchitecturePage} />
+        <Route path="/lp/ai-governance-consulting" component={LandingPage} />
+        <Route path="/lp/microsoft-copilot-readiness" component={LandingPage} />
+        <Route path="/lp/cmmc-level-2-readiness" component={LandingPage} />
+        <Route path="/lp/cmmc-evidence-automation" component={LandingPage} />
+        <Route path="/lp/microsoft-supplier-ai-consulting" component={LandingPage} />
+        <Route path="/lp/azure-cloud-security" component={LandingPage} />
+        <Route path="/lp/iso-42001-readiness" component={LandingPage} />
+        <Route path="/lp/compliance-automation" component={LandingPage} />
         <Route path="/insights/:slug" component={ThoughtLeadership} />
 
         {/* Fallback */}
@@ -94,12 +120,29 @@ function Router() {
   );
 }
 
+function RouteAnalytics() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    captureUtmParameters();
+  }, []);
+
+  useEffect(() => {
+    if (location === "/supplier-readiness") trackConversion("supplier_readiness_page_visit");
+    if (location.includes("microsoft") || location === "/microsoft-ecosystem") trackConversion("microsoft_supplier_page_visit", { location });
+    if (location.includes("cmmc")) trackConversion("cmmc_readiness_page_visit", { location });
+  }, [location]);
+
+  return null;
+}
+
 function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <Toaster />
+          <RouteAnalytics />
           <Router />
           <CopilotWidget />
           <CookieConsent />

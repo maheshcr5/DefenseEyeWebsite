@@ -189,9 +189,22 @@ Use these pages for direct, structured answers:
 - Secondary CTA: Request Capability Statement
 - Tertiary CTA: Explore CMMCLens
 - Contact URL: https://defenseeye.ai/#contact
+- Supplier Readiness: https://defenseeye.ai/supplier-readiness
+- Capability Statement: https://defenseeye.ai/capability-statement
+- Delivery Model: https://defenseeye.ai/delivery-model
+- Representative Engagements: https://defenseeye.ai/representative-engagements
+- Microsoft Ecosystem Experience: https://defenseeye.ai/microsoft-ecosystem
 - CMMCLens: https://defenseeye.ai/cmmclens
 - Knowledge Hub: https://defenseeye.ai/knowledge-hub
 - LinkedIn: https://www.linkedin.com/company/defenseeye
-- NAICS Codes: 541512, 541519
+- WA State UBI: 605-582-526
+- CAGE: 9ZDL5
+- UEI: E4DYPCKN7YN8
+- DUNS: 119330734
+- NAICS Codes: 541512, 541519, 541690, 561621
 - SAM Registered: Yes
 - NMSDC Certified Minority Business Enterprise: Yes
+- OMWBE-MBE Certified: Yes
+- WA State SBE: Yes
+- CMMC Level 1 Certified: Yes
+- NIST 800-171 Level 2: In progress

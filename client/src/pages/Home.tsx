@@ -18,9 +18,16 @@ import { Button } from "@/components/ui/button";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import NavBar from "@/components/NavBar";
 import { useSeo } from "@/hooks/useSeo";
-
-const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
-const MARKETPLACE_URL = "https://marketplace.microsoft.com/en-us/search?search=CMMCLens";
+import {
+  CALENDLY_URL,
+  CAPABILITY_STATEMENT_PDF_URL,
+  CERTIFICATIONS,
+  COMPANY,
+  FOUNDATIONAL_EXPERIENCE,
+  MARKETPLACE_URL,
+  SUPPLIER_IDENTIFIERS,
+} from "@/data/companyFacts";
+import { getStoredAttribution, trackConversion } from "@/lib/tracking";
 
 function Section({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
   const ref = useRef<HTMLElement>(null);
@@ -49,6 +56,8 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
     email: "",
     company: "",
     title: "",
+    phone: "",
+    inquiryType: "",
     need: "",
     timeline: "",
     message: "",
@@ -65,9 +74,10 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, attribution: getStoredAttribution() }),
       });
       if (!res.ok) throw new Error("Server error");
+      trackConversion("contact_form_submission", { form: "home_lead_modal", inquiryType: form.inquiryType || form.need });
       setSubmitted(true);
     } catch {
       setSubmitError("Something went wrong. Please try again or email us directly.");
@@ -143,10 +153,31 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
                     <input required name="title" value={form.title} onChange={handleChange} className={inputCls} />
                   </div>
                   <div>
-                    <label className={labelCls}>Primary Need *</label>
-                    <select required name="need" value={form.need} onChange={handleChange} className={inputCls}>
-                      <option value="">Select need...</option>
+                    <label className={labelCls}>Optional Phone</label>
+                    <input name="phone" value={form.phone} onChange={handleChange} className={inputCls} />
+                  </div>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className={labelCls}>Inquiry Type *</label>
+                    <select required name="inquiryType" value={form.inquiryType} onChange={handleChange} className={inputCls}>
+                      <option value="">Select inquiry...</option>
+                      <option>Supplier / procurement inquiry</option>
                       <option>AI governance or responsible AI</option>
+                      <option>Microsoft Copilot readiness</option>
+                      <option>CMMC readiness</option>
+                      <option>Compliance automation</option>
+                      <option>Cloud security</option>
+                      <option>Staff augmentation</option>
+                      <option>Subcontracting</option>
+                      <option>CMMCLens demo</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className={labelCls}>Primary Need</label>
+                    <select name="need" value={form.need} onChange={handleChange} className={inputCls}>
+                      <option value="">Select need...</option>
                       <option>AI security or Security Copilot readiness</option>
                       <option>Cybersecurity and compliance automation</option>
                       <option>Federal cybersecurity, RMF, FedRAMP, or CMMC</option>
@@ -172,7 +203,7 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
                 </div>
                 {submitError && <p className="text-sm text-destructive">{submitError}</p>}
                 <div className="flex items-center justify-between pt-1">
-                  <p className="text-xs text-muted-foreground">No commitment. Practical next steps.</p>
+                  <p className="text-xs text-muted-foreground">No commitment. We use your information to respond to this inquiry.</p>
                   <Button type="submit" disabled={submitting} className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 disabled:opacity-60">
                     {submitting ? "Sending..." : "Discuss Supplier Opportunities"}
                   </Button>
@@ -256,23 +287,27 @@ const servicePortfolio = [
 const executiveSummary = [
   {
     title: "What We Do",
-    text: "DefenseEye helps organizations adopt AI securely, govern AI responsibly, enable enterprise AI, strengthen cybersecurity, automate compliance work, and improve readiness.",
+    text: "DefenseEye helps organizations adopt AI securely, govern AI responsibly, strengthen cybersecurity, automate compliance activities, and improve operational readiness.",
   },
   {
     title: "Who We Help",
-    text: "Microsoft and Google supplier teams, system integrators, federal contractors, regulated industries, and enterprise leaders operating in modern cloud environments.",
+    text: "Government agencies, defense contractors, regulated enterprises, prime contractors, technology companies, and enterprise teams operating in Microsoft-centered environments.",
+  },
+  {
+    title: "How We Deliver",
+    text: "DefenseEye supports advisory consulting, project delivery, staff augmentation, specialized subcontracting, platform-enabled consulting, and compliance automation.",
   },
   {
     title: "Why DefenseEye",
-    text: "Supplier-ready organizational capability across cybersecurity, federal compliance, cloud security, AI governance, privacy, regulatory response, and automation.",
+    text: "Cybersecurity, federal compliance, Microsoft cloud, AI governance, privacy, regulatory response, and compliance automation experience with supplier-ready credentials.",
   },
 ];
 
 const outcomes = [
   {
     icon: Sparkles,
-    title: "Accelerate AI Adoption",
-    text: "Identify, prioritize, and implement practical AI use cases aligned to business objectives and governance requirements.",
+    title: "Accelerate Secure AI Adoption",
+    text: "Identify, prioritize, and implement practical AI use cases aligned to business objectives, security controls, and governance requirements.",
   },
   {
     icon: Bot,
@@ -280,9 +315,14 @@ const outcomes = [
     text: "Establish responsible AI controls, oversight models, human accountability, explainability, and risk management practices.",
   },
   {
+    icon: Sparkles,
+    title: "Enable Microsoft Copilot Responsibly",
+    text: "Prepare Microsoft 365, identity, data, privacy, and governance controls before Copilot or generative AI expansion.",
+  },
+  {
     icon: FileCheck,
     title: "Reduce Manual Compliance Effort",
-    text: "Automate evidence collection, documentation preparation, control mapping, and readiness workflows.",
+    text: "Automate evidence collection, documentation preparation, control mapping, SSP/POA&M workflows, and readiness reporting.",
   },
   {
     icon: ShieldCheck,
@@ -297,8 +337,15 @@ const outcomes = [
   {
     icon: Award,
     title: "Support Audit and Supplier Readiness",
-    text: "Help organizations prepare for enterprise procurement, regulated customer expectations, and third-party assurance reviews.",
+    text: "Help organizations prepare for enterprise procurement, regulated customer expectations, third-party reviews, CMMC assessments, and federal compliance obligations.",
   },
+];
+
+const engagementOptions = [
+  ["Advisory Consulting", "AI governance, cybersecurity, compliance, and cloud security advisory for executives, program leaders, and regulated teams."],
+  ["Project Delivery", "Defined-scope engagements such as AI governance assessments, Copilot readiness reviews, Azure security assessments, CMMC readiness sprints, and compliance automation implementations."],
+  ["Staff Augmentation", "Specialized consultants for AI governance, cybersecurity, cloud security, compliance automation, Microsoft security, and CMMC/NIST programs."],
+  ["Specialized Subcontracting", "Support for prime contractors, system integrators, and enterprise suppliers needing minority-owned AI, cybersecurity, and compliance expertise."],
 ];
 
 const whoWeHelp = [
@@ -311,23 +358,16 @@ const whoWeHelp = [
 ];
 
 const supplierReadiness = [
-  "Minority-owned business positioning and NMSDC Certified Minority Business Enterprise status",
+  "OMWBE-MBE Certified, NMSDC-MBE Certified, and WA State SBE",
+  "CAGE: 9ZDL5 · UEI: E4DYPCKN7YN8 · DUNS: 119330734",
+  "WA State UBI: 605-582-526 · NAICS: 541512, 541519, 541690, 561621",
+  "CMMC Level 1 Certified; NIST 800-171 Level 2 in progress",
   "Azure Marketplace presence through CMMCLens",
   "Available for project-based consulting, advisory, implementation, subcontracting, and staff augmentation",
   "Security, governance, and compliance-centered delivery approach for regulated and federal contractor environments",
-  "CMMC Registered Practitioner / Certified Professional experience where applicable",
-  "OMWBE MBE certification where applicable",
-  // TODO: Add UEI, CAGE code, insurance coverage, supplier onboarding document links, security documentation, certification files, and past performance references when available.
 ];
 
-const foundationalExperience = [
-  "Enterprise data and AI transformation experience",
-  "Microsoft Azure and Microsoft 365 engineering background",
-  "Federal cybersecurity and FedRAMP ATO program familiarity",
-  "NIST SP 800-171, CMMC, FedRAMP, and ISO 42001 readiness familiarity",
-  "Azure, Databricks, Microsoft Security, and cloud-native architecture experience",
-  "Experience reducing vulnerabilities, improving governance, and modernizing data and cloud platforms",
-];
+const foundationalExperience = FOUNDATIONAL_EXPERIENCE;
 
 const deliveryModel = [
   ["Discover", "Understand business goals, regulatory requirements, AI use cases, cloud environment, and current risk posture."],
@@ -459,6 +499,33 @@ export default function Home() {
           "Audit readiness",
         ],
         sameAs: ["https://www.linkedin.com/company/defenseeye"],
+        email: COMPANY.email,
+        telephone: COMPANY.phone,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "9921 187th Ct NE",
+          addressLocality: "Redmond",
+          addressRegion: "WA",
+          postalCode: "98052",
+          addressCountry: "US",
+        },
+        identifier: SUPPLIER_IDENTIFIERS.map(([name, value]) => ({ "@type": "PropertyValue", name, value })),
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        name: "DefenseEye",
+        url: "https://defenseeye.ai",
+        email: COMPANY.email,
+        telephone: COMPANY.phone,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "9921 187th Ct NE",
+          addressLocality: "Redmond",
+          addressRegion: "WA",
+          postalCode: "98052",
+          addressCountry: "US",
+        },
       },
       {
         "@context": "https://schema.org",
@@ -572,12 +639,17 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4">
-              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" onClick={() => trackConversion("consultation_booking_click", { location: "home_hero" })}>
                 <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-10 h-12 w-full sm:w-auto">
                   Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </a>
-              <a href="/cmmclens" className="w-full sm:w-auto">
+              <a href={CAPABILITY_STATEMENT_PDF_URL} className="w-full sm:w-auto" onClick={() => trackConversion("capability_statement_download", { location: "home_hero" })}>
+                <Button variant="outline" size="lg" className="border-primary/40 text-primary hover:bg-primary/10 text-base px-10 h-12 w-full sm:w-auto">
+                  Request Capability Statement
+                </Button>
+              </a>
+              <a href="/cmmclens" className="w-full sm:w-auto" onClick={() => trackConversion("cmmclens_click", { location: "home_hero" })}>
                 <Button variant="outline" size="lg" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 text-base px-10 h-12 w-full sm:w-auto">
                   Explore CMMCLens
                 </Button>
@@ -624,7 +696,7 @@ export default function Home() {
 
       <Section className="py-12 px-4 section-light">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             {executiveSummary.map((item) => (
               <div key={item.title} className="bg-card border border-border/50 rounded-sm p-6">
                 <CheckCircle2 className="w-5 h-5 text-primary mb-3" />
@@ -675,6 +747,29 @@ export default function Home() {
                 <item.icon className="w-5 h-5 text-primary mb-3" />
                 <h3 className="font-heading font-semibold text-sm text-foreground mb-2">{item.title}</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      <Section className="py-16 px-4 section-light">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">How Enterprise Organizations Can Engage DefenseEye</p>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground mb-3">
+              Flexible engagement models for procurement, delivery, and subcontracting needs
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              DefenseEye is structured to support supplier onboarding, capability review, subcontracting discussions, and enterprise procurement evaluation.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {engagementOptions.map(([title, text]) => (
+              <div key={title} className="bg-card/50 border border-border/40 rounded-sm p-5">
+                <Award className="w-5 h-5 text-primary mb-3" />
+                <h3 className="font-heading font-semibold text-foreground mb-2">{title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{text}</p>
               </div>
             ))}
           </div>
@@ -732,6 +827,11 @@ export default function Home() {
             <a href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary font-semibold hover:underline mt-5">
               View the CMMCLens Azure Marketplace listing <ArrowRight className="w-4 h-4" />
             </a>
+            <div className="mt-4">
+              <a href="/microsoft-ecosystem" className="inline-flex items-center gap-2 text-primary font-semibold hover:underline">
+                View Microsoft ecosystem details <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
           </div>
           <div className="lg:col-span-7 grid sm:grid-cols-2 gap-4">
             {[
@@ -878,9 +978,10 @@ export default function Home() {
             <p className="text-muted-foreground leading-relaxed mb-5">
               DefenseEye is positioned to support supplier, subcontractor, advisory, implementation, and staff augmentation models for enterprise and regulated environments.
             </p>
-            <p className="text-xs text-muted-foreground/70 leading-relaxed">
-              NAICS: 541512, 541519. Additional supplier fields are maintained as internal readiness items and should be published as they become available.
-            </p>
+            <div className="flex flex-col gap-3 mt-5">
+              <a href="/supplier-readiness" className="text-sm font-semibold text-primary hover:underline">View supplier readiness details</a>
+              <a href="/capability-statement" className="text-sm font-semibold text-primary hover:underline">View capability statement</a>
+            </div>
           </div>
           <div className="lg:col-span-8 grid sm:grid-cols-2 gap-4">
             {supplierReadiness.map((item) => (
@@ -969,6 +1070,41 @@ export default function Home() {
             ))}
           </div>
 
+          <div className="grid lg:grid-cols-2 gap-5 mb-16">
+            <div className="bg-card/50 border border-border/40 rounded-sm p-6">
+              <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">AI Governance and CMMC Authority</p>
+              <h2 className="font-heading text-2xl font-bold text-foreground mb-4">
+                Practical guidance for AI governance and compliance readiness
+              </h2>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                DefenseEye connects NIST AI RMF, ISO 42001 readiness, responsible AI, human accountability, Copilot governance, AI security, CMMC, NIST SP 800-171, FedRAMP, RMF, evidence automation, and SSP/POA&M support.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {["NIST AI RMF", "ISO 42001 readiness", "CMMC", "NIST SP 800-171", "FedRAMP", "Microsoft Copilot"].map((item) => (
+                  <span key={item} className="text-xs px-3 py-1.5 rounded-full border border-border/50 bg-background/40 text-muted-foreground">{item}</span>
+                ))}
+              </div>
+            </div>
+            <div className="bg-card/50 border border-border/40 rounded-sm p-6">
+              <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">DefenseEye Advisor</p>
+              <h2 className="font-heading text-2xl font-bold text-foreground mb-4">
+                One collapsed advisor for practical readiness questions
+              </h2>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                DefenseEye Advisor stays collapsed until selected and supports secure AI adoption, AI governance, Copilot readiness, Azure security, compliance automation, CMMC, NIST 800-171, and supplier/subcontracting inquiries.
+              </p>
+              <button
+                className="inline-flex items-center text-sm font-semibold text-primary hover:underline"
+                onClick={() => {
+                  trackConversion("defenseeye_advisor_opened", { location: "home_section" });
+                  window.dispatchEvent(new CustomEvent("defenseeye:open-advisor"));
+                }}
+              >
+                Open DefenseEye Advisor <ArrowRight className="w-4 h-4 ml-1" />
+              </button>
+            </div>
+          </div>
+
           <div className="text-center mb-10">
             <p className="text-xs font-medium text-accent uppercase tracking-widest mb-3">Plain-English Guides</p>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold text-foreground mb-3">
@@ -1010,17 +1146,17 @@ export default function Home() {
             Available for advisory, implementation, subcontracting, staff augmentation, platform-enabled consulting, and compliance automation support.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto" onClick={() => trackConversion("consultation_booking_click", { location: "home_final_cta" })}>
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-12 h-12 w-full sm:w-auto">
                 Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </a>
-            <a href="/contact" className="w-full sm:w-auto">
+            <a href="/capability-statement" className="w-full sm:w-auto">
               <Button variant="outline" size="lg" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 text-base px-10 h-12 w-full sm:w-auto">
                 Request Capability Statement
               </Button>
             </a>
-            <a href="/cmmclens" className="w-full sm:w-auto">
+            <a href="/cmmclens" className="w-full sm:w-auto" onClick={() => trackConversion("cmmclens_click", { location: "home_final_cta" })}>
               <Button variant="outline" size="lg" className="border-primary/40 text-primary hover:bg-primary/10 text-base px-10 h-12 w-full sm:w-auto">
                 Explore CMMCLens
               </Button>
@@ -1064,7 +1200,10 @@ export default function Home() {
               <ul className="space-y-2.5">
                 {[
                   { label: "Why DefenseEye", href: "/why-defenseeye" },
-                  { label: "Representative Engagements", href: "/case-studies" },
+                  { label: "Supplier Readiness", href: "/supplier-readiness" },
+                  { label: "Capability Statement", href: "/capability-statement" },
+                  { label: "Delivery Model", href: "/delivery-model" },
+                  { label: "Representative Engagements", href: "/representative-engagements" },
                   { label: "Pricing", href: "/pricing" },
                   { label: "Contact Us", href: "/contact" },
                   { label: "Support", href: "/support" },

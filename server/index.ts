@@ -203,32 +203,51 @@ async function startServer() {
 
   // ─── Contact / Demo Request form ─────────────────────────────────────────────
   app.post("/api/contact", rateLimit, async (req, res) => {
-    const { firstName, lastName, email, company, title, companySize, cmmcLevel, challenge, timeline, message } = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      company,
+      title,
+      phone,
+      inquiryType,
+      need,
+      companySize,
+      cmmcLevel,
+      challenge,
+      timeline,
+      message,
+      attribution,
+    } = req.body;
 
     if (!email || !firstName || !company) {
       return res.status(400).json({ error: "firstName, email, and company are required." });
     }
 
     const fullName = `${firstName} ${lastName}`.trim();
-    const subject = `New CMMC Demo Request — ${company}${cmmcLevel ? ` (${cmmcLevel})` : ""}`;
+    const subject = `New DefenseEye Inquiry — ${company}${inquiryType ? ` (${inquiryType})` : ""}`;
 
     const htmlBody = `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A1628;color:#e8eaf0;padding:32px;border-radius:8px;">
         <div style="text-align:center;margin-bottom:28px;">
-          <h1 style="color:#00D4FF;font-size:22px;margin:0;">New Demo Request — DefenseEye.ai</h1>
+          <h1 style="color:#00D4FF;font-size:22px;margin:0;">New DefenseEye Inquiry</h1>
           <p style="color:#9ca3af;font-size:14px;margin:6px 0 0;">Submitted via defenseeye.ai contact form</p>
         </div>
         <table style="width:100%;border-collapse:collapse;font-size:14px;">
           ${[
             ["Name", fullName],
             ["Work Email", email],
+            ["Phone", phone || "—"],
             ["Company", company],
             ["Role", title || "—"],
+            ["Inquiry Type", inquiryType || "—"],
+            ["Primary Need", need || "—"],
             ["Company Size", companySize || "—"],
             ["Target CMMC Level", cmmcLevel || "—"],
             ["Compliance Timeline", timeline || "—"],
             ["Biggest Challenge", challenge || "—"],
             ["Additional Context", message || "—"],
+            ["Attribution", attribution ? JSON.stringify(attribution) : "—"],
           ]
             .map(
               ([label, value]) => `
@@ -256,7 +275,7 @@ async function startServer() {
         <div style="background:#131f35;border:1px solid #1e3a5f;border-radius:6px;padding:20px;margin:24px 0;">
           <p style="margin:0 0 8px;font-size:13px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Your submission summary</p>
           <p style="margin:4px 0;color:#e8eaf0;"><strong>Company:</strong> ${company}</p>
-          <p style="margin:4px 0;color:#e8eaf0;"><strong>Target Level:</strong> ${cmmcLevel || "TBD"}</p>
+          <p style="margin:4px 0;color:#e8eaf0;"><strong>Inquiry Type:</strong> ${inquiryType || need || "TBD"}</p>
           <p style="margin:4px 0;color:#e8eaf0;"><strong>Timeline:</strong> ${timeline || "TBD"}</p>
         </div>
         <p style="color:#9ca3af;font-size:13px;">
@@ -308,7 +327,7 @@ async function startServer() {
     }
 
     // Always log the lead server-side regardless of email status
-    console.log(`[lead] ${new Date().toISOString()} | ${fullName} | ${email} | ${company} | ${cmmcLevel} | ${challenge}`);
+    console.log(`[lead] ${new Date().toISOString()} | ${fullName} | ${email} | ${company} | ${inquiryType || need || cmmcLevel || "general"} | ${challenge || message || ""}`);
 
     res.json({ success: true });
   });
@@ -331,9 +350,25 @@ async function startServer() {
       title: "CMMC Blog for Defense Contractors | DefenseEye.ai",
       description: "Practical CMMC guides for defense contractors: NIST 800-171, SPRS improvement, C3PAO assessment prep, and CMMC Level 2 readiness.",
     },
-    "/case-studies": {
+      "/representative-engagements": {
       title: "Representative Engagements for AI, Cybersecurity, and Compliance | DefenseEye.ai",
-      description: "Representative engagement types DefenseEye is positioned to support, including AI governance, Copilot readiness, Azure security, compliance automation, CMMC readiness, and advisory support.",
+      description: "Examples of engagement types DefenseEye is positioned to support. These are representative scenarios, not completed customer case studies.",
+    },
+    "/supplier-readiness": {
+      title: "Supplier Readiness | Minority-Owned AI and Cybersecurity Supplier | DefenseEye",
+      description: "DefenseEye supplier readiness page with CAGE, UEI, DUNS, NAICS, OMWBE-MBE, NMSDC-MBE, WA State SBE, CMMC Level 1, AI governance, cybersecurity, cloud security, and compliance automation capabilities.",
+    },
+    "/capability-statement": {
+      title: "DefenseEye Capability Statement | AI, Cybersecurity, and Compliance Automation",
+      description: "DefenseEye capability statement with company overview, core competencies, supplier identifiers, certifications, engagement models, and contact information.",
+    },
+    "/delivery-model": {
+      title: "Delivery Model | DefenseEye",
+      description: "How DefenseEye structures advisory, implementation, staff augmentation, subcontracting, and CMMCLens-enabled automation engagements.",
+    },
+    "/microsoft-ecosystem": {
+      title: "Microsoft Ecosystem Experience | DefenseEye",
+      description: "DefenseEye capabilities for Azure, Azure Government, GCC High, Microsoft 365, Copilot, Entra, Defender, Sentinel, Purview, Azure OpenAI, and CMMCLens Marketplace presence.",
     },
     "/knowledge-hub": {
       title: "CMMC Knowledge Hub | DefenseEye",
@@ -379,6 +414,26 @@ async function startServer() {
       title: "CMMC Readiness Sprint | DefenseEye.ai",
       description: "Fixed-price CMMC Readiness Sprint in 2-4 weeks with gap assessment, NIST 800-171 mapping, SSP starter, POA&M, and roadmap.",
     },
+    "/cmmc": {
+      title: "CMMC Readiness, Evidence Automation, and Advisory Support | DefenseEye",
+      description: "CMMC readiness planning, NIST SP 800-171 alignment, SSP and POA&M support, evidence automation, and CMMCLens-enabled readiness workflows.",
+    },
+    "/cmmc-level-2-readiness": {
+      title: "CMMC Level 2 Readiness Consulting and Automation | DefenseEye",
+      description: "CMMC Level 2 readiness support for CUI scope, NIST SP 800-171 gaps, SSP, POA&M, evidence planning, SPRS, and assessment readiness.",
+    },
+    "/cmmc-readiness-sprint": {
+      title: "CMMC Readiness Sprint | DefenseEye",
+      description: "Focused CMMC readiness sprint for gap assessment, SSP and POA&M review, evidence planning, and prioritized remediation.",
+    },
+    "/cmmc-evidence-automation": {
+      title: "CMMC Evidence Automation | DefenseEye",
+      description: "CMMC evidence automation with CMMCLens, control mapping, traceability, readiness dashboards, and documentation workflows.",
+    },
+    "/nist-800-171": {
+      title: "NIST SP 800-171 Readiness and Compliance Automation | DefenseEye",
+      description: "NIST SP 800-171 readiness support for control review, evidence planning, SSP support, POA&M support, SPRS, and compliance automation.",
+    },
     "/cmmc-readiness-sprint-guide": {
       title: "4-Week CMMC Readiness Sprint Guide | DefenseEye.ai",
       description: "A practical 4-week CMMC readiness guide for defense contractors: scope quickly, fix high-risk gaps, and prepare for C3PAO assessment.",
@@ -414,6 +469,38 @@ async function startServer() {
     "/solutions/cmmclens-platform": {
       title: "CMMCLens Platform | Compliance Evidence Automation | DefenseEye",
       description: "CMMCLens is DefenseEye's flagship compliance automation platform for evidence collection, gap identification, continuous readiness, AI-assisted SSP and policy generation, and executive visibility.",
+    },
+    "/lp/ai-governance-consulting": {
+      title: "AI Governance Consulting for Regulated Organizations | DefenseEye",
+      description: "AI governance consulting for NIST AI RMF, ISO 42001 readiness, responsible AI, human accountability, policy, oversight, and AI risk management.",
+    },
+    "/lp/microsoft-copilot-readiness": {
+      title: "Microsoft Copilot Readiness Assessment | DefenseEye",
+      description: "Microsoft Copilot readiness assessment for Microsoft 365, identity, data governance, privacy, security controls, and adoption guardrails.",
+    },
+    "/lp/cmmc-level-2-readiness": {
+      title: "CMMC Level 2 Readiness Consulting | DefenseEye",
+      description: "CMMC Level 2 readiness consulting for CUI scope, NIST SP 800-171 gaps, SSP, POA&M, evidence planning, SPRS, and assessment readiness.",
+    },
+    "/lp/cmmc-evidence-automation": {
+      title: "CMMC Evidence Automation with CMMCLens | DefenseEye",
+      description: "CMMC evidence automation and compliance traceability with CMMCLens, control mapping, readiness dashboards, and documentation workflows.",
+    },
+    "/lp/microsoft-supplier-ai-consulting": {
+      title: "Minority-Owned AI Governance and Cybersecurity Supplier | DefenseEye",
+      description: "Supplier-ready AI, cybersecurity, cloud security, Microsoft Copilot, and compliance automation support for Microsoft-centered environments.",
+    },
+    "/lp/azure-cloud-security": {
+      title: "Azure Cloud Security and Compliance Review | DefenseEye",
+      description: "Azure cloud security support for Azure, Azure Government, GCC High, Entra, Defender, Sentinel, Purview, and compliance alignment.",
+    },
+    "/lp/iso-42001-readiness": {
+      title: "ISO 42001 Readiness Consulting | DefenseEye",
+      description: "ISO 42001 readiness consulting for AI inventory, AI policy, oversight, risk review, human accountability, lifecycle controls, and governance evidence.",
+    },
+    "/lp/compliance-automation": {
+      title: "Compliance Automation for Evidence and Readiness Reporting | DefenseEye",
+      description: "Compliance automation for evidence collection, control mapping, documentation support, readiness workflows, and audit preparedness.",
     },
     "/insights/what-is-cmmc-level-2": {
       title: "What is CMMC Level 2? | DefenseEye",

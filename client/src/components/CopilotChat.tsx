@@ -4,6 +4,7 @@ import { Bot, ExternalLink, Loader2, Send, ShieldCheck, Sparkles, User } from "l
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { trackConversion } from "@/lib/tracking";
 
 type Role = "user" | "assistant";
 
@@ -32,7 +33,7 @@ const SUGGESTED_PROMPTS: Array<{ label: string; href?: string }> = [
   { label: "CMMC / NIST SP 800-171" },
   { label: "Azure / Microsoft Cloud Security" },
   { label: "Compliance Automation" },
-  { label: "Supplier Readiness" },
+  { label: "Supplier / Subcontracting Inquiry" },
 ];
 
 function newId() {
@@ -258,7 +259,10 @@ export function CopilotChat({ compact = false }: { compact?: boolean }) {
                 <button
                   key={prompt.label}
                   type="button"
-                  onClick={() => sendMessage(prompt.label)}
+                  onClick={() => {
+                    trackConversion("chatbot_topic_selected", { topic: prompt.label });
+                    sendMessage(prompt.label);
+                  }}
                   className="rounded-sm border border-border/50 px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
                 >
                   {prompt.label}

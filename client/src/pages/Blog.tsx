@@ -511,7 +511,7 @@ export default function Blog() {
             <Link href="/knowledge-hub">
               <span className="hover:text-primary transition-colors cursor-pointer">Knowledge Hub</span>
             </Link>
-            <Link href="/case-studies">
+              <Link href="/representative-engagements">
               <span className="hover:text-primary transition-colors cursor-pointer">Representative Engagements</span>
             </Link>
             <Link href="/">

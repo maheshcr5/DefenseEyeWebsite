@@ -452,7 +452,7 @@ export default function KnowledgeHub() {
           <div className="flex items-center gap-4 text-xs text-muted-foreground">
             <Link href="/" className="hover:text-primary transition-colors">Home</Link>
             <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
-            <Link href="/case-studies" className="hover:text-primary transition-colors">Representative Engagements</Link>
+              <Link href="/representative-engagements" className="hover:text-primary transition-colors">Representative Engagements</Link>
           </div>
         </div>
       </footer>

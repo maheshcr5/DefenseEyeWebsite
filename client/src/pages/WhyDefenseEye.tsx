@@ -178,7 +178,7 @@ export default function WhyDefenseEye() {
             ))}
           </div>
           <div className="mt-10 text-center">
-            <a href="/case-studies">
+            <a href="/representative-engagements">
               <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 font-semibold px-8">
                 See Representative Engagements <ArrowRight className="w-4 h-4 ml-2" />
               </Button>

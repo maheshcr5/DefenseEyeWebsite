@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { useSeo } from "@/hooks/useSeo";
+import { CAPABILITY_STATEMENT_PDF_URL } from "@/data/companyFacts";
+import { trackConversion } from "@/lib/tracking";
 
 const SUPPORT_EMAIL = "support@defenseeye.ai";
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
@@ -32,7 +34,7 @@ export default function ContactUs() {
 
       {/* Contact options */}
       <section className="py-16 px-4 section-light">
-        <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-6">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-4 gap-6">
 
           {/* Supplier opportunities */}
           <div className="bg-card/50 border border-border/40 rounded-sm p-7 flex flex-col">
@@ -44,6 +46,19 @@ export default function ContactUs() {
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
                 Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </a>
+          </div>
+
+          <div className="bg-card/50 border border-border/40 rounded-sm p-7 flex flex-col">
+            <FileIcon />
+            <h2 className="font-heading text-xl font-bold mb-2">Capability Statement</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
+              Review DefenseEye's supplier capability statement for identifiers, certifications, engagement models, and core competencies.
+            </p>
+            <a href={CAPABILITY_STATEMENT_PDF_URL} onClick={() => trackConversion("capability_statement_download", { location: "contact_page" })}>
+              <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 font-semibold w-full">
+                Open
               </Button>
             </a>
           </div>
@@ -127,4 +142,8 @@ export default function ContactUs() {
       </footer>
     </div>
   );
+}
+
+function FileIcon() {
+  return <div className="w-7 h-7 text-primary mb-4 flex items-center justify-center border border-primary/40 rounded-sm text-xs font-bold">PDF</div>;
 }
