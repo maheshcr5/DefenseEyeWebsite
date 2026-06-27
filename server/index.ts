@@ -343,8 +343,40 @@ async function startServer() {
   // ─── Per-route meta for server-side injection (fixes duplicate meta / text ratio) ─
   const ROUTE_META: Record<string, { title: string; description: string }> = {
     "/": {
-      title: "DefenseEye.ai — AI Transformation, AI Governance, Cybersecurity, Risk, and Compliance Automation",
-      description: "DefenseEye helps government agencies, defense contractors, regulated industries, and enterprise teams adopt AI responsibly, improve governance, reduce operational risk, automate compliance work, and increase audit readiness.",
+      title: "DefenseEye | Secure AI Adoption and CMMC Compliance Automation",
+      description: "DefenseEye helps regulated organizations operationalize secure AI adoption and CMMC readiness through practitioner-led consulting, Microsoft cloud security expertise, and compliance automation.",
+    },
+    "/secure-ai-adoption": {
+      title: "Secure AI Adoption Consulting | DefenseEye AI Governance, Copilot Readiness, and AI Security",
+      description: "DefenseEye helps regulated organizations adopt AI securely through AI governance, Microsoft Copilot readiness, NIST AI RMF implementation, ISO 42001 readiness, AI security, and responsible AI operating models.",
+    },
+    "/cmmc-compliance-automation": {
+      title: "CMMC Compliance Automation | DefenseEye CCP-Led CMMC Readiness and CMMCLens",
+      description: "DefenseEye provides CCP-led CMMC Level 2 readiness, NIST SP 800-171 support, SSP/POA&M preparation, compliance evidence automation, and CMMCLens platform-enabled readiness workflows.",
+    },
+    "/datasheets": {
+      title: "DefenseEye Datasheets | AI Adoption, CMMC Automation, CMMCLens, Copilot, Supplier Readiness",
+      description: "Download concise DefenseEye datasheets for secure AI adoption, CMMC compliance automation, CMMCLens, Microsoft Copilot readiness, and supplier evaluation.",
+    },
+    "/datasheets/secure-ai-adoption": {
+      title: "Secure AI Adoption Datasheet | DefenseEye",
+      description: "One-page DefenseEye overview for secure AI adoption, AI governance, Microsoft Copilot readiness, NIST AI RMF, ISO 42001 readiness, and AI security.",
+    },
+    "/datasheets/cmmc-compliance-automation": {
+      title: "CMMC & Compliance Automation Datasheet | DefenseEye",
+      description: "One-page DefenseEye overview for CCP-led CMMC readiness, NIST SP 800-171 support, SSP/POA&M workflows, evidence automation, and CMMCLens.",
+    },
+    "/datasheets/cmmclens": {
+      title: "CMMCLens Product Sheet | DefenseEye",
+      description: "CMMCLens product sheet for CMMC and NIST SP 800-171 readiness, evidence automation, control mapping, gap tracking, SSP/POA&M workflows, and dashboards.",
+    },
+    "/datasheets/microsoft-copilot-readiness": {
+      title: "Microsoft Copilot Readiness Datasheet | DefenseEye",
+      description: "One-page DefenseEye overview for Microsoft Copilot readiness across Microsoft 365, identity, data governance, privacy, security, and adoption controls.",
+    },
+    "/datasheets/supplier-readiness": {
+      title: "DefenseEye Supplier Readiness Datasheet",
+      description: "DefenseEye supplier readiness overview with Redmond, WA location, minority-owned certifications, CAGE, UEI, NAICS, CMMC credentials, and engagement models.",
     },
     "/blog": {
       title: "CMMC Blog for Defense Contractors | DefenseEye.ai",
@@ -405,6 +437,18 @@ async function startServer() {
     "/contact": {
       title: "Contact DefenseEye | AI Governance, Cybersecurity, Supplier, and Compliance Inquiries",
       description: "Contact DefenseEye for supplier opportunities, partnerships, subcontracting, AI governance consulting, Microsoft Copilot readiness, CMMC readiness, cloud security, compliance automation, and CMMCLens inquiries.",
+    },
+    "/support": {
+      title: "Support | DefenseEye",
+      description: "Get CMMCLens product support, marketplace support, billing support, customer issue reporting, and advisory service follow-up from DefenseEye.",
+    },
+    "/privacy-policy": {
+      title: "Privacy Policy | DefenseEye",
+      description: "DefenseEye Privacy Policy for DefenseEye.ai, CMMCLens, customer data, privacy requests, and service communications.",
+    },
+    "/terms": {
+      title: "Terms of Service | DefenseEye",
+      description: "DefenseEye Terms of Service for the DefenseEye website, CMMCLens platform, support, and advisory services.",
     },
     "/services": {
       title: "CMMC Readiness Sprint | DefenseEye.ai",
@@ -478,6 +522,10 @@ async function startServer() {
       title: "AI Governance Consulting for Regulated Organizations | DefenseEye",
       description: "AI governance consulting for NIST AI RMF, ISO 42001 readiness, responsible AI, human accountability, policy, oversight, and AI risk management.",
     },
+    "/lp/secure-ai-adoption": {
+      title: "Secure AI Adoption Consulting for Regulated Teams | DefenseEye",
+      description: "Secure AI adoption consulting for AI governance, Microsoft Copilot readiness, data protection, NIST AI RMF alignment, and operational oversight workflows.",
+    },
     "/lp/microsoft-copilot-readiness": {
       title: "Microsoft Copilot Readiness Assessment | DefenseEye",
       description: "Microsoft Copilot readiness assessment for Microsoft 365, identity, data governance, privacy, security controls, and adoption guardrails.",
@@ -486,9 +534,17 @@ async function startServer() {
       title: "CMMC Level 2 Readiness Consulting | DefenseEye",
       description: "CMMC Level 2 readiness consulting for CUI scope, NIST SP 800-171 gaps, SSP, POA&M, evidence planning, SPRS, and assessment readiness.",
     },
+    "/lp/cmmc-compliance-automation": {
+      title: "CMMC Compliance Automation for Evidence and Readiness | DefenseEye",
+      description: "CCP-led CMMC readiness and CMMCLens automation for NIST SP 800-171 evidence, SSP/POA&M workflows, remediation tracking, and dashboards.",
+    },
     "/lp/cmmc-evidence-automation": {
       title: "CMMC Evidence Automation with CMMCLens | DefenseEye",
       description: "CMMC evidence automation and compliance traceability with CMMCLens, control mapping, readiness dashboards, and documentation workflows.",
+    },
+    "/lp/cmmclens-demo": {
+      title: "CMMCLens Demo for CMMC Evidence Automation | DefenseEye",
+      description: "Request a CMMCLens demo for CMMC and NIST SP 800-171 evidence automation, control mapping, gap tracking, SSP/POA&M workflows, and dashboards.",
     },
     "/lp/microsoft-supplier-ai-consulting": {
       title: "Minority-Owned AI Governance and Cybersecurity Supplier | DefenseEye",
@@ -632,6 +688,14 @@ async function startServer() {
       html = html.replace(
         /<meta property="og:url" content="[^"]*"/,
         `<meta property="og:url" content="${canonical}"`
+      );
+      html = html.replace(
+        /<meta name="twitter:title" content="[^"]*"/,
+        `<meta name="twitter:title" content="${routeMeta.title.replace(/"/g, "&quot;")}"`
+      );
+      html = html.replace(
+        /<meta name="twitter:description" content="[^"]*"/,
+        `<meta name="twitter:description" content="${routeMeta.description.replace(/"/g, "&quot;")}"`
       );
       if (isNotFound) {
         html = html.replace(

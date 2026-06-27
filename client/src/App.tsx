@@ -35,6 +35,8 @@ const Support = lazy(() => import("./pages/Support"));
 const ThoughtLeadership = lazy(() => import("./pages/ThoughtLeadership"));
 const SolutionPage = lazy(() => import("./pages/SolutionPage"));
 const SupplierReadiness = lazy(() => import("./pages/SupplierReadiness"));
+const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
+const Datasheets = lazy(() => import("./pages/Datasheets"));
 const CapabilityStatement = lazy(() => import("./pages/CapabilityStatement"));
 const DeliveryModel = lazy(() => import("./pages/DeliveryModel"));
 const RepresentativeEngagements = lazy(() => import("./pages/RepresentativeEngagements"));
@@ -84,6 +86,14 @@ function Router() {
         <Route path="/contact" component={ContactUs} />
         <Route path="/support" component={Support} />
         <Route path="/supplier-readiness" component={SupplierReadiness} />
+        <Route path="/secure-ai-adoption" component={PortfolioPage} />
+        <Route path="/cmmc-compliance-automation" component={PortfolioPage} />
+        <Route path="/datasheets" component={Datasheets} />
+        <Route path="/datasheets/secure-ai-adoption" component={Datasheets} />
+        <Route path="/datasheets/cmmc-compliance-automation" component={Datasheets} />
+        <Route path="/datasheets/cmmclens" component={Datasheets} />
+        <Route path="/datasheets/microsoft-copilot-readiness" component={Datasheets} />
+        <Route path="/datasheets/supplier-readiness" component={Datasheets} />
         <Route path="/capability-statement" component={CapabilityStatement} />
         <Route path="/delivery-model" component={DeliveryModel} />
         <Route path="/representative-engagements" component={RepresentativeEngagements} />
@@ -103,9 +113,12 @@ function Router() {
         <Route path="/cmmc-evidence-automation" component={CMMCArchitecturePage} />
         <Route path="/nist-800-171" component={CMMCArchitecturePage} />
         <Route path="/lp/ai-governance-consulting" component={LandingPage} />
+        <Route path="/lp/secure-ai-adoption" component={LandingPage} />
         <Route path="/lp/microsoft-copilot-readiness" component={LandingPage} />
+        <Route path="/lp/cmmc-compliance-automation" component={LandingPage} />
         <Route path="/lp/cmmc-level-2-readiness" component={LandingPage} />
         <Route path="/lp/cmmc-evidence-automation" component={LandingPage} />
+        <Route path="/lp/cmmclens-demo" component={LandingPage} />
         <Route path="/lp/microsoft-supplier-ai-consulting" component={LandingPage} />
         <Route path="/lp/azure-cloud-security" component={LandingPage} />
         <Route path="/lp/iso-42001-readiness" component={LandingPage} />
@@ -139,6 +152,10 @@ function RouteAnalytics() {
 
   useEffect(() => {
     if (location === "/supplier-readiness") trackConversion("supplier_readiness_view");
+    if (location === "/capability-statement") trackConversion("capability_statement_view");
+    if (location.startsWith("/datasheets")) trackConversion("datasheet_view", { location });
+    if (location === "/datasheets/cmmclens") trackConversion("cmmclens_product_sheet_view", { location });
+    if (location === "/datasheets/supplier-readiness") trackConversion("supplier_datasheet_view", { location });
     if (location.includes("microsoft") || location === "/microsoft-ecosystem") trackConversion("microsoft_ecosystem_view", { location });
     if (location.includes("cmmc")) trackConversion("cmmc_readiness_view", { location });
     if (location === "/solutions/ai-governance" || location === "/lp/ai-governance-consulting") trackConversion("ai_governance_view", { location });

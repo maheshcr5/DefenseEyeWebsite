@@ -27,12 +27,12 @@ interface Citation {
 const PREVIEW_LENGTH = 760;
 
 const SUGGESTED_PROMPTS: Array<{ label: string; href?: string }> = [
+  { label: "Microsoft Copilot Readiness" },
   { label: "Secure AI Adoption" },
   { label: "AI Governance / ISO 42001" },
-  { label: "Microsoft Copilot Readiness" },
-  { label: "CMMC / NIST SP 800-171" },
-  { label: "Azure / Microsoft Cloud Security" },
-  { label: "Compliance Automation" },
+  { label: "CMMC Level 2 Readiness" },
+  { label: "Compliance Evidence Automation" },
+  { label: "CMMCLens Demo" },
   { label: "Supplier / Subcontracting Inquiry" },
 ];
 
@@ -55,7 +55,7 @@ export function CopilotChat({ compact = false }: { compact?: boolean }) {
         id: newId(),
         role: "assistant",
         content:
-          "What is your primary focus today? Choose a topic below or ask about secure AI adoption, AI governance, Microsoft Copilot readiness, cloud security, compliance automation, CMMC / NIST SP 800-171, or supplier readiness.",
+          "What are you trying to improve? Choose a topic below or ask about secure AI adoption, Microsoft Copilot readiness, AI governance / ISO 42001, CMMC Level 2 readiness, compliance evidence automation, CMMCLens demos, or supplier inquiries.",
       },
     ];
   });
@@ -240,7 +240,7 @@ export function CopilotChat({ compact = false }: { compact?: boolean }) {
         <div className="border-t border-border/30 px-4 py-3">
           <div className="mb-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground">
             <Sparkles className="size-3.5 text-primary" />
-            What is your primary focus today?
+            What are you trying to improve?
           </div>
           <div className="flex flex-wrap gap-2">
             {SUGGESTED_PROMPTS.map((prompt) => (

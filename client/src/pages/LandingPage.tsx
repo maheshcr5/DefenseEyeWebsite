@@ -18,6 +18,15 @@ type LandingConfig = {
 };
 
 const configs: Record<string, LandingConfig> = {
+  "/lp/secure-ai-adoption": {
+    title: "Secure AI adoption consulting for regulated teams",
+    desc: "Move from AI experimentation to governed implementation with AI policy, NIST AI RMF alignment, Microsoft Copilot readiness, data protection, and oversight workflows.",
+    pains: ["AI pilots are moving faster than governance", "Sensitive data and permissions are not ready", "Executives need accountability and measurable readiness"],
+    helps: ["AI governance readiness assessment", "Secure adoption roadmap tied to controls", "Human oversight and AI risk workflow"],
+    outcomes: ["Reduced AI adoption risk", "Less rework", "Faster governed implementation"],
+    engagement: "Representative engagement: secure AI adoption readiness review with policy, control, risk, and implementation roadmap deliverables.",
+    cta: "Discuss Secure AI Adoption",
+  },
   "/lp/ai-governance-consulting": {
     title: "AI governance consulting for regulated organizations",
     desc: "Practical support for NIST AI RMF, ISO 42001 readiness, responsible AI, human accountability, policy, oversight, and AI risk management.",
@@ -45,6 +54,15 @@ const configs: Record<string, LandingConfig> = {
     engagement: "Representative engagement: CMMC Level 2 readiness sprint with findings, roadmap, evidence plan, and executive summary.",
     cta: "Assess CMMC Readiness",
   },
+  "/lp/cmmc-compliance-automation": {
+    title: "CMMC compliance automation for evidence and readiness workflows",
+    desc: "CCP-led readiness support and CMMCLens automation for NIST SP 800-171 evidence, SSP/POA&M workflows, remediation tracking, and readiness dashboards.",
+    pains: ["Evidence is scattered across tools and documents", "Remediation ownership is unclear", "Leaders need readiness visibility before customer or assessment pressure"],
+    helps: ["Control and evidence mapping", "CMMCLens implementation planning", "CCP-led readiness and remediation workflow support"],
+    outcomes: ["Reduced manual evidence burden", "Better traceability", "Clearer remediation priorities"],
+    engagement: "Representative engagement: CMMC compliance automation sprint with evidence workflow design, gap priorities, and CMMCLens onboarding plan.",
+    cta: "Explore CMMC Automation",
+  },
   "/lp/cmmc-evidence-automation": {
     title: "CMMC evidence automation with CMMCLens",
     desc: "Reduce manual evidence collection and improve traceability through CMMCLens and compliance workflow automation.",
@@ -53,6 +71,15 @@ const configs: Record<string, LandingConfig> = {
     outcomes: ["Reduced manual effort", "Improved traceability", "More consistent documentation"],
     engagement: "Representative engagement: compliance evidence automation implementation with dashboards and control mapping.",
     cta: "Explore Evidence Automation",
+  },
+  "/lp/cmmclens-demo": {
+    title: "CMMCLens demo for CMMC evidence automation",
+    desc: "See how CMMCLens structures CMMC and NIST SP 800-171 readiness with evidence automation, control mapping, gap tracking, SSP/POA&M workflows, and dashboards.",
+    pains: ["Manual evidence requests consume staff time", "Control traceability is difficult to maintain", "Readiness reporting is inconsistent"],
+    helps: ["CMMCLens product walkthrough", "Evidence workflow fit assessment", "Implementation scope and integration planning"],
+    outcomes: ["Improved evidence discipline", "Better readiness visibility", "More structured remediation"],
+    engagement: "Representative engagement: CMMCLens demo and evidence automation fit review.",
+    cta: "Request CMMCLens Demo",
   },
   "/lp/microsoft-supplier-ai-consulting": {
     title: "Minority-owned AI governance and cybersecurity supplier for Microsoft-centered environments",
@@ -174,6 +201,14 @@ export default function LandingPage() {
             <h2 className="font-heading text-xl font-bold mb-3">Relevant Credentials</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">{CERTIFICATIONS.slice(0, 5).join(" · ")}</p>
           </div>
+          <div className="bg-card/50 border border-border/40 rounded-sm p-6">
+            <h2 className="font-heading text-xl font-bold mb-3">Economic Impact</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">{config.outcomes.join(", ")} through focused readiness work, fewer manual loops, and clearer ownership.</p>
+          </div>
+          <div className="bg-card/50 border border-border/40 rounded-sm p-6">
+            <h2 className="font-heading text-xl font-bold mb-3">Deliverables</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">Readiness findings, prioritized roadmap, executive summary, and implementation next steps aligned to the selected portfolio.</p>
+          </div>
         </div>
       </section>
       <section className="py-14 px-4 section-light">
@@ -188,6 +223,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+      <div data-conversion-hook={location.replace(/\W+/g, "_")} className="sr-only" />
     </div>
   );
 }

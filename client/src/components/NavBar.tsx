@@ -13,35 +13,42 @@ const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
 const MENUS = [
   {
-    label: "Products",
-    key: "products",
+    label: "Portfolios",
+    key: "portfolios",
     items: [
-      { label: "CMMCLens", desc: "AI-assisted evidence and compliance automation", href: "/cmmclens" },
-      { label: "Sprint Guide", desc: "4-week CMMC readiness playbook", href: "/cmmc-readiness-sprint-guide" },
+      { label: "Secure AI Adoption", desc: "AI governance, Copilot readiness, AI security, and responsible AI", href: "/secure-ai-adoption" },
+      { label: "CMMC & Compliance Automation", desc: "CCP-led readiness, NIST 800-171, evidence automation, and CMMCLens", href: "/cmmc-compliance-automation" },
+      { label: "Microsoft Copilot Readiness", desc: "Microsoft 365, data, identity, privacy, and rollout controls", href: "/solutions/microsoft-copilot-readiness" },
+      { label: "Microsoft Cloud Security", desc: "Azure, Entra, Defender, Sentinel, Purview, and GCC High patterns", href: "/solutions/cloud-security" },
     ],
   },
   {
-    label: "Solutions",
-    key: "solutions",
+    label: "CMMCLens",
+    key: "cmmclens",
     items: [
-      { label: "AI Transformation", desc: "Adoption roadmaps, automation, and Copilot enablement", href: "/solutions/ai-transformation" },
-      { label: "AI Governance", desc: "Responsible AI, NIST AI RMF, controls, and oversight", href: "/solutions/ai-governance" },
-      { label: "Copilot Readiness", desc: "Microsoft Copilot readiness, governance, and security", href: "/solutions/microsoft-copilot-readiness" },
-      { label: "Microsoft Ecosystem", desc: "Azure, Microsoft 365, Security, Copilot, and compliance alignment", href: "/microsoft-ecosystem" },
-      { label: "CMMC Readiness Sprint", desc: "Gap assessment to C3PAO-ready in 2–4 weeks", href: "/services/cmmc-readiness-sprint" },
-      { label: "CMMC Scoping", desc: "Define your CUI boundary before the assessment", href: "/services/cmmc-scoping" },
+      { label: "CMMCLens Platform", desc: "Compliance evidence automation and readiness dashboards", href: "/cmmclens" },
+      { label: "CMMCLens Product Sheet", desc: "Procurement-ready product overview", href: "/datasheets/cmmclens" },
+      { label: "CMMC Evidence Automation", desc: "Evidence workflows and control traceability", href: "/cmmc-evidence-automation" },
     ],
   },
   {
-    label: "Why DefenseEye?",
-    key: "why",
+    label: "Datasheets",
+    key: "datasheets",
     items: [
-      { label: "Why Us", desc: "AI, cybersecurity, cloud security, and compliance capability", href: "/why-defenseeye" },
+      { label: "All Datasheets", desc: "AI adoption, CMMC automation, CMMCLens, Copilot, and supplier assets", href: "/datasheets" },
+      { label: "Secure AI Adoption", desc: "One-page AI governance and secure adoption overview", href: "/datasheets/secure-ai-adoption" },
+      { label: "CMMC Automation", desc: "One-page CCP-led readiness and evidence automation overview", href: "/datasheets/cmmc-compliance-automation" },
+      { label: "Supplier Readiness", desc: "Identifiers, credentials, and engagement models", href: "/datasheets/supplier-readiness" },
+    ],
+  },
+  {
+    label: "Supplier Readiness",
+    key: "supplier",
+    items: [
       { label: "Supplier Readiness", desc: "Supplier identifiers, certifications, and engagement models", href: "/supplier-readiness" },
       { label: "Capability Statement", desc: "Procurement-ready company overview", href: "/capability-statement" },
       { label: "Delivery Model", desc: "How DefenseEye structures enterprise work", href: "/delivery-model" },
       { label: "Representative Engagements", desc: "Engagement types DefenseEye is positioned to support", href: "/representative-engagements" },
-      { label: "FAQ", desc: "AI, governance, cybersecurity, and compliance questions", href: "/faq" },
     ],
   },
   {
@@ -145,12 +152,12 @@ export default function NavBar() {
             </div>
           ))}
 
-          {/* Pricing — plain link, no dropdown */}
+          {/* Contact — plain link, no dropdown */}
           <a
-            href="/pricing"
+            href="/contact"
             className="px-4 py-2 text-sm font-medium text-[#0D1B33] hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
           >
-            Pricing
+            Contact
           </a>
         </nav>
 
@@ -223,13 +230,13 @@ export default function NavBar() {
                 </div>
               ))}
 
-              {/* Pricing plain link */}
+              {/* Contact plain link */}
               <a
-                href="/pricing"
+                href="/contact"
                 className="px-3 py-2.5 text-sm font-semibold text-[#0D1B33] hover:text-primary rounded-md hover:bg-gray-50 transition-colors"
                 onClick={() => setMobileOpen(false)}
               >
-                Pricing
+                Contact
               </a>
 
               <div className="pt-2 border-t border-gray-100 mt-1">

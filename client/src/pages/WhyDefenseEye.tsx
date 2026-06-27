@@ -16,7 +16,7 @@ const DIFFERENTIATORS = [
   {
     icon: Users,
     title: "Built Only for Defense Contractors",
-    body: "Not a broad MSP that added CMMC to the service menu. Every engagement is designed around CUI handling, DFARS obligations, and active DoD contract risk.",
+    body: "Every engagement is designed around CUI handling, DFARS obligations, and active DoD contract risk.",
   },
   {
     icon: BookOpen,
@@ -26,15 +26,15 @@ const DIFFERENTIATORS = [
   {
     icon: TrendingUp,
     title: "Fast — Because Contracts Don't Wait",
-    body: "Readiness sprints engineered for defense contractors with active deadlines. Clarity and a prioritized action plan in days, not quarters of back-and-forth.",
+    body: "Readiness sprints engineered for defense contractors with active deadlines. Clarity and a prioritized action plan without unnecessary delay.",
   },
 ];
 
 const PROOF_POINTS = [
-  "Contractors who scope before gap assessment reduce remediation cost by 30–50%",
+  "Contractors who scope before gap assessment can focus remediation on the systems and controls that matter",
   "CCP credential holders understand C3PAO expectations — not just the NIST text",
   "Fixed-price engagements mean no billing surprises when your contract timeline shifts",
-  "SSP and POA&M outputs meet assessor documentation standards from day one",
+  "SSP and POA&M outputs are structured for assessment preparation",
 ];
 
 export default function WhyDefenseEye() {
@@ -50,7 +50,7 @@ export default function WhyDefenseEye() {
         "@type": "ProfessionalService",
         name: "DefenseEye — CMMC Advisory",
         description:
-          "CCP-led CMMC advisory and consulting for U.S. defense contractors. Scoping, gap assessment, SSP, POA&M, and C3PAO-ready documentation for CMMC Level 2.",
+          "CCP-led CMMC advisory and consulting for U.S. defense contractors. Scoping, gap assessment, SSP, POA&M, and assessment-preparation documentation for CMMC Level 2.",
         url: "https://defenseeye.ai/why-defenseeye",
         provider: { "@type": "Organization", name: "DefenseEye" },
         areaServed: "US",
@@ -82,8 +82,8 @@ export default function WhyDefenseEye() {
           </h1>
           <p className="text-lg text-white/75 max-w-3xl mx-auto leading-relaxed mb-8">
             When your DoD contract depends on CMMC readiness, generic IT advice isn't enough.
-            DefenseEye is purpose-built for one thing: getting defense contractors ready fast —
-            with credentials, documentation, and deliverables that hold up under C3PAO scrutiny.
+            DefenseEye helps defense contractors turn CMMC requirements into scoped readiness work,
+            documentation, evidence workflows, and remediation priorities.
           </p>
           <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
             <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-8">
@@ -137,11 +137,11 @@ export default function WhyDefenseEye() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">What Makes Us Different</p>
-            <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-4 text-foreground">
-              Not a Generic IT Firm. A Defense-Specific Practice.
+              <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-4 text-foreground">
+              Defense-Specific CMMC Readiness Support
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Most CMMC consultants are general IT firms that added CMMC to their service list after the DoD mandate. DefenseEye was designed from the ground up for defense contractor compliance.
+              DefenseEye focuses CMMC readiness work around CUI handling, DFARS obligations, evidence traceability, SSP/POA&M support, and remediation workflows.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -191,10 +191,10 @@ export default function WhyDefenseEye() {
       <section className="py-20 px-4 section-navy">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-4 text-white">
-            Ready to Work With a Team That Only Does CMMC?
+            Ready to Clarify Your CMMC Readiness Path?
           </h2>
           <p className="text-white/70 text-lg leading-relaxed mb-8">
-            Book a 30-minute call. We'll assess your current posture, contract timeline, and give you a realistic next step — no sales pressure, no vague scope.
+            Book a 30-minute call. We will discuss your current posture, contract timeline, and practical next steps.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">

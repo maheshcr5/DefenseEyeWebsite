@@ -130,7 +130,7 @@ const FAQS = [
 export default function CMMCScoping() {
   useSeo(
     "CMMC Scoping | Define Your CUI Boundary | DefenseEye",
-    "Professional CMMC scoping for defense contractors. Define your CUI environment boundary, reduce assessment scope, and build a C3PAO-ready scoping document before your gap assessment."
+    "Professional CMMC scoping for defense contractors. Define your CUI environment boundary, reduce assessment scope, and build assessment-preparation scoping documentation before your gap assessment."
   );
 
   useEffect(() => {
@@ -287,7 +287,7 @@ export default function CMMCScoping() {
           <div className="text-center mb-10">
             <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">What You Receive</p>
             <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-4 text-foreground">
-              Assessor-Ready Scoping Deliverables
+              Assessment-Preparation Scoping Deliverables
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Every output from DefenseEye's scoping engagement is structured for direct use in your SSP, C3PAO submission, and SPRS self-assessment.
@@ -329,7 +329,7 @@ export default function CMMCScoping() {
             Start With Scoping. Save Months of Rework.
           </h2>
           <p className="text-white/70 text-lg leading-relaxed mb-8">
-            Contractors who scope correctly before their gap assessment spend less, remediate less, and pass assessments faster. Book a 30-minute call to start defining your CUI boundary.
+            Contractors who scope correctly before their gap assessment can reduce rework and focus remediation. Book a 30-minute call to start defining your CUI boundary.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">

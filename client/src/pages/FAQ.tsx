@@ -52,7 +52,7 @@ const FAQS: { category: string; q: string; a: string }[] = [
   {
     category: "Readiness & Timeline",
     q: "Can a small company (under 50 employees) pass CMMC Level 2?",
-    a: "Yes — company size is not a disqualifier. The assessment evaluates control implementation, not headcount. Small companies succeed by scoping their CUI environment tightly (limiting which systems touch CUI), automating evidence collection, and building a documented SSP and POA&M that shows assessors a clear, maintained compliance program. DefenseEye has guided lean teams through C3PAO-ready packages with as few as 2 IT staff.",
+    a: "Yes — company size is not a disqualifier. The assessment evaluates control implementation, not headcount. Small companies succeed by scoping their CUI environment tightly (limiting which systems touch CUI), automating evidence collection, and building a documented SSP and POA&M that shows assessors a clear, maintained compliance program.",
   },
 
   // Costs & Pricing
@@ -88,12 +88,12 @@ const FAQS: { category: string; q: string; a: string }[] = [
   {
     category: "DefenseEye & CMMCLens",
     q: "What is CMMCLens?",
-    a: "CMMCLens is DefenseEye's CMMC Level 2 automation platform. It automates evidence collection, NIST 800-171 control mapping, real-time SSP and POA&M generation, and policy/procedure drafting — reducing the manual compliance work that typically requires a full-time analyst. CMMCLens is designed to work alongside DefenseEye's advisory services so lean IT teams can produce C3PAO-ready documentation without hiring a dedicated compliance staff.",
+    a: "CMMCLens is DefenseEye's CMMC Level 2 automation platform. It automates evidence collection, NIST 800-171 control mapping, real-time SSP and POA&M generation, and policy/procedure drafting. CMMCLens is designed to work alongside DefenseEye's advisory services so lean IT teams can structure assessment-preparation documentation without hiring a dedicated compliance staff.",
   },
   {
     category: "DefenseEye & CMMCLens",
     q: "How is DefenseEye different from other CMMC consultants?",
-    a: "DefenseEye combines CCP-led (Certified CMMC Professional) advisory with automation tooling — most consultants offer one or the other. We start every engagement with a fixed-price sprint so you know total scope and cost before committing. We specialize exclusively in CMMC for the U.S. Defense Industrial Base, with deep focus on contractors under 150 employees handling CUI. We don't sell generic cybersecurity services — every deliverable is CMMC-specific, assessor-ready, and tied to your contract risk.",
+    a: "DefenseEye combines CCP-led (Certified CMMC Professional) advisory with automation tooling. We start every engagement with a fixed-price sprint so you know total scope and cost before committing. Deliverables are CMMC-specific, assessment-preparation oriented, and tied to your contract risk.",
   },
 ];
 
