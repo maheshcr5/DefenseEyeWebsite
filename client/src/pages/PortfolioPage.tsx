@@ -32,14 +32,14 @@ const configs: Record<string, PortfolioConfig> = {
     title: "Secure & Responsible AI Adoption Consulting",
     metaTitle: "Secure AI Adoption Consulting | DefenseEye AI Governance, Copilot Readiness, and AI Security",
     metaDescription:
-      "DefenseEye helps regulated organizations adopt AI securely through AI governance, Microsoft Copilot readiness, NIST AI RMF implementation, ISO 42001 readiness, AI security, and responsible AI operating models.",
+      "DefenseEye helps regulated organizations adopt AI securely through AI governance, Microsoft Copilot readiness, NIST AI RMF implementation, AI security, and responsible AI operating models.",
     eyebrow: "Secure AI Adoption",
     opening:
       "DefenseEye helps organizations move from AI experimentation to governed implementation by connecting AI use cases, policies, security controls, human accountability, and operational workflows.",
     who: ["Microsoft Copilot adopters", "Azure OpenAI users", "Regulated enterprises", "Government contractors", "Security and compliance teams", "CIO, CISO, CTO, risk, privacy, and governance leaders"],
     problems: ["Shadow AI", "Unclear AI accountability", "Weak AI policy", "Sensitive data exposure", "Model/vendor risk", "Copilot data readiness gaps", "Lack of AI inventory", "Missing oversight workflows"],
     helpsTitle: "How DefenseEye Helps",
-    helps: ["AI governance readiness assessment", "AI use case intake model", "Responsible AI policy", "NIST AI RMF alignment", "ISO 42001 readiness", "Microsoft Copilot readiness", "AI security assessment", "AI risk register", "Human oversight model", "Executive AI roadmap"],
+    helps: ["AI governance readiness assessment", "AI use case intake model", "Responsible AI policy", "NIST AI RMF alignment", "Microsoft Copilot readiness", "AI security assessment", "AI risk register", "Human oversight model", "Executive AI roadmap"],
     deliverablesTitle: "Deliverables",
     deliverables: ["AI governance charter", "AI risk register", "AI policy", "Copilot readiness findings", "AI use case intake workflow", "Oversight model", "Roadmap", "Executive briefing"],
     outcomes: ["Reduced AI adoption risk", "Less rework", "Faster governed adoption", "Improved data protection", "Better executive visibility", "Clearer accountability"],

@@ -106,8 +106,8 @@ function getModeInstruction(message: string) {
   if (/copilot|microsoft 365|m365|purview|entra|security copilot/i.test(message)) {
     return "Copilot mode: ask one clarifying question about the target rollout or risk concern, then provide concise guidance on permissions, data exposure, Purview, Entra, Defender, adoption controls, and governance.";
   }
-  if (/ai governance|iso 42001|nist ai rmf|responsible ai|model governance|shadow ai|ai vendor/i.test(message)) {
-    return "AI governance mode: ask one clarifying question about AI use cases or oversight needs, then provide concise guidance on NIST AI RMF, ISO 42001 readiness, responsible AI, accountability, explainability, policy, and oversight.";
+  if (/ai governance|nist ai rmf|responsible ai|model governance|shadow ai|ai vendor/i.test(message)) {
+    return "AI governance mode: ask one clarifying question about AI use cases or oversight needs, then provide concise guidance on NIST AI RMF, responsible AI, accountability, explainability, policy, and oversight.";
   }
   if (/ai adoption|ai transformation|azure openai|automation|workflow/i.test(message)) {
     return "AI transformation mode: ask one clarifying question about business process or adoption goals, then provide concise guidance on use-case prioritization, data readiness, governance-by-design, implementation sequencing, and value realization.";
@@ -131,7 +131,7 @@ function buildSystemPrompt(message: string, sources: KnowledgeChunk[]) {
 
   return `You are DefenseEye Advisor, a practical AI governance, cybersecurity, Microsoft cloud, CMMC, and compliance readiness assistant. Provide concise, factual, implementation-focused guidance for enterprise, government, defense contractor, and regulated organizations. Prioritize risk reduction, governance, security, accountability, explainability, compliance readiness, and operational outcomes. Ask one clarifying question before recommending a next step. Do not provide legal advice, certification guarantees, or unsupported claims. Suggest DefenseEye services or CMMCLens only after giving useful guidance. Recommend scheduling a consultation or requesting the capability statement when the user is evaluating supplier, subcontracting, CMMC, Microsoft Copilot, AI governance, or compliance automation support.
 
-You understand secure AI adoption, AI governance, ISO 42001 readiness, NIST AI RMF, Microsoft Copilot governance, Azure and Microsoft cloud security, CMMC, NIST SP 800-171, FedRAMP, RMF, evidence automation, supplier readiness, and federal contractor environments.
+You understand secure AI adoption, AI governance, NIST AI RMF, Microsoft Copilot governance, Azure and Microsoft cloud security, CMMC, NIST SP 800-171, FedRAMP, RMF, evidence automation, supplier readiness, and federal contractor environments.
 
 Rules:
 1. Prefer DefenseEye KnowledgeHub content when available.

@@ -66,7 +66,7 @@ export const FOUNDATIONAL_EXPERIENCE = [
   "FedRAMP ATO delivery experience with federal programs",
   "Regulatory response experience involving 300+ government RFIs across AI safety, privacy, and content integrity",
   "Experience supporting privacy, audit, and compliance execution across large cross-functional technology programs",
-  "CMMC, NIST 800-171, FedRAMP, NIST AI RMF, and ISO 42001-aligned governance familiarity",
+  "CMMC, NIST 800-171, FedRAMP, and NIST AI RMF governance familiarity",
 ];
 
 export const CAPABILITY_STATEMENT_URL = "/capability-statement";

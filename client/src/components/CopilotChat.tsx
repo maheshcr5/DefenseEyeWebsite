@@ -29,7 +29,7 @@ const PREVIEW_LENGTH = 760;
 const SUGGESTED_PROMPTS: Array<{ label: string; href?: string }> = [
   { label: "Microsoft Copilot Readiness" },
   { label: "Secure AI Adoption" },
-  { label: "AI Governance / ISO 42001" },
+  { label: "AI Governance" },
   { label: "CMMC Level 2 Readiness" },
   { label: "Compliance Evidence Automation" },
   { label: "CMMCLens Demo" },
@@ -55,7 +55,7 @@ export function CopilotChat({ compact = false }: { compact?: boolean }) {
         id: newId(),
         role: "assistant",
         content:
-          "What are you trying to improve? Choose a topic below or ask about secure AI adoption, Microsoft Copilot readiness, AI governance / ISO 42001, CMMC Level 2 readiness, compliance evidence automation, CMMCLens demos, or supplier inquiries.",
+          "What are you trying to improve? Choose a topic below or ask about secure AI adoption, Microsoft Copilot readiness, AI governance, CMMC Level 2 readiness, compliance evidence automation, CMMCLens demos, or supplier inquiries.",
       },
     ];
   });

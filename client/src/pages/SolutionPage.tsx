@@ -66,7 +66,7 @@ const pages: Record<string, PageConfig> = {
       "Stronger readiness for enterprise AI platforms",
     ],
     engagements: ["AI opportunity discovery", "AI adoption roadmap", "Copilot enablement planning", "Workflow automation assessment"],
-    frameworks: ["NIST AI RMF", "ISO 42001 readiness", "Azure OpenAI", "Microsoft Copilot", "Data governance"],
+    frameworks: ["NIST AI RMF", "Azure OpenAI", "Microsoft Copilot", "Data governance"],
     deliverables: ["Use-case inventory", "Prioritized roadmap", "Governance considerations", "Implementation plan", "Value measurement model"],
     why:
       "AI adoption creates durable value when it improves real work, protects sensitive data, and gives leaders a governed path from idea to operation.",
@@ -82,16 +82,16 @@ const pages: Record<string, PageConfig> = {
     title: "AI Governance Consulting for Regulated Organizations",
     description:
       "DefenseEye helps organizations implement AI governance, responsible AI controls, human accountability, AI policy, model oversight, Copilot governance, and AI vendor risk practices.",
-    seoTitle: "AI Governance, NIST AI RMF, and ISO 42001 Readiness | DefenseEye",
+    seoTitle: "AI Governance and NIST AI RMF Consulting | DefenseEye",
     seoDescription:
-      "AI governance consulting for NIST AI RMF, ISO 42001 readiness, responsible AI, AI risk management, human accountability, model governance, policy development, and Copilot governance.",
+      "AI governance consulting for NIST AI RMF, responsible AI, AI risk management, human accountability, model governance, policy development, and Copilot governance.",
     icon: Bot,
     summary:
       "DefenseEye helps organizations move from AI experimentation to governed adoption by implementing practical oversight, risk management, accountability, explainability, policy, and security controls.",
     challenge:
       "AI use is expanding faster than risk ownership, acceptable-use rules, data controls, vendor review, and human accountability practices.",
     howHelps: [
-      "Align governance practices to NIST AI RMF and ISO 42001 readiness",
+      "Align governance practices to NIST AI RMF and responsible AI operating practices",
       "Define AI policy, use-case review, oversight roles, and human accountability",
       "Assess shadow AI, AI vendor risk, model governance, and explainability needs",
       "Integrate Copilot governance with data protection, permissions, and security operations",
@@ -103,14 +103,14 @@ const pages: Record<string, PageConfig> = {
       "Governance evidence that supports procurement and assurance reviews",
     ],
     engagements: ["AI governance readiness assessment", "AI policy and oversight model", "AI inventory and use-case review", "Copilot governance assessment"],
-    frameworks: ["NIST AI RMF", "ISO 42001 readiness", "Responsible AI", "AI vendor risk", "Microsoft Purview"],
+    frameworks: ["NIST AI RMF", "Responsible AI", "AI vendor risk", "Microsoft Purview"],
     deliverables: ["Governance model", "Policy outline", "Risk assessment approach", "AI inventory structure", "Oversight controls"],
     why:
       "AI governance matters because leaders need a practical way to approve AI use, monitor risk, preserve explainability, and keep humans accountable for consequential decisions.",
     cta: { label: "Discuss AI Governance Readiness", href: "/contact?inquiry=ai-governance" },
     faqs: [
       { question: "What is AI governance?", answer: "AI governance is the set of roles, policies, controls, oversight processes, and evidence used to manage AI systems responsibly and reduce AI-related risk." },
-      { question: "How can organizations prepare for ISO 42001?", answer: "Start with AI inventory, risk ownership, policy development, oversight roles, lifecycle controls, monitoring practices, and evidence that shows governance is operating." },
+      { question: "How can organizations operationalize AI governance?", answer: "Start with AI inventory, risk ownership, policy development, oversight roles, lifecycle controls, monitoring practices, and evidence that shows governance is operating." },
       commonFaq.supplier,
     ],
   }),
@@ -237,7 +237,7 @@ const pages: Record<string, PageConfig> = {
     howHelps: ["Map evidence sources to controls", "Identify automation opportunities", "Design readiness workflows and dashboards", "Assess CMMCLens fit when relevant"],
     outcomes: ["Reduced manual preparation effort", "Improved evidence traceability", "More consistent documentation", "Better audit and supplier readiness"],
     engagements: ["Evidence automation implementation", "Control mapping design", "SSP and policy automation", "Compliance dashboard implementation"],
-    frameworks: ["CMMC", "NIST SP 800-171", "FedRAMP", "RMF", "ISO 42001 readiness"],
+    frameworks: ["CMMC", "NIST SP 800-171", "FedRAMP", "RMF", "NIST AI RMF"],
     deliverables: ["Evidence map", "Automation design", "Workflow backlog", "Dashboard requirements", "CMMCLens fit assessment"],
     why: "Compliance automation improves readiness by making evidence easier to find, explain, refresh, and connect to control expectations.",
     cta: { label: "Automate Compliance Readiness", href: "/contact?inquiry=compliance-automation" },

@@ -121,7 +121,6 @@ function Router() {
         <Route path="/lp/cmmclens-demo" component={LandingPage} />
         <Route path="/lp/microsoft-supplier-ai-consulting" component={LandingPage} />
         <Route path="/lp/azure-cloud-security" component={LandingPage} />
-        <Route path="/lp/iso-42001-readiness" component={LandingPage} />
         <Route path="/lp/compliance-automation" component={LandingPage} />
         <Route path="/insights/:slug" component={ThoughtLeadership} />
 

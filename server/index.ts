@@ -348,7 +348,7 @@ async function startServer() {
     },
     "/secure-ai-adoption": {
       title: "Secure AI Adoption Consulting | DefenseEye AI Governance, Copilot Readiness, and AI Security",
-      description: "DefenseEye helps regulated organizations adopt AI securely through AI governance, Microsoft Copilot readiness, NIST AI RMF implementation, ISO 42001 readiness, AI security, and responsible AI operating models.",
+      description: "DefenseEye helps regulated organizations adopt AI securely through AI governance, Microsoft Copilot readiness, NIST AI RMF implementation, AI security, and responsible AI operating models.",
     },
     "/cmmc-compliance-automation": {
       title: "CMMC Compliance Automation | DefenseEye CCP-Led CMMC Readiness and CMMCLens",
@@ -360,7 +360,7 @@ async function startServer() {
     },
     "/datasheets/secure-ai-adoption": {
       title: "Secure AI Adoption Datasheet | DefenseEye",
-      description: "One-page DefenseEye overview for secure AI adoption, AI governance, Microsoft Copilot readiness, NIST AI RMF, ISO 42001 readiness, and AI security.",
+      description: "One-page DefenseEye overview for secure AI adoption, AI governance, Microsoft Copilot readiness, NIST AI RMF, and AI security.",
     },
     "/datasheets/cmmc-compliance-automation": {
       title: "CMMC & Compliance Automation Datasheet | DefenseEye",
@@ -520,7 +520,7 @@ async function startServer() {
     },
     "/lp/ai-governance-consulting": {
       title: "AI Governance Consulting for Regulated Organizations | DefenseEye",
-      description: "AI governance consulting for NIST AI RMF, ISO 42001 readiness, responsible AI, human accountability, policy, oversight, and AI risk management.",
+      description: "AI governance consulting for NIST AI RMF, responsible AI, human accountability, policy, oversight, and AI risk management.",
     },
     "/lp/secure-ai-adoption": {
       title: "Secure AI Adoption Consulting for Regulated Teams | DefenseEye",
@@ -553,10 +553,6 @@ async function startServer() {
     "/lp/azure-cloud-security": {
       title: "Azure Cloud Security and Compliance Review | DefenseEye",
       description: "Azure cloud security support for Azure, Azure Government, GCC High, Entra, Defender, Sentinel, Purview, and compliance alignment.",
-    },
-    "/lp/iso-42001-readiness": {
-      title: "ISO 42001 Readiness Consulting | DefenseEye",
-      description: "ISO 42001 readiness consulting for AI inventory, AI policy, oversight, risk review, human accountability, lifecycle controls, and governance evidence.",
     },
     "/lp/compliance-automation": {
       title: "Compliance Automation for Evidence and Readiness Reporting | DefenseEye",

@@ -51,7 +51,6 @@ const portfolios = [
       "AI security assessment",
       "Responsible AI policy and oversight",
       "NIST AI RMF implementation",
-      "ISO 42001 readiness",
       "AI risk and vendor review",
       "Secure AI adoption roadmap",
     ],

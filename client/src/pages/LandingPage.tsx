@@ -29,7 +29,7 @@ const configs: Record<string, LandingConfig> = {
   },
   "/lp/ai-governance-consulting": {
     title: "AI governance consulting for regulated organizations",
-    desc: "Practical support for NIST AI RMF, ISO 42001 readiness, responsible AI, human accountability, policy, oversight, and AI risk management.",
+    desc: "Practical support for NIST AI RMF, responsible AI, human accountability, policy, oversight, and AI risk management.",
     pains: ["AI use is expanding without clear ownership", "Policies do not match real workflows", "Procurement and assurance teams need explainable controls"],
     helps: ["AI inventory and use-case intake", "Governance model and policy development", "Risk assessment and oversight workflow"],
     outcomes: ["Clearer accountability", "Reduced shadow AI risk", "Better readiness for procurement and assurance reviews"],
@@ -98,15 +98,6 @@ const configs: Record<string, LandingConfig> = {
     outcomes: ["Stronger cloud security", "Clearer remediation priorities", "Better compliance readiness"],
     engagement: "Representative engagement: Azure security and compliance review with risk-ranked findings and roadmap.",
     cta: "Review Azure Security",
-  },
-  "/lp/iso-42001-readiness": {
-    title: "ISO 42001 readiness consulting",
-    desc: "Prepare AI management practices with inventory, policy, oversight, risk review, human accountability, and lifecycle controls.",
-    pains: ["AI governance is informal", "Evidence is not organized", "Teams need a practical operating model"],
-    helps: ["AI management system readiness review", "Policy and oversight design", "Evidence and control roadmap"],
-    outcomes: ["Clearer ISO 42001 readiness", "Stronger accountability", "Improved AI governance evidence"],
-    engagement: "Representative engagement: ISO 42001 readiness assessment aligned to AI governance implementation needs.",
-    cta: "Discuss ISO 42001 Readiness",
   },
   "/lp/compliance-automation": {
     title: "Compliance automation for evidence, workflows, and readiness reporting",

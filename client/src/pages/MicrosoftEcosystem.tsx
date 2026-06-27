@@ -110,7 +110,7 @@ export default function MicrosoftEcosystem() {
           </p>
           <h2 className="font-heading text-2xl font-bold mb-4">Enterprise and Multi-Cloud AI Consulting</h2>
           <p className="text-muted-foreground leading-relaxed">
-            DefenseEye's governance and security approach is cloud-aware and can support Microsoft-centered, Google-aligned, and multi-cloud enterprise AI programs. AI governance, responsible AI frameworks, AI risk assessments, vendor risk management, data governance, ISO 42001 readiness, NIST AI RMF alignment, and secure generative AI adoption apply across enterprise cloud environments.
+            DefenseEye's governance and security approach is cloud-aware and can support Microsoft-centered, Google-aligned, and multi-cloud enterprise AI programs. AI governance, responsible AI practices, AI risk assessments, vendor risk management, data governance, NIST AI RMF alignment, and secure generative AI adoption apply across enterprise cloud environments.
           </p>
         </div>
       </section>

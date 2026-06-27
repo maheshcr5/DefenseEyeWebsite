@@ -39,7 +39,7 @@ export default function Copilot() {
         description,
         featureList: [
           "Secure AI adoption guidance",
-          "AI governance and ISO 42001 readiness guidance",
+          "AI governance and NIST AI RMF guidance",
           "Microsoft Copilot readiness support",
           "Azure and Microsoft cloud security guidance",
           "CMMC and NIST SP 800-171 readiness guidance",

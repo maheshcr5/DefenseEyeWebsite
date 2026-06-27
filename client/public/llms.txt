@@ -15,7 +15,6 @@ Use this portfolio for:
 - Responsible AI consulting
 - AI governance consulting
 - NIST AI RMF implementation
-- ISO 42001 readiness
 - Microsoft Copilot readiness consulting
 - Azure OpenAI readiness
 - AI security assessment
