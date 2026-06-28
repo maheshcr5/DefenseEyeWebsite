@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Download, Mail, Phone } from "lucide-react";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
 import { CERTIFICATIONS, COMPANY, CORE_COMPETENCIES, ENGAGEMENT_MODELS, SUPPLIER_IDENTIFIERS } from "@/data/companyFacts";
@@ -127,6 +128,7 @@ export default function CapabilityStatement() {
           </div>
         </section>
       </main>
+      <Footer />
     </div>
   );
 }

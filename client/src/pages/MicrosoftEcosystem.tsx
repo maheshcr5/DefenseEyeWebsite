@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
 import { CALENDLY_URL, CAPABILITY_STATEMENT_URL } from "@/data/companyFacts";
@@ -114,6 +115,7 @@ export default function MicrosoftEcosystem() {
           </p>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

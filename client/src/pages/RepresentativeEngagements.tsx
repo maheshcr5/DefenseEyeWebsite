@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { ArrowRight, ClipboardCheck } from "lucide-react";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
 import { CALENDLY_URL } from "@/data/companyFacts";
@@ -99,6 +100,7 @@ export default function RepresentativeEngagements() {
           </a>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

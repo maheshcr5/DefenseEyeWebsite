@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "wouter";
 import { ArrowRight, CheckCircle2, Download, FileText } from "lucide-react";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { CALENDLY_URL, CERTIFICATIONS, COMPANY, ENGAGEMENT_MODELS, SUPPLIER_IDENTIFIERS } from "@/data/companyFacts";
 import { useSeo } from "@/hooks/useSeo";
@@ -144,6 +145,7 @@ function DatasheetIndex() {
           ))}
         </div>
       </section>
+      <Footer />
     </div>
   );
 }
@@ -221,6 +223,7 @@ function DatasheetDetail({ sheet }: { sheet: Sheet }) {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Activity, ArrowRight, Bot, CheckCircle2, ChevronDown, FileCheck, GitBranch, ShieldCheck, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 import { useSeo } from "@/hooks/useSeo";
 import { trackConversion } from "@/lib/tracking";
 
@@ -249,6 +250,7 @@ export default function CMMCLens() {
           </div>
         </section>
       </main>
+      <Footer />
     </div>
   );
 }

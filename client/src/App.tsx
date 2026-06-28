@@ -35,6 +35,8 @@ const Support = lazy(() => import("./pages/Support"));
 const ThoughtLeadership = lazy(() => import("./pages/ThoughtLeadership"));
 const SolutionPage = lazy(() => import("./pages/SolutionPage"));
 const SupplierReadiness = lazy(() => import("./pages/SupplierReadiness"));
+const SecureAiAdoption = lazy(() => import("./pages/SecureAiAdoption"));
+const CmmcComplianceAutomation = lazy(() => import("./pages/CmmcComplianceAutomation"));
 const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
 const Datasheets = lazy(() => import("./pages/Datasheets"));
 const CapabilityStatement = lazy(() => import("./pages/CapabilityStatement"));
@@ -86,8 +88,8 @@ function Router() {
         <Route path="/contact" component={ContactUs} />
         <Route path="/support" component={Support} />
         <Route path="/supplier-readiness" component={SupplierReadiness} />
-        <Route path="/secure-ai-adoption" component={PortfolioPage} />
-        <Route path="/cmmc-compliance-automation" component={PortfolioPage} />
+        <Route path="/secure-ai-adoption" component={SecureAiAdoption} />
+        <Route path="/cmmc-compliance-automation" component={CmmcComplianceAutomation} />
         <Route path="/datasheets" component={Datasheets} />
         <Route path="/datasheets/secure-ai-adoption" component={Datasheets} />
         <Route path="/datasheets/cmmc-compliance-automation" component={Datasheets} />
