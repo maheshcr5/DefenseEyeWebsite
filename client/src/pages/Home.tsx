@@ -22,6 +22,8 @@ import { useSeo } from "@/hooks/useSeo";
 import { CALENDLY_URL, COMPANY, MARKETPLACE_URL } from "@/data/companyFacts";
 import { trackConversion } from "@/lib/tracking";
 
+const CMMCLENS_DEMO_MAILTO = `mailto:${COMPANY.enterpriseEmail}?subject=Requesting%20CMMCLens%20Demo%20Access`;
+
 const problemCards = [
   ["AI adoption without governance", "Teams deploy copilots, agents, and AI workflows before data, identity, privacy, and oversight controls are ready."],
   ["Compliance evidence trapped in manual work", "CMMC and NIST SP 800-171 readiness often depend on spreadsheets, screenshots, disconnected documents, and repeated evidence requests."],
@@ -39,6 +41,7 @@ const portfolios = [
     description:
       "For organizations adopting Microsoft Copilot, Azure OpenAI, generative AI, LLM workflows, or enterprise AI systems that require governance, security, accountability, and operational controls.",
     services: [
+      "Strategic AI Executive Advisory & Governance for Prime Contractors",
       "AI governance readiness",
       "Microsoft Copilot readiness",
       "AI security assessment",
@@ -470,6 +473,9 @@ export default function Home() {
               </a>
               <a href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer">
                 <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">Microsoft Marketplace</Button>
+              </a>
+              <a href={CMMCLENS_DEMO_MAILTO} onClick={() => trackConversion("cmmclens_click", { location: "home_cmmclens_demo_request" })}>
+                <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">Request a CMMCLens Automated Demo Account</Button>
               </a>
             </div>
           </div>
