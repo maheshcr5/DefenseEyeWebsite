@@ -17,12 +17,11 @@ warn() { echo -e "${YELLOW}[warn]${NC} $*"; }
 info() { echo -e "${BLUE}[info]${NC} $*"; }
 err()  { echo -e "${RED}[error]${NC} $*"; exit 1; }
 
-VPS_IP="191.101.232.28"
-VPS_USER="${1:-root}"
+VPS_HOST="${1:-hostinger-cmmc}"
 TARGET_PORT="65002"
 APP_DIR="/var/www/defenseeye"
 
-log "Target Hostinger VPS: ${VPS_USER}@${VPS_IP} (Port ${TARGET_PORT})"
+log "Target Hostinger VPS Host: ${VPS_HOST} (Port ${TARGET_PORT})"
 
 # ── 1. Push latest code to GitHub main ─────────────────────────────────────────
 info "Step 1/5: Verifying local git branch and pushing main..."
@@ -37,7 +36,7 @@ log "Pushed latest code to main ✓"
 # ── 2. Remote VPS Execution ───────────────────────────────────────────────────
 info "Step 2/5: Executing deployment commands on Hostinger VPS..."
 
-ssh -o StrictHostKeyChecking=accept-new "${VPS_USER}@${VPS_IP}" bash -s <<REMOTE_SCRIPT
+ssh "$VPS_HOST" bash -s <<REMOTE_SCRIPT
 set -euo pipefail
 
 GREEN='\033[0;32m'; YELLOW='\033[1;33m'; RED='\033[0;31m'; NC='\033[0m'
