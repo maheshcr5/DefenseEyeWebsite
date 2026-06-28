@@ -21,14 +21,6 @@ import { useSeo } from "@/hooks/useSeo";
 import { CALENDLY_URL, COMPANY, MARKETPLACE_URL } from "@/data/companyFacts";
 import { trackConversion } from "@/lib/tracking";
 
-const trustStrip = [
-  "Multiple CMMC Certified Professionals",
-  "CMMC Level 1 Certified",
-  "NIST SP 800-171 L2 In Progress",
-  "CAGE 9ZDL5",
-  "UEI E4DYPCKN7YN8",
-];
-
 const problemCards = [
   ["AI adoption without governance", "Teams deploy copilots, agents, and AI workflows before data, identity, privacy, and oversight controls are ready."],
   ["Compliance evidence trapped in manual work", "CMMC and NIST SP 800-171 readiness often depend on spreadsheets, screenshots, disconnected documents, and repeated evidence requests."],
@@ -200,49 +192,89 @@ export default function Home() {
           <div className="max-w-4xl">
             <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-primary">Practitioner-led AI governance, Microsoft cloud security, and compliance automation</p>
             <h1 className="font-heading text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl">
-              Operationalize Secure AI Adoption and CMMC Readiness
+              Enterprise Security, AI Governance, and Compliance Automation
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
               DefenseEye helps regulated organizations turn AI governance, Microsoft cloud security, and compliance evidence into practical workflows, readiness dashboards, and measurable operational outcomes.
             </p>
           </div>
-          <div className="mt-8 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
-            {[
-              "Secure and responsible AI adoption",
-              "Microsoft Copilot and Azure AI readiness",
-              "CMMC and NIST SP 800-171 readiness",
-              "Compliance evidence automation",
-              "Supplier-ready consulting, subcontracting, and staff augmentation",
-            ].map((item) => (
-              <div key={item} className="rounded-sm border border-primary/20 bg-card/50 p-3 text-sm text-muted-foreground">
-                {item}
+
+          {/* Segment-Based Routing Cards */}
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            {/* Card 1: Defense Contractors */}
+            <div className="group relative flex flex-col justify-between rounded-lg border border-primary/30 bg-card/80 p-6 shadow-xl transition-all hover:border-primary hover:bg-card">
+              <div>
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="rounded-md border border-primary/30 bg-primary/15 p-2.5 text-primary">
+                    <ShieldCheck className="size-6" />
+                  </div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-accent">For Defense Contractors</span>
+                </div>
+                <h2 className="font-heading text-2xl font-bold text-foreground">
+                  Achieve CMMC Level 2 & NIST SP 800-171 Compliance
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  CCP-led readiness support, automated evidence collection with CMMCLens, SPRS scoring benchmarks, and execution workflows to ensure assessment preparedness.
+                </p>
               </div>
-            ))}
+              <div className="mt-6">
+                <a href="/cmmc-compliance-automation" onClick={() => trackConversion("portfolio_cmmc_click", { location: "home_hero_card" })}>
+                  <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-auto">
+                    Explore CMMC Readiness <ArrowRight className="ml-2 size-4" />
+                  </Button>
+                </a>
+              </div>
+            </div>
+
+            {/* Card 2: Enterprise Tech */}
+            <div className="group relative flex flex-col justify-between rounded-lg border border-primary/30 bg-card/80 p-6 shadow-xl transition-all hover:border-primary hover:bg-card">
+              <div>
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="rounded-md border border-primary/30 bg-primary/15 p-2.5 text-primary">
+                    <Bot className="size-6" />
+                  </div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-accent">For Enterprise Tech</span>
+                </div>
+                <h2 className="font-heading text-2xl font-bold text-foreground">
+                  Secure AI Adoption & Copilot Governance
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  Operationalize Microsoft Copilot and Azure OpenAI with robust identity guardrails, NIST AI RMF oversight, data loss prevention, and third-party risk controls.
+                </p>
+              </div>
+              <div className="mt-6">
+                <a href="/secure-ai-adoption" onClick={() => trackConversion("portfolio_ai_click", { location: "home_hero_card" })}>
+                  <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 sm:w-auto">
+                    Explore Enterprise AI Safety <ArrowRight className="ml-2 size-4" />
+                  </Button>
+                </a>
+              </div>
+            </div>
           </div>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <a href="#portfolios">
-              <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-auto">
-                Explore the Two Portfolios <ArrowRight className="ml-2 size-4" />
-              </Button>
-            </a>
-            <a href="/datasheets" onClick={() => trackConversion("datasheet_view", { location: "home_hero" })}>
-              <Button size="lg" variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10 sm:w-auto">
-                Request Datasheets
-              </Button>
-            </a>
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("supplier_inquiry_click", { location: "home_hero" })}>
-              <Button size="lg" variant="outline" className="w-full border-border/60 text-muted-foreground hover:border-primary/40 hover:text-primary sm:w-auto">
-                Discuss Supplier Opportunities
-              </Button>
-            </a>
-          </div>
-          <p className="mt-5 text-sm text-muted-foreground">Practitioner-led consulting supported by CMMCLens compliance automation.</p>
-          <div className="mt-8 flex flex-wrap gap-2">
-            {trustStrip.map((item) => (
-              <span key={item} className="rounded-sm border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs text-primary">
-                {item}
-              </span>
-            ))}
+
+          {/* Infinite Auto-Scrolling Capabilities Ticker */}
+          <div className="mt-12 overflow-hidden border-y border-primary/20 bg-card/40 py-3.5">
+            <div className="animate-marquee flex items-center gap-10 whitespace-nowrap">
+              {[
+                "CMMC Level 2 Automation",
+                "AI Governance Frameworks",
+                "NIST SP 800-171 Sprints",
+                "Supplier Risk Assessment",
+                "LLM Data Leakage Audits",
+                "DoD C3PAO Readiness",
+                "CMMC Level 2 Automation",
+                "AI Governance Frameworks",
+                "NIST SP 800-171 Sprints",
+                "Supplier Risk Assessment",
+                "LLM Data Leakage Audits",
+                "DoD C3PAO Readiness",
+              ].map((item, index) => (
+                <div key={index} className="flex items-center gap-3 text-sm font-semibold tracking-wide text-primary">
+                  <span className="text-accent">•</span>
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -583,6 +615,28 @@ function Footer() {
         <FooterLinks title="Portfolios" links={[["Secure AI Adoption", "/secure-ai-adoption"], ["CMMC Automation", "/cmmc-compliance-automation"], ["Microsoft Copilot Readiness", "/solutions/microsoft-copilot-readiness"], ["Microsoft Cloud Security", "/solutions/cloud-security"]]} />
         <FooterLinks title="Resources" links={[["CMMCLens", "/cmmclens"], ["Datasheets", "/datasheets"], ["Knowledge Hub", "/knowledge-hub"], ["Capability Statement", "/capability-statement"]]} />
         <FooterLinks title="Company" links={[["Supplier Readiness", "/supplier-readiness"], ["Delivery Model", "/delivery-model"], ["Representative Engagements", "/representative-engagements"], ["Contact", "/contact"], ["Support", "/support"], ["Privacy Policy", "/privacy-policy"]]} />
+      </div>
+
+      <div className="mx-auto mt-10 max-w-6xl rounded-sm border border-border/60 bg-card/60 p-6">
+        <h4 className="font-heading text-sm font-bold uppercase tracking-widest text-foreground">
+          Government Capabilities & Diversity Credentials
+        </h4>
+        <div className="mt-4 flex flex-wrap gap-2 text-xs">
+          {[
+            "CAGE 9ZDL5",
+            "UEI E4DYPCKN7YN8",
+            "OMWBE-MBE Certified",
+            "NMSDC-MBE Certified",
+            "WA State SBE",
+            "NAICS 541512, 541519, 541690, 561621",
+            "Multiple CMMC Certified Professionals",
+            "NIST SP 800-171 L2 In Progress",
+          ].map((item) => (
+            <span key={item} className="rounded-sm border border-primary/20 bg-background/80 px-3 py-1.5 font-medium text-muted-foreground">
+              {item}
+            </span>
+          ))}
+        </div>
       </div>
       <div className="mx-auto mt-8 max-w-6xl border-t border-border/30 pt-5 text-xs text-muted-foreground">
         &copy; {new Date().getFullYear()} DefenseEye, Inc. All rights reserved. CMMCLens is a trademark of DefenseEye.
