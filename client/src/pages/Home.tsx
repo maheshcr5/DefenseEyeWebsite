@@ -7,7 +7,9 @@ import {
   Building2,
   CheckCircle2,
   ClipboardCheck,
+  EyeOff,
   FileCheck,
+  FileLock2,
   Network,
   ShieldCheck,
   Sparkles,
@@ -117,6 +119,43 @@ const differentRows = [
   ["CMMC treated as documentation", "CMMC treated as operational readiness"],
   ["AI governance treated as policy only", "AI governance connected to security, identity, data, oversight, and adoption"],
   ["Supplier claims without procurement detail", "Clear supplier readiness, identifiers, certifications, and engagement models"],
+];
+
+const architectureComparisonRows = [
+  {
+    legacy: "Multi-tenant SaaS tools may centralize compliance artifacts, telemetry, and configuration details outside the customer environment.",
+    cmmclens: "CMMCLens is designed for in-tenant deployment inside the customer's Azure Commercial, Azure Government, or GCC High environment.",
+  },
+  {
+    legacy: "Traditional advisory work often depends on broad administrator access, shared exports, screenshots, and repeated evidence handoffs.",
+    cmmclens: "Sensitive network telemetry, configurations, CUI context, and generated SSPs remain inside the customer's security perimeter.",
+  },
+  {
+    legacy: "Outside consultants and third-party FTEs can gain direct visibility into infrastructure, permissions, and control gaps.",
+    cmmclens: "The platform is self-contained so external, foreign, or uncleared FTEs do not need to inspect customer infrastructure through CMMCLens.",
+  },
+  {
+    legacy: "Procurement and platform access are often tied to vendor-hosted workflows that increase data handling questions.",
+    cmmclens: "Microsoft Marketplace supports licensing and MACC-aligned cloud consumption while customer data stays in the tenant.",
+  },
+];
+
+const architecturePillars = [
+  {
+    title: "Data Residency",
+    icon: FileLock2,
+    text: "Evidence artifacts, cloud configuration context, CUI-related metadata, and SSP outputs stay inside the customer's tenant. DefenseEye does not need to host customer compliance data for this architecture model.",
+  },
+  {
+    title: "No Outside Eyes",
+    icon: EyeOff,
+    text: "CMMCLens reduces FTE visibility risk by limiting the need for broad advisory access to regulated infrastructure, identity, endpoint, and compliance systems.",
+  },
+  {
+    title: "Marketplace Billing Isolation",
+    icon: Building2,
+    text: "Microsoft Marketplace is used as a commercial conduit for licensing and billing. Microsoft manages the transaction layer; CMMCLens does not export customer evidence or infrastructure data for billing.",
+  },
 ];
 
 const engagementSteps = [
@@ -490,6 +529,77 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section-gray px-4 py-16 md:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-8 grid gap-6 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-8">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Enterprise Data Sovereignty & Architecture</p>
+              <h2 className="font-heading text-4xl font-bold">CMMCLens Native In-Tenant Architecture</h2>
+              <p className="mt-4 text-muted-foreground leading-relaxed">
+                CMMCLens is positioned for defense contractors and regulated enterprises that need compliance automation without moving sensitive infrastructure context outside their own Microsoft cloud boundary.
+              </p>
+            </div>
+            <div className="rounded-sm border border-primary/30 bg-primary/10 p-4 text-sm font-semibold leading-relaxed text-primary lg:col-span-4">
+              Designed for FedRAMP High and CMMC Level 2 restricted environment requirements.
+            </div>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            <article className="rounded-sm border border-border/50 bg-card">
+              <div className="grid border-b border-border/50 md:grid-cols-2">
+                <div className="border-b border-border/50 bg-muted/40 p-4 md:border-b-0 md:border-r">
+                  <h3 className="font-heading text-sm font-bold uppercase tracking-widest text-muted-foreground">Legacy SaaS / Advisory Firms</h3>
+                </div>
+                <div className="bg-primary/10 p-4">
+                  <h3 className="font-heading text-sm font-bold uppercase tracking-widest text-primary">CMMCLens In-Tenant Model</h3>
+                </div>
+              </div>
+              <div className="divide-y divide-border/50">
+                {architectureComparisonRows.map((row) => (
+                  <div key={row.cmmclens} className="grid md:grid-cols-2">
+                    <div className="border-b border-border/50 p-4 text-sm leading-relaxed text-muted-foreground md:border-b-0 md:border-r">
+                      {row.legacy}
+                    </div>
+                    <div className="p-4 text-sm font-medium leading-relaxed text-foreground">
+                      <CheckCircle2 className="mb-2 size-4 text-primary" aria-hidden="true" />
+                      {row.cmmclens}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <aside className="rounded-sm border border-primary/20 bg-card/80 p-6">
+              <div className="mb-6 flex items-start gap-3 rounded-sm border border-primary/20 bg-primary/10 p-4">
+                <ShieldCheck className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+                <p className="text-sm font-semibold leading-relaxed text-foreground">
+                  Zero-data-export architecture: customer evidence, infrastructure context, CUI-related metadata, and generated SSP content remain inside the customer's own security perimeter.
+                </p>
+              </div>
+              <div className="space-y-5">
+                {architecturePillars.map((pillar) => {
+                  const Icon = pillar.icon;
+                  return (
+                    <section key={pillar.title} aria-labelledby={`architecture-pillar-${pillar.title.toLowerCase().replace(/\s+/g, "-")}`}>
+                      <div className="flex gap-4">
+                        <div className="flex size-10 shrink-0 items-center justify-center rounded-sm border border-border/60 bg-background/60">
+                          <Icon className="size-5 text-primary" aria-hidden="true" />
+                        </div>
+                        <div>
+                          <h3 id={`architecture-pillar-${pillar.title.toLowerCase().replace(/\s+/g, "-")}`} className="font-heading text-lg font-bold">
+                            {pillar.title}
+                          </h3>
+                          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{pillar.text}</p>
+                        </div>
+                      </div>
+                    </section>
+                  );
+                })}
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
       <section className="section-light px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-12">
           <div className="lg:col-span-4">
