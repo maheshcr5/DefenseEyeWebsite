@@ -11,12 +11,34 @@ import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
-const MENUS = [
+type MenuItem = {
+  label: string;
+  desc: string;
+  href: string;
+  children?: MenuItem[];
+};
+
+type Menu = {
+  label: string;
+  key: string;
+  cols?: number;
+  items: MenuItem[];
+};
+
+const MENUS: Menu[] = [
   {
     label: "Portfolios",
     key: "portfolios",
     items: [
       { label: "Secure AI Adoption", desc: "AI governance, Copilot readiness, AI security, and responsible AI", href: "/secure-ai-adoption" },
+      {
+        label: "AttackSense",
+        desc: "AI-assisted attack surface, vulnerability, and remediation intelligence",
+        href: "/attacksense",
+        children: [
+          { label: "Docs", desc: "AttackSense Quick Start Guide", href: "/attacksense/docs" },
+        ],
+      },
       { label: "CMMC & Compliance Automation", desc: "CCP-led readiness, NIST 800-171, evidence automation, and CMMCLens", href: "/cmmc-compliance-automation" },
       { label: "Microsoft Copilot Readiness", desc: "Microsoft 365, data, identity, privacy, and rollout controls", href: "/solutions/microsoft-copilot-readiness" },
       { label: "Microsoft Cloud Security", desc: "Azure, Entra, Defender, Sentinel, Purview, and GCC High patterns", href: "/solutions/cloud-security" },
@@ -133,18 +155,33 @@ export default function NavBar() {
                     onMouseLeave={handleLeave}
                   >
                     {menu.items.map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        className="flex flex-col px-3 py-2.5 rounded-sm hover:bg-gray-50 transition-colors group"
-                      >
-                        <span className="text-sm font-semibold text-[#0D1B33] group-hover:text-primary transition-colors">
-                          {item.label}
-                        </span>
-                        <span className="text-xs text-muted-foreground mt-0.5 leading-snug">
-                          {item.desc}
-                        </span>
-                      </a>
+                      <div key={item.href}>
+                        <a
+                          href={item.href}
+                          className="flex flex-col px-3 py-2.5 rounded-sm hover:bg-gray-50 transition-colors group"
+                        >
+                          <span className="text-sm font-semibold text-[#0D1B33] group-hover:text-primary transition-colors">
+                            {item.label}
+                          </span>
+                          <span className="text-xs text-muted-foreground mt-0.5 leading-snug">
+                            {item.desc}
+                          </span>
+                        </a>
+                        {item.children?.map((child) => (
+                          <a
+                            key={child.href}
+                            href={child.href}
+                            className="ml-3 flex flex-col border-l border-gray-200 px-3 py-2 rounded-sm hover:bg-gray-50 transition-colors group"
+                          >
+                            <span className="text-xs font-semibold uppercase tracking-wider text-[#0D1B33] group-hover:text-primary transition-colors">
+                              {child.label}
+                            </span>
+                            <span className="text-xs text-muted-foreground mt-0.5 leading-snug">
+                              {child.desc}
+                            </span>
+                          </a>
+                        ))}
+                      </div>
                     ))}
                   </motion.div>
                 )}
@@ -214,15 +251,27 @@ export default function NavBar() {
                         className="overflow-hidden pl-3"
                       >
                         {menu.items.map((item) => (
-                          <a
-                            key={item.href}
-                            href={item.href}
-                            className="flex flex-col px-3 py-2 rounded-sm hover:bg-gray-50 transition-colors"
-                            onClick={() => setMobileOpen(false)}
-                          >
-                            <span className="text-sm font-medium text-[#0D1B33]">{item.label}</span>
-                            <span className="text-xs text-muted-foreground">{item.desc}</span>
-                          </a>
+                          <div key={item.href}>
+                            <a
+                              href={item.href}
+                              className="flex flex-col px-3 py-2 rounded-sm hover:bg-gray-50 transition-colors"
+                              onClick={() => setMobileOpen(false)}
+                            >
+                              <span className="text-sm font-medium text-[#0D1B33]">{item.label}</span>
+                              <span className="text-xs text-muted-foreground">{item.desc}</span>
+                            </a>
+                            {item.children?.map((child) => (
+                              <a
+                                key={child.href}
+                                href={child.href}
+                                className="ml-3 flex flex-col border-l border-gray-200 px-3 py-2 rounded-sm hover:bg-gray-50 transition-colors"
+                                onClick={() => setMobileOpen(false)}
+                              >
+                                <span className="text-xs font-semibold uppercase tracking-wider text-[#0D1B33]">{child.label}</span>
+                                <span className="text-xs text-muted-foreground">{child.desc}</span>
+                              </a>
+                            ))}
+                          </div>
                         ))}
                       </motion.div>
                     )}

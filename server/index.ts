@@ -350,6 +350,14 @@ async function startServer() {
       title: "Secure AI Adoption Consulting | DefenseEye AI Governance, Copilot Readiness, and AI Security",
       description: "DefenseEye helps regulated organizations adopt AI securely through AI governance, Microsoft Copilot readiness, NIST AI RMF implementation, AI security, and responsible AI operating models.",
     },
+    "/attacksense": {
+      title: "AttackSense | DefenseEye Attack Surface and Remediation Intelligence",
+      description: "AttackSense helps security teams consolidate attack surface findings, vulnerability signals, attack path context, remediation ownership, and executive-ready risk visibility.",
+    },
+    "/attacksense/docs": {
+      title: "AttackSense Docs | DefenseEye Quick Start Guide",
+      description: "Read and download the DefenseEye AttackSense Quick Start Guide for setup, onboarding, and early adoption guidance.",
+    },
     "/cmmc-compliance-automation": {
       title: "CMMC Compliance Automation | DefenseEye CCP-Led CMMC Readiness and CMMCLens",
       description: "DefenseEye provides CCP-led CMMC Level 2 readiness, NIST SP 800-171 support, SSP/POA&M preparation, compliance evidence automation, and CMMCLens platform-enabled readiness workflows.",

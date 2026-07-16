@@ -36,6 +36,8 @@ const ThoughtLeadership = lazy(() => import("./pages/ThoughtLeadership"));
 const SolutionPage = lazy(() => import("./pages/SolutionPage"));
 const SupplierReadiness = lazy(() => import("./pages/SupplierReadiness"));
 const SecureAiAdoption = lazy(() => import("./pages/SecureAiAdoption"));
+const AttackSense = lazy(() => import("./pages/AttackSense"));
+const AttackSenseDocs = lazy(() => import("./pages/AttackSenseDocs"));
 const CmmcComplianceAutomation = lazy(() => import("./pages/CmmcComplianceAutomation"));
 const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
 const Datasheets = lazy(() => import("./pages/Datasheets"));
@@ -89,6 +91,8 @@ function Router() {
         <Route path="/support" component={Support} />
         <Route path="/supplier-readiness" component={SupplierReadiness} />
         <Route path="/secure-ai-adoption" component={SecureAiAdoption} />
+        <Route path="/attacksense" component={AttackSense} />
+        <Route path="/attacksense/docs" component={AttackSenseDocs} />
         <Route path="/cmmc-compliance-automation" component={CmmcComplianceAutomation} />
         <Route path="/datasheets" component={Datasheets} />
         <Route path="/datasheets/secure-ai-adoption" component={Datasheets} />
@@ -153,6 +157,8 @@ function RouteAnalytics() {
 
   useEffect(() => {
     if (location === "/supplier-readiness") trackConversion("supplier_readiness_view");
+    if (location === "/attacksense") trackConversion("attacksense_view", { location });
+    if (location === "/attacksense/docs") trackConversion("attacksense_docs_view", { location });
     if (location === "/capability-statement") trackConversion("capability_statement_view");
     if (location.startsWith("/datasheets")) trackConversion("datasheet_view", { location });
     if (location === "/datasheets/cmmclens") trackConversion("cmmclens_product_sheet_view", { location });

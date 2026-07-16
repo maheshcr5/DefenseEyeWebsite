@@ -23,6 +23,11 @@ export type ConversionName =
   | "microsoft_ecosystem_view"
   | "cmmc_readiness_view"
   | "ai_governance_view"
+  | "attacksense_view"
+  | "attacksense_docs_view"
+  | "attacksense_docs_click"
+  | "attacksense_guide_open"
+  | "attacksense_guide_download"
   | "support_email_click"
   | "partners_email_click"
   | "enterprise_email_click";

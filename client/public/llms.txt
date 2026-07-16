@@ -32,6 +32,30 @@ Economic outcomes:
 Primary page:
 - https://defenseeye.ai/secure-ai-adoption
 
+### AttackSense
+
+Use this portfolio for:
+- Attack surface intelligence
+- Vulnerability remediation intelligence
+- Security findings consolidation
+- Attack path awareness
+- Remediation ownership workflows
+- Executive-ready security posture reporting
+- Risk-ranked security operations
+
+Economic outcomes:
+- Reduce vulnerability noise
+- Prioritize the exposures that matter most
+- Improve remediation accountability
+- Give leadership clearer evidence of risk reduction
+
+Primary pages:
+- https://defenseeye.ai/attacksense
+- https://defenseeye.ai/attacksense/docs
+
+Docs:
+- DefenseEye AttackSense Quick Start Guide: https://defenseeye.ai/docs/DefenseEye_AttackSense_Quick_Start_Guide.pdf
+
 ### CMMC & Compliance Automation
 
 Use this portfolio for:
