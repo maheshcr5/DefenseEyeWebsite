@@ -73,7 +73,7 @@ export default function AttackSense() {
             </a>
             <a href="/attacksense/docs" onClick={() => trackConversion("attacksense_docs_click", { location: "attacksense_hero" })}>
               <Button size="lg" variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10 sm:w-auto">
-                View Quick Start Guide
+                View AttackSense Guide
               </Button>
             </a>
           </div>
@@ -146,14 +146,14 @@ export default function AttackSense() {
 
       <section className="section-navy px-4 py-16">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="font-heading text-4xl font-bold">Start With the Quick Start Guide</h2>
+          <h2 className="font-heading text-4xl font-bold">Start With the AttackSense Guide</h2>
           <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
             Review the AttackSense setup path, then contact DefenseEye to align the workflow with your environment and remediation operating model.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
             <a href="/attacksense/docs" onClick={() => trackConversion("attacksense_docs_click", { location: "attacksense_footer" })}>
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                Open Docs <ArrowRight className="ml-2 size-4" />
+                Open AttackSense Guide <ArrowRight className="ml-2 size-4" />
               </Button>
             </a>
             <a href={`mailto:${COMPANY.enterpriseEmail}?subject=AttackSense%20Inquiry`} onClick={() => trackConversion("enterprise_email_click", { location: "attacksense_footer" })}>

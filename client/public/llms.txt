@@ -53,8 +53,8 @@ Primary pages:
 - https://defenseeye.ai/attacksense
 - https://defenseeye.ai/attacksense/docs
 
-Docs:
-- DefenseEye AttackSense Quick Start Guide: https://defenseeye.ai/docs/DefenseEye_AttackSense_Quick_Start_Guide.pdf
+Guide:
+- DefenseEye AttackSense Guide: https://defenseeye.ai/docs/DefenseEye_AttackSense_Quick_Start_Guide.pdf
 
 ### CMMC & Compliance Automation
 

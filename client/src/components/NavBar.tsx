@@ -36,7 +36,7 @@ const MENUS: Menu[] = [
         desc: "AI-assisted attack surface, vulnerability, and remediation intelligence",
         href: "/attacksense",
         children: [
-          { label: "Docs", desc: "AttackSense Quick Start Guide", href: "/attacksense/docs" },
+          { label: "AttackSense Guide", desc: "Quick start guide", href: "/attacksense/docs" },
         ],
       },
       { label: "CMMC & Compliance Automation", desc: "CCP-led readiness, NIST 800-171, evidence automation, and CMMCLens", href: "/cmmc-compliance-automation" },
@@ -91,8 +91,10 @@ const MENUS: Menu[] = [
 
 export default function NavBar() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [expandedSubmenu, setExpandedSubmenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [mobileSubmenuExpanded, setMobileSubmenuExpanded] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleEnter = (key: string) => {
@@ -101,11 +103,23 @@ export default function NavBar() {
   };
 
   const handleLeave = () => {
-    closeTimer.current = setTimeout(() => setOpenMenu(null), 120);
+    closeTimer.current = setTimeout(() => {
+      setOpenMenu(null);
+      setExpandedSubmenu(null);
+    }, 120);
   };
 
   const toggleMobileCategory = (key: string) => {
     setMobileExpanded((prev) => (prev === key ? null : key));
+    setMobileSubmenuExpanded(null);
+  };
+
+  const toggleSubmenu = (key: string) => {
+    setExpandedSubmenu((prev) => (prev === key ? null : key));
+  };
+
+  const toggleMobileSubmenu = (key: string) => {
+    setMobileSubmenuExpanded((prev) => (prev === key ? null : key));
   };
 
   return (
@@ -156,31 +170,60 @@ export default function NavBar() {
                   >
                     {menu.items.map((item) => (
                       <div key={item.href}>
-                        <a
-                          href={item.href}
-                          className="flex flex-col px-3 py-2.5 rounded-sm hover:bg-gray-50 transition-colors group"
-                        >
-                          <span className="text-sm font-semibold text-[#0D1B33] group-hover:text-primary transition-colors">
-                            {item.label}
-                          </span>
-                          <span className="text-xs text-muted-foreground mt-0.5 leading-snug">
-                            {item.desc}
-                          </span>
-                        </a>
-                        {item.children?.map((child) => (
+                        <div className="flex items-start gap-1 rounded-sm hover:bg-gray-50 transition-colors group">
                           <a
-                            key={child.href}
-                            href={child.href}
-                            className="ml-3 flex flex-col border-l border-gray-200 px-3 py-2 rounded-sm hover:bg-gray-50 transition-colors group"
+                            href={item.href}
+                            className="flex min-w-0 flex-1 flex-col px-3 py-2.5"
                           >
-                            <span className="text-xs font-semibold uppercase tracking-wider text-[#0D1B33] group-hover:text-primary transition-colors">
-                              {child.label}
+                            <span className="text-sm font-semibold text-[#0D1B33] group-hover:text-primary transition-colors">
+                              {item.label}
                             </span>
                             <span className="text-xs text-muted-foreground mt-0.5 leading-snug">
-                              {child.desc}
+                              {item.desc}
                             </span>
                           </a>
-                        ))}
+                          {item.children && (
+                            <button
+                              type="button"
+                              className="mt-2 mr-2 flex size-7 shrink-0 items-center justify-center rounded-sm text-[#0D1B33] hover:bg-gray-100 hover:text-primary"
+                              aria-label={`${expandedSubmenu === item.href ? "Collapse" : "Expand"} ${item.label}`}
+                              aria-expanded={expandedSubmenu === item.href}
+                              onClick={(event) => {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                toggleSubmenu(item.href);
+                              }}
+                            >
+                              <ChevronDown className={`size-4 transition-transform duration-200 ${expandedSubmenu === item.href ? "rotate-180 text-primary" : ""}`} />
+                            </button>
+                          )}
+                        </div>
+                        <AnimatePresence initial={false}>
+                          {item.children && expandedSubmenu === item.href && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.15 }}
+                              className="overflow-hidden"
+                            >
+                              {item.children.map((child) => (
+                                <a
+                                  key={child.href}
+                                  href={child.href}
+                                  className="ml-3 flex flex-col border-l border-gray-200 px-3 py-2 rounded-sm hover:bg-gray-50 transition-colors group"
+                                >
+                                  <span className="text-xs font-semibold uppercase tracking-wider text-[#0D1B33] group-hover:text-primary transition-colors">
+                                    {child.label}
+                                  </span>
+                                  <span className="text-xs text-muted-foreground mt-0.5 leading-snug">
+                                    {child.desc}
+                                  </span>
+                                </a>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     ))}
                   </motion.div>
@@ -210,7 +253,7 @@ export default function NavBar() {
         {/* Mobile toggle */}
         <button
           className="md:hidden text-[#0D1B33] p-1"
-          onClick={() => { setMobileOpen(!mobileOpen); setMobileExpanded(null); }}
+          onClick={() => { setMobileOpen(!mobileOpen); setMobileExpanded(null); setMobileSubmenuExpanded(null); }}
           aria-label="Toggle menu"
         >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -252,25 +295,54 @@ export default function NavBar() {
                       >
                         {menu.items.map((item) => (
                           <div key={item.href}>
-                            <a
-                              href={item.href}
-                              className="flex flex-col px-3 py-2 rounded-sm hover:bg-gray-50 transition-colors"
-                              onClick={() => setMobileOpen(false)}
-                            >
-                              <span className="text-sm font-medium text-[#0D1B33]">{item.label}</span>
-                              <span className="text-xs text-muted-foreground">{item.desc}</span>
-                            </a>
-                            {item.children?.map((child) => (
+                            <div className="flex items-start gap-1 rounded-sm hover:bg-gray-50 transition-colors">
                               <a
-                                key={child.href}
-                                href={child.href}
-                                className="ml-3 flex flex-col border-l border-gray-200 px-3 py-2 rounded-sm hover:bg-gray-50 transition-colors"
+                                href={item.href}
+                                className="flex min-w-0 flex-1 flex-col px-3 py-2"
                                 onClick={() => setMobileOpen(false)}
                               >
-                                <span className="text-xs font-semibold uppercase tracking-wider text-[#0D1B33]">{child.label}</span>
-                                <span className="text-xs text-muted-foreground">{child.desc}</span>
+                                <span className="text-sm font-medium text-[#0D1B33]">{item.label}</span>
+                                <span className="text-xs text-muted-foreground">{item.desc}</span>
                               </a>
-                            ))}
+                              {item.children && (
+                                <button
+                                  type="button"
+                                  className="mt-1 mr-1 flex size-8 shrink-0 items-center justify-center rounded-sm text-[#0D1B33] hover:bg-gray-100 hover:text-primary"
+                                  aria-label={`${mobileSubmenuExpanded === item.href ? "Collapse" : "Expand"} ${item.label}`}
+                                  aria-expanded={mobileSubmenuExpanded === item.href}
+                                  onClick={(event) => {
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                    toggleMobileSubmenu(item.href);
+                                  }}
+                                >
+                                  <ChevronDown className={`size-4 transition-transform duration-200 ${mobileSubmenuExpanded === item.href ? "rotate-180 text-primary" : ""}`} />
+                                </button>
+                              )}
+                            </div>
+                            <AnimatePresence initial={false}>
+                              {item.children && mobileSubmenuExpanded === item.href && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: "auto", opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{ duration: 0.15 }}
+                                  className="overflow-hidden"
+                                >
+                                  {item.children.map((child) => (
+                                    <a
+                                      key={child.href}
+                                      href={child.href}
+                                      className="ml-3 flex flex-col border-l border-gray-200 px-3 py-2 rounded-sm hover:bg-gray-50 transition-colors"
+                                      onClick={() => setMobileOpen(false)}
+                                    >
+                                      <span className="text-xs font-semibold uppercase tracking-wider text-[#0D1B33]">{child.label}</span>
+                                      <span className="text-xs text-muted-foreground">{child.desc}</span>
+                                    </a>
+                                  ))}
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
                           </div>
                         ))}
                       </motion.div>

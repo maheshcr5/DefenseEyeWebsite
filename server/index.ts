@@ -355,8 +355,8 @@ async function startServer() {
       description: "AttackSense helps security teams consolidate attack surface findings, vulnerability signals, attack path context, remediation ownership, and executive-ready risk visibility.",
     },
     "/attacksense/docs": {
-      title: "AttackSense Docs | DefenseEye Quick Start Guide",
-      description: "Read and download the DefenseEye AttackSense Quick Start Guide for setup, onboarding, and early adoption guidance.",
+      title: "AttackSense Guide | DefenseEye",
+      description: "Read and download the DefenseEye AttackSense Guide for setup, onboarding, and early adoption guidance.",
     },
     "/cmmc-compliance-automation": {
       title: "CMMC Compliance Automation | DefenseEye CCP-Led CMMC Readiness and CMMCLens",
