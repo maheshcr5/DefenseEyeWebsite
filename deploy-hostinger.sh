@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# deploy-hostinger.sh — Hostinger VPS (191.101.232.28:65002) Production Deploy
+# deploy-hostinger.sh — Hostinger VPS Production Deploy
 #
 # Usage (from local terminal / WSL / Git Bash):
 #   bash deploy-hostinger.sh [SSH_USER]
@@ -18,7 +18,7 @@ info() { echo -e "${BLUE}[info]${NC} $*"; }
 err()  { echo -e "${RED}[error]${NC} $*"; exit 1; }
 
 VPS_HOST="${1:-hostinger-cmmc}"
-TARGET_PORT="65002"
+TARGET_PORT="3000"
 APP_DIR="/var/www/defenseeye"
 
 log "Target Hostinger VPS Host: ${VPS_HOST} (Port ${TARGET_PORT})"
@@ -97,4 +97,4 @@ fi
 log "VPS Deployment script executed successfully ✓"
 REMOTE_SCRIPT
 
-log "Deployment completed successfully to http://${VPS_IP}:${TARGET_PORT}!"
+log "Deployment completed successfully on ${VPS_HOST} app port ${TARGET_PORT}!"
