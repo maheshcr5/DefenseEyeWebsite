@@ -4,7 +4,7 @@ import { useSeo } from "@/hooks/useSeo";
 
 const SUPPORT_EMAIL = "privacy@defenseeye.ai";
 const EFFECTIVE_DATE = "April 1, 2026";
-const LAST_UPDATED = "April 1, 2026";
+const LAST_UPDATED = "August 29, 2026";
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
@@ -51,7 +51,7 @@ export default function PrivacyPolicy() {
           <Section id="information-collected" title="1. Information We Collect">
             <p><strong className="text-foreground">Information you provide directly:</strong> When you complete a contact or inquiry form, request a CMMC assessment, create a CMMCLens account, or correspond with us, we collect your name, business email address, company name, job title, phone number (if provided), and any information you include in your message.</p>
             <p><strong className="text-foreground">Usage and technical data:</strong> When you visit our website or use CMMCLens, we automatically receive your IP address (truncated), browser type and version, operating system, referring URL, pages viewed, session duration, and click patterns. This data is collected via server logs and analytics tools.</p>
-            <p><strong className="text-foreground">Cookies and similar technologies:</strong> We use first-party cookies for session management and site functionality, and analytics cookies to understand aggregate traffic patterns. See Section 7 for details.</p>
+            <p><strong className="text-foreground">Cookies and similar technologies:</strong> We use first-party cookies for session management and site functionality, and optional analytics and advertising-measurement cookies to understand aggregate traffic patterns and whether DefenseEye advertisements lead to website actions. See Section 6 for details.</p>
             <p><strong className="text-foreground">Customer compliance data (CMMCLens):</strong> Customers who use the CMMCLens platform may upload or generate compliance artifacts — including System Security Plans (SSPs), Plans of Action and Milestones (POA&Ms), control assessments, and policy documents. This data is processed solely to provide the CMMCLens service and is treated as confidential customer data under our Terms of Service.</p>
           </Section>
 
@@ -110,9 +110,10 @@ export default function PrivacyPolicy() {
             <p>We use the following categories of cookies:</p>
             <ul className="list-disc pl-5 space-y-1.5">
               <li><strong className="text-foreground">Strictly necessary:</strong> Required for the website and platform to function (session tokens, CSRF protection). Cannot be disabled.</li>
-              <li><strong className="text-foreground">Analytics:</strong> Aggregate, non-identifiable usage data to improve the site. You may opt out by declining cookies via our cookie consent banner or using browser privacy settings.</li>
+              <li><strong className="text-foreground">Analytics:</strong> Aggregate usage data to improve the site. You may opt out by declining cookies via our cookie consent banner or using browser privacy settings.</li>
+              <li><strong className="text-foreground">Advertising measurement:</strong> With your consent, DefenseEye uses the OpenAI Ads Measurement Pixel to determine whether interactions with DefenseEye advertisements lead to website actions such as consultation requests. The Pixel may use a first-party attribution cookie and securely hashed information when supported matching is enabled. Inquiry-message contents are not sent through the conversion event.</li>
             </ul>
-            <p>We do not use tracking cookies for advertising or behavioral profiling. You can manage cookies through your browser settings; note that disabling certain cookies may affect site functionality.</p>
+            <p>You can manage cookies through your browser settings; note that disabling certain cookies may affect site functionality.</p>
           </Section>
 
           <Section id="security" title="7. Data Security">

@@ -4,6 +4,7 @@ import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import { randomUUID } from "crypto";
 import nodemailer from "nodemailer";
 import { registerCopilotRoutes } from "./copilot";
 
@@ -30,6 +31,194 @@ function rateLimit(req: express.Request, res: express.Response, next: express.Ne
     return res.status(429).json({ error: "Rate limit exceeded. Max 60 requests/minute." });
   }
   next();
+}
+
+type ContactRequestBody = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  company?: string;
+  title?: string;
+  phone?: string;
+  inquiryType?: string;
+  need?: string;
+  companySize?: string;
+  cmmcLevel?: string;
+  challenge?: string;
+  timeline?: string;
+  message?: string;
+  attribution?: unknown;
+};
+
+type ContactLogger = Pick<Console, "log" | "warn" | "error">;
+
+type ContactResult = {
+  status: number;
+  body: { success: true } | { error: string; message: string };
+};
+
+const CONTACT_FAILURE_MESSAGE = "We could not process your inquiry right now. Please try again later.";
+
+function hasRequiredSmtpConfig(env: NodeJS.ProcessEnv) {
+  return Boolean(env.SMTP_HOST && env.SMTP_USER && env.SMTP_PASS);
+}
+
+function hasAcceptedRecipient(sendMailResult: unknown) {
+  if (!sendMailResult || typeof sendMailResult !== "object" || !("accepted" in sendMailResult)) {
+    return true;
+  }
+  const accepted = (sendMailResult as { accepted?: unknown }).accepted;
+  return Array.isArray(accepted) && accepted.length > 0;
+}
+
+function contactFailure(status: number, error: string): ContactResult {
+  return {
+    status,
+    body: {
+      error,
+      message: CONTACT_FAILURE_MESSAGE,
+    },
+  };
+}
+
+export async function processContactInquiry(
+  body: ContactRequestBody,
+  env: NodeJS.ProcessEnv = process.env,
+  logger: ContactLogger = console
+): Promise<ContactResult> {
+  const requestId = randomUUID();
+  const {
+    firstName,
+    lastName,
+    email,
+    company,
+    title,
+    phone,
+    inquiryType,
+    need,
+    companySize,
+    cmmcLevel,
+    challenge,
+    timeline,
+    message,
+    attribution,
+  } = body;
+
+  if (!email || !firstName || !company) {
+    logger.warn(`[contact:${requestId}] validation_failed route=/api/contact`);
+    return contactFailure(400, "validation_failed");
+  }
+
+  if (!hasRequiredSmtpConfig(env)) {
+    logger.error(`[contact:${requestId}] smtp_missing route=/api/contact`);
+    return contactFailure(503, "contact_delivery_unavailable");
+  }
+
+  const fullName = `${firstName} ${lastName || ""}`.trim();
+  const subject = `New DefenseEye Inquiry - ${company}${inquiryType ? ` (${inquiryType})` : ""}`;
+
+  const htmlBody = `
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A1628;color:#e8eaf0;padding:32px;border-radius:8px;">
+      <div style="text-align:center;margin-bottom:28px;">
+        <h1 style="color:#00D4FF;font-size:22px;margin:0;">New DefenseEye Inquiry</h1>
+        <p style="color:#9ca3af;font-size:14px;margin:6px 0 0;">Submitted via defenseeye.ai contact form</p>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        ${[
+          ["Name", fullName],
+          ["Work Email", email],
+          ["Phone", phone || "-"],
+          ["Company", company],
+          ["Role", title || "-"],
+          ["Inquiry Type", inquiryType || "-"],
+          ["Primary Need", need || "-"],
+          ["Company Size", companySize || "-"],
+          ["Target CMMC Level", cmmcLevel || "-"],
+          ["Compliance Timeline", timeline || "-"],
+          ["Biggest Challenge", challenge || "-"],
+          ["Additional Context", message || "-"],
+          ["Attribution", attribution ? JSON.stringify(attribution) : "-"],
+        ]
+          .map(
+            ([label, value]) => `
+          <tr>
+            <td style="padding:10px 12px;background:#131f35;border-bottom:1px solid #1e2d4a;font-weight:600;color:#00D4FF;width:38%;">${label}</td>
+            <td style="padding:10px 12px;background:#0d1a2d;border-bottom:1px solid #1e2d4a;color:#e8eaf0;">${value}</td>
+          </tr>`
+          )
+          .join("")}
+      </table>
+      <p style="margin-top:24px;font-size:12px;color:#6b7280;text-align:center;">
+        Reply directly to this email to respond to ${fullName} at ${email}
+      </p>
+    </div>
+  `;
+
+  const confirmationHtml = `
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A1628;color:#e8eaf0;padding:32px;border-radius:8px;">
+      <div style="text-align:center;margin-bottom:24px;">
+        <h1 style="color:#00D4FF;font-size:22px;margin:0;">We received your request, ${firstName}!</h1>
+      </div>
+      <p style="color:#cbd5e1;line-height:1.7;">
+        Thank you for reaching out to <strong style="color:#00D4FF;">DefenseEye</strong>. Our team will review your request and contact you within <strong>24 business hours</strong> to discuss your AI, cybersecurity, governance, risk, or compliance automation goals.
+      </p>
+      <div style="background:#131f35;border:1px solid #1e3a5f;border-radius:6px;padding:20px;margin:24px 0;">
+        <p style="margin:0 0 8px;font-size:13px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Your submission summary</p>
+        <p style="margin:4px 0;color:#e8eaf0;"><strong>Company:</strong> ${company}</p>
+        <p style="margin:4px 0;color:#e8eaf0;"><strong>Inquiry Type:</strong> ${inquiryType || need || "TBD"}</p>
+        <p style="margin:4px 0;color:#e8eaf0;"><strong>Timeline:</strong> ${timeline || "TBD"}</p>
+      </div>
+      <p style="color:#9ca3af;font-size:13px;">
+        While you wait, explore our free <a href="https://defenseeye.ai/knowledge-hub" style="color:#00D4FF;">CMMC Knowledge Hub</a> - plain-English guides on CMMC Level 2, NIST 800-171, SPRS scoring, and C3PAO assessment preparation.
+      </p>
+      <hr style="border:none;border-top:1px solid #1e2d4a;margin:28px 0;"/>
+      <p style="font-size:12px;color:#6b7280;text-align:center;">DefenseEye, Inc. · defenseeye.ai · AI, cybersecurity, governance, risk, and compliance automation</p>
+    </div>
+  `;
+
+  try {
+    logger.log(`[contact:${requestId}] notification_attempt route=/api/contact`);
+    const transporter = nodemailer.createTransport({
+      host: env.SMTP_HOST,
+      port: parseInt(env.SMTP_PORT || "587"),
+      secure: env.SMTP_SECURE === "true",
+      auth: { user: env.SMTP_USER, pass: env.SMTP_PASS },
+    });
+
+    const fromAddr = env.SMTP_FROM || env.SMTP_USER;
+    const notificationResult = await transporter.sendMail({
+      from: `"DefenseEye Contact Form" <${fromAddr}>`,
+      to: "enterprise@defenseeye.ai",
+      cc: "partners@defenseeye.ai",
+      replyTo: email,
+      subject,
+      html: htmlBody,
+    });
+
+    if (!hasAcceptedRecipient(notificationResult)) {
+      logger.error(`[contact:${requestId}] notification_rejected route=/api/contact`);
+      return contactFailure(502, "contact_delivery_rejected");
+    }
+
+    logger.log(`[contact:${requestId}] notification_accepted route=/api/contact`);
+
+    try {
+      await transporter.sendMail({
+        from: `"DefenseEye Team" <${fromAddr}>`,
+        to: email,
+        subject: "We received your DefenseEye inquiry",
+        html: confirmationHtml,
+      });
+      logger.log(`[contact:${requestId}] confirmation_accepted route=/api/contact`);
+    } catch {
+      logger.warn(`[contact:${requestId}] confirmation_failed route=/api/contact`);
+    }
+
+    return { status: 200, body: { success: true } };
+  } catch {
+    logger.error(`[contact:${requestId}] notification_failed route=/api/contact`);
+    return contactFailure(502, "contact_delivery_failed");
+  }
 }
 
 // ─── CMMC Content Chunks for AI Ingestion ─────────────────────────────────────
@@ -203,133 +392,8 @@ async function startServer() {
 
   // ─── Contact / Demo Request form ─────────────────────────────────────────────
   app.post("/api/contact", rateLimit, async (req, res) => {
-    const {
-      firstName,
-      lastName,
-      email,
-      company,
-      title,
-      phone,
-      inquiryType,
-      need,
-      companySize,
-      cmmcLevel,
-      challenge,
-      timeline,
-      message,
-      attribution,
-    } = req.body;
-
-    if (!email || !firstName || !company) {
-      return res.status(400).json({ error: "firstName, email, and company are required." });
-    }
-
-    const fullName = `${firstName} ${lastName}`.trim();
-    const subject = `New DefenseEye Inquiry — ${company}${inquiryType ? ` (${inquiryType})` : ""}`;
-
-    const htmlBody = `
-      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A1628;color:#e8eaf0;padding:32px;border-radius:8px;">
-        <div style="text-align:center;margin-bottom:28px;">
-          <h1 style="color:#00D4FF;font-size:22px;margin:0;">New DefenseEye Inquiry</h1>
-          <p style="color:#9ca3af;font-size:14px;margin:6px 0 0;">Submitted via defenseeye.ai contact form</p>
-        </div>
-        <table style="width:100%;border-collapse:collapse;font-size:14px;">
-          ${[
-            ["Name", fullName],
-            ["Work Email", email],
-            ["Phone", phone || "—"],
-            ["Company", company],
-            ["Role", title || "—"],
-            ["Inquiry Type", inquiryType || "—"],
-            ["Primary Need", need || "—"],
-            ["Company Size", companySize || "—"],
-            ["Target CMMC Level", cmmcLevel || "—"],
-            ["Compliance Timeline", timeline || "—"],
-            ["Biggest Challenge", challenge || "—"],
-            ["Additional Context", message || "—"],
-            ["Attribution", attribution ? JSON.stringify(attribution) : "—"],
-          ]
-            .map(
-              ([label, value]) => `
-            <tr>
-              <td style="padding:10px 12px;background:#131f35;border-bottom:1px solid #1e2d4a;font-weight:600;color:#00D4FF;width:38%;">${label}</td>
-              <td style="padding:10px 12px;background:#0d1a2d;border-bottom:1px solid #1e2d4a;color:#e8eaf0;">${value}</td>
-            </tr>`
-            )
-            .join("")}
-        </table>
-        <p style="margin-top:24px;font-size:12px;color:#6b7280;text-align:center;">
-          Reply directly to this email to respond to ${fullName} at ${email}
-        </p>
-      </div>
-    `;
-
-    const confirmationHtml = `
-      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A1628;color:#e8eaf0;padding:32px;border-radius:8px;">
-        <div style="text-align:center;margin-bottom:24px;">
-          <h1 style="color:#00D4FF;font-size:22px;margin:0;">We received your request, ${firstName}!</h1>
-        </div>
-        <p style="color:#cbd5e1;line-height:1.7;">
-          Thank you for reaching out to <strong style="color:#00D4FF;">DefenseEye</strong>. Our team will review your request and contact you within <strong>24 business hours</strong> to discuss your AI, cybersecurity, governance, risk, or compliance automation goals.
-        </p>
-        <div style="background:#131f35;border:1px solid #1e3a5f;border-radius:6px;padding:20px;margin:24px 0;">
-          <p style="margin:0 0 8px;font-size:13px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Your submission summary</p>
-          <p style="margin:4px 0;color:#e8eaf0;"><strong>Company:</strong> ${company}</p>
-          <p style="margin:4px 0;color:#e8eaf0;"><strong>Inquiry Type:</strong> ${inquiryType || need || "TBD"}</p>
-          <p style="margin:4px 0;color:#e8eaf0;"><strong>Timeline:</strong> ${timeline || "TBD"}</p>
-        </div>
-        <p style="color:#9ca3af;font-size:13px;">
-          While you wait, explore our free <a href="https://defenseeye.ai/knowledge-hub" style="color:#00D4FF;">CMMC Knowledge Hub</a> — plain-English guides on CMMC Level 2, NIST 800-171, SPRS scoring, and C3PAO assessment preparation.
-        </p>
-        <hr style="border:none;border-top:1px solid #1e2d4a;margin:28px 0;"/>
-        <p style="font-size:12px;color:#6b7280;text-align:center;">DefenseEye, Inc. · defenseeye.ai · AI, cybersecurity, governance, risk, and compliance automation</p>
-      </div>
-    `;
-
-    // Send emails only when SMTP is configured
-    if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
-      try {
-        console.log(`[contact] SMTP configured: host=${process.env.SMTP_HOST}, port=${process.env.SMTP_PORT}, secure=${process.env.SMTP_SECURE}, user=${process.env.SMTP_USER}`);
-        const transporter = nodemailer.createTransport({
-          host: process.env.SMTP_HOST,
-          port: parseInt(process.env.SMTP_PORT || "587"),
-          secure: process.env.SMTP_SECURE === "true",
-          auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-        });
-
-        const fromAddr = process.env.SMTP_FROM || process.env.SMTP_USER;
-
-        console.log(`[contact] Sending notification to enterprise@defenseeye.ai from ${fromAddr}...`);
-        await transporter.sendMail({
-          from: `"DefenseEye Contact Form" <${fromAddr}>`,
-          to: "enterprise@defenseeye.ai",
-          cc: "partners@defenseeye.ai",
-          replyTo: email,
-          subject,
-          html: htmlBody,
-        });
-        console.log("[contact] Notification email sent successfully.");
-
-        console.log(`[contact] Sending confirmation to ${email}...`);
-        await transporter.sendMail({
-          from: `"DefenseEye Team" <${fromAddr}>`,
-          to: email,
-          subject: `We received your DefenseEye inquiry`,
-          html: confirmationHtml,
-        });
-        console.log("[contact] Confirmation email sent successfully.");
-      } catch (err) {
-        console.error("[contact] Email send error:", err);
-        // Still return success — log the submission server-side
-      }
-    } else {
-      console.warn("[contact] SMTP not configured — skipping email. Set SMTP_HOST, SMTP_USER, SMTP_PASS.");
-    }
-
-    // Always log the lead server-side regardless of email status
-    console.log(`[lead] ${new Date().toISOString()} | ${fullName} | ${email} | ${company} | ${inquiryType || need || cmmcLevel || "general"} | ${challenge || message || ""}`);
-
-    res.json({ success: true });
+    const result = await processContactInquiry(req.body);
+    res.status(result.status).json(result.body);
   });
 
   // ─── Serve static files from dist/public in production ──────────────────────
@@ -722,4 +786,6 @@ async function startServer() {
   });
 }
 
-startServer().catch(console.error);
+if (process.env.NODE_ENV !== "test") {
+  startServer().catch(console.error);
+}

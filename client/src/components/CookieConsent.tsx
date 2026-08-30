@@ -2,17 +2,14 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const CONSENT_KEY = "de_cookie_consent";
-
-type ConsentState = "accepted" | "declined" | null;
+import { loadOpenAiAdsPixelIfConsented, setMeasurementConsent, shouldShowConsentBanner } from "@/lib/openaiAds";
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem(CONSENT_KEY) as ConsentState;
-    if (!stored) {
+    loadOpenAiAdsPixelIfConsented();
+    if (shouldShowConsentBanner()) {
       // Small delay so it doesn't flash immediately on page load
       const t = setTimeout(() => setVisible(true), 2500);
       return () => clearTimeout(t);
@@ -20,7 +17,7 @@ export default function CookieConsent() {
   }, []);
 
   function accept() {
-    localStorage.setItem(CONSENT_KEY, "accepted");
+    setMeasurementConsent("accepted");
     setVisible(false);
     if (typeof window !== "undefined" && typeof (window as any).loadGA4 === "function") {
       (window as any).loadGA4();
@@ -28,7 +25,7 @@ export default function CookieConsent() {
   }
 
   function decline() {
-    localStorage.setItem(CONSENT_KEY, "declined");
+    setMeasurementConsent("declined");
     setVisible(false);
   }
 
@@ -64,7 +61,7 @@ export default function CookieConsent() {
                 We use cookies
               </p>
               <p className="text-xs text-muted-foreground leading-snug">
-                Essential cookies keep the site working. Optional analytics help us improve the site.
+                Essential cookies keep the site working. Optional analytics and advertising measurement help us improve the site and understand whether DefenseEye ads lead to website actions.
                 Read our{" "}
                 <a href="/privacy-policy" className="text-primary hover:underline">
                   Privacy Policy

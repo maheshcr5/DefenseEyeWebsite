@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Mail, Calendar, MessageSquare, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
@@ -6,8 +6,55 @@ import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { useSeo } from "@/hooks/useSeo";
 import { CAPABILITY_STATEMENT_URL, COMPANY } from "@/data/companyFacts";
 import { getStoredAttribution, trackConversion } from "@/lib/tracking";
+import { reportOpenAiAdsLeadCreated } from "@/lib/openaiAds";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
+
+export type ContactFormValues = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  company: string;
+  title: string;
+  inquiryType: string;
+  timeline: string;
+  message: string;
+  phone: string;
+};
+
+export type ContactSubmissionGuard = {
+  inFlight: boolean;
+  completed: boolean;
+};
+
+export function beginContactSubmission(guard: ContactSubmissionGuard) {
+  if (guard.inFlight || guard.completed) return false;
+  guard.inFlight = true;
+  return true;
+}
+
+export function completeContactSubmission(guard: ContactSubmissionGuard) {
+  guard.completed = true;
+}
+
+export function releaseContactSubmission(guard: ContactSubmissionGuard) {
+  if (!guard.completed) guard.inFlight = false;
+}
+
+export async function submitContactInquiry(form: ContactFormValues) {
+  if (!form.firstName || !form.lastName || !form.email || !form.company || !form.title || !form.inquiryType || !form.timeline || !form.message) {
+    throw new Error("Contact form validation failed");
+  }
+
+  const response = await fetch("/api/contact", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...form, attribution: getStoredAttribution() }),
+  });
+  if (!response.ok) throw new Error("Contact form failed");
+  reportOpenAiAdsLeadCreated();
+  trackConversion("contact_form_submit", { form: "contact_page", inquiryType: form.inquiryType });
+}
 
 export default function ContactUs() {
   useSeo(
@@ -163,7 +210,8 @@ function ContactFormSection() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [form, setForm] = useState({
+  const submissionGuardRef = useRef<ContactSubmissionGuard>({ inFlight: false, completed: false });
+  const [form, setForm] = useState<ContactFormValues>({
     firstName: "",
     lastName: "",
     email: "",
@@ -203,20 +251,17 @@ function ContactFormSection() {
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
+    if (!beginContactSubmission(submissionGuardRef.current)) return;
     setSubmitting(true);
     setError("");
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, attribution: getStoredAttribution() }),
-      });
-      if (!response.ok) throw new Error("Contact form failed");
-      trackConversion("contact_form_submit", { form: "contact_page", inquiryType: form.inquiryType });
+      await submitContactInquiry(form);
+      completeContactSubmission(submissionGuardRef.current);
       setSubmitted(true);
     } catch {
       setError("Something went wrong. Please email enterprise@defenseeye.ai or partners@defenseeye.ai.");
     } finally {
+      releaseContactSubmission(submissionGuardRef.current);
       setSubmitting(false);
     }
   }

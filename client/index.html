@@ -235,8 +235,18 @@
         window.gtag('config', window.__gaId, { anonymize_ip: true });
         window.__gaLoaded = true;
       };
+      function hasGA4Consent() {
+        var raw = localStorage.getItem('de_cookie_consent');
+        if (raw === 'accepted') return true;
+        try {
+          var parsed = JSON.parse(raw || '{}');
+          return parsed && parsed.status === 'accepted' && parsed.purposes && parsed.purposes.analytics === true;
+        } catch (e) {
+          return false;
+        }
+      }
       // Auto-load if user already consented in a prior session
-      if (localStorage.getItem('de_cookie_consent') === 'accepted') {
+      if (hasGA4Consent()) {
         window.addEventListener('load', window.loadGA4);
       }
     </script>
