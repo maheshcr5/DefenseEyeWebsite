@@ -42,6 +42,7 @@ type ContactRequestBody = {
   phone?: string;
   inquiryType?: string;
   need?: string;
+  aiAdoptionStage?: string;
   companySize?: string;
   cmmcLevel?: string;
   challenge?: string;
@@ -81,6 +82,19 @@ function contactFailure(status: number, error: string): ContactResult {
   };
 }
 
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function sanitizeSubjectValue(value: string) {
+  return value.replace(/[\r\n]+/g, " ").trim();
+}
+
 export async function processContactInquiry(
   body: ContactRequestBody,
   env: NodeJS.ProcessEnv = process.env,
@@ -96,6 +110,7 @@ export async function processContactInquiry(
     phone,
     inquiryType,
     need,
+    aiAdoptionStage,
     companySize,
     cmmcLevel,
     challenge,
@@ -115,7 +130,34 @@ export async function processContactInquiry(
   }
 
   const fullName = `${firstName} ${lastName || ""}`.trim();
-  const subject = `New DefenseEye Inquiry - ${company}${inquiryType ? ` (${inquiryType})` : ""}`;
+  const safeCompanyForSubject = sanitizeSubjectValue(company);
+  const isSecureAiLead = inquiryType === "Secure AI Adoption";
+  const subject = isSecureAiLead
+    ? `New Secure AI Adoption Lead - ${safeCompanyForSubject}`
+    : `New DefenseEye Inquiry - ${safeCompanyForSubject}${inquiryType ? ` (${sanitizeSubjectValue(inquiryType)})` : ""}`;
+  const notificationRows: Array<[string, string]> = [
+    ["Name", fullName],
+    ["Work Email", email],
+    ["Phone", phone || "-"],
+    ["Company", company],
+    ["Role", title || "-"],
+    ["Inquiry Type", inquiryType || "-"],
+    ...(isSecureAiLead
+      ? ([
+          ["AI Adoption Stage", aiAdoptionStage || "-"],
+          ["Primary Need", need || "-"],
+          ["Desired Timeline", timeline || "-"],
+        ] as Array<[string, string]>)
+      : ([
+          ["Primary Need", need || "-"],
+          ["Company Size", companySize || "-"],
+          ["Target CMMC Level", cmmcLevel || "-"],
+          ["Compliance Timeline", timeline || "-"],
+          ["Biggest Challenge", challenge || "-"],
+        ] as Array<[string, string]>)),
+    ["Additional Context", message || "-"],
+    ["Attribution", attribution ? JSON.stringify(attribution) : "-"],
+  ];
 
   const htmlBody = `
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A1628;color:#e8eaf0;padding:32px;border-radius:8px;">
@@ -124,32 +166,18 @@ export async function processContactInquiry(
         <p style="color:#9ca3af;font-size:14px;margin:6px 0 0;">Submitted via defenseeye.ai contact form</p>
       </div>
       <table style="width:100%;border-collapse:collapse;font-size:14px;">
-        ${[
-          ["Name", fullName],
-          ["Work Email", email],
-          ["Phone", phone || "-"],
-          ["Company", company],
-          ["Role", title || "-"],
-          ["Inquiry Type", inquiryType || "-"],
-          ["Primary Need", need || "-"],
-          ["Company Size", companySize || "-"],
-          ["Target CMMC Level", cmmcLevel || "-"],
-          ["Compliance Timeline", timeline || "-"],
-          ["Biggest Challenge", challenge || "-"],
-          ["Additional Context", message || "-"],
-          ["Attribution", attribution ? JSON.stringify(attribution) : "-"],
-        ]
+        ${notificationRows
           .map(
             ([label, value]) => `
           <tr>
-            <td style="padding:10px 12px;background:#131f35;border-bottom:1px solid #1e2d4a;font-weight:600;color:#00D4FF;width:38%;">${label}</td>
-            <td style="padding:10px 12px;background:#0d1a2d;border-bottom:1px solid #1e2d4a;color:#e8eaf0;">${value}</td>
+            <td style="padding:10px 12px;background:#131f35;border-bottom:1px solid #1e2d4a;font-weight:600;color:#00D4FF;width:38%;">${escapeHtml(label)}</td>
+            <td style="padding:10px 12px;background:#0d1a2d;border-bottom:1px solid #1e2d4a;color:#e8eaf0;">${escapeHtml(value)}</td>
           </tr>`
           )
           .join("")}
       </table>
       <p style="margin-top:24px;font-size:12px;color:#6b7280;text-align:center;">
-        Reply directly to this email to respond to ${fullName} at ${email}
+        Reply directly to this email to respond to ${escapeHtml(fullName)} at ${escapeHtml(email)}
       </p>
     </div>
   `;
@@ -157,16 +185,16 @@ export async function processContactInquiry(
   const confirmationHtml = `
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A1628;color:#e8eaf0;padding:32px;border-radius:8px;">
       <div style="text-align:center;margin-bottom:24px;">
-        <h1 style="color:#00D4FF;font-size:22px;margin:0;">We received your request, ${firstName}!</h1>
+        <h1 style="color:#00D4FF;font-size:22px;margin:0;">We received your request, ${escapeHtml(firstName)}!</h1>
       </div>
       <p style="color:#cbd5e1;line-height:1.7;">
         Thank you for reaching out to <strong style="color:#00D4FF;">DefenseEye</strong>. Our team will review your request and contact you within <strong>24 business hours</strong> to discuss your AI, cybersecurity, governance, risk, or compliance automation goals.
       </p>
       <div style="background:#131f35;border:1px solid #1e3a5f;border-radius:6px;padding:20px;margin:24px 0;">
         <p style="margin:0 0 8px;font-size:13px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Your submission summary</p>
-        <p style="margin:4px 0;color:#e8eaf0;"><strong>Company:</strong> ${company}</p>
-        <p style="margin:4px 0;color:#e8eaf0;"><strong>Inquiry Type:</strong> ${inquiryType || need || "TBD"}</p>
-        <p style="margin:4px 0;color:#e8eaf0;"><strong>Timeline:</strong> ${timeline || "TBD"}</p>
+        <p style="margin:4px 0;color:#e8eaf0;"><strong>Company:</strong> ${escapeHtml(company)}</p>
+        <p style="margin:4px 0;color:#e8eaf0;"><strong>Inquiry Type:</strong> ${escapeHtml(inquiryType || need || "TBD")}</p>
+        <p style="margin:4px 0;color:#e8eaf0;"><strong>Timeline:</strong> ${escapeHtml(timeline || "TBD")}</p>
       </div>
       <p style="color:#9ca3af;font-size:13px;">
         While you wait, explore our free <a href="https://defenseeye.ai/knowledge-hub" style="color:#00D4FF;">CMMC Knowledge Hub</a> - plain-English guides on CMMC Level 2, NIST 800-171, SPRS scoring, and C3PAO assessment preparation.
@@ -315,6 +343,103 @@ const CMMC_CHUNKS = [
 
 const PAGE_SIZE = 5;
 
+export const SECURE_AI_ROUTE_META = {
+  title: "Secure Agentic AI Consulting | DefenseEye",
+  description:
+    "DefenseEye helps regulated organizations implement agentic AI with secure architecture, responsible governance, risk controls, and hands-on delivery support.",
+};
+
+export function secureAiPrerenderHtml() {
+  return `
+      <!-- Route-specific no-JavaScript content for /secure-ai-adoption. React replaces this on load. -->
+      <div class="de-pr">
+        <nav>
+          <a class="brand" href="https://defenseeye.ai">DefenseEye.ai</a>
+          <p style="margin-top:.6rem;font-size:.85rem;line-height:1.6">
+            <a class="klink" href="/secure-ai-adoption">Secure AI Adoption</a> ·
+            <a class="klink" href="/contact?inquiry=ai-governance">Contact</a>
+          </p>
+        </nav>
+        <main>
+          <p class="eyebrow">Secure Agentic AI Readiness &amp; Implementation</p>
+          <h1>Implement Agentic AI Securely</h1>
+          <p class="lead">Move from AI exploration to governed implementation with secure architecture, responsible AI controls, and hands-on delivery support.</p>
+
+          <section>
+            <h2>Who DefenseEye Helps</h2>
+            <p>DefenseEye helps regulated organizations and teams handling sensitive data that want to explore, pilot, implement, or scale agentic AI responsibly.</p>
+          </section>
+
+          <section>
+            <h2>What DefenseEye Delivers</h2>
+            <ul>
+              <li>AI readiness and use-case prioritization</li>
+              <li>Secure agent, identity, data, and integration architecture</li>
+              <li>Responsible AI governance and NIST AI RMF alignment</li>
+              <li>Human oversight, evaluation, testing, and operational controls</li>
+              <li>Hands-on agentic AI implementation and integration support</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Engagement Approach</h2>
+            <ul>
+              <li><strong>Assess:</strong> Assess the use case, risks, data, and readiness.</li>
+              <li><strong>Design:</strong> Design the secure architecture and governance controls.</li>
+              <li><strong>Implement:</strong> Implement, evaluate, and scale the solution.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Why DefenseEye</h2>
+            <p>DefenseEye brings practitioner-led AI/ML engineering, cybersecurity, responsible AI governance, Microsoft and Azure experience, and hands-on implementation support for regulated environments.</p>
+          </section>
+
+          <section>
+            <h2>Request a Secure AI Readiness Consultation</h2>
+            <p>Use the Secure AI inquiry form to share your AI adoption stage, primary need, desired timeline, and additional context.</p>
+          </section>
+        </main>
+      </div>`;
+}
+
+export function injectRouteSpecificHtml(html: string, routePath: string) {
+  if (routePath !== "/secure-ai-adoption") return html;
+  const secureAiSchema = `    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Secure Agentic AI Readiness and Implementation",
+        "url": "https://defenseeye.ai/secure-ai-adoption",
+        "description": "${SECURE_AI_ROUTE_META.description}",
+        "provider": {"@type": "ProfessionalService", "name": "DefenseEye", "url": "https://defenseeye.ai"},
+        "areaServed": {"@type": "Country", "name": "United States"},
+        "serviceType": "Secure agentic AI consulting and implementation"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://defenseeye.ai/"},
+          {"@type": "ListItem", "position": 2, "name": "Secure AI Adoption", "item": "https://defenseeye.ai/secure-ai-adoption"}
+        ]
+      }
+    ]
+    </script>`;
+
+  return html
+    .replace(
+      /<meta name="keywords" content="[^"]*"/,
+      `<meta name="keywords" content="secure agentic AI consulting, secure AI implementation, responsible AI governance, NIST AI RMF alignment, AI readiness assessment, Azure OpenAI readiness, Microsoft Copilot readiness"`
+    )
+    .replace(/<!-- Schema\.org: ProfessionalService \+ Organization -->\s*<script type="application\/ld\+json">[\s\S]*?<\/script>/, `<!-- Schema.org: Secure AI Service + Breadcrumbs -->\n${secureAiSchema}`)
+    .replace(
+    /<div id="root">[\s\S]*?<\/div>\s*(?=<!-- Google Analytics 4)/,
+    `<div id="root">${secureAiPrerenderHtml()}\n    </div>\n\n    `
+    );
+}
+
 async function startServer() {
   const app = express();
   const server = createServer(app);
@@ -411,8 +536,8 @@ async function startServer() {
       description: "DefenseEye helps regulated organizations operationalize secure AI adoption and CMMC readiness through practitioner-led consulting, Microsoft cloud security expertise, and compliance automation.",
     },
     "/secure-ai-adoption": {
-      title: "Secure AI Adoption Consulting | DefenseEye AI Governance, Copilot Readiness, and AI Security",
-      description: "DefenseEye helps regulated organizations adopt AI securely through AI governance, Microsoft Copilot readiness, NIST AI RMF implementation, AI security, and responsible AI operating models.",
+      title: SECURE_AI_ROUTE_META.title,
+      description: SECURE_AI_ROUTE_META.description,
     },
     "/attacksense": {
       title: "AttackSense | DefenseEye Attack Surface and Remediation Intelligence",
@@ -765,6 +890,7 @@ async function startServer() {
         /<meta name="twitter:description" content="[^"]*"/,
         `<meta name="twitter:description" content="${routeMeta.description.replace(/"/g, "&quot;")}"`
       );
+      html = injectRouteSpecificHtml(html, req.path);
       if (isNotFound) {
         html = html.replace(
           /<meta name="robots" content="[^"]*"/,

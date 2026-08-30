@@ -13,6 +13,7 @@
     "test:contact-backend": "vitest run --root . server/contact.test.ts",
     "test:openai-ads": "vitest run client/src/lib/openaiAds.test.ts",
     "test:contact-form": "vitest run client/src/pages/ContactUs.test.ts",
+    "test:secure-ai-landing": "vitest run --root . client/src/pages/SecureAiAdoption.test.tsx server/secure-ai-route.test.ts",
     "format": "prettier --write ."
   },
   "dependencies": {

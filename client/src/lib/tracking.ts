@@ -1,4 +1,16 @@
-const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "msclkid", "li_fat_id"];
+const UTM_KEYS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_term",
+  "utm_content",
+  "gclid",
+  "msclkid",
+  "li_fat_id",
+  "campaign_id",
+  "ad_group_id",
+  "oppref",
+];
 
 export type ConversionName =
   | "capability_statement_download"

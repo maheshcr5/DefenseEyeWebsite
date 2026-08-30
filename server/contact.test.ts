@@ -77,6 +77,47 @@ describe("contact endpoint success contract", () => {
     expect(nodemailerMock.sendMail).toHaveBeenCalledTimes(2);
   });
 
+  it("Secure AI Adoption lead notification includes AI-specific answers and attribution", async () => {
+    const { logger } = createLogger();
+    nodemailerMock.sendMail.mockResolvedValueOnce({ accepted: ["enterprise@defenseeye.ai"] }).mockResolvedValueOnce({ accepted: ["ada@example.com"] });
+
+    const result = await processContactInquiry(
+      {
+        ...contactBody,
+        inquiryType: "Secure AI Adoption",
+        aiAdoptionStage: "Running a pilot",
+        need: "Agentic AI implementation",
+        timeline: "This quarter",
+        cmmcLevel: "Level 2",
+        challenge: "Audit deadline",
+        attribution: {
+          utm_source: "openai",
+          utm_medium: "paid",
+          utm_campaign: "secure-ai",
+          utm_content: "hero",
+          campaign_id: "cmp_123",
+          ad_group_id: "grp_456",
+          oppref: "opp_789",
+        },
+      },
+      smtpEnv,
+      logger
+    );
+
+    const notification = nodemailerMock.sendMail.mock.calls[0][0];
+    expect(result.status).toBe(200);
+    expect(notification.subject).toBe("New Secure AI Adoption Lead - Example Co");
+    expect(notification.html).toContain("AI Adoption Stage");
+    expect(notification.html).toContain("Running a pilot");
+    expect(notification.html).toContain("Primary Need");
+    expect(notification.html).toContain("Agentic AI implementation");
+    expect(notification.html).toContain("campaign_id");
+    expect(notification.html).toContain("ad_group_id");
+    expect(notification.html).toContain("oppref");
+    expect(notification.html).not.toContain("Target CMMC Level");
+    expect(notification.html).not.toContain("Biggest Challenge");
+  });
+
   it("required notification failure returns non-2xx", async () => {
     const { logger } = createLogger();
     nodemailerMock.sendMail.mockRejectedValueOnce(new Error("SMTP rejected credentials"));
