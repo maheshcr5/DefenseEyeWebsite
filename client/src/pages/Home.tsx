@@ -1,19 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, type ComponentType } from "react";
 import {
   ArrowRight,
-  Award,
-  BarChart3,
   Bot,
   Building2,
   CheckCircle2,
   ClipboardCheck,
-  EyeOff,
   FileCheck,
-  FileLock2,
+  LockKeyhole,
   Network,
+  Scale,
+  SearchCheck,
   ShieldCheck,
-  Sparkles,
-  Target,
   UserCheck,
 } from "lucide-react";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
@@ -21,169 +18,77 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
-import { CALENDLY_URL, COMPANY, MARKETPLACE_URL } from "@/data/companyFacts";
+import { COMPANY } from "@/data/companyFacts";
 import { trackConversion } from "@/lib/tracking";
 
-const CMMCLENS_DEMO_MAILTO = `mailto:${COMPANY.enterpriseEmail}?subject=Requesting%20CMMCLens%20Demo%20Access`;
+type IconComponent = ComponentType<{ className?: string; "aria-hidden"?: boolean | "true" | "false" }>;
+type IconText = [IconComponent, string];
+type CapabilityLink = [string, string, IconComponent];
 
-const problemCards = [
-  ["AI adoption without governance", "Teams deploy copilots, agents, and AI workflows before data, identity, privacy, and oversight controls are ready."],
-  ["Compliance evidence trapped in manual work", "CMMC and NIST SP 800-171 readiness often depend on spreadsheets, screenshots, disconnected documents, and repeated evidence requests."],
-  ["Security and compliance disconnected from execution", "Risk findings do not always translate into remediation workflows, ownership, dashboards, or measurable progress."],
-  ["Enterprise procurement needs supplier confidence", "Large organizations need suppliers who can show capability, credentials, delivery models, and readiness without overclaiming."],
+const HOME_TITLE = "DefenseEye | Secure Agentic AI Implementation";
+const HOME_DESCRIPTION =
+  "DefenseEye helps FinTechs, credit unions, and regulated organizations implement agentic AI with secure architecture, responsible governance, human oversight, and hands-on delivery support.";
+
+const buyerProblems = [
+  "Sensitive member and customer data exposure",
+  "Excessive AI-agent permissions",
+  "Uncontrolled access to internal systems and records",
+  "Inaccurate or untraceable outputs",
+  "Third-party model and vendor risk",
+  "Insufficient human review for consequential actions",
+  "Difficulty demonstrating governance and accountability",
 ];
 
-const portfolios = [
-  {
-    title: "Secure & Responsible AI Adoption",
-    href: "/secure-ai-adoption",
-    cta: "Explore Secure AI Adoption",
-    event: "portfolio_ai_click" as const,
-    icon: Bot,
-    description:
-      "For organizations adopting Microsoft Copilot, Azure OpenAI, generative AI, LLM workflows, or enterprise AI systems that require governance, security, accountability, and operational controls.",
-    services: [
-      "Strategic AI Executive Advisory & Governance for Prime Contractors",
-      "AI governance readiness",
-      "Microsoft Copilot readiness",
-      "AI security assessment",
-      "Responsible AI policy and oversight",
-      "NIST AI RMF implementation",
-      "AI risk and vendor review",
-      "Secure AI adoption roadmap",
-    ],
-    outcomes: [
-      "Reduced AI adoption risk",
-      "Clear AI accountability model",
-      "Better data and identity control",
-      "Faster governed implementation",
-      "Improved executive visibility",
-    ],
-  },
-  {
-    title: "CMMC & Compliance Automation",
-    href: "/cmmc-compliance-automation",
-    cta: "Explore CMMC Automation",
-    event: "portfolio_cmmc_click" as const,
-    icon: FileCheck,
-    description:
-      "For defense contractors, government contractors, primes, and regulated organizations preparing for CMMC, NIST SP 800-171, customer audits, supplier readiness, and compliance evidence discipline.",
-    services: [
-      "CMMC Level 2 readiness",
-      "NIST SP 800-171 gap analysis",
-      "SSP and POA&M support",
-      "SPRS readiness",
-      "Evidence automation",
-      "CMMCLens implementation",
-      "Remediation workflow support",
-      "Prime supply-chain readiness",
-    ],
-    outcomes: [
-      "Reduced manual evidence burden",
-      "Better control traceability",
-      "Clear remediation priorities",
-      "Improved audit preparedness",
-      "Stronger customer and supplier readiness",
-    ],
-  },
+const useCases = [
+  "Member and customer-service knowledge assistants",
+  "Internal policy and compliance research agents",
+  "Fraud and case-investigation workflow support",
+  "Secure document and data extraction",
+  "Employee productivity and operations copilots",
+  "Microsoft Copilot and Azure OpenAI adoption",
+  "Human-reviewed agentic workflows for sensitive operations",
 ];
 
-const readinessPanels = [
-  ["Secure AI Adoption", "Move from AI experimentation to governed adoption with clear policies, oversight, security controls, and implementation roadmaps.", ShieldCheck],
-  ["Microsoft Copilot Readiness", "Prepare Microsoft 365, identity, privacy, and security controls before expanding Copilot across the organization.", Sparkles],
-  ["CMMC Evidence Automation", "Replace fragmented manual compliance work with evidence workflows, readiness dashboards, and control traceability.", ClipboardCheck],
-  ["Supplier Readiness", "Support enterprise supplier, subcontracting, and procurement evaluation with clear capability and readiness information.", Building2],
-];
-
-const outcomeRows = [
-  ["Manual evidence collection", "High labor cost, repeated requests, delayed readiness", "Automate evidence workflows and control traceability"],
-  ["Ungoverned AI adoption", "Data exposure, rework, delayed deployment", "Implement AI governance, security, and readiness controls early"],
-  ["Disconnected security findings", "Risk remains unresolved, ownership unclear", "Convert findings into prioritized remediation workflows"],
-  ["Copilot readiness gaps", "Over-permissioned data, privacy risk, adoption friction", "Assess identity, data governance, security, and user readiness"],
-  ["CMMC uncertainty", "Contract risk and assessment friction", "Provide CCP-led readiness support and CMMCLens automation"],
-  ["Big-firm consulting cost", "High advisory cost, slow execution", "Practitioner-led, focused delivery with platform-enabled automation"],
-];
-
-const whyCards = [
-  ["Practitioner-led", "Senior advisors with experience across Microsoft cloud, federal cybersecurity, AI governance, privacy, regulatory response, and compliance automation.", UserCheck],
-  ["CCP-led CMMC readiness", "DefenseEye includes multiple CMMC Certified Professionals supporting CMMC and NIST SP 800-171 readiness.", Award],
-  ["Automation-enabled", "CMMCLens helps structure evidence collection, gap tracking, SSP/POA&M workflows, and readiness visibility.", BarChart3],
-  ["Microsoft-centered", "Experience aligned to Azure, Microsoft 365, Copilot, Entra, Defender, Sentinel, Purview, Azure Government, and GCC High patterns.", Network],
-  ["Supplier-ready", "Minority-owned business with supplier identifiers, NAICS codes, CAGE, UEI, and engagement models for advisory, implementation, subcontracting, and staff augmentation.", Building2],
-];
-
-const differentRows = [
-  ["Broad AI strategy decks", "Governed AI adoption roadmaps tied to controls and implementation"],
-  ["Manual compliance evidence", "Evidence automation and traceability through CMMCLens"],
-  ["Disconnected advisory work", "Advisory, implementation, dashboards, and workflows connected"],
-  ["CMMC treated as documentation", "CMMC treated as operational readiness"],
-  ["AI governance treated as policy only", "AI governance connected to security, identity, data, oversight, and adoption"],
-  ["Supplier claims without procurement detail", "Clear supplier readiness, identifiers, certifications, and engagement models"],
-];
-
-const architectureComparisonRows = [
-  {
-    legacy: "Multi-tenant SaaS tools may centralize compliance artifacts, telemetry, and configuration details outside the customer environment.",
-    cmmclens: "CMMCLens is designed for in-tenant deployment inside the customer's Azure Commercial, Azure Government, or GCC High environment.",
-  },
-  {
-    legacy: "Traditional advisory work often depends on broad administrator access, shared exports, screenshots, and repeated evidence handoffs.",
-    cmmclens: "Sensitive network telemetry, configurations, CUI context, and generated SSPs remain inside the customer's security perimeter.",
-  },
-  {
-    legacy: "Outside consultants and third-party FTEs can gain direct visibility into infrastructure, permissions, and control gaps.",
-    cmmclens: "The platform is self-contained so external, foreign, or uncleared FTEs do not need to inspect customer infrastructure through CMMCLens.",
-  },
-  {
-    legacy: "Procurement and platform access are often tied to vendor-hosted workflows that increase data handling questions.",
-    cmmclens: "Microsoft Marketplace supports licensing and MACC-aligned cloud consumption while customer data stays in the tenant.",
-  },
-];
-
-const architecturePillars = [
-  {
-    title: "Data Residency",
-    icon: FileLock2,
-    text: "Evidence artifacts, cloud configuration context, CUI-related metadata, and SSP outputs stay inside the customer's tenant. DefenseEye does not need to host customer compliance data for this architecture model.",
-  },
-  {
-    title: "No Outside Eyes",
-    icon: EyeOff,
-    text: "CMMCLens reduces FTE visibility risk by limiting the need for broad advisory access to regulated infrastructure, identity, endpoint, and compliance systems.",
-  },
-  {
-    title: "Marketplace Billing Isolation",
-    icon: Building2,
-    text: "Microsoft Marketplace is used as a commercial conduit for licensing and billing. Microsoft manages the transaction layer; CMMCLens does not export customer evidence or infrastructure data for billing.",
-  },
+const capabilities: IconText[] = [
+  [SearchCheck, "AI readiness and use-case prioritization"],
+  [LockKeyhole, "Secure identity, data, agent, and integration architecture"],
+  [Scale, "Responsible AI governance and NIST AI RMF alignment"],
+  [ShieldCheck, "Evaluation, testing, monitoring, and human oversight"],
+  [Bot, "Agentic AI engineering and implementation"],
+  [Network, "Microsoft cloud, Copilot, and Azure OpenAI readiness"],
+  [ClipboardCheck, "Cybersecurity and privacy controls for sensitive environments"],
 ];
 
 const engagementSteps = [
-  ["1", "Clarify scope", "Identify the AI, Microsoft cloud, CMMC, supplier, or evidence-readiness problem that needs action."],
-  ["2", "Assess readiness", "Review policies, controls, workflows, data exposure, evidence, and ownership against the selected portfolio."],
-  ["3", "Prioritize execution", "Translate findings into a roadmap, remediation workflow, implementation plan, or CMMCLens onboarding path."],
-  ["4", "Operationalize", "Support teams with practitioner-led consulting, staff augmentation, dashboards, documentation, and automation."],
+  ["Assess", "Business value, data readiness, risks, and controls."],
+  ["Design", "Architecture, governance, identity, oversight, and evaluation."],
+  ["Implement", "Build, integrate, test, monitor, and scale."],
 ];
 
-const datasheets = [
-  ["Secure AI Adoption Datasheet", "/datasheets/secure-ai-adoption"],
-  ["CMMC Automation Datasheet", "/datasheets/cmmc-compliance-automation"],
-  ["CMMCLens Product Sheet", "/datasheets/cmmclens"],
-  ["Microsoft Copilot Readiness Datasheet", "/datasheets/microsoft-copilot-readiness"],
-  ["Supplier Readiness Datasheet", "/datasheets/supplier-readiness"],
+const whyDefenseEye: IconText[] = [
+  [UserCheck, "Practitioner-led AI/ML engineering"],
+  [ShieldCheck, "Cybersecurity and responsible AI governance"],
+  [Network, "Microsoft and Azure experience"],
+  [Building2, "Regulated-environment implementation perspective"],
+  [CheckCircle2, "Hands-on delivery rather than strategy-only consulting"],
 ];
 
-const faqs = [
-  ["Does DefenseEye certify organizations for CMMC?", "No. DefenseEye provides CCP-led readiness support, advisory, documentation, evidence automation, and preparation support. DefenseEye does not claim C3PAO status or certify organizations."],
-  ["What is the main difference between the two portfolios?", "Secure AI Adoption focuses on governance, Copilot, Azure AI, security, policy, and oversight. CMMC & Compliance Automation focuses on NIST SP 800-171, CMMC readiness, evidence, SSP/POA&M workflows, and CMMCLens."],
-  ["How does CMMCLens reduce manual effort?", "CMMCLens may reduce manual evidence collection effort depending on environment maturity, integrations, available source data, and implementation scope."],
+const secondaryCapabilities: CapabilityLink[] = [
+  ["CMMC and NIST SP 800-171 readiness", "/cmmc-compliance-automation", FileCheck],
+  ["CMMCLens compliance evidence automation", "/cmmclens", ClipboardCheck],
+  ["AttackSense cybersecurity visibility", "/attacksense", ShieldCheck],
+  ["Supplier and subcontracting support", "/supplier-readiness", Building2],
 ];
+
+const secondaryCapabilityEvents = {
+  "/cmmc-compliance-automation": "portfolio_cmmc_click",
+  "/cmmclens": "cmmclens_click",
+  "/attacksense": "attacksense_view",
+  "/supplier-readiness": "supplier_readiness_view",
+} as const;
 
 export default function Home() {
-  useSeo(
-    "DefenseEye | Secure AI Adoption and CMMC Compliance Automation",
-    "DefenseEye helps regulated organizations operationalize secure AI adoption and CMMC readiness through practitioner-led consulting, Microsoft cloud security expertise, and compliance automation."
-  );
+  useSeo(HOME_TITLE, HOME_DESCRIPTION);
 
   useEffect(() => {
     const id = "home-schema";
@@ -200,23 +105,13 @@ export default function Home() {
         address: { "@type": "PostalAddress", addressLocality: "Redmond", addressRegion: "WA", addressCountry: "US" },
         areaServed: "United States",
         email: COMPANY.enterpriseEmail,
-        description:
-          "Practitioner-led AI governance, Microsoft cloud security, CMMC readiness, and compliance automation supplier for regulated organizations.",
+        description: HOME_DESCRIPTION,
       },
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
         name: "DefenseEye",
         url: "https://defenseeye.ai",
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: faqs.map(([question, answer]) => ({
-          "@type": "Question",
-          name: question,
-          acceptedAnswer: { "@type": "Answer", text: answer },
-        })),
       },
     ]);
     document.head.appendChild(script);
@@ -233,90 +128,24 @@ export default function Home() {
             <DefenseEyeLogo />
           </div>
           <div className="max-w-4xl">
-            <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-primary">Practitioner-led AI governance, Microsoft cloud security, and compliance automation</p>
-            <h1 className="font-heading text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl">
-              Operationalize Secure AI Adoption and CMMC Readiness
-            </h1>
+            <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-primary">SECURE AGENTIC AI FOR REGULATED ORGANIZATIONS</p>
+            <h1 className="font-heading text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl">Implement Agentic AI Securely</h1>
             <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-              DefenseEye connects AI governance, Microsoft cloud security, CMMC readiness, and evidence automation into one operational readiness model.
+              DefenseEye helps FinTechs, credit unions, and other regulated organizations implement AI agents with secure data access, responsible governance, human oversight, and practical delivery support.
             </p>
-          </div>
-
-          {/* Segment-Based Routing Cards */}
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            {/* Card 1: Defense Contractors */}
-            <div className="group relative flex flex-col justify-between rounded-lg border border-primary/30 bg-card/80 p-6 shadow-xl transition-all hover:border-primary hover:bg-card">
-              <div>
-                <div className="mb-4 flex items-center gap-3">
-                  <div className="rounded-md border border-primary/30 bg-primary/15 p-2.5 text-primary">
-                    <ShieldCheck className="size-6" />
-                  </div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-accent">For Defense Contractors</span>
-                </div>
-                <h2 className="font-heading text-2xl font-bold text-foreground">
-                  Achieve CMMC Level 2 & NIST SP 800-171 Compliance
-                </h2>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  CCP-led readiness support, automated evidence collection with CMMCLens, SPRS scoring benchmarks, and execution workflows to ensure assessment preparedness.
-                </p>
-              </div>
-              <div className="mt-6">
-                <a href="/cmmc-compliance-automation" onClick={() => trackConversion("portfolio_cmmc_click", { location: "home_hero_card" })}>
-                  <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-auto">
-                    Explore CMMC Readiness <ArrowRight className="ml-2 size-4" />
-                  </Button>
-                </a>
-              </div>
-            </div>
-
-            {/* Card 2: Enterprise Tech */}
-            <div className="group relative flex flex-col justify-between rounded-lg border border-primary/30 bg-card/80 p-6 shadow-xl transition-all hover:border-primary hover:bg-card">
-              <div>
-                <div className="mb-4 flex items-center gap-3">
-                  <div className="rounded-md border border-primary/30 bg-primary/15 p-2.5 text-primary">
-                    <Bot className="size-6" />
-                  </div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-accent">For Enterprise Tech</span>
-                </div>
-                <h2 className="font-heading text-2xl font-bold text-foreground">
-                  Secure AI Adoption & Copilot Governance
-                </h2>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  Operationalize Microsoft Copilot and Azure OpenAI with robust identity guardrails, NIST AI RMF oversight, data loss prevention, and third-party risk controls.
-                </p>
-              </div>
-              <div className="mt-6">
-                <a href="/secure-ai-adoption" onClick={() => trackConversion("portfolio_ai_click", { location: "home_hero_card" })}>
-                  <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 sm:w-auto">
-                    Explore Enterprise AI Safety <ArrowRight className="ml-2 size-4" />
-                  </Button>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Infinite Auto-Scrolling Capabilities Ticker */}
-          <div className="mt-12 overflow-hidden border-y border-primary/20 bg-card/40 py-3.5">
-            <div className="animate-marquee flex items-center gap-10 whitespace-nowrap">
-              {[
-                "CMMC Level 2 Automation",
-                "AI Governance Frameworks",
-                "NIST SP 800-171 Sprints",
-                "Supplier Risk Assessment",
-                "LLM Data Leakage Audits",
-                "DoD C3PAO Readiness",
-                "CMMC Level 2 Automation",
-                "AI Governance Frameworks",
-                "NIST SP 800-171 Sprints",
-                "Supplier Risk Assessment",
-                "LLM Data Leakage Audits",
-                "DoD C3PAO Readiness",
-              ].map((item, index) => (
-                <div key={index} className="flex items-center gap-3 text-sm font-semibold tracking-wide text-primary">
-                  <span className="text-accent">•</span>
-                  <span>{item}</span>
-                </div>
-              ))}
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+              <a href="/secure-ai-adoption#secure-ai-consultation" onClick={() => trackConversion("consultation_click", { location: "home_hero_secure_ai" })}>
+                <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-auto">
+                  Request a Secure AI Readiness Consultation <ArrowRight className="ml-2 size-4" />
+                </Button>
+              </a>
+              <a
+                href="/secure-ai-adoption"
+                onClick={() => trackConversion("portfolio_ai_click", { location: "home_hero_text_link" })}
+                className="text-sm font-semibold text-primary underline-offset-4 hover:underline"
+              >
+                Explore Secure AI Services
+              </a>
             </div>
           </div>
         </div>
@@ -325,306 +154,17 @@ export default function Home() {
       <section className="section-light px-4 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="max-w-3xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Problem Framing</p>
-            <h2 className="font-heading text-4xl font-bold">The Problem: AI and Compliance Programs Are Still Managed in Silos</h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
-              Regulated organizations are adopting AI while also facing stricter cybersecurity, compliance, supplier, and audit expectations. Too often, AI governance, cloud security, CMMC evidence, policies, and remediation workflows are managed separately. The result is duplicated effort, unclear accountability, weak evidence traceability, delayed readiness, and higher operating cost.
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Buyer Problems</p>
+            <h2 className="font-heading text-4xl font-bold">AI agents introduce real operational risk when governance trails implementation</h2>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              Regulated financial organizations need practical controls before agents can retrieve records, summarize sensitive data, act across systems, or influence consequential workflows.
             </p>
           </div>
-          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {problemCards.map(([title, text]) => (
-              <div key={title} className="rounded-sm border border-border/50 bg-card p-5">
-                <Target className="mb-4 size-5 text-primary" />
-                <h3 className="font-heading text-lg font-bold">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="portfolios" className="section-gray px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-8 text-center">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Two Portfolio Paths</p>
-            <h2 className="font-heading text-4xl font-bold">Two Focused Portfolios. One Readiness Operating Model.</h2>
-          </div>
-          <div className="grid gap-6 lg:grid-cols-2">
-            {portfolios.map((portfolio) => {
-              const Icon = portfolio.icon;
-              return (
-                <article key={portfolio.title} className="rounded-sm border border-border/50 bg-card p-6">
-                  <div className="mb-5 flex items-start gap-4">
-                    <div className="rounded-sm border border-primary/20 bg-primary/10 p-3">
-                      <Icon className="size-6 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-heading text-2xl font-bold">{portfolio.title}</h3>
-                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{portfolio.description}</p>
-                    </div>
-                  </div>
-                  <div className="grid gap-5 md:grid-cols-2">
-                    <ListBlock title="Services" items={portfolio.services} />
-                    <ListBlock title="Business Outcomes" items={portfolio.outcomes} />
-                  </div>
-                  <a href={portfolio.href} onClick={() => trackConversion(portfolio.event, { location: "home_portfolio_card" })}>
-                    <Button className="mt-6 bg-accent text-accent-foreground hover:bg-accent/90">
-                      {portfolio.cta} <ArrowRight className="ml-2 size-4" />
-                    </Button>
-                  </a>
-                </article>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-navy px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-8 max-w-3xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary">Operational Readiness</p>
-            <h2 className="font-heading text-4xl font-bold">From Risk Discussion to Operational Readiness</h2>
-          </div>
-          <div className="flex snap-x gap-4 overflow-x-auto pb-3 lg:grid lg:grid-cols-4 lg:overflow-visible">
-            {readinessPanels.map(([title, text, Icon]) => (
-              <div key={title as string} className="min-w-[270px] snap-start rounded-sm border border-primary/20 bg-card/70 p-5">
-                {/* TODO: Replace this lightweight diagram panel with approved custom enterprise imagery when available. */}
-                <div className="mb-5 flex h-32 items-center justify-center rounded-sm border border-border/40 bg-background/40" aria-label={`${title} visual panel`}>
-                  <Icon className="size-12 text-primary" aria-hidden="true" />
-                </div>
-                <h3 className="font-heading text-xl font-bold">{title as string}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{text as string}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-light px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-8 max-w-3xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Business Outcomes</p>
-            <h2 className="font-heading text-4xl font-bold">Designed to Reduce the Cost of Readiness</h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
-              DefenseEye is built around the operating economics of regulated AI and compliance programs: reduce manual effort, reduce rework, shorten readiness cycles, improve traceability, and give leaders clearer visibility into risk and progress.
-            </p>
-          </div>
-          <div className="overflow-x-auto rounded-sm border border-border/50">
-            <table className="w-full min-w-[760px] text-left text-sm">
-              <thead className="bg-muted/60 text-foreground">
-                <tr>
-                  <th className="p-4 font-heading text-base">Operational challenge</th>
-                  <th className="p-4 font-heading text-base">Economic impact</th>
-                  <th className="p-4 font-heading text-base">DefenseEye approach</th>
-                </tr>
-              </thead>
-              <tbody>
-                {outcomeRows.map(([challenge, impact, approach]) => (
-                  <tr key={challenge} className="border-t border-border/50 bg-card/50">
-                    <td className="p-4 font-medium">{challenge}</td>
-                    <td className="p-4 text-muted-foreground">{impact}</td>
-                    <td className="p-4 text-muted-foreground">{approach}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-4 text-sm text-muted-foreground">
-            CMMCLens may reduce manual evidence collection effort depending on environment maturity, integrations, and implementation scope.
-          </p>
-        </div>
-      </section>
-
-      <section className="section-gray px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-8 max-w-3xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Why DefenseEye</p>
-            <h2 className="font-heading text-4xl font-bold">Why DefenseEye</h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
-              DefenseEye combines practitioner-led consulting, Microsoft cloud security experience, CMMC credentials, AI governance expertise, and compliance automation in a focused delivery model for regulated organizations.
-            </p>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-            {whyCards.map(([title, text, Icon]) => (
-              <div key={title as string} className="rounded-sm border border-border/50 bg-card p-5">
-                <Icon className="mb-4 size-5 text-primary" />
-                <h3 className="font-heading text-lg font-bold">{title as string}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{text as string}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-light px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="mb-8 font-heading text-4xl font-bold">What Makes DefenseEye Different</h2>
-          <div className="overflow-x-auto rounded-sm border border-border/50">
-            <table className="w-full min-w-[720px] text-left text-sm">
-              <thead className="bg-muted/60">
-                <tr>
-                  <th className="p-4 font-heading text-base">Traditional approach</th>
-                  <th className="p-4 font-heading text-base">DefenseEye approach</th>
-                </tr>
-              </thead>
-              <tbody>
-                {differentRows.map(([traditional, defenseeye]) => (
-                  <tr key={traditional} className="border-t border-border/50 bg-card/50">
-                    <td className="p-4 text-muted-foreground">{traditional}</td>
-                    <td className="p-4 font-medium">{defenseeye}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <section className="section-gray px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-8 max-w-3xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Delivery Model</p>
-            <h2 className="font-heading text-4xl font-bold">How Engagements Work</h2>
-          </div>
-          <div className="grid gap-4 md:grid-cols-4">
-            {engagementSteps.map(([number, title, text]) => (
-              <div key={number} className="rounded-sm border border-border/50 bg-card p-5">
-                <div className="mb-4 flex size-9 items-center justify-center rounded-sm bg-primary text-primary-foreground font-bold">{number}</div>
-                <h3 className="font-heading text-lg font-bold">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-navy px-4 py-16">
-        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-12 lg:items-center">
-          <div className="lg:col-span-5">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary">CMMCLens Platform</p>
-            <h2 className="font-heading text-4xl font-bold">Compliance Evidence Automation for Readiness Workflows</h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
-              CMMCLens helps organizations structure CMMC and NIST SP 800-171 readiness through evidence automation, control mapping, gap tracking, SSP/POA&M workflows, and readiness dashboards.
-            </p>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <a href="/cmmclens" onClick={() => trackConversion("cmmclens_click", { location: "home_cmmclens" })}>
-                <Button className="bg-accent text-accent-foreground hover:bg-accent/90">Explore CMMCLens</Button>
-              </a>
-              <a href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">Microsoft Marketplace</Button>
-              </a>
-              <a href={CMMCLENS_DEMO_MAILTO} onClick={() => trackConversion("cmmclens_click", { location: "home_cmmclens_demo_request" })}>
-                <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">Request a CMMCLens Automated Demo Account</Button>
-              </a>
-            </div>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2 lg:col-span-7">
-            {["Evidence automation", "Control mapping", "Gap identification", "Remediation workflows", "SSP support", "POA&M tracking", "AI-assisted policy generation", "Readiness dashboards"].map((item) => (
-              <div key={item} className="rounded-sm border border-border/40 bg-card/60 p-4 text-sm text-muted-foreground">
-                <CheckCircle2 className="mb-2 size-4 text-primary" />
-                {item}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-gray px-4 py-16 md:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-8 grid gap-6 lg:grid-cols-12 lg:items-end">
-            <div className="lg:col-span-8">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Enterprise Data Sovereignty & Architecture</p>
-              <h2 className="font-heading text-4xl font-bold">CMMCLens Native In-Tenant Architecture</h2>
-              <p className="mt-4 text-muted-foreground leading-relaxed">
-                CMMCLens is positioned for defense contractors and regulated enterprises that need compliance automation without moving sensitive infrastructure context outside their own Microsoft cloud boundary.
-              </p>
-            </div>
-            <div className="rounded-sm border border-primary/30 bg-primary/10 p-4 text-sm font-semibold leading-relaxed text-primary lg:col-span-4">
-              Designed for FedRAMP High and CMMC Level 2 restricted environment requirements.
-            </div>
-          </div>
-
-          <div className="grid gap-6 lg:grid-cols-2">
-            <article className="rounded-sm border border-border/50 bg-card">
-              <div className="grid border-b border-border/50 md:grid-cols-2">
-                <div className="border-b border-border/50 bg-muted/40 p-4 md:border-b-0 md:border-r">
-                  <h3 className="font-heading text-sm font-bold uppercase tracking-widest text-muted-foreground">Legacy SaaS / Advisory Firms</h3>
-                </div>
-                <div className="bg-primary/10 p-4">
-                  <h3 className="font-heading text-sm font-bold uppercase tracking-widest text-primary">CMMCLens In-Tenant Model</h3>
-                </div>
-              </div>
-              <div className="divide-y divide-border/50">
-                {architectureComparisonRows.map((row) => (
-                  <div key={row.cmmclens} className="grid md:grid-cols-2">
-                    <div className="border-b border-border/50 p-4 text-sm leading-relaxed text-muted-foreground md:border-b-0 md:border-r">
-                      {row.legacy}
-                    </div>
-                    <div className="p-4 text-sm font-medium leading-relaxed text-foreground">
-                      <CheckCircle2 className="mb-2 size-4 text-primary" aria-hidden="true" />
-                      {row.cmmclens}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </article>
-
-            <aside className="rounded-sm border border-primary/20 bg-card/80 p-6">
-              <div className="mb-6 flex items-start gap-3 rounded-sm border border-primary/20 bg-primary/10 p-4">
+          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {buyerProblems.map((problem) => (
+              <div key={problem} className="flex gap-3 border border-border/50 bg-card p-5">
                 <ShieldCheck className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
-                <p className="text-sm font-semibold leading-relaxed text-foreground">
-                  Zero-data-export architecture: customer evidence, infrastructure context, CUI-related metadata, and generated SSP content remain inside the customer's own security perimeter.
-                </p>
-              </div>
-              <div className="space-y-5">
-                {architecturePillars.map((pillar) => {
-                  const Icon = pillar.icon;
-                  return (
-                    <section key={pillar.title} aria-labelledby={`architecture-pillar-${pillar.title.toLowerCase().replace(/\s+/g, "-")}`}>
-                      <div className="flex gap-4">
-                        <div className="flex size-10 shrink-0 items-center justify-center rounded-sm border border-border/60 bg-background/60">
-                          <Icon className="size-5 text-primary" aria-hidden="true" />
-                        </div>
-                        <div>
-                          <h3 id={`architecture-pillar-${pillar.title.toLowerCase().replace(/\s+/g, "-")}`} className="font-heading text-lg font-bold">
-                            {pillar.title}
-                          </h3>
-                          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{pillar.text}</p>
-                        </div>
-                      </div>
-                    </section>
-                  );
-                })}
-              </div>
-            </aside>
-          </div>
-        </div>
-      </section>
-      <section className="section-light px-4 py-16">
-        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Supplier Readiness</p>
-            <h2 className="font-heading text-4xl font-bold">Supplier Readiness Snapshot</h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
-              DefenseEye is available for advisory, implementation, subcontracting, and staff augmentation opportunities.
-            </p>
-            <a href="/supplier-readiness" onClick={() => trackConversion("supplier_inquiry_click", { location: "home_supplier_snapshot" })}>
-              <Button className="mt-6 bg-accent text-accent-foreground hover:bg-accent/90">View Supplier Readiness</Button>
-            </a>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2 lg:col-span-8">
-            {[
-              "Redmond, WA",
-              "OMWBE-MBE Certified",
-              "NMSDC-MBE Certified",
-              "WA State SBE",
-              "CAGE 9ZDL5",
-              "UEI E4DYPCKN7YN8",
-              "NAICS 541512, 541519, 541690, 561621",
-              "Multiple CMMC Certified Professionals",
-            ].map((item) => (
-              <div key={item} className="rounded-sm border border-border/50 bg-card p-4 text-sm text-muted-foreground">
-                {item}
+                <p className="text-sm font-medium leading-relaxed">{problem}</p>
               </div>
             ))}
           </div>
@@ -634,60 +174,111 @@ export default function Home() {
       <section className="section-gray px-4 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 max-w-3xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Procurement Assets</p>
-            <h2 className="font-heading text-4xl font-bold">Datasheets and Product Sheets</h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
-              Download concise one-page overviews for AI adoption, CMMC automation, CMMCLens, Microsoft Copilot readiness, and supplier evaluation.
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Relevant Use Cases</p>
+            <h2 className="font-heading text-4xl font-bold">Examples DefenseEye can help assess, govern, and implement</h2>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              These use cases are examples, not customer deployment claims. High-impact decisions should retain appropriate human accountability.
             </p>
           </div>
-          <div className="grid gap-4 md:grid-cols-5">
-            {datasheets.map(([label, href]) => (
-              <a key={href} href={href} onClick={() => trackConversion("datasheet_view", { datasheet: label, location: "home" })} className="group rounded-sm border border-border/50 bg-card p-5 transition-colors hover:border-primary/50">
-                <FileCheck className="mb-4 size-5 text-primary" />
-                <h3 className="font-heading text-lg font-bold group-hover:text-primary">{label}</h3>
-              </a>
+          <div className="grid gap-4 md:grid-cols-2">
+            {useCases.map((useCase) => (
+              <div key={useCase} className="border-l-4 border-primary bg-card p-5">
+                <p className="text-sm font-semibold leading-relaxed">{useCase}</p>
+              </div>
             ))}
           </div>
-          <a href="/datasheets" onClick={() => trackConversion("datasheet_view", { location: "home_datasheets_cta" })}>
-            <Button className="mt-6 bg-accent text-accent-foreground hover:bg-accent/90">View Datasheets</Button>
-          </a>
+        </div>
+      </section>
+
+      <section className="section-navy px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-8 max-w-3xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary">DefenseEye Capabilities</p>
+            <h2 className="font-heading text-4xl font-bold">Secure AI readiness, architecture, governance, and implementation</h2>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {capabilities.map(([Icon, text]) => (
+              <div key={text as string} className="border border-primary/20 bg-card/70 p-5">
+                <Icon className="mb-4 size-6 text-primary" aria-hidden="true" />
+                <h3 className="font-heading text-xl font-bold">{text as string}</h3>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="section-light px-4 py-16">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-8 max-w-3xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Knowledge Hub</p>
-            <h2 className="font-heading text-4xl font-bold">Practical Answers for AI Governance and CMMC Readiness</h2>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {faqs.map(([question, answer]) => (
-              <div key={question} className="rounded-sm border border-border/50 bg-card p-5">
-                <h3 className="font-heading text-lg font-bold">{question}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{answer}</p>
+          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Engagement Approach</p>
+          <h2 className="font-heading text-4xl font-bold">From use-case clarity to governed delivery</h2>
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {engagementSteps.map(([title, text], index) => (
+              <div key={title} className="border border-border/50 bg-card p-6">
+                <div className="mb-4 flex size-10 items-center justify-center bg-primary font-bold text-primary-foreground">{index + 1}</div>
+                <h3 className="font-heading text-2xl font-bold">{title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{text}</p>
               </div>
             ))}
           </div>
-          <a href="/knowledge-hub">
-            <Button variant="outline" className="mt-6 border-primary/40 text-primary hover:bg-primary/10">Visit Knowledge Hub</Button>
-          </a>
+        </div>
+      </section>
+
+      <section className="section-gray px-4 py-16">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Why DefenseEye</p>
+            <h2 className="font-heading text-4xl font-bold">Practitioner-led implementation for regulated environments</h2>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              DefenseEye connects AI/ML engineering, cybersecurity, responsible AI governance, and Microsoft cloud delivery support for teams that need working systems with appropriate controls.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {whyDefenseEye.map(([Icon, text]) => (
+              <div key={text as string} className="flex gap-3 border border-border/50 bg-card p-5">
+                <Icon className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
+                <p className="text-sm font-medium leading-relaxed">{text as string}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="section-navy px-4 py-16">
         <div className="mx-auto max-w-4xl text-center">
           <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary">Next Step</p>
-          <h2 className="font-heading text-4xl font-bold">Turn Readiness Work Into an Operating Model</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-muted-foreground leading-relaxed">
-            Discuss secure AI adoption, CMMC automation, supplier readiness, or CMMCLens with DefenseEye.
+          <h2 className="font-heading text-4xl font-bold">Start with the use case, data, and controls</h2>
+          <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-muted-foreground">
+            Request a focused Secure AI readiness consultation for agentic AI opportunities, risks, architecture, governance, and implementation planning.
           </p>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "home_final_cta" })}>
-              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">Discuss Readiness <ArrowRight className="ml-2 size-4" /></Button>
-            </a>
-            <a href="/datasheets" onClick={() => trackConversion("datasheet_view", { location: "home_final_cta" })}>
-              <Button size="lg" variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">Request Datasheets</Button>
-            </a>
+          <a href="/secure-ai-adoption#secure-ai-consultation" onClick={() => trackConversion("consultation_click", { location: "home_midpage_secure_ai" })}>
+            <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
+              Request a Secure AI Readiness Consultation <ArrowRight className="ml-2 size-4" />
+            </Button>
+          </a>
+        </div>
+      </section>
+
+      <section className="section-light px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-8 max-w-3xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Additional DefenseEye Capabilities</p>
+            <h2 className="font-heading text-4xl font-bold">Focused portfolio paths remain available</h2>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              Secure AI is the primary homepage journey. DefenseEye also supports CMMC, compliance automation, cybersecurity visibility, and supplier-readiness work through dedicated pages.
+            </p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {secondaryCapabilities.map(([title, href, Icon]) => (
+              <a
+                key={title as string}
+                href={href as string}
+                onClick={() => trackConversion(secondaryCapabilityEvents[href as keyof typeof secondaryCapabilityEvents], { portfolio: title as string, location: "home_additional_capabilities" })}
+                className="group border border-border/50 bg-card p-5 transition-colors hover:border-primary/50"
+              >
+                <Icon className="mb-4 size-6 text-primary" aria-hidden="true" />
+                <h3 className="font-heading text-lg font-bold group-hover:text-primary">{title as string}</h3>
+              </a>
+            ))}
           </div>
         </div>
       </section>
@@ -696,20 +287,3 @@ export default function Home() {
     </div>
   );
 }
-
-function ListBlock({ title, items }: { title: string; items: string[] }) {
-  return (
-    <div>
-      <h4 className="mb-3 font-heading text-sm font-bold uppercase tracking-widest text-foreground">{title}</h4>
-      <ul className="space-y-2">
-        {items.map((item) => (
-          <li key={item} className="flex gap-2 text-sm text-muted-foreground">
-            <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-

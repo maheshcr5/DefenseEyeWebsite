@@ -5,7 +5,7 @@ const baseHtml = `
 <!doctype html>
 <html>
   <head>
-    <title>DefenseEye | Secure AI Adoption and CMMC Compliance Automation</title>
+    <title>DefenseEye | Secure Agentic AI Implementation</title>
     <meta name="description" content="Homepage description" />
     <link rel="canonical" href="https://defenseeye.ai/" />
     <meta property="og:title" content="Homepage title" />
@@ -20,7 +20,7 @@ const baseHtml = `
     <script type="application/ld+json">[{"knowsAbout":["AttackSense","CMMCLens","CMMC"]}]</script>
   </head>
   <body>
-    <div id="root"><div class="de-pr"><main><h1>Operationalize Secure AI Adoption and CMMC Readiness</h1><p>AttackSense CMMCLens CMMC</p></main></div></div>
+    <div id="root"><div class="de-pr"><main><h1>Implement Agentic AI Securely</h1><p>Additional DefenseEye Capabilities: AttackSense CMMCLens CMMC</p></main></div></div>
     <!-- Google Analytics 4 - loads only after cookie consent granted -->
   </body>
 </html>`;
@@ -55,6 +55,6 @@ describe("secure-ai-adoption direct route HTML", () => {
     expect(secureAiHtml).not.toContain("Operationalize Secure AI Adoption and CMMC Readiness");
     expect(secureAiHtml).not.toContain("AttackSense CMMCLens CMMC");
     expect(secureAiHtml).not.toContain('"knowsAbout":["AttackSense","CMMCLens","CMMC"]');
-    expect(homeHtml).toContain("Operationalize Secure AI Adoption and CMMC Readiness");
+    expect(homeHtml).toContain("Additional DefenseEye Capabilities: AttackSense CMMCLens CMMC");
   });
 });

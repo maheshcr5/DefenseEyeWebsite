@@ -84,7 +84,7 @@ export default function SecureAiAdoption() {
   }, []);
 
   const scrollToForm = () => {
-    document.getElementById("secure-ai-inquiry")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("secure-ai-consultation")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
@@ -178,6 +178,33 @@ export default function SecureAiAdoption() {
         </div>
       </section>
 
+      <section className="section-gray px-4 py-16">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent">Financial Services</p>
+            <h2 className="font-heading text-3xl font-bold sm:text-4xl">Secure AI for Financial Services</h2>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              DefenseEye helps financial-services teams assess and implement agentic AI workflows with practical controls for sensitive financial and member information.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {[
+              "Identity and least-privilege access for agents",
+              "Human oversight and traceability",
+              "Model and third-party risk review",
+              "Data-loss prevention for sensitive workflows",
+              "Evaluation and monitoring before scale",
+              "Responsible customer-facing and internal AI workflows",
+            ].map((item) => (
+              <div key={item} className="flex gap-3 border border-border/60 bg-card p-5">
+                <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" />
+                <p className="text-sm leading-relaxed text-muted-foreground">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="section-navy px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
@@ -200,7 +227,8 @@ export default function SecureAiAdoption() {
         </div>
       </section>
 
-      <section id="secure-ai-inquiry" className="section-light scroll-mt-20 px-4 py-16">
+      <section id="secure-ai-consultation" className="section-light scroll-mt-20 px-4 py-16">
+        <span id="secure-ai-inquiry" className="sr-only" aria-hidden="true" />
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent">Secure AI Inquiry</p>

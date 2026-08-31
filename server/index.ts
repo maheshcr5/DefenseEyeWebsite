@@ -391,6 +391,11 @@ export function secureAiPrerenderHtml() {
           </section>
 
           <section>
+            <h2>Secure AI for Financial Services</h2>
+            <p>DefenseEye helps financial-services teams assess and implement agentic AI workflows with practical controls for sensitive financial and member information, identity and least-privilege access, human oversight, traceability, model and third-party risk, data-loss prevention, evaluation, monitoring, and responsible customer-facing and internal AI workflows.</p>
+          </section>
+
+          <section>
             <h2>Why DefenseEye</h2>
             <p>DefenseEye brings practitioner-led AI/ML engineering, cybersecurity, responsible AI governance, Microsoft and Azure experience, and hands-on implementation support for regulated environments.</p>
           </section>
@@ -532,8 +537,8 @@ async function startServer() {
   // ─── Per-route meta for server-side injection (fixes duplicate meta / text ratio) ─
   const ROUTE_META: Record<string, { title: string; description: string }> = {
     "/": {
-      title: "DefenseEye | Secure AI Adoption and CMMC Compliance Automation",
-      description: "DefenseEye helps regulated organizations operationalize secure AI adoption and CMMC readiness through practitioner-led consulting, Microsoft cloud security expertise, and compliance automation.",
+      title: "DefenseEye | Secure Agentic AI Implementation",
+      description: "DefenseEye helps FinTechs, credit unions, and regulated organizations implement agentic AI with secure architecture, responsible governance, human oversight, and hands-on delivery support.",
     },
     "/secure-ai-adoption": {
       title: SECURE_AI_ROUTE_META.title,
