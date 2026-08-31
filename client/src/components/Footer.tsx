@@ -23,8 +23,8 @@ export default function Footer() {
         <FooterLinks title="Company" links={[["Supplier Readiness", "/supplier-readiness"], ["Delivery Model", "/delivery-model"], ["Representative Engagements", "/representative-engagements"], ["Contact", "/contact"], ["Support", "/support"], ["Privacy Policy", "/privacy-policy"]]} />
       </div>
 
-      <div className="mx-auto mt-10 max-w-6xl rounded-sm border border-border/60 bg-card/60 p-6">
-        <h4 className="font-heading text-sm font-bold uppercase tracking-widest text-foreground">
+      <div className="mx-auto mt-10 max-w-6xl rounded-sm border border-primary/20 bg-background/90 p-6 text-white">
+        <h4 className="font-heading text-sm font-bold uppercase tracking-widest text-white">
           Government Capabilities & Diversity Credentials
         </h4>
         <div className="mt-4 flex flex-wrap gap-2 text-xs">
@@ -38,7 +38,7 @@ export default function Footer() {
             "Multiple CMMC Certified Professionals",
             "NIST SP 800-171 L2 In Progress",
           ].map((item) => (
-            <span key={item} className="rounded-sm border border-primary/20 bg-background/80 px-3 py-1.5 font-medium text-muted-foreground">
+            <span key={item} className="rounded-sm border border-primary/20 bg-background/80 px-3 py-1.5 font-medium text-white">
               {item}
             </span>
           ))}
