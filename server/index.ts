@@ -467,7 +467,7 @@ async function startServer() {
     res.setHeader("Content-Type", "application/json");
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("X-Content-Type", "cmmc-knowledge-chunks");
-    res.setHeader("X-Provider", "DefenseEye.ai — CMMC Lens");
+    res.setHeader("X-Provider", "DefenseEye.ai - CMMC Lens");
 
     const page = Math.max(1, parseInt(req.query.page as string) || 1);
     const topicFilter = (req.query.topic as string)?.toLowerCase().trim();
