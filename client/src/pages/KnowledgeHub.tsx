@@ -264,7 +264,7 @@ export default function KnowledgeHub() {
               <span className="text-xs font-medium text-primary tracking-wide uppercase">Operator Knowledge Center</span>
             </div>
             <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-5">
-              CMMC <span className="text-primary">Readiness Knowledge Hub</span>
+              CMMC <span className="text-primary">Knowledge Hub</span>
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6 max-w-2xl">
               If your team is asking "what must be fixed first so we do not miss the next award," start here.

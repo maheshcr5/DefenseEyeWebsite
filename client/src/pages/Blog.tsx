@@ -379,8 +379,8 @@ export default function Blog() {
             CMMC Revenue Protection Insights
           </div>
           <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-5 leading-tight">
-            Content Built for Teams That
-            <span className="text-primary"> Cannot Afford Readiness Delays</span>
+            CMMC Blog for
+            <span className="text-primary"> Defense Contractors</span>
           </h1>
           <p className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-3xl mx-auto mb-10">
             Every article is written to help defense contractors move from uncertainty to

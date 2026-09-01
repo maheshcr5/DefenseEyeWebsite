@@ -171,6 +171,27 @@ function RouteAnalytics() {
   return null;
 }
 
+function RouteStructuredData() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    let active = true;
+    let cleanup: (() => void) | undefined;
+    const timer = window.setTimeout(() => {
+      import("@/lib/routeStructuredData").then(({ installRouteStructuredData }) => {
+        if (active) cleanup = installRouteStructuredData(location);
+      });
+    }, 0);
+    return () => {
+      active = false;
+      cleanup?.();
+      window.clearTimeout(timer);
+    };
+  }, [location]);
+
+  return null;
+}
+
 function App() {
   return (
     <ErrorBoundary>
@@ -179,6 +200,7 @@ function App() {
           <Toaster />
           <RouteAnalytics />
           <Router />
+          <RouteStructuredData />
           <CopilotWidget />
           <CookieConsent />
         </TooltipProvider>

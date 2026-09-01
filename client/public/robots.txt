@@ -23,4 +23,13 @@ Disallow:
 User-agent: Bingbot
 Disallow:
 
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: OAI-AdsBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
 Sitemap: https://defenseeye.ai/sitemap.xml

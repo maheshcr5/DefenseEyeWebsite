@@ -25,6 +25,7 @@ type PageConfig = {
   why: string;
   faqs: Array<{ question: string; answer: string }>;
   cta: { label: string; href: string };
+  relatedLinks?: Array<{ label: string; href: string; description: string }>;
 };
 
 function page(config: PageConfig) {
@@ -71,6 +72,23 @@ const pages: Record<string, PageConfig> = {
     why:
       "AI adoption creates durable value when it improves real work, protects sensitive data, and gives leaders a governed path from idea to operation.",
     cta: { label: "Plan a Secure AI Adoption Roadmap", href: "/contact?inquiry=ai-transformation" },
+    relatedLinks: [
+      {
+        label: "Move from roadmap to Secure AI implementation",
+        href: "/secure-ai-adoption",
+        description: "Connect prioritized AI use cases to secure architecture, governance controls, implementation, and evaluation.",
+      },
+      {
+        label: "Review AI governance consulting",
+        href: "/solutions/ai-governance",
+        description: "Define the oversight, policy, and risk-management model that makes AI transformation operationally durable.",
+      },
+      {
+        label: "Review AI security controls",
+        href: "/solutions/ai-security",
+        description: "Assess data, identity, agent, LLM, and monitoring risks before sensitive AI workflows scale.",
+      },
+    ],
     faqs: [
       { question: "Where should organizations start with AI transformation?", answer: "Start by identifying workflows where AI can reduce manual effort, improve decision quality, or increase consistency, then prioritize by value, risk, feasibility, and data readiness." },
       { question: "How does DefenseEye avoid generic AI consulting?", answer: "DefenseEye focuses on implementation conditions: use-case value, data access, governance controls, security implications, ownership, and measurable operating outcomes." },
@@ -108,6 +126,23 @@ const pages: Record<string, PageConfig> = {
     why:
       "AI governance matters because leaders need a practical way to approve AI use, monitor risk, preserve explainability, and keep humans accountable for consequential decisions.",
     cta: { label: "Discuss AI Governance Readiness", href: "/contact?inquiry=ai-governance" },
+    relatedLinks: [
+      {
+        label: "Plan Secure AI implementation",
+        href: "/secure-ai-adoption",
+        description: "Translate governance decisions into secure agentic AI architecture, testing, oversight, and delivery support.",
+      },
+      {
+        label: "Assess Microsoft Copilot readiness",
+        href: "/solutions/microsoft-copilot-readiness",
+        description: "Evaluate Microsoft 365 data exposure, permissions, Purview, Entra, and adoption guardrails before Copilot expands.",
+      },
+      {
+        label: "Read the NIST AI RMF explanation",
+        href: "/insights/what-is-nist-ai-rmf",
+        description: "Use a plain-English guide to connect governance practices with NIST AI RMF concepts.",
+      },
+    ],
     faqs: [
       { question: "What is AI governance?", answer: "AI governance is the set of roles, policies, controls, oversight processes, and evidence used to manage AI systems responsibly and reduce AI-related risk." },
       { question: "How can organizations operationalize AI governance?", answer: "Start with AI inventory, risk ownership, policy development, oversight roles, lifecycle controls, monitoring practices, and evidence that shows governance is operating." },
@@ -134,6 +169,23 @@ const pages: Record<string, PageConfig> = {
     deliverables: ["Risk findings", "Threat scenarios", "Security recommendations", "Control roadmap"],
     why: "AI security makes adoption more durable by reducing avoidable risk before sensitive workflows and enterprise users depend on AI systems.",
     cta: { label: "Assess AI Security Risk", href: "/contact?inquiry=ai-security" },
+    relatedLinks: [
+      {
+        label: "Implement Secure AI with architecture support",
+        href: "/secure-ai-adoption",
+        description: "Move from AI risk findings into secure agent, identity, data, integration, and operational-control design.",
+      },
+      {
+        label: "Review AI governance consulting",
+        href: "/solutions/ai-governance",
+        description: "Pair AI security controls with policy, oversight, human accountability, and risk review practices.",
+      },
+      {
+        label: "Assess Microsoft Copilot readiness",
+        href: "/solutions/microsoft-copilot-readiness",
+        description: "Review Copilot permissions, sensitive data exposure, and Microsoft security alignment before rollout.",
+      },
+    ],
     faqs: [
       { question: "What does an AI security assessment cover?", answer: "It typically covers data exposure, identity and permissions, prompt and output risks, integration paths, logging, monitoring, model behavior, and governance controls." },
       commonFaq.supplier,
@@ -195,6 +247,23 @@ const pages: Record<string, PageConfig> = {
     why:
       "Copilot readiness helps organizations adopt AI tools with clearer ownership, data protection, security monitoring, and accountable use.",
     cta: { label: "Assess Copilot Readiness", href: "/contact?inquiry=microsoft-copilot-readiness" },
+    relatedLinks: [
+      {
+        label: "Connect Copilot readiness to Secure AI implementation",
+        href: "/secure-ai-adoption",
+        description: "Use Copilot readiness work as part of a broader secure agentic AI adoption and governance path.",
+      },
+      {
+        label: "Review AI governance consulting",
+        href: "/solutions/ai-governance",
+        description: "Define acceptable use, accountability, review, and evidence practices for Microsoft AI adoption.",
+      },
+      {
+        label: "Review AI security consulting",
+        href: "/solutions/ai-security",
+        description: "Assess sensitive data, identity, logging, prompt, and operational risks around AI-enabled workflows.",
+      },
+    ],
     faqs: [
       { question: "What should be reviewed before Microsoft Copilot rollout?", answer: "Organizations should review permissions, overshared content, sensitive data handling, identity controls, user guidance, logging, governance workflows, and adoption priorities." },
       { question: "Does Copilot readiness include AI governance?", answer: "Yes. Copilot readiness should include AI use policies, accountability expectations, risk review, data governance, and controls for responsible adoption." },
@@ -371,6 +440,20 @@ export default function SolutionPage() {
             <p className="text-foreground leading-relaxed max-w-4xl">{config.summary}</p>
           </div>
         </section>
+
+        {config.relatedLinks && (
+          <section className="max-w-6xl mx-auto pb-14">
+            <h2 className="font-heading text-2xl font-bold text-foreground mb-5">Related DefenseEye resources</h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {config.relatedLinks.map((link) => (
+                <a key={link.href} href={link.href} className="group bg-card/50 border border-border/40 rounded-sm p-4 hover:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors">
+                  <span className="text-sm font-semibold text-primary group-hover:text-primary/80">{link.label}</span>
+                  <p className="text-sm text-muted-foreground leading-relaxed mt-2">{link.description}</p>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="max-w-6xl mx-auto py-14 border-t border-border/30">
           <div className="grid lg:grid-cols-12 gap-8">

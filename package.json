@@ -14,6 +14,7 @@
     "test:openai-ads": "vitest run client/src/lib/openaiAds.test.ts",
     "test:contact-form": "vitest run client/src/pages/ContactUs.test.ts",
     "test:secure-ai-landing": "vitest run --root . client/src/pages/SecureAiAdoption.test.tsx server/secure-ai-route.test.ts",
+    "test:seo-routes": "vitest run --root . server/seo-routes.test.ts client/src/lib/routeStructuredData.test.ts",
     "test:homepage": "vitest run --root . client/src/pages/Home.test.tsx",
     "format": "prettier --write ."
   },

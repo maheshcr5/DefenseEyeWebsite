@@ -7,6 +7,13 @@ import fs from "fs";
 import { randomUUID } from "crypto";
 import nodemailer from "nodemailer";
 import { registerCopilotRoutes } from "./copilot";
+import {
+  canonicalUrl,
+  getSeoRoute,
+  renderRouteFallbackHtml,
+  renderRouteSchemaScript,
+  renderSitemapXml,
+} from "../shared/seoRoutes";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -342,106 +349,86 @@ const CMMC_CHUNKS = [
 ];
 
 const PAGE_SIZE = 5;
+export const HTML_CACHE_CONTROL = "no-store, no-cache, must-revalidate";
+export const SITEMAP_CACHE_CONTROL = "public, max-age=3600";
+export const OPERATIONAL_STATIC_CACHE_CONTROL = "public, max-age=3600";
+export const HASHED_ASSET_CACHE_CONTROL = "public, max-age=31536000, immutable";
 
 export const SECURE_AI_ROUTE_META = {
-  title: "Secure Agentic AI Consulting | DefenseEye",
+  title: getSeoRoute("/secure-ai-adoption")?.title ?? "Secure Agentic AI Consulting | DefenseEye",
   description:
+    getSeoRoute("/secure-ai-adoption")?.description ??
     "DefenseEye helps regulated organizations implement agentic AI with secure architecture, responsible governance, risk controls, and hands-on delivery support.",
 };
 
 export function secureAiPrerenderHtml() {
-  return `
-      <!-- Route-specific no-JavaScript content for /secure-ai-adoption. React replaces this on load. -->
-      <div class="de-pr">
-        <nav>
-          <a class="brand" href="https://defenseeye.ai">DefenseEye.ai</a>
-          <p style="margin-top:.6rem;font-size:.85rem;line-height:1.6">
-            <a class="klink" href="/secure-ai-adoption">Secure AI Adoption</a> ·
-            <a class="klink" href="/contact?inquiry=ai-governance">Contact</a>
-          </p>
-        </nav>
-        <main>
-          <p class="eyebrow">Secure Agentic AI Readiness &amp; Implementation</p>
-          <h1>Implement Agentic AI Securely</h1>
-          <p class="lead">Move from AI exploration to governed implementation with secure architecture, responsible AI controls, and hands-on delivery support.</p>
-
-          <section>
-            <h2>Who DefenseEye Helps</h2>
-            <p>DefenseEye helps regulated organizations and teams handling sensitive data that want to explore, pilot, implement, or scale agentic AI responsibly.</p>
-          </section>
-
-          <section>
-            <h2>What DefenseEye Delivers</h2>
-            <ul>
-              <li>AI readiness and use-case prioritization</li>
-              <li>Secure agent, identity, data, and integration architecture</li>
-              <li>Responsible AI governance and NIST AI RMF alignment</li>
-              <li>Human oversight, evaluation, testing, and operational controls</li>
-              <li>Hands-on agentic AI implementation and integration support</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>Engagement Approach</h2>
-            <ul>
-              <li><strong>Assess:</strong> Assess the use case, risks, data, and readiness.</li>
-              <li><strong>Design:</strong> Design the secure architecture and governance controls.</li>
-              <li><strong>Implement:</strong> Implement, evaluate, and scale the solution.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>Secure AI for Financial Services</h2>
-            <p>DefenseEye helps financial-services teams assess and implement agentic AI workflows with practical controls for sensitive financial and member information, identity and least-privilege access, human oversight, traceability, model and third-party risk, data-loss prevention, evaluation, monitoring, and responsible customer-facing and internal AI workflows.</p>
-          </section>
-
-          <section>
-            <h2>Why DefenseEye</h2>
-            <p>DefenseEye brings practitioner-led AI/ML engineering, cybersecurity, responsible AI governance, Microsoft and Azure experience, and hands-on implementation support for regulated environments.</p>
-          </section>
-
-          <section>
-            <h2>Request a Secure AI Readiness Consultation</h2>
-            <p>Use the Secure AI inquiry form to share your AI adoption stage, primary need, desired timeline, and additional context.</p>
-          </section>
-        </main>
-      </div>`;
+  const route = getSeoRoute("/secure-ai-adoption");
+  return route ? renderRouteFallbackHtml(route) : "";
 }
 
 export function injectRouteSpecificHtml(html: string, routePath: string) {
-  if (routePath !== "/secure-ai-adoption") return html;
-  const secureAiSchema = `    <script type="application/ld+json">
-    [
-      {
-        "@context": "https://schema.org",
-        "@type": "Service",
-        "name": "Secure Agentic AI Readiness and Implementation",
-        "url": "https://defenseeye.ai/secure-ai-adoption",
-        "description": "${SECURE_AI_ROUTE_META.description}",
-        "provider": {"@type": "ProfessionalService", "name": "DefenseEye", "url": "https://defenseeye.ai"},
-        "areaServed": {"@type": "Country", "name": "United States"},
-        "serviceType": "Secure agentic AI consulting and implementation"
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://defenseeye.ai/"},
-          {"@type": "ListItem", "position": 2, "name": "Secure AI Adoption", "item": "https://defenseeye.ai/secure-ai-adoption"}
-        ]
-      }
-    ]
-    </script>`;
+  const route = getSeoRoute(routePath);
+  if (!route) return html;
 
   return html
+    .replace(/<!-- Schema\.org:[\s\S]*?<\/script>\s*/m, "")
+    .replace("</head>", `  <!-- Schema.org: Route-specific structured data -->\n${renderRouteSchemaScript(route)}\n\n  </head>`)
     .replace(
-      /<meta name="keywords" content="[^"]*"/,
-      `<meta name="keywords" content="secure agentic AI consulting, secure AI implementation, responsible AI governance, NIST AI RMF alignment, AI readiness assessment, Azure OpenAI readiness, Microsoft Copilot readiness"`
+      /<div id="root">[\s\S]*?<\/div>\s*(?=<!-- Google Analytics 4)/,
+      `<div id="root">${renderRouteFallbackHtml(route)}\n    </div>\n\n    `
+    );
+}
+
+export function getStaticCacheControl(filePath: string) {
+  const normalizedPath = filePath.replace(/\\/g, "/");
+  if (/\/assets\/[^/]+-[A-Za-z0-9_-]{6,}\.(?:js|css|woff2?|ttf|eot|otf|ico|png|jpg|jpeg|gif|svg|webp|avif)$/i.test(normalizedPath)) {
+    return HASHED_ASSET_CACHE_CONTROL;
+  }
+  if (/\/(?:robots\.txt|sitemap_index\.xml|llms\.txt)$/i.test(normalizedPath)) {
+    return OPERATIONAL_STATIC_CACHE_CONTROL;
+  }
+  return undefined;
+}
+
+function escapeMetaAttribute(value: string) {
+  return value.replace(/"/g, "&quot;");
+}
+
+export function injectRouteMetadataHtml(
+  html: string,
+  routePath: string,
+  routeMeta: { title: string; description: string }
+) {
+  const canonical = canonicalUrl(routePath === "/" ? "/" : routePath);
+  return html
+    .replace(/<title>[^<]*<\/title>/, `<title>${routeMeta.title}</title>`)
+    .replace(
+      /<meta name="description" content="[^"]*"/,
+      `<meta name="description" content="${escapeMetaAttribute(routeMeta.description)}"`
     )
-    .replace(/<!-- Schema\.org: ProfessionalService \+ Organization -->\s*<script type="application\/ld\+json">[\s\S]*?<\/script>/, `<!-- Schema.org: Secure AI Service + Breadcrumbs -->\n${secureAiSchema}`)
     .replace(
-    /<div id="root">[\s\S]*?<\/div>\s*(?=<!-- Google Analytics 4)/,
-    `<div id="root">${secureAiPrerenderHtml()}\n    </div>\n\n    `
+      /<link rel="canonical" href="[^"]*"/,
+      `<link rel="canonical" href="${canonical}"`
+    )
+    .replace(
+      /<meta property="og:title" content="[^"]*"/,
+      `<meta property="og:title" content="${escapeMetaAttribute(routeMeta.title)}"`
+    )
+    .replace(
+      /<meta property="og:description" content="[^"]*"/,
+      `<meta property="og:description" content="${escapeMetaAttribute(routeMeta.description)}"`
+    )
+    .replace(
+      /<meta property="og:url" content="[^"]*"/,
+      `<meta property="og:url" content="${canonical}"`
+    )
+    .replace(
+      /<meta name="twitter:title" content="[^"]*"/,
+      `<meta name="twitter:title" content="${escapeMetaAttribute(routeMeta.title)}"`
+    )
+    .replace(
+      /<meta name="twitter:description" content="[^"]*"/,
+      `<meta name="twitter:description" content="${escapeMetaAttribute(routeMeta.description)}"`
     );
 }
 
@@ -532,7 +519,23 @@ async function startServer() {
       ? path.resolve(__dirname, "public")
       : path.resolve(__dirname, "..", "dist", "public");
 
-  app.use(express.static(staticPath, { index: false }));
+  app.get("/sitemap.xml", (_req, res) => {
+    res.setHeader("Content-Type", "application/xml; charset=utf-8");
+    res.setHeader("Cache-Control", SITEMAP_CACHE_CONTROL);
+    res.status(200).send(renderSitemapXml());
+  });
+
+  app.use(
+    express.static(staticPath, {
+      index: false,
+      setHeaders(res, filePath) {
+        const cacheControl = getStaticCacheControl(filePath);
+        if (cacheControl) {
+          res.setHeader("Cache-Control", cacheControl);
+        }
+      },
+    })
+  );
 
   // ─── Per-route meta for server-side injection (fixes duplicate meta / text ratio) ─
   const ROUTE_META: Record<string, { title: string; description: string }> = {
@@ -839,6 +842,8 @@ async function startServer() {
   };
 
   function getRouteMeta(routePath: string) {
+    const seoRoute = getSeoRoute(routePath);
+    if (seoRoute) return { title: seoRoute.title, description: seoRoute.description };
     if (ROUTE_META[routePath]) return ROUTE_META[routePath];
     if (routePath.startsWith("/blog/")) {
       const slug = routePath.replace("/blog/", "");
@@ -864,37 +869,8 @@ async function startServer() {
         title: "404 Page Not Found | DefenseEye.ai",
         description: "The requested DefenseEye page could not be found.",
       };
-      const canonical = `https://defenseeye.ai${req.path === "/" ? "/" : req.path}`;
-      // Inject title, meta description, and canonical per-route
-      html = html.replace(/<title>[^<]*<\/title>/, `<title>${routeMeta.title}</title>`);
-      html = html.replace(
-        /<meta name="description" content="[^"]*"/,
-        `<meta name="description" content="${routeMeta.description.replace(/"/g, "&quot;")}"`
-      );
-      html = html.replace(
-        /<link rel="canonical" href="[^"]*"/,
-        `<link rel="canonical" href="${canonical}"`
-      );
-      html = html.replace(
-        /<meta property="og:title" content="[^"]*"/,
-        `<meta property="og:title" content="${routeMeta.title.replace(/"/g, "&quot;")}"`
-      );
-      html = html.replace(
-        /<meta property="og:description" content="[^"]*"/,
-        `<meta property="og:description" content="${routeMeta.description.replace(/"/g, "&quot;")}"`
-      );
-      html = html.replace(
-        /<meta property="og:url" content="[^"]*"/,
-        `<meta property="og:url" content="${canonical}"`
-      );
-      html = html.replace(
-        /<meta name="twitter:title" content="[^"]*"/,
-        `<meta name="twitter:title" content="${routeMeta.title.replace(/"/g, "&quot;")}"`
-      );
-      html = html.replace(
-        /<meta name="twitter:description" content="[^"]*"/,
-        `<meta name="twitter:description" content="${routeMeta.description.replace(/"/g, "&quot;")}"`
-      );
+      // Inject title, meta description, canonical, and social metadata per-route.
+      html = injectRouteMetadataHtml(html, req.path, routeMeta);
       html = injectRouteSpecificHtml(html, req.path);
       if (isNotFound) {
         html = html.replace(
@@ -903,6 +879,7 @@ async function startServer() {
         );
       }
       res.setHeader("Content-Type", "text/html; charset=utf-8");
+      res.setHeader("Cache-Control", HTML_CACHE_CONTROL);
       res.status(isNotFound ? 404 : 200).send(html);
     } catch {
       res.sendFile(path.join(staticPath, "index.html"));

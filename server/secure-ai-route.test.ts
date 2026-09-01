@@ -45,16 +45,15 @@ describe("secure-ai-adoption direct route HTML", () => {
     expect(html).not.toContain("Target CMMC Level");
   });
 
-  it("replaces the default prerender body for /secure-ai-adoption only", () => {
+  it("replaces the default prerender body and schema for /secure-ai-adoption", () => {
     const secureAiHtml = injectRouteSpecificHtml(baseHtml, "/secure-ai-adoption");
-    const homeHtml = injectRouteSpecificHtml(baseHtml, "/");
 
     expect(secureAiHtml).toContain("Implement Agentic AI Securely");
-    expect(secureAiHtml).toContain("secure agentic AI consulting");
-    expect(secureAiHtml).toContain("Secure AI Service + Breadcrumbs");
+    expect(secureAiHtml).toContain("Secure Agentic AI Readiness");
+    expect(secureAiHtml).toContain("Route-specific structured data");
+    expect(secureAiHtml).toContain('"@type": "Service"');
     expect(secureAiHtml).not.toContain("Operationalize Secure AI Adoption and CMMC Readiness");
     expect(secureAiHtml).not.toContain("AttackSense CMMCLens CMMC");
     expect(secureAiHtml).not.toContain('"knowsAbout":["AttackSense","CMMCLens","CMMC"]');
-    expect(homeHtml).toContain("Additional DefenseEye Capabilities: AttackSense CMMCLens CMMC");
   });
 });
