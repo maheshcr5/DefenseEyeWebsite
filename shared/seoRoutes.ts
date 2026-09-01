@@ -43,6 +43,7 @@ export type SitemapEntry = {
 };
 
 const materialSeoUpdateDate = "2026-08-31";
+const customerJourneyUpdateDate = "2026-09-01";
 
 export const TIER_1_ROUTES: SeoRoute[] = [
   {
@@ -76,10 +77,11 @@ export const TIER_1_ROUTES: SeoRoute[] = [
       { label: "Review the CMMCLens compliance automation platform", href: "/cmmclens" },
       { label: "View AttackSense attack surface intelligence", href: "/attacksense" },
       { label: "See supplier readiness information", href: "/supplier-readiness" },
+      { label: "View Representative Engagements", href: "/representative-engagements" },
     ],
     schemaKind: "home",
     topics: ["Secure AI adoption", "AI governance", "Agentic AI implementation", "CMMC", "CMMCLens", "AttackSense"],
-    lastmod: materialSeoUpdateDate,
+    lastmod: customerJourneyUpdateDate,
     changefreq: "weekly",
     priority: "1.0",
   },
@@ -119,11 +121,12 @@ export const TIER_1_ROUTES: SeoRoute[] = [
       { label: "Review AI governance consulting", href: "/solutions/ai-governance" },
       { label: "Review Microsoft Copilot readiness", href: "/solutions/microsoft-copilot-readiness" },
       { label: "Review AI security consulting", href: "/solutions/ai-security" },
+      { label: "View Representative Engagements", href: "/representative-engagements" },
     ],
     schemaKind: "service",
     serviceType: "Secure agentic AI readiness and implementation consulting",
     topics: ["Secure agentic AI implementation", "Responsible AI governance", "NIST AI RMF", "Financial services AI readiness"],
-    lastmod: materialSeoUpdateDate,
+    lastmod: customerJourneyUpdateDate,
     changefreq: "monthly",
     priority: "0.9",
   },

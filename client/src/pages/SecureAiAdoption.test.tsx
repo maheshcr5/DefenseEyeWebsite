@@ -73,6 +73,9 @@ describe("Secure AI adoption landing page", () => {
     expect(html).toContain("Primary Need");
     expect(html).toContain("Secure AI for Financial Services");
     expect(html).toContain("Identity and least-privilege access for agents");
+    expect(html).toContain("The initial conversation can clarify priority use cases");
+    expect(html).toContain('href="/representative-engagements"');
+    expect(html).toContain("View Representative Engagements");
     expect(html).toContain(SECURE_AI_INQUIRY_TYPE);
     expect(html).not.toContain("Target CMMC Level");
     expect(html).not.toContain("Compliance Timeline");

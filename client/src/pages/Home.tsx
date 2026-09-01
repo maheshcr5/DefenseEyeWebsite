@@ -231,6 +231,12 @@ export default function Home() {
             <p className="mt-4 leading-relaxed text-muted-foreground">
               DefenseEye connects AI/ML engineering, cybersecurity, responsible AI governance, and Microsoft cloud delivery support for teams that need working systems with appropriate controls.
             </p>
+            <a
+              href="/representative-engagements"
+              className="mt-5 inline-flex items-center text-sm font-semibold text-primary underline-offset-4 hover:underline"
+            >
+              View Representative Engagements <ArrowRight className="ml-2 size-4" />
+            </a>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {whyDefenseEye.map(([Icon, text]) => (
@@ -248,7 +254,7 @@ export default function Home() {
           <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-primary">Next Step</p>
           <h2 className="font-heading text-4xl font-bold">Start with the use case, data, and controls</h2>
           <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-muted-foreground">
-            Request a focused Secure AI readiness consultation for agentic AI opportunities, risks, architecture, governance, and implementation planning.
+            The initial conversation can clarify priority use cases, security and governance risks, architecture and implementation options, and practical next steps.
           </p>
           <a href="/secure-ai-adoption#secure-ai-consultation" onClick={() => trackConversion("consultation_click", { location: "home_midpage_secure_ai" })}>
             <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">

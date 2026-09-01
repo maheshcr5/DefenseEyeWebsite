@@ -6,10 +6,24 @@
 import { useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
+const SECURE_AI_CONSULTATION_URL = "/secure-ai-adoption#secure-ai-consultation";
+
+export const PRIMARY_NAV_LINK = {
+  label: "Secure AI",
+  href: "/secure-ai-adoption",
+};
+
+const SUPPLIER_JOURNEY_PATHS = new Set([
+  "/supplier-readiness",
+  "/capability-statement",
+  "/delivery-model",
+  "/datasheets/supplier-readiness",
+]);
 
 type MenuItem = {
   label: string;
@@ -89,13 +103,42 @@ const MENUS: Menu[] = [
   },
 ];
 
-export default function NavBar() {
+function normalizePath(path: string) {
+  const [withoutHash] = path.split("#");
+  const [pathname] = withoutHash.split("?");
+  return pathname || "/";
+}
+
+export function getHeaderCta(path: string) {
+  return SUPPLIER_JOURNEY_PATHS.has(normalizePath(path))
+    ? {
+        label: "Discuss Supplier Opportunities",
+        href: CALENDLY_URL,
+        external: true,
+      }
+    : {
+        label: "Request a Secure AI Consultation",
+        href: SECURE_AI_CONSULTATION_URL,
+        external: false,
+      };
+}
+
+type NavBarProps = {
+  initialMobileOpen?: boolean;
+  pathOverride?: string;
+};
+
+export default function NavBar({ initialMobileOpen = false, pathOverride }: NavBarProps = {}) {
+  const [location] = useLocation();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [expandedSubmenu, setExpandedSubmenu] = useState<string | null>(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(initialMobileOpen);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [mobileSubmenuExpanded, setMobileSubmenuExpanded] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const currentPath = normalizePath(pathOverride ?? location);
+  const headerCta = getHeaderCta(currentPath);
+  const headerCtaLinkProps = headerCta.external ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
   const handleEnter = (key: string) => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -131,6 +174,13 @@ export default function NavBar() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
+          <a
+            href={PRIMARY_NAV_LINK.href}
+            className="px-4 py-2 text-sm font-medium text-[#0D1B33] hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
+            aria-current={currentPath === PRIMARY_NAV_LINK.href ? "page" : undefined}
+          >
+            {PRIMARY_NAV_LINK.label}
+          </a>
           {MENUS.map((menu) => (
             <div
               key={menu.key}
@@ -243,9 +293,9 @@ export default function NavBar() {
 
         {/* Desktop CTA */}
         <div className="hidden md:flex">
-          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+          <a href={headerCta.href} {...headerCtaLinkProps}>
             <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-5">
-              Discuss Supplier Opportunities
+              {headerCta.label}
             </Button>
           </a>
         </div>
@@ -271,6 +321,14 @@ export default function NavBar() {
             className="md:hidden bg-white border-t border-gray-100 overflow-hidden"
           >
             <div className="px-4 py-3 flex flex-col gap-1">
+              <a
+                href={PRIMARY_NAV_LINK.href}
+                className="px-3 py-2.5 text-sm font-semibold text-[#0D1B33] hover:text-primary rounded-md hover:bg-gray-50 transition-colors"
+                onClick={() => setMobileOpen(false)}
+                aria-current={currentPath === PRIMARY_NAV_LINK.href ? "page" : undefined}
+              >
+                {PRIMARY_NAV_LINK.label}
+              </a>
 
               {/* Dropdown categories */}
               {MENUS.map((menu) => (
@@ -361,9 +419,9 @@ export default function NavBar() {
               </a>
 
               <div className="pt-2 border-t border-gray-100 mt-1">
-                <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)}>
+                <a href={headerCta.href} {...headerCtaLinkProps} onClick={() => setMobileOpen(false)}>
                   <Button className="bg-accent text-accent-foreground font-semibold w-full">
-                    Discuss Supplier Opportunities
+                    {headerCta.label}
                   </Button>
                 </a>
               </div>

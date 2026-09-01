@@ -36,7 +36,6 @@ export default function Footer() {
             "WA State SBE",
             "NAICS 541512, 541519, 541690, 561621",
             "Multiple CMMC Certified Professionals",
-            "NIST SP 800-171 L2 In Progress",
           ].map((item) => (
             <span key={item} className="rounded-sm border border-primary/20 bg-background/80 px-3 py-1.5 font-medium text-white">
               {item}

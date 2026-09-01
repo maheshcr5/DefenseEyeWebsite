@@ -140,10 +140,21 @@ describe("sitemap and robots", () => {
 
     expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
     expect(new Set(locations).size).toBe(locations.length);
+    expect(locations).toHaveLength(66);
     for (const route of TIER_1_ROUTES) {
       expect(locations).toContain(canonicalUrl(route.path));
     }
     expect(SITEMAP_ENTRIES.every((entry) => /^\d{4}-\d{2}-\d{2}$/.test(entry.lastmod))).toBe(true);
+  });
+
+  it("updates only the changed homepage and Secure AI sitemap dates", () => {
+    const entriesByPath = new Map(SITEMAP_ENTRIES.map((entry) => [entry.path, entry]));
+
+    expect(entriesByPath.get("/")?.lastmod).toBe("2026-09-01");
+    expect(entriesByPath.get("/secure-ai-adoption")?.lastmod).toBe("2026-09-01");
+    expect(entriesByPath.get("/cmmc")?.lastmod).toBe("2026-08-31");
+    expect(entriesByPath.get("/cmmclens")?.lastmod).toBe("2026-08-31");
+    expect(entriesByPath.get("/representative-engagements")?.lastmod).toBe("2026-06-26");
   });
 
   it("keeps robots.txt pointed at the canonical sitemap", () => {

@@ -70,7 +70,7 @@ export default function CmmcComplianceAutomation() {
             </a>
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
-            {["Multiple CMMC Certified Professionals", "NIST SP 800-171 L2 In Progress", "CAGE 9ZDL5", "UEI E4DYPCKN7YN8"].map((badge) => (
+            {["Multiple CMMC Certified Professionals", "CAGE 9ZDL5", "UEI E4DYPCKN7YN8"].map((badge) => (
               <span key={badge} className="rounded-sm border border-primary/20 bg-primary/10 px-3 py-1 text-xs text-primary font-medium">
                 {badge}
               </span>

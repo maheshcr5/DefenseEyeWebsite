@@ -210,6 +210,12 @@ export default function SecureAiAdoption() {
           <div>
             <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-primary">Why DefenseEye</p>
             <h2 className="font-heading text-3xl font-bold sm:text-4xl">Practitioner-led AI, cybersecurity, governance, and Microsoft cloud delivery</h2>
+            <a
+              href="/representative-engagements"
+              className="mt-5 inline-flex items-center text-sm font-semibold text-primary underline-offset-4 hover:underline"
+            >
+              View Representative Engagements <ArrowRight className="ml-2 size-4" />
+            </a>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {[
@@ -234,7 +240,7 @@ export default function SecureAiAdoption() {
             <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent">Secure AI Inquiry</p>
             <h2 className="font-heading text-3xl font-bold sm:text-4xl">Request a Secure AI Readiness Consultation</h2>
             <p className="mt-4 text-muted-foreground leading-relaxed">
-              Share where your team is in the AI adoption journey. DefenseEye will review the context and respond through the appropriate enterprise channel.
+              The initial conversation can clarify priority use cases, security and governance risks, architecture and implementation options, and practical next steps.
             </p>
           </div>
           <SecureAiInquiryForm />

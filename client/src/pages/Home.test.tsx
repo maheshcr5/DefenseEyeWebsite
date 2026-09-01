@@ -27,8 +27,16 @@ describe("DefenseEye homepage positioning", () => {
     expect(html).toContain('href="/secure-ai-adoption#secure-ai-consultation"');
     expect(html).toContain("Request a Secure AI Readiness Consultation");
     expect(html).toContain("Explore Secure AI Services");
+    expect(html).toContain("The initial conversation can clarify priority use cases");
     expect(html).not.toContain("Explore CMMC Readiness");
     expect(html).not.toContain("Achieve CMMC Level 2");
+  });
+
+  it("adds representative engagements as a contextual secondary path", () => {
+    const html = renderToStaticMarkup(<Home />);
+
+    expect(html).toContain('href="/representative-engagements"');
+    expect(html).toContain("View Representative Engagements");
   });
 
   it("keeps CMMC, CMMCLens, AttackSense, and supplier readiness as secondary portfolio paths", () => {
