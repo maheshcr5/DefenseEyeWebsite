@@ -29,7 +29,15 @@ vi.mock("@/hooks/useSeo", () => ({ useSeo: vi.fn() }));
 vi.mock("@/components/NavBar", () => ({ default: () => <nav>DefenseEye</nav> }));
 vi.mock("@/components/Footer", () => ({ default: () => <footer>Footer</footer> }));
 
-import SecureAiAdoption, { SECURE_AI_INQUIRY_TYPE, submitSecureAiInquiry, type SecureAiFormValues } from "./SecureAiAdoption";
+import SecureAiAdoption, {
+  AI_ADOPTION_STAGE_OPTIONS,
+  DESIRED_TIMELINE_OPTIONS,
+  PRIMARY_NEED_OPTIONS,
+  SECURE_AI_INQUIRY_TYPE,
+  submitSecureAiInquiry,
+  validateSecureAiForm,
+  type SecureAiFormValues,
+} from "./SecureAiAdoption";
 import { beginContactSubmission, completeContactSubmission, releaseContactSubmission, type ContactSubmissionGuard } from "./ContactUs";
 import { captureUtmParameters } from "@/lib/tracking";
 
@@ -71,6 +79,10 @@ describe("Secure AI adoption landing page", () => {
     expect(html).toContain("Secure Agentic AI Readiness");
     expect(html).toContain("AI Adoption Stage");
     expect(html).toContain("Primary Need");
+    expect(html).toContain("Tell us a little about your organization and AI initiative");
+    expect(html).toContain("No obligation. Your information is used to prepare for the consultation.");
+    expect(html).toContain("Where is your organization today?");
+    expect(html).toContain("What would you like help with first?");
     expect(html).toContain("Secure AI for Financial Services");
     expect(html).toContain("Identity and least-privilege access for agents");
     expect(html).toContain("The initial conversation can clarify priority use cases");
@@ -81,6 +93,44 @@ describe("Secure AI adoption landing page", () => {
     expect(html).not.toContain("Compliance Timeline");
     expect(html).not.toContain("CMMCLens demo");
     expect(html).not.toContain("AttackSense");
+  });
+
+  it("keeps the approved Secure AI controlled vocabulary visible in the form", () => {
+    const html = renderToStaticMarkup(<SecureAiAdoption />);
+
+    for (const option of AI_ADOPTION_STAGE_OPTIONS) {
+      expect(html).toContain(option.value);
+      expect(html).toContain(option.label);
+    }
+
+    for (const option of PRIMARY_NEED_OPTIONS) {
+      expect(html).toContain(option);
+    }
+
+    expect(DESIRED_TIMELINE_OPTIONS).toEqual([
+      "Immediate",
+      "30-60 days",
+      "This quarter",
+      "Next quarter",
+      "Exploring options",
+    ]);
+  });
+
+  it("validates required Secure AI consultation fields with readable messages", () => {
+    expect(validateSecureAiForm({ ...completeSecureAiForm, firstName: "" })).toMatchObject({
+      firstName: "Please enter your full name.",
+    });
+    expect(validateSecureAiForm({ ...completeSecureAiForm, email: "not-an-email" })).toMatchObject({
+      email: "Please enter a valid work email.",
+    });
+    expect(validateSecureAiForm({ ...completeSecureAiForm, company: "" })).toMatchObject({
+      company: "Please enter your organization.",
+    });
+    expect(validateSecureAiForm({ ...completeSecureAiForm, aiAdoptionStage: "", need: "" })).toMatchObject({
+      aiAdoptionStage: "Please choose where your organization is today.",
+      need: "Please choose what you would like help with.",
+    });
+    expect(validateSecureAiForm(completeSecureAiForm)).toEqual({});
   });
 
   it("submits Secure AI leads through /api/contact with the correct inquiry type and attribution", async () => {

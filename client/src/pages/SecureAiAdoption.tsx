@@ -1,9 +1,30 @@
-import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Bot, CheckCircle2, ClipboardCheck, Cpu, LockKeyhole, ShieldCheck, UserCheck } from "lucide-react";
+import { useEffect, useRef, useState, type ChangeEvent, type ComponentProps, type ComponentType, type FormEvent, type ReactNode } from "react";
+import {
+  ArrowRight,
+  Bot,
+  BriefcaseBusiness,
+  Building2,
+  CheckCircle2,
+  ClipboardCheck,
+  Clock,
+  Cpu,
+  Loader2,
+  LockKeyhole,
+  Mail,
+  MessageSquareText,
+  ShieldCheck,
+  Sparkles,
+  UserCheck,
+  UserRound,
+} from "lucide-react";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { useSeo } from "@/hooks/useSeo";
+import { cn } from "@/lib/utils";
 import { getStoredAttribution, trackConversion } from "@/lib/tracking";
 import { reportOpenAiAdsLeadCreated } from "@/lib/openaiAds";
 import { beginContactSubmission, completeContactSubmission, releaseContactSubmission, type ContactSubmissionGuard } from "./ContactUs";
@@ -24,6 +45,71 @@ export type SecureAiFormValues = {
   timeline: string;
   message: string;
 };
+
+type SecureAiFormErrors = Partial<Record<keyof SecureAiFormValues, string>>;
+
+export const AI_ADOPTION_STAGE_OPTIONS = [
+  {
+    value: "Exploring opportunities",
+    label: "Exploring",
+    description: "Identifying where AI could create value.",
+  },
+  {
+    value: "Evaluating use cases",
+    label: "Evaluating",
+    description: "Comparing specific workflows, risks, and data needs.",
+  },
+  {
+    value: "Running a pilot",
+    label: "Piloting",
+    description: "Testing AI in a controlled environment.",
+  },
+  {
+    value: "Preparing to scale",
+    label: "Preparing to scale",
+    description: "Planning governance, architecture, and operating controls.",
+  },
+  {
+    value: "Already operating AI systems",
+    label: "Operating AI",
+    description: "Improving oversight for deployed AI capabilities.",
+  },
+] as const;
+
+export const PRIMARY_NEED_OPTIONS = [
+  "Use-case and readiness assessment",
+  "Secure AI architecture",
+  "AI governance and risk management",
+  "Agentic AI implementation",
+  "Microsoft Copilot or Azure OpenAI readiness",
+  "Other",
+] as const;
+
+export const DESIRED_TIMELINE_OPTIONS = [
+  "Immediate",
+  "30-60 days",
+  "This quarter",
+  "Next quarter",
+  "Exploring options",
+] as const;
+
+const WORK_EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export function validateSecureAiForm(form: SecureAiFormValues): SecureAiFormErrors {
+  const errors: SecureAiFormErrors = {};
+
+  if (!form.firstName.trim()) errors.firstName = "Please enter your full name.";
+  if (!form.email.trim()) {
+    errors.email = "Please enter your work email.";
+  } else if (!WORK_EMAIL_PATTERN.test(form.email.trim())) {
+    errors.email = "Please enter a valid work email.";
+  }
+  if (!form.company.trim()) errors.company = "Please enter your organization.";
+  if (!form.aiAdoptionStage) errors.aiAdoptionStage = "Please choose where your organization is today.";
+  if (!form.need) errors.need = "Please choose what you would like help with.";
+
+  return errors;
+}
 
 export async function submitSecureAiInquiry(form: SecureAiFormValues) {
   if (!form.firstName || !form.email || !form.company || !form.aiAdoptionStage || !form.need) {
@@ -256,6 +342,8 @@ function SecureAiInquiryForm() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [touched, setTouched] = useState<Partial<Record<keyof SecureAiFormValues, boolean>>>({});
   const submissionGuardRef = useRef<ContactSubmissionGuard>({ inFlight: false, completed: false });
   const [form, setForm] = useState<SecureAiFormValues>({
     firstName: "",
@@ -268,16 +356,25 @@ function SecureAiInquiryForm() {
     message: "",
   });
 
-  const inputCls =
-    "w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/20";
-  const labelCls = "text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block";
+  const formErrors = validateSecureAiForm(form);
+  const visibleError = (field: keyof SecureAiFormValues) => (submitAttempted || touched[field] ? formErrors[field] : undefined);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
   };
 
-  async function handleSubmit(event: React.FormEvent) {
+  const updateField = (field: keyof SecureAiFormValues, value: string) => {
+    setForm((current) => ({ ...current, [field]: value }));
+  };
+
+  const markTouched = (field: keyof SecureAiFormValues) => {
+    setTouched((current) => ({ ...current, [field]: true }));
+  };
+
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+    setSubmitAttempted(true);
+    if (Object.keys(formErrors).length > 0) return;
     if (!beginContactSubmission(submissionGuardRef.current)) return;
     setSubmitting(true);
     setError("");
@@ -286,7 +383,7 @@ function SecureAiInquiryForm() {
       completeContactSubmission(submissionGuardRef.current);
       setSubmitted(true);
     } catch {
-      setError("Something went wrong. Please email enterprise@defenseeye.ai.");
+      setError("We couldn't submit your request right now. Please try again or email enterprise@defenseeye.ai.");
     } finally {
       releaseContactSubmission(submissionGuardRef.current);
       setSubmitting(false);
@@ -295,78 +392,489 @@ function SecureAiInquiryForm() {
 
   if (submitted) {
     return (
-      <div className="border border-border/40 bg-card/50 p-8 text-center">
-        <h3 className="font-heading text-xl font-bold mb-2">Thank you.</h3>
-        <p className="text-sm text-muted-foreground">DefenseEye will review your Secure AI adoption inquiry and respond through the enterprise channel.</p>
+      <div className="rounded-lg border border-primary/25 bg-background p-8 text-center text-foreground shadow-2xl shadow-background/15">
+        <CheckCircle2 className="mx-auto mb-4 h-10 w-10 text-primary" aria-hidden="true" />
+        <h3 className="font-heading text-2xl font-bold">Thank you. Your consultation request has been received.</h3>
+        <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
+          DefenseEye will review your information and follow up to coordinate the next conversation.
+        </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="border border-border/40 bg-card/50 p-6 space-y-5">
+    <form onSubmit={handleSubmit} noValidate className="rounded-lg border border-primary/20 bg-background p-5 text-foreground shadow-2xl shadow-background/15 sm:p-7">
       <input type="hidden" name="inquiryType" value={SECURE_AI_INQUIRY_TYPE} />
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="secure-ai-name" className={labelCls}>Name *</label>
-          <input id="secure-ai-name" required name="firstName" value={form.firstName} onChange={handleChange} className={inputCls} autoComplete="name" />
-        </div>
-        <div>
-          <label htmlFor="secure-ai-email" className={labelCls}>Work Email *</label>
-          <input id="secure-ai-email" required type="email" name="email" value={form.email} onChange={handleChange} className={inputCls} autoComplete="email" />
-        </div>
+      <div className="border-b border-white/10 pb-5">
+        <p className="text-xs font-semibold uppercase tracking-widest text-primary">Secure AI Consultation</p>
+        <h3 className="mt-2 font-heading text-2xl font-bold text-white">Request a Secure AI Readiness Consultation</h3>
+        <p className="mt-3 text-sm leading-relaxed text-slate-300">
+          Tell us a little about your organization and AI initiative. We'll use this information to make the conversation focused and relevant.
+        </p>
+        <p className="mt-2 text-xs font-medium text-slate-400">No obligation. Your information is used to prepare for the consultation.</p>
       </div>
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="secure-ai-company" className={labelCls}>Company *</label>
-          <input id="secure-ai-company" required name="company" value={form.company} onChange={handleChange} className={inputCls} autoComplete="organization" />
-        </div>
-        <div>
-          <label htmlFor="secure-ai-role" className={labelCls}>Role</label>
-          <input id="secure-ai-role" name="title" value={form.title} onChange={handleChange} className={inputCls} autoComplete="organization-title" />
-        </div>
+
+      <div className="mt-6 space-y-7">
+        <FormSection title="About You" description="A few details so the right DefenseEye practitioner can follow up.">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <ConsultationTextField
+              id="secure-ai-name"
+              name="firstName"
+              label="Full Name"
+              required
+              icon={UserRound}
+              value={form.firstName}
+              onChange={handleChange}
+              onBlur={() => markTouched("firstName")}
+              error={visibleError("firstName")}
+              autoComplete="name"
+            />
+            <ConsultationTextField
+              id="secure-ai-email"
+              name="email"
+              label="Work Email"
+              required
+              type="email"
+              icon={Mail}
+              value={form.email}
+              onChange={handleChange}
+              onBlur={() => markTouched("email")}
+              error={visibleError("email")}
+              autoComplete="email"
+            />
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <ConsultationTextField
+              id="secure-ai-company"
+              name="company"
+              label="Organization"
+              required
+              icon={Building2}
+              value={form.company}
+              onChange={handleChange}
+              onBlur={() => markTouched("company")}
+              error={visibleError("company")}
+              autoComplete="organization"
+            />
+            <ConsultationTextField
+              id="secure-ai-role"
+              name="title"
+              label="Job Title"
+              optional
+              icon={BriefcaseBusiness}
+              value={form.title}
+              onChange={handleChange}
+              autoComplete="organization-title"
+            />
+          </div>
+        </FormSection>
+
+        <FormSection title="Your AI Initiative" description="Help us understand where you are and what would make the conversation useful.">
+          <StageRadioCards
+            value={form.aiAdoptionStage}
+            error={visibleError("aiAdoptionStage")}
+            onChange={(value) => {
+              updateField("aiAdoptionStage", value);
+              markTouched("aiAdoptionStage");
+            }}
+          />
+          <NeedChoiceCards
+            value={form.need}
+            error={visibleError("need")}
+            onChange={(value) => {
+              updateField("need", value);
+              markTouched("need");
+            }}
+          />
+          <div className="max-w-xl">
+            <ConsultationSelect
+              id="secure-ai-timeline"
+              name="timeline"
+              label="Desired Timeline"
+              helper="When would you like to begin planning or implementation?"
+              placeholder="Select timeline"
+              optional
+              icon={Clock}
+              value={form.timeline}
+              options={DESIRED_TIMELINE_OPTIONS}
+              onValueChange={(value) => updateField("timeline", value)}
+            />
+          </div>
+        </FormSection>
+
+        <FormSection title="Conversation" description="Optional context helps us prepare without turning this into a long intake form.">
+          <ConsultationTextarea
+            id="secure-ai-context"
+            name="message"
+            label="Anything else you'd like us to know?"
+            optional
+            helper="Share relevant use cases, constraints, security concerns, or questions."
+            value={form.message}
+            onChange={handleChange}
+          />
+        </FormSection>
       </div>
-      <div>
-        <label htmlFor="secure-ai-stage" className={labelCls}>AI Adoption Stage *</label>
-        <select id="secure-ai-stage" required name="aiAdoptionStage" value={form.aiAdoptionStage} onChange={handleChange} className={inputCls}>
-          <option value="">Select stage...</option>
-          <option>Exploring opportunities</option>
-          <option>Evaluating use cases</option>
-          <option>Running a pilot</option>
-          <option>Preparing to scale</option>
-          <option>Already operating AI systems</option>
-        </select>
-      </div>
-      <div>
-        <label htmlFor="secure-ai-need" className={labelCls}>Primary Need *</label>
-        <select id="secure-ai-need" required name="need" value={form.need} onChange={handleChange} className={inputCls}>
-          <option value="">Select primary need...</option>
-          <option>Use-case and readiness assessment</option>
-          <option>Secure AI architecture</option>
-          <option>AI governance and risk management</option>
-          <option>Agentic AI implementation</option>
-          <option>Microsoft Copilot or Azure OpenAI readiness</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div>
-        <label htmlFor="secure-ai-timeline" className={labelCls}>Desired Timeline</label>
-        <select id="secure-ai-timeline" name="timeline" value={form.timeline} onChange={handleChange} className={inputCls}>
-          <option value="">Select timeline...</option>
-          <option>Immediate</option>
-          <option>30-60 days</option>
-          <option>This quarter</option>
-          <option>Next quarter</option>
-          <option>Exploring options</option>
-        </select>
-      </div>
-      <div>
-        <label htmlFor="secure-ai-context" className={labelCls}>Additional Context</label>
-        <textarea id="secure-ai-context" name="message" value={form.message} onChange={handleChange} rows={4} className={`${inputCls} resize-none`} />
-      </div>
-      {error && <p className="text-sm text-destructive">{error}</p>}
-      <Button type="submit" disabled={submitting} className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-        {submitting ? "Sending..." : "Request a Secure AI Readiness Consultation"}
+
+      {error && (
+        <p className="mt-5 rounded-md border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-red-100" role="alert">
+          {error}
+        </p>
+      )}
+
+      <Button
+        type="submit"
+        disabled={submitting}
+        className="mt-7 min-h-12 w-full bg-accent px-5 text-sm font-semibold text-accent-foreground shadow-lg shadow-accent/20 hover:bg-accent/90 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+      >
+        {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />}
+        {submitting ? "Sending request..." : "Request Secure AI Consultation"}
       </Button>
     </form>
+  );
+}
+
+type ConsultationIcon = ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
+
+function FormSection({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="space-y-4" aria-label={title}>
+      <div>
+        <h4 className="font-heading text-lg font-semibold text-white">{title}</h4>
+        <p className="mt-1 text-sm leading-relaxed text-slate-300">{description}</p>
+      </div>
+      <div className="space-y-4">{children}</div>
+    </section>
+  );
+}
+
+function ConsultationLabel({
+  htmlFor,
+  label,
+  required,
+  optional,
+}: {
+  htmlFor: string;
+  label: string;
+  required?: boolean;
+  optional?: boolean;
+}) {
+  return (
+    <label htmlFor={htmlFor} className="mb-1.5 block text-sm font-semibold text-white">
+      {label}
+      {required && <span className="ml-1 text-primary" aria-label="required">*</span>}
+      {optional && <span className="ml-1 font-normal text-slate-400">(Optional)</span>}
+    </label>
+  );
+}
+
+function FieldHint({
+  id,
+  helper,
+  error,
+}: {
+  id: string;
+  helper?: string;
+  error?: string;
+}) {
+  if (error) {
+    return (
+      <p id={id} className="mt-1.5 text-sm font-medium text-red-200" role="alert">
+        {error}
+      </p>
+    );
+  }
+
+  if (!helper) return null;
+
+  return (
+    <p id={id} className="mt-1.5 text-xs leading-relaxed text-slate-400">
+      {helper}
+    </p>
+  );
+}
+
+function describedBy(id: string, helper?: string, error?: string) {
+  return error || helper ? `${id}-hint` : undefined;
+}
+
+function ConsultationTextField({
+  id,
+  label,
+  required,
+  optional,
+  icon: Icon,
+  error,
+  helper,
+  className,
+  ...props
+}: ComponentProps<typeof Input> & {
+  id: string;
+  label: string;
+  required?: boolean;
+  optional?: boolean;
+  icon: ConsultationIcon;
+  error?: string;
+  helper?: string;
+}) {
+  return (
+    <div>
+      <ConsultationLabel htmlFor={id} label={label} required={required} optional={optional} />
+      <div className="relative">
+        <Icon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" aria-hidden />
+        <Input
+          id={id}
+          required={required}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={describedBy(id, helper, error)}
+          className={cn(
+            "min-h-12 rounded-md border-slate-300 bg-white pl-10 pr-3 text-base text-slate-950 shadow-sm placeholder:text-slate-500 focus-visible:border-primary focus-visible:ring-primary/35 disabled:bg-slate-100 disabled:text-slate-500 dark:border-slate-300 dark:bg-white dark:text-slate-950 dark:placeholder:text-slate-500 md:text-sm",
+            error && "border-red-300 focus-visible:border-red-300 focus-visible:ring-red-300/40",
+            className
+          )}
+          {...props}
+        />
+      </div>
+      <FieldHint id={`${id}-hint`} helper={helper} error={error} />
+    </div>
+  );
+}
+
+function ConsultationTextarea({
+  id,
+  label,
+  required,
+  optional,
+  helper,
+  error,
+  className,
+  ...props
+}: ComponentProps<typeof Textarea> & {
+  id: string;
+  label: string;
+  required?: boolean;
+  optional?: boolean;
+  helper?: string;
+  error?: string;
+}) {
+  return (
+    <div>
+      <ConsultationLabel htmlFor={id} label={label} required={required} optional={optional} />
+      <div className="relative">
+        <MessageSquareText className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-slate-500" aria-hidden />
+        <Textarea
+          id={id}
+          required={required}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={describedBy(id, helper, error)}
+          rows={4}
+          className={cn(
+            "min-h-32 resize-y rounded-md border-slate-300 bg-white px-3 py-3 pl-10 text-base text-slate-950 shadow-sm placeholder:text-slate-500 focus-visible:border-primary focus-visible:ring-primary/35 disabled:bg-slate-100 disabled:text-slate-500 dark:border-slate-300 dark:bg-white dark:text-slate-950 dark:placeholder:text-slate-500 md:text-sm",
+            error && "border-red-300 focus-visible:border-red-300 focus-visible:ring-red-300/40",
+            className
+          )}
+          {...props}
+        />
+      </div>
+      <FieldHint id={`${id}-hint`} helper={helper} error={error} />
+    </div>
+  );
+}
+
+function ConsultationSelect({
+  id,
+  name,
+  label,
+  placeholder,
+  options,
+  value,
+  required,
+  optional,
+  helper,
+  error,
+  icon: Icon,
+  onValueChange,
+}: {
+  id: string;
+  name: keyof SecureAiFormValues;
+  label: string;
+  placeholder: string;
+  options: readonly string[];
+  value: string;
+  required?: boolean;
+  optional?: boolean;
+  helper?: string;
+  error?: string;
+  icon: ConsultationIcon;
+  onValueChange: (value: string) => void;
+}) {
+  return (
+    <div>
+      <ConsultationLabel htmlFor={id} label={label} required={required} optional={optional} />
+      <Select name={name} value={value} onValueChange={onValueChange} required={required}>
+        <SelectTrigger
+          id={id}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={describedBy(id, helper, error)}
+          className={cn(
+            "min-h-12 w-full rounded-md border-slate-300 bg-white px-3 text-left text-base font-medium text-slate-950 shadow-sm data-[placeholder]:text-slate-500 focus:border-primary focus:ring-2 focus:ring-primary/35 focus:ring-offset-0 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500 dark:border-slate-300 dark:bg-white dark:text-slate-950 dark:hover:bg-white dark:data-[placeholder]:text-slate-500 md:text-sm",
+            error && "border-red-300 focus:border-red-300 focus:ring-red-300/40"
+          )}
+        >
+          <span className="flex min-w-0 items-center gap-2">
+            <Icon className="h-4 w-4 shrink-0 text-slate-500" aria-hidden />
+            <SelectValue placeholder={placeholder} />
+          </span>
+        </SelectTrigger>
+        <SelectContent
+          position="popper"
+          sideOffset={6}
+          className="z-[80] max-h-72 rounded-md border border-slate-200 bg-white p-1 text-slate-950 shadow-2xl"
+        >
+          {options.map((option) => (
+            <SelectItem
+              key={option}
+              value={option}
+              className="min-h-11 cursor-pointer rounded-sm px-3 py-2.5 text-sm text-slate-900 focus:bg-primary/15 focus:text-slate-950 data-[state=checked]:bg-primary/20 data-[state=checked]:font-semibold data-[state=checked]:text-slate-950"
+            >
+              {option}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <FieldHint id={`${id}-hint`} helper={helper} error={error} />
+    </div>
+  );
+}
+
+function NeedChoiceCards({
+  value,
+  error,
+  onChange,
+}: {
+  value: string;
+  error?: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <fieldset>
+      <legend className="text-sm font-semibold text-white">
+        Primary Need
+        <span className="ml-1 text-primary" aria-label="required">*</span>
+      </legend>
+      <p id="secure-ai-need-hint" className="mt-1 text-xs leading-relaxed text-slate-400">
+        What would you like help with first?
+      </p>
+      <div className="mt-3 grid gap-3 sm:grid-cols-2" role="radiogroup" aria-describedby={error ? "secure-ai-need-error" : "secure-ai-need-hint"}>
+        {PRIMARY_NEED_OPTIONS.map((option) => {
+          const selected = value === option;
+          return (
+            <label
+              key={option}
+              className={cn(
+                "flex min-h-14 cursor-pointer items-center gap-3 rounded-md border px-4 py-3 transition-colors",
+                "focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background",
+                selected
+                  ? "border-primary bg-primary/15 text-white shadow-lg shadow-primary/10"
+                  : "border-white/15 bg-white/[0.04] text-slate-100 hover:border-primary/60 hover:bg-white/[0.07]"
+              )}
+            >
+              <input
+                type="radio"
+                name="need"
+                value={option}
+                checked={selected}
+                onChange={() => onChange(option)}
+                required
+                className="sr-only"
+                aria-invalid={error ? true : undefined}
+              />
+              <Sparkles className={cn("h-4 w-4 shrink-0", selected ? "text-primary" : "text-slate-400")} aria-hidden />
+              <span className="text-sm font-medium leading-snug">{option}</span>
+            </label>
+          );
+        })}
+      </div>
+      {error && (
+        <p id="secure-ai-need-error" className="mt-2 text-sm font-medium text-red-200" role="alert">
+          {error}
+        </p>
+      )}
+    </fieldset>
+  );
+}
+
+function StageRadioCards({
+  value,
+  error,
+  onChange,
+}: {
+  value: string;
+  error?: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <fieldset>
+      <legend className="text-sm font-semibold text-white">
+        AI Adoption Stage
+        <span className="ml-1 text-primary" aria-label="required">*</span>
+      </legend>
+      <p id="secure-ai-stage-hint" className="mt-1 text-xs leading-relaxed text-slate-400">
+        Where is your organization today? Choose the stage that best matches your current initiative.
+      </p>
+      <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="radiogroup" aria-describedby={error ? "secure-ai-stage-error" : "secure-ai-stage-hint"}>
+        {AI_ADOPTION_STAGE_OPTIONS.map((option) => {
+          const selected = value === option.value;
+          return (
+            <label
+              key={option.value}
+              className={cn(
+                "flex min-h-[112px] cursor-pointer flex-col rounded-md border p-4 transition-colors",
+                "focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background",
+                selected
+                  ? "border-primary bg-primary/15 text-white shadow-lg shadow-primary/10"
+                  : "border-white/15 bg-white/[0.04] text-white hover:border-primary/60 hover:bg-white/[0.07]"
+              )}
+            >
+              <input
+                type="radio"
+                name="aiAdoptionStage"
+                value={option.value}
+                checked={selected}
+                onChange={() => onChange(option.value)}
+                required
+                className="sr-only"
+                aria-invalid={error ? true : undefined}
+              />
+              <span className="flex items-center gap-2 text-sm font-semibold">
+                <span
+                  className={cn(
+                    "flex h-4 w-4 shrink-0 items-center justify-center rounded-full border",
+                    selected ? "border-primary bg-primary" : "border-slate-400 bg-transparent"
+                  )}
+                  aria-hidden="true"
+                >
+                  {selected && <span className="h-1.5 w-1.5 rounded-full bg-background" />}
+                </span>
+                {option.label}
+              </span>
+              <span className="mt-2 text-xs leading-relaxed text-slate-300">{option.description}</span>
+            </label>
+          );
+        })}
+      </div>
+      {error && (
+        <p id="secure-ai-stage-error" className="mt-2 text-sm font-medium text-red-200" role="alert">
+          {error}
+        </p>
+      )}
+    </fieldset>
   );
 }
