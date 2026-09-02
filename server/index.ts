@@ -116,6 +116,14 @@ function getAttributionValue(attribution: unknown, key: string) {
   return displayValue((attribution as Record<string, unknown>)[key], "Not available");
 }
 
+function getFirstAttributionValue(attribution: unknown, keys: string[]) {
+  for (const key of keys) {
+    const value = getAttributionValue(attribution, key);
+    if (value !== "Not available") return value;
+  }
+  return "Not available";
+}
+
 function renderEmailSection(title: string, rows: Array<[string, string]>) {
   return `
     <h2 style="color:#00D4FF;font-size:16px;margin:26px 0 10px;">${escapeHtml(title)}</h2>
@@ -201,8 +209,8 @@ export async function processContactInquiry(
     ["Medium", getAttributionValue(attribution, "utm_medium")],
     ["Campaign", getAttributionValue(attribution, "utm_campaign")],
     ["Ad", getAttributionValue(attribution, "utm_content")],
-    ["Campaign ID", getAttributionValue(attribution, "campaign_id")],
-    ["Ad Group ID", getAttributionValue(attribution, "ad_group_id")],
+    ["Campaign ID", getFirstAttributionValue(attribution, ["campaign_id", "openai_campaign_id"])],
+    ["Ad Group ID", getFirstAttributionValue(attribution, ["ad_group_id", "openai_ad_group_id"])],
     ["Ad ID", getAttributionValue(attribution, "ad_id")],
     ["Ad Account ID", getAttributionValue(attribution, "ad_account_id")],
     ["OpenAI Click Reference / oppref", getAttributionValue(attribution, "oppref")],

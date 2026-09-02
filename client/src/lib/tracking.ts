@@ -9,6 +9,10 @@ const UTM_KEYS = [
   "li_fat_id",
   "campaign_id",
   "ad_group_id",
+  "ad_id",
+  "ad_account_id",
+  "openai_campaign_id",
+  "openai_ad_group_id",
   "oppref",
 ];
 

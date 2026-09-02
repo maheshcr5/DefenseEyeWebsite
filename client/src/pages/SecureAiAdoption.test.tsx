@@ -206,7 +206,7 @@ describe("Secure AI adoption landing page", () => {
     vi.stubGlobal("window", {
       location: {
         search:
-          "?utm_source=openai&utm_medium=paid&utm_campaign=secure-ai&utm_content=hero&campaign_id=cmp_123&ad_group_id=grp_456&oppref=opp_789",
+          "?utm_source=openai&utm_medium=paid&utm_campaign=secure-ai&utm_content=hero&campaign_id=cmp_123&ad_group_id=grp_456&ad_id=ad_789&ad_account_id=acct_321&openai_campaign_id=openai_cmp_123&openai_ad_group_id=openai_grp_456&oppref=opp_789",
         pathname: "/secure-ai-adoption",
       },
       sessionStorage,
@@ -227,6 +227,10 @@ describe("Secure AI adoption landing page", () => {
       utm_content: "hero",
       campaign_id: "cmp_123",
       ad_group_id: "grp_456",
+      ad_id: "ad_789",
+      ad_account_id: "acct_321",
+      openai_campaign_id: "openai_cmp_123",
+      openai_ad_group_id: "openai_grp_456",
       oppref: "opp_789",
     });
   });
