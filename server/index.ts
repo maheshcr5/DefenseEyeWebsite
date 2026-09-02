@@ -66,6 +66,7 @@ type ContactResult = {
 };
 
 const CONTACT_FAILURE_MESSAGE = "We could not process your inquiry right now. Please try again later.";
+const DEFAULT_CONTACT_NOTIFICATION_EMAIL = "mahesh@defenseeye.ai";
 
 function hasRequiredSmtpConfig(env: NodeJS.ProcessEnv) {
   return Boolean(env.SMTP_HOST && env.SMTP_USER && env.SMTP_PASS);
@@ -100,6 +101,36 @@ function escapeHtml(value: string) {
 
 function sanitizeSubjectValue(value: string) {
   return value.replace(/[\r\n]+/g, " ").trim();
+}
+
+function displayValue(value: unknown, fallback = "Not provided") {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  return trimmed || fallback;
+}
+
+function getAttributionValue(attribution: unknown, key: string) {
+  if (!attribution || typeof attribution !== "object" || Array.isArray(attribution)) {
+    return "Not available";
+  }
+  return displayValue((attribution as Record<string, unknown>)[key], "Not available");
+}
+
+function renderEmailSection(title: string, rows: Array<[string, string]>) {
+  return `
+    <h2 style="color:#00D4FF;font-size:16px;margin:26px 0 10px;">${escapeHtml(title)}</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:8px;">
+      ${rows
+        .map(
+          ([label, value]) => `
+        <tr>
+          <td style="padding:10px 12px;background:#131f35;border-bottom:1px solid #1e2d4a;font-weight:600;color:#00D4FF;width:38%;vertical-align:top;">${escapeHtml(label)}</td>
+          <td style="padding:10px 12px;background:#0d1a2d;border-bottom:1px solid #1e2d4a;color:#e8eaf0;white-space:pre-wrap;">${escapeHtml(value)}</td>
+        </tr>`
+        )
+        .join("")}
+    </table>
+  `;
 }
 
 export async function processContactInquiry(
@@ -138,51 +169,59 @@ export async function processContactInquiry(
 
   const fullName = `${firstName} ${lastName || ""}`.trim();
   const safeCompanyForSubject = sanitizeSubjectValue(company);
+  const safeNameForSubject = sanitizeSubjectValue(fullName);
   const isSecureAiLead = inquiryType === "Secure AI Adoption";
   const subject = isSecureAiLead
-    ? `New Secure AI Adoption Lead - ${safeCompanyForSubject}`
-    : `New DefenseEye Inquiry - ${safeCompanyForSubject}${inquiryType ? ` (${sanitizeSubjectValue(inquiryType)})` : ""}`;
-  const notificationRows: Array<[string, string]> = [
-    ["Name", fullName],
-    ["Work Email", email],
-    ["Phone", phone || "-"],
-    ["Company", company],
-    ["Role", title || "-"],
-    ["Inquiry Type", inquiryType || "-"],
-    ...(isSecureAiLead
-      ? ([
-          ["AI Adoption Stage", aiAdoptionStage || "-"],
-          ["Primary Need", need || "-"],
-          ["Desired Timeline", timeline || "-"],
-        ] as Array<[string, string]>)
-      : ([
-          ["Primary Need", need || "-"],
-          ["Company Size", companySize || "-"],
-          ["Target CMMC Level", cmmcLevel || "-"],
-          ["Compliance Timeline", timeline || "-"],
-          ["Biggest Challenge", challenge || "-"],
-        ] as Array<[string, string]>)),
-    ["Additional Context", message || "-"],
-    ["Attribution", attribution ? JSON.stringify(attribution) : "-"],
+    ? `[DefenseEye Lead] Secure AI Adoption - ${safeCompanyForSubject} - ${safeNameForSubject}`
+    : `[DefenseEye Lead] ${sanitizeSubjectValue(inquiryType || "Inquiry")} - ${safeCompanyForSubject} - ${safeNameForSubject}`;
+  const submittedAt = new Date().toISOString();
+  const notificationRecipient = env.CONTACT_NOTIFICATION_EMAIL || DEFAULT_CONTACT_NOTIFICATION_EMAIL;
+  const contactRows: Array<[string, string]> = [
+    ["Name", displayValue(fullName)],
+    ["Work Email", displayValue(email)],
+    ["Job Title", displayValue(title)],
+    ["Company", displayValue(company)],
+    ["Phone", displayValue(phone)],
+  ];
+  const initiativeRows: Array<[string, string]> = isSecureAiLead
+    ? [
+        ["AI Adoption Stage", displayValue(aiAdoptionStage)],
+        ["Primary Need", displayValue(need)],
+        ["Desired Timeline", displayValue(timeline)],
+      ]
+    : [
+        ["Primary Need", displayValue(need)],
+        ["Company Size", displayValue(companySize)],
+        ["Target CMMC Level", displayValue(cmmcLevel)],
+        ["Compliance Timeline", displayValue(timeline)],
+        ["Biggest Challenge", displayValue(challenge)],
+      ];
+  const attributionRows: Array<[string, string]> = [
+    ["Source", getAttributionValue(attribution, "utm_source")],
+    ["Medium", getAttributionValue(attribution, "utm_medium")],
+    ["Campaign", getAttributionValue(attribution, "utm_campaign")],
+    ["Ad", getAttributionValue(attribution, "utm_content")],
+    ["Campaign ID", getAttributionValue(attribution, "campaign_id")],
+    ["Ad Group ID", getAttributionValue(attribution, "ad_group_id")],
+    ["Ad ID", getAttributionValue(attribution, "ad_id")],
+    ["Ad Account ID", getAttributionValue(attribution, "ad_account_id")],
+    ["OpenAI Click Reference / oppref", getAttributionValue(attribution, "oppref")],
   ];
 
   const htmlBody = `
-    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A1628;color:#e8eaf0;padding:32px;border-radius:8px;">
+    <div style="font-family:Arial,sans-serif;max-width:720px;margin:0 auto;background:#0A1628;color:#e8eaf0;padding:32px;border-radius:8px;">
       <div style="text-align:center;margin-bottom:28px;">
-        <h1 style="color:#00D4FF;font-size:22px;margin:0;">New DefenseEye Inquiry</h1>
+        <h1 style="color:#00D4FF;font-size:22px;margin:0;">${isSecureAiLead ? "New Secure AI Consultation Request" : "New DefenseEye Inquiry"}</h1>
         <p style="color:#9ca3af;font-size:14px;margin:6px 0 0;">Submitted via defenseeye.ai contact form</p>
       </div>
-      <table style="width:100%;border-collapse:collapse;font-size:14px;">
-        ${notificationRows
-          .map(
-            ([label, value]) => `
-          <tr>
-            <td style="padding:10px 12px;background:#131f35;border-bottom:1px solid #1e2d4a;font-weight:600;color:#00D4FF;width:38%;">${escapeHtml(label)}</td>
-            <td style="padding:10px 12px;background:#0d1a2d;border-bottom:1px solid #1e2d4a;color:#e8eaf0;">${escapeHtml(value)}</td>
-          </tr>`
-          )
-          .join("")}
-      </table>
+      ${renderEmailSection("Contact Information", contactRows)}
+      ${renderEmailSection(isSecureAiLead ? "AI Initiative" : "Inquiry Details", initiativeRows)}
+      ${renderEmailSection("Conversation", [["Additional Context", displayValue(message)]])}
+      ${renderEmailSection("Attribution", attributionRows)}
+      ${renderEmailSection("Submission", [
+        ["Submitted At", submittedAt],
+        ["Inquiry Type", displayValue(inquiryType)],
+      ])}
       <p style="margin-top:24px;font-size:12px;color:#6b7280;text-align:center;">
         Reply directly to this email to respond to ${escapeHtml(fullName)} at ${escapeHtml(email)}
       </p>
@@ -201,6 +240,8 @@ export async function processContactInquiry(
         <p style="margin:0 0 8px;font-size:13px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Your submission summary</p>
         <p style="margin:4px 0;color:#e8eaf0;"><strong>Company:</strong> ${escapeHtml(company)}</p>
         <p style="margin:4px 0;color:#e8eaf0;"><strong>Inquiry Type:</strong> ${escapeHtml(inquiryType || need || "TBD")}</p>
+        ${isSecureAiLead ? `<p style="margin:4px 0;color:#e8eaf0;"><strong>AI Adoption Stage:</strong> ${escapeHtml(displayValue(aiAdoptionStage, "TBD"))}</p>` : ""}
+        ${isSecureAiLead ? `<p style="margin:4px 0;color:#e8eaf0;"><strong>Primary Need:</strong> ${escapeHtml(displayValue(need, "TBD"))}</p>` : ""}
         <p style="margin:4px 0;color:#e8eaf0;"><strong>Timeline:</strong> ${escapeHtml(timeline || "TBD")}</p>
       </div>
       <p style="color:#9ca3af;font-size:13px;">
@@ -223,8 +264,7 @@ export async function processContactInquiry(
     const fromAddr = env.SMTP_FROM || env.SMTP_USER;
     const notificationResult = await transporter.sendMail({
       from: `"DefenseEye Contact Form" <${fromAddr}>`,
-      to: "enterprise@defenseeye.ai",
-      cc: "partners@defenseeye.ai",
+      to: notificationRecipient,
       replyTo: email,
       subject,
       html: htmlBody,
