@@ -11,7 +11,7 @@ vi.mock("nodemailer", () => ({
   },
 }));
 
-import { deriveDiscoveryFocus, deriveLeadUrgency, processContactInquiry, renderInternalLeadEmail } from "./index";
+import { deriveDiscoveryFocus, deriveLeadUrgency, processContactInquiry, renderCustomerConfirmationEmail, renderInternalLeadEmail } from "./index";
 
 const smtpEnv = {
   SMTP_HOST: "smtp.example.test",
@@ -167,6 +167,9 @@ describe("contact endpoint success contract", () => {
     expect(notification.html).not.toContain("Target CMMC Level");
     expect(notification.html).not.toContain("Biggest Challenge");
     expect(confirmation.to).toBe("ada@example.com");
+    expect(confirmation.subject).toBe("DefenseEye received your Secure AI consultation request");
+    expect(confirmation.text).toContain("AI use case, security and governance priorities");
+    expect(confirmation.html).not.toContain("CMMC Knowledge Hub");
     expect(confirmation.html).toContain("AI Adoption Stage");
     expect(confirmation.html).toContain("Running a pilot");
     expect(confirmation.html).toContain("Primary Need");
@@ -176,6 +179,126 @@ describe("contact endpoint success contract", () => {
     expect(confirmation.html).not.toContain("cmp_123");
     expect(confirmation.html).not.toContain("grp_456");
     expect(confirmation.html).not.toContain("opp_789");
+  });
+
+  it.each([
+    ["Use-case and readiness assessment", "Explore Secure AI Readiness and Transformation", "https://defenseeye.ai/solutions/ai-transformation"],
+    ["Secure AI architecture", "Explore Secure AI Security and Architecture", "https://defenseeye.ai/solutions/ai-security"],
+    ["AI governance and risk management", "Explore AI Governance and Risk Management", "https://defenseeye.ai/solutions/ai-governance"],
+    ["Agentic AI implementation", "Explore Secure Agentic AI Implementation", "https://defenseeye.ai/secure-ai-adoption"],
+    ["Microsoft Copilot or Azure OpenAI readiness", "Explore Microsoft Copilot Readiness", "https://defenseeye.ai/solutions/microsoft-copilot-readiness"],
+    ["Other", "Explore DefenseEye Secure AI Services", "https://defenseeye.ai/secure-ai-adoption"],
+    ["Unexpected value", "Explore DefenseEye Secure AI Services", "https://defenseeye.ai/secure-ai-adoption"],
+    ["", "Explore DefenseEye Secure AI Services", "https://defenseeye.ai/secure-ai-adoption"],
+  ])("maps Secure AI confirmation need %s to the right resource", (need, label, url) => {
+    const confirmation = renderCustomerConfirmationEmail({
+      firstName: "Ada",
+      company: "Example Co",
+      inquiryType: "Secure AI Adoption",
+      need,
+      aiAdoptionStage: "Evaluating use cases",
+      timeline: "Immediate",
+    });
+
+    expect(confirmation.subject).toBe("DefenseEye received your Secure AI consultation request");
+    expect(confirmation.html).toContain(label);
+    expect(confirmation.html).toContain(url);
+    expect(confirmation.text).toContain(label);
+    expect(confirmation.text).toContain(url);
+    expect(confirmation.html).not.toContain("CMMC");
+    expect(confirmation.html).not.toContain("NIST 800-171");
+    expect(confirmation.html).not.toContain("SPRS");
+    expect(confirmation.html).not.toContain("C3PAO");
+    expect(confirmation.html).not.toContain("compliance automation");
+  });
+
+  it("renders the Secure AI governance confirmation with the expected guidance and no internal data", () => {
+    const confirmation = renderCustomerConfirmationEmail({
+      firstName: "Ada <script>",
+      company: "Example <Co>",
+      inquiryType: "Secure AI Adoption",
+      need: "AI governance and risk management",
+      aiAdoptionStage: "Evaluating use cases",
+      timeline: "30-60 days",
+    });
+
+    expect(confirmation.html).toContain("We received your request, Ada &lt;script&gt;!");
+    expect(confirmation.html).toContain("Example &lt;Co&gt;");
+    expect(confirmation.html).toContain("AI use case, security and governance priorities");
+    expect(confirmation.html).toContain("practical AI governance, accountability, oversight, and risk controls");
+    expect(confirmation.html).toContain("https://defenseeye.ai/solutions/ai-governance");
+    expect(confirmation.text).toContain("AI use case, security and governance priorities");
+    expect(confirmation.text).toContain("Explore AI Governance and Risk Management: https://defenseeye.ai/solutions/ai-governance");
+    expect(confirmation.html).not.toContain("Derived Summary");
+    expect(confirmation.html).not.toContain("Objective Signals");
+    expect(confirmation.html).not.toContain("Qualification Gaps");
+    expect(confirmation.html).not.toContain("oppref");
+    expect(confirmation.html).not.toContain("Campaign ID");
+    expect(confirmation.html).not.toContain("Referrer");
+    expect(confirmation.html).not.toContain("imageName");
+    expect(confirmation.html).not.toContain("&#x20;");
+    expect(confirmation.text).not.toContain("oppref");
+  });
+
+  it("keeps CMMC confirmations on the CMMC Knowledge Hub recommendation", () => {
+    const confirmation = renderCustomerConfirmationEmail({
+      firstName: "Ada",
+      company: "Example Co",
+      inquiryType: "CMMC readiness",
+      timeline: "This quarter",
+    });
+
+    expect(confirmation.subject).toBe("We received your DefenseEye inquiry");
+    expect(confirmation.html).toContain("CMMC Knowledge Hub");
+    expect(confirmation.html).toContain("https://defenseeye.ai/knowledge-hub");
+    expect(confirmation.html).toContain("NIST 800-171");
+    expect(confirmation.html).toContain("SPRS");
+    expect(confirmation.text).toContain("CMMC Knowledge Hub");
+  });
+
+  it("does not guess a Secure AI or CMMC recommendation for general inquiries", () => {
+    const confirmation = renderCustomerConfirmationEmail({
+      firstName: "Ada",
+      company: "Example Co",
+      inquiryType: "Other",
+      timeline: "Exploring options",
+    });
+
+    expect(confirmation.subject).toBe("We received your DefenseEye inquiry");
+    expect(confirmation.html).not.toContain("CMMC Knowledge Hub");
+    expect(confirmation.html).not.toContain("Explore DefenseEye Secure AI Services");
+    expect(confirmation.html).not.toContain("https://defenseeye.ai/knowledge-hub");
+    expect(confirmation.text).not.toContain("CMMC Knowledge Hub");
+    expect(confirmation.text).not.toContain("Explore DefenseEye Secure AI Services");
+  });
+
+  it("keeps Secure AI confirmation routing when additional context mentions compliance", async () => {
+    const { logger } = createLogger();
+    nodemailerMock.sendMail.mockResolvedValueOnce({ accepted: ["mahesh@defenseeye.ai"] }).mockResolvedValueOnce({ accepted: ["ada@example.com"] });
+
+    const result = await processContactInquiry(
+      {
+        ...contactBody,
+        inquiryType: "Secure AI Adoption",
+        need: "AI governance and risk management",
+        aiAdoptionStage: "Evaluating use cases",
+        timeline: "Immediate",
+        message: "We work in a regulated environment and need to think through compliance-sensitive AI governance.",
+      },
+      smtpEnv,
+      logger
+    );
+
+    const confirmation = nodemailerMock.sendMail.mock.calls[1][0];
+    expect(result.status).toBe(200);
+    expect(confirmation.subject).toBe("DefenseEye received your Secure AI consultation request");
+    expect(confirmation.html).toContain("Explore AI Governance and Risk Management");
+    expect(confirmation.html).toContain("https://defenseeye.ai/solutions/ai-governance");
+    expect(confirmation.html).not.toContain("CMMC Knowledge Hub");
+    expect(confirmation.html).not.toContain("NIST 800-171");
+    expect(confirmation.html).not.toContain("SPRS");
+    expect(confirmation.html).not.toContain("C3PAO");
+    expect(confirmation.html).not.toContain("compliance automation");
   });
 
   it("renders clean internal HTML and plain text without artifacts or double encoding", () => {

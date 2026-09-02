@@ -279,6 +279,179 @@ function renderTextSection(title: string, rows: Array<[string, string]>) {
   ].join("\n");
 }
 
+type CustomerResource = {
+  label: string;
+  url: string;
+  description: string;
+};
+
+const SECURE_AI_RESOURCE_FALLBACK: CustomerResource = {
+  label: "Explore DefenseEye Secure AI Services",
+  url: "https://defenseeye.ai/secure-ai-adoption",
+  description: "While you wait, learn more about how DefenseEye helps regulated organizations move from AI exploration to governed, secure implementation.",
+};
+
+const SECURE_AI_RESOURCE_BY_NEED = new Map<string, CustomerResource>([
+  [
+    "Use-case and readiness assessment",
+    {
+      label: "Explore Secure AI Readiness and Transformation",
+      url: "https://defenseeye.ai/solutions/ai-transformation",
+      description: "While you wait, learn more about how DefenseEye helps organizations prioritize AI use cases, readiness needs, and practical transformation paths.",
+    },
+  ],
+  [
+    "Secure AI architecture",
+    {
+      label: "Explore Secure AI Security and Architecture",
+      url: "https://defenseeye.ai/solutions/ai-security",
+      description: "While you wait, learn more about how DefenseEye helps organizations plan secure AI architecture, data controls, identity, and integration patterns.",
+    },
+  ],
+  [
+    "AI governance and risk management",
+    {
+      label: "Explore AI Governance and Risk Management",
+      url: "https://defenseeye.ai/solutions/ai-governance",
+      description: "While you wait, learn more about how DefenseEye helps organizations establish practical AI governance, accountability, oversight, and risk controls.",
+    },
+  ],
+  [
+    "Agentic AI implementation",
+    {
+      label: "Explore Secure Agentic AI Implementation",
+      url: "https://defenseeye.ai/secure-ai-adoption",
+      description: "While you wait, learn more about how DefenseEye helps organizations implement agentic AI with secure architecture, governance, and delivery support.",
+    },
+  ],
+  [
+    "Microsoft Copilot or Azure OpenAI readiness",
+    {
+      label: "Explore Microsoft Copilot Readiness",
+      url: "https://defenseeye.ai/solutions/microsoft-copilot-readiness",
+      description: "While you wait, learn more about how DefenseEye helps organizations prepare for Microsoft Copilot and Azure OpenAI with security and governance controls.",
+    },
+  ],
+]);
+
+function getCustomerResource(inquiryType: unknown, need: unknown): CustomerResource | undefined {
+  const inquiry = displayValue(inquiryType, "");
+  const selectedNeed = displayValue(need, "");
+  if (inquiry === "Secure AI Adoption") {
+    return SECURE_AI_RESOURCE_BY_NEED.get(selectedNeed) || SECURE_AI_RESOURCE_FALLBACK;
+  }
+
+  if (/\b(cmmc|cmmclens|compliance automation)\b/i.test(inquiry)) {
+    return {
+      label: "CMMC Knowledge Hub",
+      url: "https://defenseeye.ai/knowledge-hub",
+      description: "While you wait, explore the DefenseEye CMMC Knowledge Hub for plain-English guides on CMMC Level 2, NIST 800-171, SPRS scoring, and C3PAO assessment preparation.",
+    };
+  }
+
+  return undefined;
+}
+
+export function renderCustomerConfirmationEmail(input: {
+  firstName: string;
+  company: string;
+  inquiryType?: string;
+  need?: string;
+  aiAdoptionStage?: string;
+  timeline?: string;
+}) {
+  const { firstName, company, inquiryType, need, aiAdoptionStage, timeline } = input;
+  const isSecureAiLead = inquiryType === "Secure AI Adoption";
+  const resource = getCustomerResource(inquiryType, need);
+  const subject = isSecureAiLead ? "DefenseEye received your Secure AI consultation request" : "We received your DefenseEye inquiry";
+  const opening = isSecureAiLead
+    ? "Thank you for reaching out to DefenseEye. Our team will review your request and contact you within 24 business hours to discuss your AI use case, security and governance priorities, architecture needs, and practical implementation next steps."
+    : "Thank you for reaching out to DefenseEye. Our team will review your request and contact you within 24 business hours to discuss your AI, cybersecurity, governance, risk, or compliance automation goals.";
+  const footerText = isSecureAiLead
+    ? "DefenseEye, Inc. · defenseeye.ai · Secure AI readiness, governance, architecture, and implementation support"
+    : "DefenseEye, Inc. · defenseeye.ai · AI, cybersecurity, governance, risk, and compliance automation";
+  const textFooter = isSecureAiLead
+    ? "DefenseEye, Inc. - defenseeye.ai - Secure AI readiness, governance, architecture, and implementation support"
+    : "DefenseEye, Inc. - defenseeye.ai - AI, cybersecurity, governance, risk, and compliance automation";
+  const summaryRows: Array<[string, string]> = [
+    ["Company", displayValue(company, "TBD")],
+    ["Inquiry Type", displayValue(inquiryType || need, "TBD")],
+  ];
+  if (isSecureAiLead) {
+    summaryRows.push(["AI Adoption Stage", displayValue(aiAdoptionStage, "TBD")]);
+    summaryRows.push(["Primary Need", displayValue(need, "TBD")]);
+  }
+  summaryRows.push(["Timeline", displayValue(timeline, "TBD")]);
+
+  const resourceHtml = resource
+    ? `
+      <tr>
+        <td style="padding:0 28px 24px;color:#9ca3af;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:20px;">
+          ${escapeHtml(resource.description)}
+          <a href="${escapeHtml(resource.url)}" style="color:#00D4FF;text-decoration:underline;">${escapeHtml(resource.label)}</a>.
+        </td>
+      </tr>`
+    : "";
+  const resourceText = resource ? `${resource.description} ${resource.label}: ${resource.url}` : "";
+  const html = `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;background-color:#07111f;margin:0;padding:0;">
+      <tr>
+        <td align="center" style="padding:24px 12px;">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;border-collapse:collapse;background-color:#0A1628;color:#e8eaf0;font-family:Arial,Helvetica,sans-serif;">
+            <tr>
+              <td style="padding:28px 28px 16px;text-align:center;">
+                <h1 style="color:#00D4FF;font-size:22px;line-height:28px;margin:0;">We received your request, ${escapeHtml(displayValue(firstName, "there"))}!</h1>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 28px 4px;color:#cbd5e1;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:25px;">${escapeHtml(opening)}</td>
+            </tr>
+            <tr>
+              <td style="padding:20px 28px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;background-color:#131f35;border:1px solid #1e3a5f;">
+                  <tr>
+                    <td colspan="2" style="padding:16px 16px 8px;color:#9ca3af;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Your submission summary</td>
+                  </tr>
+                  ${summaryRows
+                    .map(
+                      ([label, value]) => `
+                  <tr>
+                    <td width="38%" style="padding:8px 16px;color:#00D4FF;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:700;vertical-align:top;">${escapeHtml(label)}</td>
+                    <td style="padding:8px 16px;color:#e8eaf0;font-family:Arial,Helvetica,sans-serif;font-size:14px;vertical-align:top;word-break:break-word;">${escapeHtml(value)}</td>
+                  </tr>`
+                    )
+                    .join("")}
+                </table>
+              </td>
+            </tr>
+            ${resourceHtml}
+            <tr>
+              <td style="padding:0 28px 28px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
+                  <tr><td style="border-top:1px solid #1e2d4a;font-size:1px;line-height:1px;">&nbsp;</td></tr>
+                  <tr><td style="padding-top:18px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#6b7280;text-align:center;">${escapeHtml(footerText)}</td></tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  `;
+  const text = [
+    `We received your request, ${displayValue(firstName, "there")}!`,
+    "",
+    opening,
+    "",
+    renderTextSection("Your submission summary", summaryRows),
+    resourceText,
+    "",
+    textFooter,
+  ].filter(Boolean).join("\n");
+
+  return { subject, html, text };
+}
+
 export function renderInternalLeadEmail(input: {
   fullName: string;
   email: string;
@@ -473,29 +646,14 @@ export async function processContactInquiry(
     submittedAt,
   });
 
-  const confirmationHtml = `
-    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A1628;color:#e8eaf0;padding:32px;border-radius:8px;">
-      <div style="text-align:center;margin-bottom:24px;">
-        <h1 style="color:#00D4FF;font-size:22px;margin:0;">We received your request, ${escapeHtml(firstName)}!</h1>
-      </div>
-      <p style="color:#cbd5e1;line-height:1.7;">
-        Thank you for reaching out to <strong style="color:#00D4FF;">DefenseEye</strong>. Our team will review your request and contact you within <strong>24 business hours</strong> to discuss your AI, cybersecurity, governance, risk, or compliance automation goals.
-      </p>
-      <div style="background:#131f35;border:1px solid #1e3a5f;border-radius:6px;padding:20px;margin:24px 0;">
-        <p style="margin:0 0 8px;font-size:13px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Your submission summary</p>
-        <p style="margin:4px 0;color:#e8eaf0;"><strong>Company:</strong> ${escapeHtml(company)}</p>
-        <p style="margin:4px 0;color:#e8eaf0;"><strong>Inquiry Type:</strong> ${escapeHtml(inquiryType || need || "TBD")}</p>
-        ${isSecureAiLead ? `<p style="margin:4px 0;color:#e8eaf0;"><strong>AI Adoption Stage:</strong> ${escapeHtml(displayValue(aiAdoptionStage, "TBD"))}</p>` : ""}
-        ${isSecureAiLead ? `<p style="margin:4px 0;color:#e8eaf0;"><strong>Primary Need:</strong> ${escapeHtml(displayValue(need, "TBD"))}</p>` : ""}
-        <p style="margin:4px 0;color:#e8eaf0;"><strong>Timeline:</strong> ${escapeHtml(timeline || "TBD")}</p>
-      </div>
-      <p style="color:#9ca3af;font-size:13px;">
-        While you wait, explore our free <a href="https://defenseeye.ai/knowledge-hub" style="color:#00D4FF;">CMMC Knowledge Hub</a> - plain-English guides on CMMC Level 2, NIST 800-171, SPRS scoring, and C3PAO assessment preparation.
-      </p>
-      <hr style="border:none;border-top:1px solid #1e2d4a;margin:28px 0;"/>
-      <p style="font-size:12px;color:#6b7280;text-align:center;">DefenseEye, Inc. · defenseeye.ai · AI, cybersecurity, governance, risk, and compliance automation</p>
-    </div>
-  `;
+  const confirmationEmail = renderCustomerConfirmationEmail({
+    firstName,
+    company,
+    inquiryType,
+    need,
+    aiAdoptionStage,
+    timeline,
+  });
 
   try {
     logger.log(`[contact:${requestId}] notification_attempt route=/api/contact`);
@@ -527,8 +685,9 @@ export async function processContactInquiry(
       await transporter.sendMail({
         from: `"DefenseEye Team" <${fromAddr}>`,
         to: email,
-        subject: "We received your DefenseEye inquiry",
-        html: confirmationHtml,
+        subject: confirmationEmail.subject,
+        text: confirmationEmail.text,
+        html: confirmationEmail.html,
       });
       logger.log(`[contact:${requestId}] confirmation_accepted route=/api/contact`);
     } catch {
