@@ -109,11 +109,16 @@ function displayValue(value: unknown, fallback = "Not provided") {
   return trimmed || fallback;
 }
 
-function getAttributionValue(attribution: unknown, key: string) {
+function isAttributionRecord(attribution: unknown): attribution is Record<string, unknown> {
   if (!attribution || typeof attribution !== "object" || Array.isArray(attribution)) {
-    return "Not available";
+    return false;
   }
-  return displayValue((attribution as Record<string, unknown>)[key], "Not available");
+  return true;
+}
+
+function getAttributionValue(attribution: unknown, key: string, fallback = "Not available") {
+  if (!isAttributionRecord(attribution)) return fallback;
+  return displayValue(attribution[key], fallback);
 }
 
 function getFirstAttributionValue(attribution: unknown, keys: string[]) {
@@ -124,21 +129,286 @@ function getFirstAttributionValue(attribution: unknown, keys: string[]) {
   return "Not available";
 }
 
+const FREE_EMAIL_DOMAINS = new Set(["gmail.com", "yahoo.com", "outlook.com", "hotmail.com"]);
+
+function sanitizeEmailAddress(value: unknown) {
+  if (typeof value !== "string") return undefined;
+  const email = value.trim();
+  if (!email || /[\r\n]/.test(email)) return undefined;
+  if (!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email)) return undefined;
+  return email;
+}
+
+function getEmailDomain(email: string) {
+  return email.split("@").pop()?.toLowerCase() || "";
+}
+
+function sanitizeLandingPathname(value: string) {
+  if (!value.startsWith("/") || value.startsWith("//") || /[?#\r\n]/.test(value)) return "Not available";
+  return value;
+}
+
+function sanitizeHostname(value: string) {
+  const hostname = value.trim().replace(/^www\./, "").toLowerCase();
+  if (!hostname || /[/?#:@\s\r\n]/.test(hostname)) return "Not available";
+  if (!/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(hostname)) return "Not available";
+  return hostname;
+}
+
+function getLandingPathname(attribution: unknown) {
+  const pathname = getAttributionValue(attribution, "landing_pathname");
+  return pathname === "Not available" ? pathname : sanitizeLandingPathname(pathname);
+}
+
+function getReferrerDomain(attribution: unknown) {
+  const explicitDomain = getAttributionValue(attribution, "referrer_domain");
+  if (explicitDomain !== "Not available") {
+    const sanitizedDomain = sanitizeHostname(explicitDomain);
+    if (sanitizedDomain !== "Not available") return sanitizedDomain;
+  }
+
+  const referrer = getAttributionValue(attribution, "referrer");
+  if (referrer === "Not available") return "Not available";
+
+  try {
+    return sanitizeHostname(new URL(referrer).hostname);
+  } catch {
+    return "Not available";
+  }
+}
+
+export function deriveLeadUrgency(timeline: unknown) {
+  const value = displayValue(timeline, "").toLowerCase();
+  if (!value) return "Unknown";
+  if (value === "immediate") return "High";
+  if (value === "30-60 days" || value === "30–60 days") return "Near-term";
+  if (value === "this quarter") return "Active";
+  if (value === "next quarter") return "Planned";
+  if (value === "exploring options") return "Exploratory";
+  return "Unknown";
+}
+
+export function deriveDiscoveryFocus(stage: unknown, need: unknown, timeline: unknown) {
+  const stageValue = displayValue(stage, "").toLowerCase();
+  const needValue = displayValue(need, "").toLowerCase();
+  const urgency = deriveLeadUrgency(timeline);
+
+  const stageFocus =
+    stageValue.includes("exploring") ? "Clarify promising use cases, decision criteria, sensitive data boundaries, and what would make a first conversation useful." :
+    stageValue.includes("evaluating") ? "Clarify the priority use case, sensitive data and systems involved, consequential actions, and current decision criteria." :
+    stageValue.includes("pilot") ? "Review pilot scope, controls already in place, evaluation approach, integration needs, and the next implementation milestone." :
+    stageValue.includes("scale") ? "Identify scale constraints, governance ownership, architecture patterns, operating controls, and rollout sequencing." :
+    stageValue.includes("operating") ? "Review deployed AI workflows, oversight model, access controls, evaluation evidence, and improvement priorities." :
+    "Clarify the AI initiative, risk context, stakeholders, and practical next steps.";
+
+  const needFocus =
+    needValue.includes("governance") || needValue.includes("risk") ? "Pay particular attention to governance accountability, risk controls, human oversight, and NIST AI RMF alignment." :
+    needValue.includes("architecture") ? "Pay particular attention to identity, data access, integration architecture, logging, and secure deployment patterns." :
+    needValue.includes("implementation") ? "Pay particular attention to agent workflow design, integration dependencies, evaluation, and operational controls." :
+    needValue.includes("copilot") || needValue.includes("azure openai") ? "Pay particular attention to Microsoft platform readiness, tenant/data controls, identity, and adoption guardrails." :
+    needValue.includes("readiness") || needValue.includes("use-case") ? "Pay particular attention to use-case prioritization, readiness gaps, data sensitivity, and governance prerequisites." :
+    "Use the submitted primary need to focus the conversation without assuming unsubmitted facts.";
+
+  const timelineFocus = urgency === "High" || urgency === "Near-term" ? "Confirm the near-term decision or implementation milestone." : "Confirm expected timing and decision path.";
+  return `${stageFocus} ${needFocus} ${timelineFocus}`;
+}
+
+function normalizeSource(attribution: unknown) {
+  const source = getAttributionValue(attribution, "utm_source");
+  return source === "Not available" ? "Direct / unattributed" : source;
+}
+
+function getAttributionRows(attribution: unknown): Array<[string, string]> {
+  return [
+    ["Source", normalizeSource(attribution)],
+    ["Medium", getAttributionValue(attribution, "utm_medium")],
+    ["Landing Pathname", getLandingPathname(attribution)],
+    ["Referrer Domain", getReferrerDomain(attribution)],
+    ["Campaign", getAttributionValue(attribution, "utm_campaign")],
+    ["Ad", getAttributionValue(attribution, "utm_content")],
+    ["Campaign ID", getFirstAttributionValue(attribution, ["campaign_id", "openai_campaign_id"])],
+    ["Ad Group ID", getFirstAttributionValue(attribution, ["ad_group_id", "openai_ad_group_id"])],
+    ["Ad ID", getAttributionValue(attribution, "ad_id")],
+    ["Ad Account ID", getAttributionValue(attribution, "ad_account_id")],
+    ["OpenAI Click Reference / oppref", getAttributionValue(attribution, "oppref")],
+  ];
+}
+
+function getQualificationGaps(email: string | undefined, title: unknown, phone: unknown, attribution: unknown) {
+  const gaps: string[] = [];
+  if (displayValue(title, "") === "") gaps.push("Job title not provided");
+  if (displayValue(phone, "") === "") gaps.push("Phone not provided");
+  if (email && FREE_EMAIL_DOMAINS.has(getEmailDomain(email))) gaps.push("Personal email domain used");
+  if (normalizeSource(attribution) === "Direct / unattributed" && getAttributionValue(attribution, "utm_campaign") === "Not available") {
+    gaps.push("Campaign attribution unavailable");
+  }
+  return gaps;
+}
+
+function htmlValue(value: string) {
+  return escapeHtml(value).replace(/\r\n|\r|\n/g, "<br>");
+}
+
 function renderEmailSection(title: string, rows: Array<[string, string]>) {
   return `
-    <h2 style="color:#00D4FF;font-size:16px;margin:26px 0 10px;">${escapeHtml(title)}</h2>
-    <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:8px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin:24px 0 8px;">
+      <tr>
+        <td style="padding:0 0 10px 0;color:#00D4FF;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:700;line-height:22px;">${escapeHtml(title)}</td>
+      </tr>
+    </table>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;margin-bottom:8px;">
       ${rows
         .map(
           ([label, value]) => `
         <tr>
-          <td style="padding:10px 12px;background:#131f35;border-bottom:1px solid #1e2d4a;font-weight:600;color:#00D4FF;width:38%;vertical-align:top;">${escapeHtml(label)}</td>
-          <td style="padding:10px 12px;background:#0d1a2d;border-bottom:1px solid #1e2d4a;color:#e8eaf0;white-space:pre-wrap;">${escapeHtml(value)}</td>
+          <td width="38%" style="padding:10px 12px;background-color:#131f35;border-bottom:1px solid #1e2d4a;font-weight:700;color:#00D4FF;vertical-align:top;">${escapeHtml(label)}</td>
+          <td style="padding:10px 12px;background-color:#0d1a2d;border-bottom:1px solid #1e2d4a;color:#e8eaf0;vertical-align:top;word-break:break-word;">${htmlValue(value)}</td>
         </tr>`
         )
         .join("")}
     </table>
   `;
+}
+
+function renderTextSection(title: string, rows: Array<[string, string]>) {
+  return [
+    title,
+    "-".repeat(title.length),
+    ...rows.map(([label, value]) => `${label}: ${value}`),
+    "",
+  ].join("\n");
+}
+
+export function renderInternalLeadEmail(input: {
+  fullName: string;
+  email: string;
+  company: string;
+  title?: string;
+  phone?: string;
+  inquiryType?: string;
+  need?: string;
+  aiAdoptionStage?: string;
+  companySize?: string;
+  cmmcLevel?: string;
+  challenge?: string;
+  timeline?: string;
+  message?: string;
+  attribution?: unknown;
+  submittedAt: string;
+}) {
+  const {
+    fullName,
+    email,
+    company,
+    title,
+    phone,
+    inquiryType,
+    need,
+    aiAdoptionStage,
+    companySize,
+    cmmcLevel,
+    challenge,
+    timeline,
+    message,
+    attribution,
+    submittedAt,
+  } = input;
+  const safeReplyTo = sanitizeEmailAddress(email);
+  const isSecureAiLead = inquiryType === "Secure AI Adoption";
+  const attributionRows = getAttributionRows(attribution);
+  const qualificationGaps = getQualificationGaps(safeReplyTo, title, phone, attribution);
+  const snapshotRows: Array<[string, string]> = isSecureAiLead
+    ? [
+        ["Inquiry", displayValue(inquiryType)],
+        ["Stage", displayValue(aiAdoptionStage)],
+        ["Primary Need", displayValue(need)],
+        ["Urgency", deriveLeadUrgency(timeline)],
+        ["Source", normalizeSource(attribution)],
+      ]
+    : [
+        ["Inquiry", displayValue(inquiryType)],
+        ["Primary Need", displayValue(need)],
+        ["Urgency", deriveLeadUrgency(timeline)],
+        ["Source", normalizeSource(attribution)],
+      ];
+  const contactRows: Array<[string, string]> = [
+    ["Name", displayValue(fullName)],
+    ["Work Email", displayValue(email)],
+    ["Job Title", displayValue(title)],
+    ["Company", displayValue(company)],
+    ["Phone", displayValue(phone)],
+  ];
+  const initiativeRows: Array<[string, string]> = isSecureAiLead
+    ? [
+        ["AI Adoption Stage", displayValue(aiAdoptionStage)],
+        ["Primary Need", displayValue(need)],
+        ["Desired Timeline", displayValue(timeline)],
+      ]
+    : [
+        ["Primary Need", displayValue(need)],
+        ["Company Size", displayValue(companySize)],
+        ["Target CMMC Level", displayValue(cmmcLevel)],
+        ["Compliance Timeline", displayValue(timeline)],
+        ["Biggest Challenge", displayValue(challenge)],
+      ];
+  const discoveryRows: Array<[string, string]> = [["Suggested Discovery Focus", deriveDiscoveryFocus(aiAdoptionStage, need, timeline)]];
+  const gapRows: Array<[string, string]> = [
+    ["Objective Gaps", qualificationGaps.length > 0 ? qualificationGaps.join("\n") : "No qualification gaps identified from the submitted fields."],
+  ];
+  const conversationRows: Array<[string, string]> = [["Additional Context", displayValue(message)]];
+  const submissionRows: Array<[string, string]> = [
+    ["Submitted At", submittedAt],
+    ["Inquiry Type", displayValue(inquiryType)],
+  ];
+
+  const replyLine = safeReplyTo
+    ? `Reply directly to this email to respond to ${displayValue(fullName)} at ${safeReplyTo}.`
+    : "Reply-To was omitted because the submitted email address was invalid.";
+  const html = `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;background-color:#07111f;margin:0;padding:0;">
+      <tr>
+        <td align="center" style="padding:24px 12px;">
+          <table role="presentation" width="720" cellpadding="0" cellspacing="0" style="width:100%;max-width:720px;border-collapse:collapse;background-color:#0A1628;color:#e8eaf0;font-family:Arial,Helvetica,sans-serif;">
+            <tr>
+              <td style="padding:28px 24px 12px;text-align:center;">
+                <h1 style="color:#00D4FF;font-size:22px;line-height:28px;margin:0;">${isSecureAiLead ? "New Secure AI Consultation Request" : "New DefenseEye Inquiry"}</h1>
+                <p style="color:#9ca3af;font-size:14px;line-height:20px;margin:8px 0 0;">Submitted via defenseeye.ai contact form</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 24px 28px;">
+                ${renderEmailSection("Lead Snapshot - Derived Summary", snapshotRows)}
+                ${renderEmailSection("Discovery Focus - Derived Guidance", discoveryRows)}
+                ${renderEmailSection("Qualification Gaps - Objective Signals", gapRows)}
+                ${renderEmailSection("Submitted Details - Contact Information", contactRows)}
+                ${renderEmailSection(isSecureAiLead ? "Submitted Details - AI Initiative" : "Submitted Details - Inquiry Details", initiativeRows)}
+                ${renderEmailSection("Submitted Details - Conversation", conversationRows)}
+                ${renderEmailSection("Submitted Details - Attribution", attributionRows)}
+                ${renderEmailSection("Submitted Details - Submission", submissionRows)}
+                <p style="margin:24px 0 0;font-size:12px;line-height:18px;color:#9ca3af;text-align:center;">${escapeHtml(replyLine)}</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  `;
+  const text = [
+    isSecureAiLead ? "NEW SECURE AI CONSULTATION REQUEST" : "NEW DEFENSEEYE INQUIRY",
+    "Submitted via defenseeye.ai contact form",
+    "",
+    renderTextSection("Lead Snapshot - Derived Summary", snapshotRows),
+    renderTextSection("Discovery Focus - Derived Guidance", discoveryRows),
+    renderTextSection("Qualification Gaps - Objective Signals", gapRows),
+    renderTextSection("Submitted Details - Contact Information", contactRows),
+    renderTextSection(isSecureAiLead ? "Submitted Details - AI Initiative" : "Submitted Details - Inquiry Details", initiativeRows),
+    renderTextSection("Submitted Details - Conversation", conversationRows),
+    renderTextSection("Submitted Details - Attribution", attributionRows),
+    renderTextSection("Submitted Details - Submission", submissionRows),
+    replyLine,
+  ].join("\n");
+
+  return { html, text, replyTo: safeReplyTo };
 }
 
 export async function processContactInquiry(
@@ -165,7 +435,8 @@ export async function processContactInquiry(
     attribution,
   } = body;
 
-  if (!email || !firstName || !company) {
+  const replyTo = sanitizeEmailAddress(email);
+  if (!email || !replyTo || !firstName || !company) {
     logger.warn(`[contact:${requestId}] validation_failed route=/api/contact`);
     return contactFailure(400, "validation_failed");
   }
@@ -184,57 +455,23 @@ export async function processContactInquiry(
     : `[DefenseEye Lead] ${sanitizeSubjectValue(inquiryType || "Inquiry")} - ${safeCompanyForSubject} - ${safeNameForSubject}`;
   const submittedAt = new Date().toISOString();
   const notificationRecipient = env.CONTACT_NOTIFICATION_EMAIL || DEFAULT_CONTACT_NOTIFICATION_EMAIL;
-  const contactRows: Array<[string, string]> = [
-    ["Name", displayValue(fullName)],
-    ["Work Email", displayValue(email)],
-    ["Job Title", displayValue(title)],
-    ["Company", displayValue(company)],
-    ["Phone", displayValue(phone)],
-  ];
-  const initiativeRows: Array<[string, string]> = isSecureAiLead
-    ? [
-        ["AI Adoption Stage", displayValue(aiAdoptionStage)],
-        ["Primary Need", displayValue(need)],
-        ["Desired Timeline", displayValue(timeline)],
-      ]
-    : [
-        ["Primary Need", displayValue(need)],
-        ["Company Size", displayValue(companySize)],
-        ["Target CMMC Level", displayValue(cmmcLevel)],
-        ["Compliance Timeline", displayValue(timeline)],
-        ["Biggest Challenge", displayValue(challenge)],
-      ];
-  const attributionRows: Array<[string, string]> = [
-    ["Source", getAttributionValue(attribution, "utm_source")],
-    ["Medium", getAttributionValue(attribution, "utm_medium")],
-    ["Campaign", getAttributionValue(attribution, "utm_campaign")],
-    ["Ad", getAttributionValue(attribution, "utm_content")],
-    ["Campaign ID", getFirstAttributionValue(attribution, ["campaign_id", "openai_campaign_id"])],
-    ["Ad Group ID", getFirstAttributionValue(attribution, ["ad_group_id", "openai_ad_group_id"])],
-    ["Ad ID", getAttributionValue(attribution, "ad_id")],
-    ["Ad Account ID", getAttributionValue(attribution, "ad_account_id")],
-    ["OpenAI Click Reference / oppref", getAttributionValue(attribution, "oppref")],
-  ];
-
-  const htmlBody = `
-    <div style="font-family:Arial,sans-serif;max-width:720px;margin:0 auto;background:#0A1628;color:#e8eaf0;padding:32px;border-radius:8px;">
-      <div style="text-align:center;margin-bottom:28px;">
-        <h1 style="color:#00D4FF;font-size:22px;margin:0;">${isSecureAiLead ? "New Secure AI Consultation Request" : "New DefenseEye Inquiry"}</h1>
-        <p style="color:#9ca3af;font-size:14px;margin:6px 0 0;">Submitted via defenseeye.ai contact form</p>
-      </div>
-      ${renderEmailSection("Contact Information", contactRows)}
-      ${renderEmailSection(isSecureAiLead ? "AI Initiative" : "Inquiry Details", initiativeRows)}
-      ${renderEmailSection("Conversation", [["Additional Context", displayValue(message)]])}
-      ${renderEmailSection("Attribution", attributionRows)}
-      ${renderEmailSection("Submission", [
-        ["Submitted At", submittedAt],
-        ["Inquiry Type", displayValue(inquiryType)],
-      ])}
-      <p style="margin-top:24px;font-size:12px;color:#6b7280;text-align:center;">
-        Reply directly to this email to respond to ${escapeHtml(fullName)} at ${escapeHtml(email)}
-      </p>
-    </div>
-  `;
+  const notificationEmail = renderInternalLeadEmail({
+    fullName,
+    email,
+    company,
+    title,
+    phone,
+    inquiryType,
+    need,
+    aiAdoptionStage,
+    companySize,
+    cmmcLevel,
+    challenge,
+    timeline,
+    message,
+    attribution,
+    submittedAt,
+  });
 
   const confirmationHtml = `
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A1628;color:#e8eaf0;padding:32px;border-radius:8px;">
@@ -273,9 +510,10 @@ export async function processContactInquiry(
     const notificationResult = await transporter.sendMail({
       from: `"DefenseEye Contact Form" <${fromAddr}>`,
       to: notificationRecipient,
-      replyTo: email,
+      replyTo: notificationEmail.replyTo,
       subject,
-      html: htmlBody,
+      text: notificationEmail.text,
+      html: notificationEmail.html,
     });
 
     if (!hasAcceptedRecipient(notificationResult)) {

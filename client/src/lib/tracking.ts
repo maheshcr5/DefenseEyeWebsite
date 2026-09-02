@@ -58,8 +58,16 @@ export function captureUtmParameters() {
     if (value) captured[key] = value;
   }
 
+  captured.landing_pathname = window.location.pathname;
+
   const referrer = document.referrer;
-  if (referrer && !captured.referrer) captured.referrer = referrer;
+  if (referrer && !captured.referrer_domain) {
+    try {
+      captured.referrer_domain = new URL(referrer).hostname.replace(/^www\./, "");
+    } catch {
+      // Ignore invalid referrers rather than forwarding arbitrary strings.
+    }
+  }
 
   if (Object.keys(captured).length > 0) {
     sessionStorage.setItem("defenseeye_utm", JSON.stringify(captured));

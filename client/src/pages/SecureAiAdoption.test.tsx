@@ -83,6 +83,8 @@ describe("Secure AI adoption landing page", () => {
     expect(html).toContain("No obligation. Your information is used to prepare for the consultation.");
     expect(html).toContain("Where is your organization today?");
     expect(html).toContain("What would you like help with first?");
+    expect(html).toContain("Role / Job Title");
+    expect(html).toContain("e.g., CIO, CISO, Head of AI, IT Director");
     expect(html).toContain("Secure AI for Financial Services");
     expect(html).toContain("Identity and least-privilege access for agents");
     expect(html).toContain("The initial conversation can clarify priority use cases");
@@ -130,6 +132,7 @@ describe("Secure AI adoption landing page", () => {
       aiAdoptionStage: "Please choose where your organization is today.",
       need: "Please choose what you would like help with.",
     });
+    expect(validateSecureAiForm({ ...completeSecureAiForm, title: "" })).toEqual({});
     expect(validateSecureAiForm(completeSecureAiForm)).toEqual({});
   });
 
@@ -161,6 +164,19 @@ describe("Secure AI adoption landing page", () => {
     expect(body).not.toHaveProperty("cmmcLevel");
     expect(openAiAds.reportOpenAiAdsLeadCreated).toHaveBeenCalledTimes(1);
     expect(openAiAds.reportOpenAiAdsLeadCreated).toHaveBeenCalledWith();
+  });
+
+  it("submits successfully when role/job title is omitted", async () => {
+    const fetchMock = mockFetch({ ok: true });
+
+    await submitSecureAiInquiry({ ...completeSecureAiForm, title: "" });
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [, init] = fetchMock.mock.calls[0];
+    const body = JSON.parse(init.body);
+    expect(body.title).toBe("");
+    expect(body.inquiryType).toBe(SECURE_AI_INQUIRY_TYPE);
+    expect(openAiAds.reportOpenAiAdsLeadCreated).toHaveBeenCalledTimes(1);
   });
 
   it("failed and rejected submissions do not report a conversion", async () => {
@@ -213,7 +229,7 @@ describe("Secure AI adoption landing page", () => {
       localStorage,
       dispatchEvent: vi.fn(),
     });
-    vi.stubGlobal("document", { referrer: "" });
+    vi.stubGlobal("document", { referrer: "https://chatgpt.com/c/thread?private=value" });
     vi.stubGlobal("sessionStorage", sessionStorage);
     vi.stubGlobal("localStorage", localStorage);
 
@@ -232,6 +248,9 @@ describe("Secure AI adoption landing page", () => {
       openai_campaign_id: "openai_cmp_123",
       openai_ad_group_id: "openai_grp_456",
       oppref: "opp_789",
+      landing_pathname: "/secure-ai-adoption",
+      referrer_domain: "chatgpt.com",
     });
+    expect(attribution.referrer).toBeUndefined();
   });
 });

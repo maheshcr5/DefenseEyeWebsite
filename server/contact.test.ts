@@ -11,7 +11,7 @@ vi.mock("nodemailer", () => ({
   },
 }));
 
-import { processContactInquiry } from "./index";
+import { deriveDiscoveryFocus, deriveLeadUrgency, processContactInquiry, renderInternalLeadEmail } from "./index";
 
 const smtpEnv = {
   SMTP_HOST: "smtp.example.test",
@@ -77,6 +77,7 @@ describe("contact endpoint success contract", () => {
     expect(result.body).toEqual({ success: true });
     expect(nodemailerMock.sendMail).toHaveBeenCalledTimes(2);
     expect(nodemailerMock.sendMail.mock.calls[0][0]).toMatchObject({
+      from: `"DefenseEye Contact Form" <${smtpEnv.SMTP_FROM}>`,
       to: "mahesh@defenseeye.ai",
       replyTo: "ada@example.com",
     });
@@ -122,7 +123,11 @@ describe("contact endpoint success contract", () => {
     expect(notification.cc).toBeUndefined();
     expect(notification.subject).toBe("[DefenseEye Lead] Secure AI Adoption - Example Co - Ada Lovelace");
     expect(notification.html).toContain("New Secure AI Consultation Request");
-    expect(notification.html).toContain("Contact Information");
+    expect(notification.text).toContain("NEW SECURE AI CONSULTATION REQUEST");
+    expect(notification.html).toContain("Lead Snapshot - Derived Summary");
+    expect(notification.html).toContain("Discovery Focus - Derived Guidance");
+    expect(notification.html).toContain("Qualification Gaps - Objective Signals");
+    expect(notification.html).toContain("Submitted Details - Contact Information");
     expect(notification.html).toContain("Ada Lovelace");
     expect(notification.html).toContain("ada@example.com");
     expect(notification.html).toContain("CTO");
@@ -153,6 +158,9 @@ describe("contact endpoint success contract", () => {
     expect(notification.html).toContain("acct_321");
     expect(notification.html).toContain("OpenAI Click Reference / oppref");
     expect(notification.html).toContain("opp_789");
+    expect(notification.html).toContain("Urgency");
+    expect(notification.html).toContain("Active");
+    expect(notification.html).toContain("No qualification gaps identified from the submitted fields.");
     expect(notification.html).toContain("Submitted At");
     expect(notification.html).toContain("Inquiry Type");
     expect(notification.html).toContain("Secure AI Adoption");
@@ -168,6 +176,213 @@ describe("contact endpoint success contract", () => {
     expect(confirmation.html).not.toContain("cmp_123");
     expect(confirmation.html).not.toContain("grp_456");
     expect(confirmation.html).not.toContain("opp_789");
+  });
+
+  it("renders clean internal HTML and plain text without artifacts or double encoding", () => {
+    const rendered = renderInternalLeadEmail({
+      fullName: "Ada & Grace",
+      email: "ada@example.com",
+      company: "Example <Co>",
+      title: "CTO",
+      phone: "",
+      inquiryType: "Secure AI Adoption",
+      need: "AI governance and risk management",
+      aiAdoptionStage: "Evaluating use cases",
+      timeline: "Immediate",
+      message: "Line one\n<script>alert('x')</script>\nLine three & more",
+      attribution: {
+        utm_source: "openai",
+        utm_medium: "paid",
+        referrer: "https://chatgpt.com/c/example?secret=value",
+        imageName: "tracking-pixel.png",
+      },
+      submittedAt: "2026-09-02T00:00:00.000Z",
+    });
+
+    expect(rendered.html).toContain("Example &lt;Co&gt;");
+    expect(rendered.html).toContain("&lt;script&gt;alert(&#39;x&#39;)&lt;/script&gt;");
+    expect(rendered.html).toContain("Line one<br>");
+    expect(rendered.html).toContain("chatgpt.com");
+    expect(rendered.html).not.toContain("https://chatgpt.com/c/example");
+    expect(rendered.html).not.toContain("imageName");
+    expect(rendered.html).not.toContain("tracking-pixel.png");
+    expect(rendered.html).not.toContain("&#x20;");
+    expect(rendered.html).not.toContain("&amp;lt;Co&amp;gt;");
+    expect(rendered.html).toContain("role=\"presentation\"");
+    expect(rendered.text).toContain("Line one\n<script>alert('x')</script>");
+    expect(rendered.text).toContain("Source: openai");
+  });
+
+  it("protects Reply-To and rejects header injection input", async () => {
+    const { logger } = createLogger();
+
+    const result = await processContactInquiry(
+      { ...contactBody, email: "ada@example.com\r\nBcc: attacker@example.com" },
+      smtpEnv,
+      logger
+    );
+
+    expect(result.status).toBe(400);
+    expect(nodemailerMock.createTransport).not.toHaveBeenCalled();
+    expect(renderInternalLeadEmail({
+      fullName: "Ada",
+      email: "ada@example.com\r\nBcc: attacker@example.com",
+      company: "Example Co",
+      submittedAt: "2026-09-02T00:00:00.000Z",
+    }).replyTo).toBeUndefined();
+  });
+
+  it("maps timeline to deterministic urgency values", () => {
+    expect(deriveLeadUrgency("Immediate")).toBe("High");
+    expect(deriveLeadUrgency("immediate")).toBe("High");
+    expect(deriveLeadUrgency("30-60 days")).toBe("Near-term");
+    expect(deriveLeadUrgency("30–60 days")).toBe("Near-term");
+    expect(deriveLeadUrgency("This quarter")).toBe("Active");
+    expect(deriveLeadUrgency("Next quarter")).toBe("Planned");
+    expect(deriveLeadUrgency("Exploring options")).toBe("Exploratory");
+    expect(deriveLeadUrgency("")).toBe("Unknown");
+    expect(deriveLeadUrgency("Someday")).toBe("Unknown");
+  });
+
+  it("maps stage and need to deterministic discovery focus", () => {
+    const focus = deriveDiscoveryFocus("Evaluating use cases", "AI governance and risk management", "Immediate");
+
+    expect(focus).toContain("priority use case");
+    expect(focus).toContain("governance accountability");
+    expect(focus).toContain("near-term decision");
+    expect(focus).not.toContain("budget");
+    expect(focus).not.toContain("guarantee");
+  });
+
+  it("falls back safely for missing and unexpected discovery values", () => {
+    const focus = deriveDiscoveryFocus(undefined, "Unexpected need", undefined);
+
+    expect(deriveLeadUrgency(undefined)).toBe("Unknown");
+    expect(focus).toContain("Clarify the AI initiative");
+    expect(focus).toContain("without assuming unsubmitted facts");
+    expect(focus).not.toContain("budget");
+    expect(focus).not.toContain("regulatory obligation");
+  });
+
+  it("adds objective qualification gaps for personal email, missing phone, and missing attribution", () => {
+    const rendered = renderInternalLeadEmail({
+      fullName: "Ada Lovelace",
+      email: "ada@gmail.com",
+      company: "Example Co",
+      inquiryType: "Secure AI Adoption",
+      aiAdoptionStage: "Exploring opportunities",
+      need: "Other",
+      submittedAt: "2026-09-02T00:00:00.000Z",
+      attribution: {},
+    });
+
+    expect(rendered.html).toContain("Phone not provided");
+    expect(rendered.html).toContain("Job title not provided");
+    expect(rendered.html).toContain("Personal email domain used");
+    expect(rendered.html).toContain("Campaign attribution unavailable");
+    expect(rendered.html).toContain("Direct / unattributed");
+    expect(rendered.html).toContain("Medium");
+    expect(rendered.html).toContain("Not available");
+  });
+
+  it("does not flag corporate email domains as personal email", () => {
+    const rendered = renderInternalLeadEmail({
+      fullName: "Ada Lovelace",
+      email: "ada@example.com",
+      company: "Example Co",
+      title: "CTO",
+      phone: "555-0100",
+      inquiryType: "Secure AI Adoption",
+      attribution: { utm_source: "openai" },
+      submittedAt: "2026-09-02T00:00:00.000Z",
+    });
+
+    expect(rendered.html).not.toContain("Personal email domain used");
+  });
+
+  it("includes provided role in internal notification and marks omitted role neutrally", () => {
+    const withRole = renderInternalLeadEmail({
+      fullName: "Ada Lovelace",
+      email: "ada@example.com",
+      company: "Example Co",
+      title: "Chief AI Officer",
+      inquiryType: "Secure AI Adoption",
+      attribution: { utm_source: "internal" },
+      submittedAt: "2026-09-02T00:00:00.000Z",
+    });
+    const withoutRole = renderInternalLeadEmail({
+      fullName: "Grace Hopper",
+      email: "grace@example.com",
+      company: "Example Co",
+      inquiryType: "Secure AI Adoption",
+      attribution: { utm_source: "internal" },
+      submittedAt: "2026-09-02T00:00:00.000Z",
+    });
+
+    expect(withRole.html).toContain("Chief AI Officer");
+    expect(withRole.html).not.toContain("Job title not provided");
+    expect(withoutRole.html).toContain("Job title not provided");
+  });
+
+  it("renders complete attributed lead details without arbitrary attribution keys", () => {
+    const rendered = renderInternalLeadEmail({
+      fullName: "Ada Lovelace",
+      email: "ada@example.com",
+      company: "Example Co",
+      title: "CTO",
+      phone: "555-0100",
+      inquiryType: "Secure AI Adoption",
+      need: "Microsoft Copilot or Azure OpenAI readiness",
+      aiAdoptionStage: "Preparing to scale",
+      timeline: "Next quarter",
+      message: "",
+      submittedAt: "2026-09-02T00:00:00.000Z",
+      attribution: {
+        landing_pathname: "/secure-ai-adoption",
+        referrer_domain: "chatgpt.com",
+        utm_source: "openai",
+        utm_medium: "paid",
+        utm_campaign: "secure_ai_adoption",
+        utm_content: "ad_1",
+        campaign_id: "cmp_123",
+        ad_group_id: "grp_456",
+        ad_id: "ad_789",
+        ad_account_id: "acct_321",
+        oppref: "opp_abc",
+        arbitrary_query: "should-not-render",
+      },
+    });
+
+    expect(rendered.html).toContain("Landing Pathname");
+    expect(rendered.html).toContain("/secure-ai-adoption");
+    expect(rendered.html).toContain("Referrer Domain");
+    expect(rendered.html).toContain("chatgpt.com");
+    expect(rendered.html).toContain("cmp_123");
+    expect(rendered.html).toContain("grp_456");
+    expect(rendered.html).toContain("opp_abc");
+    expect(rendered.html).not.toContain("arbitrary_query");
+    expect(rendered.html).not.toContain("should-not-render");
+  });
+
+  it("sanitizes landing pathname and referrer domain from client-supplied attribution", () => {
+    const rendered = renderInternalLeadEmail({
+      fullName: "Ada Lovelace",
+      email: "ada@example.com",
+      company: "Example Co",
+      inquiryType: "Secure AI Adoption",
+      submittedAt: "2026-09-02T00:00:00.000Z",
+      attribution: {
+        landing_pathname: "/secure-ai-adoption?secret=value",
+        referrer_domain: "chatgpt.com/path?secret=value",
+        referrer: "https://chatgpt.com/c/thread?private=value",
+      },
+    });
+
+    expect(rendered.html).toContain("Landing Pathname");
+    expect(rendered.html).toContain("Referrer Domain");
+    expect(rendered.html).toContain("chatgpt.com");
+    expect(rendered.html).not.toContain("secret=value");
+    expect(rendered.html).not.toContain("/c/thread");
   });
 
   it("defaults internal notification recipient to mahesh when no recipient env var is set", async () => {
