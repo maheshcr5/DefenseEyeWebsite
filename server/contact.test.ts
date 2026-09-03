@@ -168,7 +168,11 @@ describe("contact endpoint success contract", () => {
     expect(notification.html).not.toContain("Biggest Challenge");
     expect(confirmation.to).toBe("ada@example.com");
     expect(confirmation.subject).toBe("DefenseEye received your Secure AI consultation request");
+    expect(confirmation.html).toContain("within one business day");
     expect(confirmation.text).toContain("AI use case, security and governance priorities");
+    expect(confirmation.text).toContain("within one business day");
+    expect(confirmation.html).not.toContain("24 business hours");
+    expect(confirmation.text).not.toContain("24 business hours");
     expect(confirmation.html).not.toContain("CMMC Knowledge Hub");
     expect(confirmation.html).toContain("AI Adoption Stage");
     expect(confirmation.html).toContain("Running a pilot");
@@ -201,6 +205,10 @@ describe("contact endpoint success contract", () => {
     });
 
     expect(confirmation.subject).toBe("DefenseEye received your Secure AI consultation request");
+    expect(confirmation.html).toContain("within one business day");
+    expect(confirmation.text).toContain("within one business day");
+    expect(confirmation.html).not.toContain("24 business hours");
+    expect(confirmation.text).not.toContain("24 business hours");
     expect(confirmation.html).toContain(label);
     expect(confirmation.html).toContain(url);
     expect(confirmation.text).toContain(label);
@@ -224,10 +232,16 @@ describe("contact endpoint success contract", () => {
 
     expect(confirmation.html).toContain("We received your request, Ada &lt;script&gt;!");
     expect(confirmation.html).toContain("Example &lt;Co&gt;");
+    expect(confirmation.html).toContain(
+      "Thank you for reaching out to DefenseEye. Our team will review your request and contact you within one business day to discuss your AI use case, security and governance priorities, architecture needs, and practical implementation next steps."
+    );
     expect(confirmation.html).toContain("AI use case, security and governance priorities");
     expect(confirmation.html).toContain("practical AI governance, accountability, oversight, and risk controls");
     expect(confirmation.html).toContain("https://defenseeye.ai/solutions/ai-governance");
     expect(confirmation.text).toContain("AI use case, security and governance priorities");
+    expect(confirmation.text).toContain("within one business day");
+    expect(confirmation.html).not.toContain("24 business hours");
+    expect(confirmation.text).not.toContain("24 business hours");
     expect(confirmation.text).toContain("Explore AI Governance and Risk Management: https://defenseeye.ai/solutions/ai-governance");
     expect(confirmation.html).not.toContain("Derived Summary");
     expect(confirmation.html).not.toContain("Objective Signals");
@@ -265,6 +279,10 @@ describe("contact endpoint success contract", () => {
     });
 
     expect(confirmation.subject).toBe("We received your DefenseEye inquiry");
+    expect(confirmation.html).toContain("within one business day");
+    expect(confirmation.text).toContain("within one business day");
+    expect(confirmation.html).not.toContain("24 business hours");
+    expect(confirmation.text).not.toContain("24 business hours");
     expect(confirmation.html).not.toContain("CMMC Knowledge Hub");
     expect(confirmation.html).not.toContain("Explore DefenseEye Secure AI Services");
     expect(confirmation.html).not.toContain("https://defenseeye.ai/knowledge-hub");

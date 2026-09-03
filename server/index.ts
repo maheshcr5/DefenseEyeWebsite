@@ -365,8 +365,8 @@ export function renderCustomerConfirmationEmail(input: {
   const resource = getCustomerResource(inquiryType, need);
   const subject = isSecureAiLead ? "DefenseEye received your Secure AI consultation request" : "We received your DefenseEye inquiry";
   const opening = isSecureAiLead
-    ? "Thank you for reaching out to DefenseEye. Our team will review your request and contact you within 24 business hours to discuss your AI use case, security and governance priorities, architecture needs, and practical implementation next steps."
-    : "Thank you for reaching out to DefenseEye. Our team will review your request and contact you within 24 business hours to discuss your AI, cybersecurity, governance, risk, or compliance automation goals.";
+    ? "Thank you for reaching out to DefenseEye. Our team will review your request and contact you within one business day to discuss your AI use case, security and governance priorities, architecture needs, and practical implementation next steps."
+    : "Thank you for reaching out to DefenseEye. Our team will review your request and contact you within one business day to discuss your AI, cybersecurity, governance, risk, or compliance automation goals.";
   const footerText = isSecureAiLead
     ? "DefenseEye, Inc. · defenseeye.ai · Secure AI readiness, governance, architecture, and implementation support"
     : "DefenseEye, Inc. · defenseeye.ai · AI, cybersecurity, governance, risk, and compliance automation";
