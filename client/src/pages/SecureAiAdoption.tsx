@@ -30,6 +30,14 @@ import { reportOpenAiAdsLeadCreated } from "@/lib/openaiAds";
 import { beginContactSubmission, completeContactSubmission, releaseContactSubmission, type ContactSubmissionGuard } from "./ContactUs";
 
 export const SECURE_AI_INQUIRY_TYPE = "Secure AI Adoption";
+const CONSENT_KEY = "de_cookie_consent";
+const CONSENT_VERSION = 2;
+
+export type SecureAiFunnelEventName =
+  | "secure_ai_primary_cta_click"
+  | "secure_ai_pilot_cta_click"
+  | "secure_ai_form_start"
+  | "secure_ai_form_submit_success";
 
 const SECURE_AI_TITLE = "Secure Agentic AI Consulting | DefenseEye";
 const SECURE_AI_DESCRIPTION =
@@ -95,6 +103,45 @@ export const DESIRED_TIMELINE_OPTIONS = [
 
 const WORK_EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+declare global {
+  interface Window {
+    __gaId?: string;
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
+export function hasSecureAiAnalyticsConsent() {
+  if (typeof window === "undefined") return false;
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(CONSENT_KEY) || "{}") as {
+      status?: string;
+      version?: number;
+      purposes?: { analytics?: boolean };
+    };
+
+    return parsed.status === "accepted" && parsed.version === CONSENT_VERSION && parsed.purposes?.analytics === true;
+  } catch {
+    return false;
+  }
+}
+
+export function trackSecureAiFunnelEvent(name: SecureAiFunnelEventName, detail: Record<string, string> = {}) {
+  if (!hasSecureAiAnalyticsConsent()) return;
+  if (typeof window.gtag !== "function" || !window.__gaId) return;
+
+  window.gtag("event", name, {
+    send_to: window.__gaId,
+    event_category: "secure_ai_funnel",
+    ...detail,
+  });
+}
+
+export function trackSecureAiFormStartOnce(startedRef: { current: boolean }) {
+  if (startedRef.current) return;
+  startedRef.current = true;
+  trackSecureAiFunnelEvent("secure_ai_form_start", { funnel_step: "form_start" });
+}
+
 export function validateSecureAiForm(form: SecureAiFormValues): SecureAiFormErrors {
   const errors: SecureAiFormErrors = {};
 
@@ -136,6 +183,7 @@ export async function submitSecureAiInquiry(form: SecureAiFormValues) {
   if (!response.ok) throw new Error("Secure AI form failed");
   reportOpenAiAdsLeadCreated();
   trackConversion("contact_form_submit", { form: "secure_ai_adoption", inquiryType: SECURE_AI_INQUIRY_TYPE });
+  trackSecureAiFunnelEvent("secure_ai_form_submit_success", { funnel_step: "submit_success" });
 }
 
 export default function SecureAiAdoption() {
@@ -170,6 +218,7 @@ export default function SecureAiAdoption() {
   }, []);
 
   const scrollToForm = () => {
+    trackSecureAiFunnelEvent("secure_ai_primary_cta_click", { cta_location: "hero", funnel_step: "primary_cta" });
     document.getElementById("secure-ai-consultation")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
@@ -319,6 +368,39 @@ export default function SecureAiAdoption() {
         </div>
       </section>
 
+      <section className="section-gray px-4 py-16">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent">Focused First Step</p>
+            <h2 className="font-heading text-3xl font-bold sm:text-4xl">Start with a Secure AI Readiness Sprint</h2>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              For regulated organizations, including financial services teams and credit unions, an initial scoped engagement can help turn a promising AI or agentic AI idea into a practical pilot plan with the right security, governance, and oversight questions on the table.
+            </p>
+            <a
+              href="#secure-ai-consultation"
+              onClick={() => trackSecureAiFunnelEvent("secure_ai_pilot_cta_click", { cta_location: "readiness_sprint", funnel_step: "pilot_cta" })}
+              className="mt-6 inline-flex items-center text-sm font-semibold text-primary underline-offset-4 hover:underline"
+            >
+              Request a Pilot Scoping Call <ArrowRight className="ml-2 size-4" />
+            </a>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {[
+              "The priority AI or agentic AI use case",
+              "Sensitive data, systems, and access risks",
+              "Governance and human-oversight requirements",
+              "Secure target architecture",
+              "Pilot success criteria and an implementation roadmap",
+            ].map((item) => (
+              <div key={item} className="flex gap-3 border border-border/60 bg-card p-5">
+                <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" />
+                <p className="text-sm leading-relaxed text-muted-foreground">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="secure-ai-consultation" className="section-light scroll-mt-20 px-4 py-16">
         <span id="secure-ai-inquiry" className="sr-only" aria-hidden="true" />
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.85fr_1.15fr]">
@@ -344,6 +426,7 @@ function SecureAiInquiryForm() {
   const [error, setError] = useState("");
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [touched, setTouched] = useState<Partial<Record<keyof SecureAiFormValues, boolean>>>({});
+  const formStartedRef = useRef(false);
   const submissionGuardRef = useRef<ContactSubmissionGuard>({ inFlight: false, completed: false });
   const [form, setForm] = useState<SecureAiFormValues>({
     firstName: "",
@@ -360,10 +443,12 @@ function SecureAiInquiryForm() {
   const visibleError = (field: keyof SecureAiFormValues) => (submitAttempted || touched[field] ? formErrors[field] : undefined);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    trackSecureAiFormStartOnce(formStartedRef);
     setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
   };
 
   const updateField = (field: keyof SecureAiFormValues, value: string) => {
+    trackSecureAiFormStartOnce(formStartedRef);
     setForm((current) => ({ ...current, [field]: value }));
   };
 

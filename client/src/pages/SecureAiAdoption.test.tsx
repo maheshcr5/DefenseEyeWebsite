@@ -34,7 +34,10 @@ import SecureAiAdoption, {
   DESIRED_TIMELINE_OPTIONS,
   PRIMARY_NEED_OPTIONS,
   SECURE_AI_INQUIRY_TYPE,
+  hasSecureAiAnalyticsConsent,
   submitSecureAiInquiry,
+  trackSecureAiFormStartOnce,
+  trackSecureAiFunnelEvent,
   validateSecureAiForm,
   type SecureAiFormValues,
 } from "./SecureAiAdoption";
@@ -66,6 +69,45 @@ function createStorage() {
   };
 }
 
+function acceptedAnalyticsConsent() {
+  return JSON.stringify({
+    status: "accepted",
+    version: 2,
+    purposes: {
+      analytics: true,
+      openaiAdsMeasurement: true,
+    },
+    updatedAt: "2026-09-04T00:00:00.000Z",
+  });
+}
+
+function declinedAnalyticsConsent() {
+  return JSON.stringify({
+    status: "declined",
+    version: 2,
+    purposes: {
+      analytics: false,
+      openaiAdsMeasurement: false,
+    },
+    updatedAt: "2026-09-04T00:00:00.000Z",
+  });
+}
+
+function installGa4Window(consent?: string) {
+  const localStorage = createStorage();
+  if (consent) localStorage.setItem("de_cookie_consent", consent);
+  const gtag = vi.fn();
+  vi.stubGlobal("window", {
+    __gaId: "G-H22Q6LRNWC",
+    gtag,
+    localStorage,
+    location: {
+      pathname: "/secure-ai-adoption",
+    },
+  });
+  return { gtag, localStorage };
+}
+
 describe("Secure AI adoption landing page", () => {
   beforeEach(() => {
     vi.unstubAllGlobals();
@@ -88,9 +130,20 @@ describe("Secure AI adoption landing page", () => {
     expect(html).toContain("Secure AI for Financial Services");
     expect(html).toContain("Identity and least-privilege access for agents");
     expect(html).toContain("The initial conversation can clarify priority use cases");
+    expect(html).toContain("Start with a Secure AI Readiness Sprint");
+    expect(html).toContain("For regulated organizations, including financial services teams and credit unions");
+    expect(html).toContain("The priority AI or agentic AI use case");
+    expect(html).toContain("Sensitive data, systems, and access risks");
+    expect(html).toContain("Governance and human-oversight requirements");
+    expect(html).toContain("Secure target architecture");
+    expect(html).toContain("Pilot success criteria and an implementation roadmap");
+    expect(html).toContain("Request a Pilot Scoping Call");
+    expect(html).toContain('href="#secure-ai-consultation"');
     expect(html).toContain('href="/representative-engagements"');
     expect(html).toContain("View Representative Engagements");
     expect(html).toContain(SECURE_AI_INQUIRY_TYPE);
+    expect(html).not.toContain("fixed price");
+    expect(html).not.toContain("guaranteed compliance");
     expect(html).not.toContain("Target CMMC Level");
     expect(html).not.toContain("Compliance Timeline");
     expect(html).not.toContain("CMMCLens demo");
@@ -166,6 +219,63 @@ describe("Secure AI adoption landing page", () => {
     expect(openAiAds.reportOpenAiAdsLeadCreated).toHaveBeenCalledWith();
   });
 
+  it("fires secure AI GA4 funnel events only after current analytics consent", () => {
+    const declined = installGa4Window(declinedAnalyticsConsent());
+
+    expect(hasSecureAiAnalyticsConsent()).toBe(false);
+    trackSecureAiFunnelEvent("secure_ai_primary_cta_click", { cta_location: "hero", funnel_step: "primary_cta" });
+    expect(declined.gtag).not.toHaveBeenCalled();
+
+    const accepted = installGa4Window(acceptedAnalyticsConsent());
+
+    expect(hasSecureAiAnalyticsConsent()).toBe(true);
+    trackSecureAiFunnelEvent("secure_ai_pilot_cta_click", { cta_location: "readiness_sprint", funnel_step: "pilot_cta" });
+
+    expect(accepted.gtag).toHaveBeenCalledWith("event", "secure_ai_pilot_cta_click", {
+      send_to: "G-H22Q6LRNWC",
+      event_category: "secure_ai_funnel",
+      cta_location: "readiness_sprint",
+      funnel_step: "pilot_cta",
+    });
+  });
+
+  it("fires secure_ai_form_start once per page lifecycle", () => {
+    const { gtag } = installGa4Window(acceptedAnalyticsConsent());
+    const started = { current: false };
+
+    trackSecureAiFormStartOnce(started);
+    trackSecureAiFormStartOnce(started);
+
+    expect(gtag).toHaveBeenCalledTimes(1);
+    expect(gtag).toHaveBeenCalledWith("event", "secure_ai_form_start", {
+      send_to: "G-H22Q6LRNWC",
+      event_category: "secure_ai_funnel",
+      funnel_step: "form_start",
+    });
+  });
+
+  it("fires secure_ai_form_submit_success only after /api/contact succeeds without customer data", async () => {
+    const fetchMock = mockFetch({ ok: true });
+    const { gtag } = installGa4Window(acceptedAnalyticsConsent());
+
+    await submitSecureAiInquiry(completeSecureAiForm);
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(gtag).toHaveBeenCalledWith("event", "secure_ai_form_submit_success", {
+      send_to: "G-H22Q6LRNWC",
+      event_category: "secure_ai_funnel",
+      funnel_step: "submit_success",
+    });
+
+    const ga4Payload = JSON.stringify(gtag.mock.calls);
+    expect(ga4Payload).not.toContain(completeSecureAiForm.firstName);
+    expect(ga4Payload).not.toContain(completeSecureAiForm.email);
+    expect(ga4Payload).not.toContain(completeSecureAiForm.company);
+    expect(ga4Payload).not.toContain(completeSecureAiForm.title);
+    expect(ga4Payload).not.toContain(completeSecureAiForm.message);
+    expect(openAiAds.reportOpenAiAdsLeadCreated).toHaveBeenCalledTimes(1);
+  });
+
   it("submits successfully when role/job title is omitted", async () => {
     const fetchMock = mockFetch({ ok: true });
 
@@ -181,11 +291,13 @@ describe("Secure AI adoption landing page", () => {
 
   it("failed and rejected submissions do not report a conversion", async () => {
     mockFetch({ ok: false, status: 502 });
+    const { gtag } = installGa4Window(acceptedAnalyticsConsent());
 
     await expect(submitSecureAiInquiry(completeSecureAiForm)).rejects.toThrow("Secure AI form failed");
 
     expect(openAiAds.reportOpenAiAdsLeadCreated).not.toHaveBeenCalled();
     expect(tracking.trackConversion).not.toHaveBeenCalled();
+    expect(gtag).not.toHaveBeenCalled();
   });
 
   it("validation errors create no request and no conversion", async () => {
