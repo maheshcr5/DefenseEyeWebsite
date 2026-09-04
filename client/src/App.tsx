@@ -166,6 +166,10 @@ function RouteAnalytics() {
     if (location.includes("microsoft") || location === "/microsoft-ecosystem") trackConversion("microsoft_ecosystem_view", { location });
     if (location.includes("cmmc")) trackConversion("cmmc_readiness_view", { location });
     if (location === "/solutions/ai-governance" || location === "/lp/ai-governance-consulting") trackConversion("ai_governance_view", { location });
+
+    const ga4Path = window.location.pathname + window.location.search;
+    const ga4 = window as unknown as { trackGA4PageView?: (path: string) => void };
+    ga4.trackGA4PageView?.(ga4Path || location);
   }, [location]);
 
   return null;

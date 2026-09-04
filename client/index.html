@@ -194,6 +194,7 @@
     <script>
       window.__gaId = "%VITE_GA4_MEASUREMENT_ID%";
       window.__gaLoaded = false;
+      window.__gaLastPage = "";
       window.loadGA4 = function() {
         if (window.__gaLoaded || !window.__gaId || window.__gaId.startsWith('%')) return;
         var s = document.createElement('script');
@@ -203,12 +204,27 @@
         window.dataLayer = window.dataLayer || [];
         window.gtag = function(){ window.dataLayer.push(arguments); };
         window.gtag('js', new Date());
-        window.gtag('config', window.__gaId, { anonymize_ip: true });
+        window.__gaLastPage = window.location.pathname + window.location.search;
+        window.gtag('config', window.__gaId, {
+          anonymize_ip: true,
+          page_path: window.__gaLastPage,
+          page_location: window.location.href
+        });
         window.__gaLoaded = true;
+      };
+      window.trackGA4PageView = function(path) {
+        if (!window.__gaLoaded || !window.__gaId || typeof window.gtag !== 'function') return;
+        var pagePath = path || (window.location.pathname + window.location.search);
+        if (pagePath === window.__gaLastPage) return;
+        window.__gaLastPage = pagePath;
+        window.gtag('config', window.__gaId, {
+          anonymize_ip: true,
+          page_path: pagePath,
+          page_location: window.location.origin + pagePath
+        });
       };
       function hasGA4Consent() {
         var raw = localStorage.getItem('de_cookie_consent');
-        if (raw === 'accepted') return true;
         try {
           var parsed = JSON.parse(raw || '{}');
           return parsed && parsed.status === 'accepted' && parsed.purposes && parsed.purposes.analytics === true;
