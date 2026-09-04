@@ -217,7 +217,8 @@
         var pagePath = path || (window.location.pathname + window.location.search);
         if (pagePath === window.__gaLastPage) return;
         window.__gaLastPage = pagePath;
-        window.gtag('config', window.__gaId, {
+        window.gtag('event', 'page_view', {
+          send_to: window.__gaId,
           anonymize_ip: true,
           page_path: pagePath,
           page_location: window.location.origin + pagePath

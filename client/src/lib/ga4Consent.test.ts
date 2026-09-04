@@ -141,7 +141,7 @@ describe("GA4 consent loader", () => {
     }
   });
 
-  it("deduplicates SPA page views while preserving route changes", () => {
+  it("deduplicates SPA page views while preserving route changes without reconfiguring GA4", () => {
     const { window } = installBrowser(undefined, "https://defenseeye.ai/");
 
     runGa4InlineScript();
@@ -151,11 +151,15 @@ describe("GA4 consent loader", () => {
     window.trackGA4PageView("/secure-ai-adoption");
 
     const configs = dataLayerCalls(window).filter((entry) => entry[0] === "config");
-    expect(configs).toHaveLength(2);
-    expect(configs?.at(-1)).toEqual([
-      "config",
-      NEW_MEASUREMENT_ID,
+    const pageViews = dataLayerCalls(window).filter((entry) => entry[0] === "event" && entry[1] === "page_view");
+
+    expect(configs).toHaveLength(1);
+    expect(pageViews).toHaveLength(1);
+    expect(pageViews[0]).toEqual([
+      "event",
+      "page_view",
       {
+        send_to: NEW_MEASUREMENT_ID,
         anonymize_ip: true,
         page_path: "/secure-ai-adoption",
         page_location: "https://defenseeye.ai/secure-ai-adoption",
