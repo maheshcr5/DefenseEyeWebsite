@@ -27,6 +27,12 @@ describe("DefenseEye industry pages", () => {
     expect(html).toContain("human oversight");
     expect(html).toContain('href="/secure-ai-adoption#secure-ai-consultation"');
     expect(html).toContain("Request a Secure AI Readiness Consultation");
+    expect(html).toContain("Why DefenseEye for Secure AI in Financial Services");
+    expect(html).toContain("Representative engagements describe the types of work DefenseEye is positioned to support; they are not customer case studies.");
+    expect(html).toContain("What a Readiness Conversation Can Clarify");
+    expect(html).toContain("Whether a readiness sprint or pilot-scoping engagement is appropriate");
+    expect(html).toContain('href="/representative-engagements"');
+    expect(html).toContain("View Representative Engagements");
 
     [
       "/secure-ai-adoption",
@@ -37,7 +43,7 @@ describe("DefenseEye industry pages", () => {
       "/representative-engagements",
     ].forEach((href) => expect(html).toContain(`href="${href}"`));
 
-    expect(html).not.toMatch(/guaranteed compliance|regulatory approval|certified financial institution|testimonial|fixed price/i);
+    expect(html).not.toMatch(/guaranteed compliance|regulatory approval|certified financial institution|testimonial|fixed price|named customer/i);
   });
 
   it("renders the Defense Industrial Base page with CMMCLens context and existing contact CTA", async () => {
@@ -50,6 +56,12 @@ describe("DefenseEye industry pages", () => {
     expect(html).toContain("CMMCLens fits the evidence");
     expect(html).toContain('href="/contact?inquiry=cmmc"');
     expect(html).toContain("Discuss CMMC Readiness");
+    expect(html).toContain("Why DefenseEye for Defense Contractors and Suppliers");
+    expect(html).toContain("Multiple CMMC Certified Professionals supporting CMMC and NIST SP 800-171 readiness work");
+    expect(html).toContain("What an Initial Readiness Conversation Can Clarify");
+    expect(html).toContain("Whether consulting, automation, or supplier support is the appropriate path");
+    expect(html).toContain('href="/capability-statement"');
+    expect(html).toContain("View DefenseEye’s Capability Statement");
 
     [
       "/cmmc",
@@ -61,7 +73,7 @@ describe("DefenseEye industry pages", () => {
       "/representative-engagements",
     ].forEach((href) => expect(html).toContain(`href="${href}"`));
 
-    expect(html).not.toMatch(/guaranteed|\bcertified\b|contract award|savings|assessment status/i);
+    expect(html).not.toMatch(/guaranteed|contract award|savings|C3PAO|government representative/i);
     expect(html).not.toContain("CMMC applies to every government agency");
   });
 

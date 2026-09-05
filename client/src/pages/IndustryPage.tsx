@@ -18,6 +18,7 @@ type IndustryPageConfig = {
   }>;
   links: Array<{ label: string; href: string; description: string }>;
   cta: { label: string; href: string; note: string };
+  secondaryCta: { label: string; href: string };
 };
 
 export const INDUSTRY_PAGES: Record<string, IndustryPageConfig> = {
@@ -61,6 +62,27 @@ export const INDUSTRY_PAGES: Record<string, IndustryPageConfig> = {
         ],
       },
       {
+        heading: "Why DefenseEye for Secure AI in Financial Services",
+        body:
+          "For teams deciding whether an AI use case is ready to move forward, DefenseEye brings published secure-AI, governance, and Microsoft readiness capabilities to the discussion. Representative engagements describe the types of work DefenseEye is positioned to support; they are not customer case studies.",
+        items: [
+          "Secure architecture for sensitive data, identity, system access, integrations, logging, and monitoring",
+          "AI governance, evaluation, testing, accountability, and human-oversight practices",
+          "Microsoft Copilot and Azure OpenAI readiness support for data, permissions, information governance, and operating controls",
+          "Practical support from use-case prioritization through pilot planning and governed implementation",
+        ],
+      },
+      {
+        heading: "What a Readiness Conversation Can Clarify",
+        items: [
+          "The priority use case and intended business outcome",
+          "Sensitive data, systems, and integrations involved",
+          "Identity, access, and security boundaries",
+          "Governance, evaluation, and human-oversight requirements",
+          "Whether a readiness sprint or pilot-scoping engagement is appropriate",
+        ],
+      },
+      {
         heading: "Relevant Secure AI solutions and resources",
         items: [
           "Secure AI adoption and readiness consultation",
@@ -82,6 +104,7 @@ export const INDUSTRY_PAGES: Record<string, IndustryPageConfig> = {
       href: "/secure-ai-adoption#secure-ai-consultation",
       note: "Use the existing Secure AI consultation form to discuss a focused AI readiness or pilot-scoping conversation.",
     },
+    secondaryCta: { label: "View Representative Engagements", href: "/representative-engagements" },
   },
   "/industries/defense-industrial-base": {
     eyebrow: "Defense Industrial Base & Federal Contractors",
@@ -123,6 +146,27 @@ export const INDUSTRY_PAGES: Record<string, IndustryPageConfig> = {
         ],
       },
       {
+        heading: "Why DefenseEye for Defense Contractors and Suppliers",
+        body:
+          "For organizations deciding how to prepare, DefenseEye combines published CMMC readiness, compliance-automation, supplier, and Microsoft-centered security capabilities without representing assessment or certification outcomes.",
+        items: [
+          "Multiple CMMC Certified Professionals supporting CMMC and NIST SP 800-171 readiness work",
+          "SSP, POA&M, evidence, and remediation workflow support",
+          "CMMCLens for evidence collection, control mapping, and readiness workflows",
+          "Published supplier identifiers, procurement information, and Microsoft cloud security and compliance capabilities",
+        ],
+      },
+      {
+        heading: "What an Initial Readiness Conversation Can Clarify",
+        items: [
+          "Applicable contract and information-handling context",
+          "Current assessment and evidence status",
+          "Priority control and remediation gaps",
+          "SSP, POA&M, and evidence workflow needs",
+          "Whether consulting, automation, or supplier support is the appropriate path",
+        ],
+      },
+      {
         heading: "Relevant solutions and procurement resources",
         items: [
           "CMMC readiness, Level 2 preparation, compliance automation, and evidence automation",
@@ -145,6 +189,7 @@ export const INDUSTRY_PAGES: Record<string, IndustryPageConfig> = {
       href: "/contact?inquiry=cmmc",
       note: "Use the existing DefenseEye contact workflow for CMMC, supplier, or compliance-readiness inquiries.",
     },
+    secondaryCta: { label: "View DefenseEye’s Capability Statement", href: "/capability-statement" },
   },
 };
 
@@ -179,6 +224,13 @@ export default function IndustryPage() {
                   {config.cta.label} <ArrowRight className="ml-2 size-4" />
                 </Button>
               </a>
+              <a href={config.secondaryCta.href}>
+                <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
+                  {config.secondaryCta.label}
+                </Button>
+              </a>
+            </div>
+            <div className="mt-3">
               <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">{config.cta.note}</p>
             </div>
           </div>

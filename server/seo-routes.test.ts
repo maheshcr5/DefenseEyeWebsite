@@ -172,7 +172,14 @@ describe("SEO route registry", () => {
     ].forEach((href) => expect(dibHtml).toContain(`href="${href}"`));
 
     expect(financialHtml).toContain("regulated financial-services teams and credit unions");
+    expect(financialHtml).toContain("Why DefenseEye for Secure AI in Financial Services");
+    expect(financialHtml).toContain("What a Readiness Conversation Can Clarify");
+    expect(financialHtml).toContain("they are not customer case studies");
     expect(dibHtml).toContain("requirements that may apply based on contract scope");
+    expect(dibHtml).toContain("Why DefenseEye for Defense Contractors and Suppliers");
+    expect(dibHtml).toContain("Multiple CMMC Certified Professionals supporting CMMC and NIST SP 800-171 readiness work");
+    expect(dibHtml).toContain("What an Initial Readiness Conversation Can Clarify");
+    expect(dibHtml).not.toMatch(/C3PAO|guaranteed|contract award|government representative/i);
 
     const schemas = [...buildRouteSchemas(financial!), ...buildRouteSchemas(dib!)];
     const schemaText = JSON.stringify(schemas);
