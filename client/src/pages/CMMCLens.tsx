@@ -8,7 +8,7 @@ import { useSeo } from "@/hooks/useSeo";
 import { trackConversion } from "@/lib/tracking";
 
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
-const MARKETPLACE_URL = "https://marketplace.microsoft.com/en-us/search?search=CMMCLens";
+const MARKETPLACE_URL = "https://marketplace.microsoft.com/en-us/product/cmmc.defenseeye-cmmc-l2-continuous-compliance?tab=Overview";
 
 const FAQ_ITEMS = [
   {
@@ -146,7 +146,7 @@ export default function CMMCLens() {
             </a>
             <a href={MARKETPLACE_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("cmmclens_click", { location: "cmmclens_marketplace" })}>
               <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
-                Microsoft Marketplace Listing
+                View CMMCLens on Microsoft Marketplace
               </Button>
             </a>
           </div>

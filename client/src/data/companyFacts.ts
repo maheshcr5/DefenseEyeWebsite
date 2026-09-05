@@ -73,4 +73,4 @@ export const CAPABILITY_STATEMENT_URL = "/capability-statement";
 // TODO: Replace with the approved hosted PDF asset path when the branded capability statement PDF is available.
 export const CAPABILITY_STATEMENT_PDF_URL = CAPABILITY_STATEMENT_URL;
 export const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
-export const MARKETPLACE_URL = "https://marketplace.microsoft.com/en-us/search?search=CMMCLens";
+export const MARKETPLACE_URL = "https://marketplace.microsoft.com/en-us/product/cmmc.defenseeye-cmmc-l2-continuous-compliance?tab=Overview";
