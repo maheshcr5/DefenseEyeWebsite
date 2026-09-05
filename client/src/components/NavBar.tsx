@@ -39,12 +39,29 @@ type Menu = {
   items: MenuItem[];
 };
 
-const MENUS: Menu[] = [
+export const NAV_MENUS: Menu[] = [
   {
-    label: "Portfolios",
-    key: "portfolios",
+    label: "Industries",
+    key: "industries",
+    items: [
+      {
+        label: "Financial Services & Credit Unions",
+        desc: "Secure AI adoption support for regulated financial-services teams",
+        href: "/industries/financial-services-credit-unions",
+      },
+      {
+        label: "Defense Industrial Base & Federal Contractors",
+        desc: "CMMC, NIST 800-171, evidence, and supplier-readiness support",
+        href: "/industries/defense-industrial-base",
+      },
+    ],
+  },
+  {
+    label: "Solutions",
+    key: "solutions",
     items: [
       { label: "Secure AI Adoption", desc: "AI governance, Copilot readiness, AI security, and responsible AI", href: "/secure-ai-adoption" },
+      { label: "CMMCLens", desc: "Compliance evidence automation and readiness dashboards", href: "/cmmclens" },
       {
         label: "AttackSense",
         desc: "AI-assisted attack surface, vulnerability, and remediation intelligence",
@@ -59,21 +76,17 @@ const MENUS: Menu[] = [
     ],
   },
   {
-    label: "CMMCLens",
-    key: "cmmclens",
+    label: "Resources",
+    key: "resources",
+    cols: 2,
     items: [
-      { label: "CMMCLens Platform", desc: "Compliance evidence automation and readiness dashboards", href: "/cmmclens" },
-      { label: "CMMCLens Product Sheet", desc: "Procurement-ready product overview", href: "/datasheets/cmmclens" },
-      { label: "CMMC Evidence Automation", desc: "Evidence workflows and control traceability", href: "/cmmc-evidence-automation" },
-    ],
-  },
-  {
-    label: "Datasheets",
-    key: "datasheets",
-    items: [
-      { label: "All Datasheets", desc: "AI adoption, CMMC automation, CMMCLens, Copilot, and supplier assets", href: "/datasheets" },
+      { label: "Secure AI Resources", desc: "Secure AI adoption and governance overview", href: "/datasheets/secure-ai-adoption" },
+      { label: "CMMC Knowledge Hub", desc: "CMMC resources, guides, and readiness education", href: "/knowledge-hub" },
+      { label: "Blog", desc: "CMMC news, analysis, and updates", href: "/blog" },
+      { label: "Datasheets", desc: "AI adoption, CMMC automation, CMMCLens, Copilot, and supplier assets", href: "/datasheets" },
       { label: "Secure AI Adoption", desc: "One-page AI governance and secure adoption overview", href: "/datasheets/secure-ai-adoption" },
       { label: "CMMC Automation", desc: "One-page CCP-led readiness and evidence automation overview", href: "/datasheets/cmmc-compliance-automation" },
+      { label: "CMMCLens Product Sheet", desc: "Procurement-ready platform overview", href: "/datasheets/cmmclens" },
       { label: "Supplier Readiness", desc: "Identifiers, credentials, and engagement models", href: "/datasheets/supplier-readiness" },
     ],
   },
@@ -85,20 +98,6 @@ const MENUS: Menu[] = [
       { label: "Capability Statement", desc: "Procurement-ready company overview", href: "/capability-statement" },
       { label: "Delivery Model", desc: "How DefenseEye structures enterprise work", href: "/delivery-model" },
       { label: "Representative Engagements", desc: "Engagement types DefenseEye is positioned to support", href: "/representative-engagements" },
-    ],
-  },
-  {
-    label: "Knowledge Hub",
-    key: "knowledge",
-    cols: 2,
-    items: [
-      { label: "Hub Overview", desc: "All CMMC resources in one place", href: "/knowledge-hub" },
-      { label: "What is CMMC?", desc: "Framework fundamentals explained", href: "/knowledge-hub/what-is-cmmc" },
-      { label: "CMMC Levels", desc: "Level 1, 2, and 3 requirements", href: "/knowledge-hub/cmmc-levels" },
-      { label: "Evidence Mapping", desc: "NIST 800-171 control evidence guide", href: "/knowledge-hub/evidence-mapping" },
-      { label: "SPRS Score", desc: "Calculate and improve your score", href: "/knowledge-hub/sprs-score" },
-      { label: "Certification Process", desc: "C3PAO assessment process walkthrough", href: "/knowledge-hub/certification-process" },
-      { label: "Blog", desc: "CMMC news, analysis, and updates", href: "/blog" },
     ],
   },
 ];
@@ -125,15 +124,16 @@ export function getHeaderCta(path: string) {
 
 type NavBarProps = {
   initialMobileOpen?: boolean;
+  initialMobileExpanded?: string | null;
   pathOverride?: string;
 };
 
-export default function NavBar({ initialMobileOpen = false, pathOverride }: NavBarProps = {}) {
+export default function NavBar({ initialMobileOpen = false, initialMobileExpanded = null, pathOverride }: NavBarProps = {}) {
   const [location] = useLocation();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [expandedSubmenu, setExpandedSubmenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(initialMobileOpen);
-  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(initialMobileExpanded);
   const [mobileSubmenuExpanded, setMobileSubmenuExpanded] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const currentPath = normalizePath(pathOverride ?? location);
@@ -165,15 +165,28 @@ export default function NavBar({ initialMobileOpen = false, pathOverride }: NavB
     setMobileSubmenuExpanded((prev) => (prev === key ? null : key));
   };
 
+  const closeAllMenus = () => {
+    setOpenMenu(null);
+    setExpandedSubmenu(null);
+    setMobileOpen(false);
+    setMobileExpanded(null);
+    setMobileSubmenuExpanded(null);
+  };
+
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm section-light">
+    <header
+      className="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm section-light"
+      onKeyDown={(event) => {
+        if (event.key === "Escape") closeAllMenus();
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
 
         {/* Logo */}
         <DefenseEyeLogo href="/" />
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
+        <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
           <a
             href={PRIMARY_NAV_LINK.href}
             className="px-4 py-2 text-sm font-medium text-[#0D1B33] hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
@@ -181,7 +194,7 @@ export default function NavBar({ initialMobileOpen = false, pathOverride }: NavB
           >
             {PRIMARY_NAV_LINK.label}
           </a>
-          {MENUS.map((menu) => (
+          {NAV_MENUS.map((menu) => (
             <div
               key={menu.key}
               className="relative"
@@ -197,6 +210,8 @@ export default function NavBar({ initialMobileOpen = false, pathOverride }: NavB
                 }`}
                 aria-expanded={openMenu === menu.key}
                 aria-haspopup="true"
+                onFocus={() => handleEnter(menu.key)}
+                onClick={() => setOpenMenu((prev) => (prev === menu.key ? null : menu.key))}
               >
                 {menu.label}
                 <ChevronDown
@@ -224,6 +239,7 @@ export default function NavBar({ initialMobileOpen = false, pathOverride }: NavB
                           <a
                             href={item.href}
                             className="flex min-w-0 flex-1 flex-col px-3 py-2.5"
+                            onFocus={() => handleEnter(menu.key)}
                           >
                             <span className="text-sm font-semibold text-[#0D1B33] group-hover:text-primary transition-colors">
                               {item.label}
@@ -262,6 +278,7 @@ export default function NavBar({ initialMobileOpen = false, pathOverride }: NavB
                                   key={child.href}
                                   href={child.href}
                                   className="ml-3 flex flex-col border-l border-gray-200 px-3 py-2 rounded-sm hover:bg-gray-50 transition-colors group"
+                                  onFocus={() => handleEnter(menu.key)}
                                 >
                                   <span className="text-xs font-semibold uppercase tracking-wider text-[#0D1B33] group-hover:text-primary transition-colors">
                                     {child.label}
@@ -292,7 +309,7 @@ export default function NavBar({ initialMobileOpen = false, pathOverride }: NavB
         </nav>
 
         {/* Desktop CTA */}
-        <div className="hidden md:flex">
+        <div className="hidden lg:flex">
           <a href={headerCta.href} {...headerCtaLinkProps}>
             <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-5">
               {headerCta.label}
@@ -302,7 +319,7 @@ export default function NavBar({ initialMobileOpen = false, pathOverride }: NavB
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden text-[#0D1B33] p-1"
+          className="lg:hidden text-[#0D1B33] p-1"
           onClick={() => { setMobileOpen(!mobileOpen); setMobileExpanded(null); setMobileSubmenuExpanded(null); }}
           aria-label="Toggle menu"
         >
@@ -318,7 +335,7 @@ export default function NavBar({ initialMobileOpen = false, pathOverride }: NavB
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden bg-white border-t border-gray-100 overflow-hidden"
+            className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
           >
             <div className="px-4 py-3 flex flex-col gap-1">
               <a
@@ -331,11 +348,13 @@ export default function NavBar({ initialMobileOpen = false, pathOverride }: NavB
               </a>
 
               {/* Dropdown categories */}
-              {MENUS.map((menu) => (
+              {NAV_MENUS.map((menu) => (
                 <div key={menu.key}>
                   <button
                     className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold text-[#0D1B33] hover:text-primary rounded-md hover:bg-gray-50 transition-colors"
                     onClick={() => toggleMobileCategory(menu.key)}
+                    aria-expanded={mobileExpanded === menu.key}
+                    aria-controls={`mobile-nav-${menu.key}`}
                   >
                     {menu.label}
                     <ChevronDown
@@ -350,6 +369,7 @@ export default function NavBar({ initialMobileOpen = false, pathOverride }: NavB
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.15 }}
                         className="overflow-hidden pl-3"
+                        id={`mobile-nav-${menu.key}`}
                       >
                         {menu.items.map((item) => (
                           <div key={item.href}>

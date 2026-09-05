@@ -44,6 +44,7 @@ export type SitemapEntry = {
 
 const materialSeoUpdateDate = "2026-08-31";
 const customerJourneyUpdateDate = "2026-09-01";
+const industryPagesUpdateDate = "2026-09-04";
 
 export const TIER_1_ROUTES: SeoRoute[] = [
   {
@@ -129,6 +130,150 @@ export const TIER_1_ROUTES: SeoRoute[] = [
     lastmod: customerJourneyUpdateDate,
     changefreq: "monthly",
     priority: "0.9",
+  },
+  {
+    path: "/industries/financial-services-credit-unions",
+    title: "Secure AI for Financial Services and Credit Unions | DefenseEye",
+    description:
+      "DefenseEye helps financial-services teams and credit unions evaluate and implement AI and agentic AI with security, governance, data-access controls, traceability, monitoring, and human oversight.",
+    h1: "Secure AI for Financial Services and Credit Unions",
+    eyebrow: "Financial Services & Credit Unions",
+    summary:
+      "DefenseEye helps regulated financial-services teams and credit unions evaluate and implement AI and agentic AI with appropriate security, governance, data-access controls, traceability, evaluation, monitoring, and human oversight.",
+    sections: [
+      {
+        heading: "Who this is for",
+        body:
+          "Financial-services, FinTech, banking, lending, payments, insurance, and credit union teams exploring AI-enabled workflows involving sensitive customer, member, operational, or internal business data.",
+        items: [
+          "Security, risk, compliance, privacy, and technology leaders evaluating AI adoption",
+          "Teams preparing Microsoft Copilot, Azure OpenAI, or agentic workflow pilots",
+          "Organizations that need practical controls without treating consulting as a financial product",
+        ],
+      },
+      {
+        heading: "Common AI adoption challenges",
+        items: [
+          "Sensitive financial, member, customer, or employee data exposure",
+          "Unclear AI-agent permissions, system access, and human approval points",
+          "Difficulty tracing AI-assisted decisions, outputs, and source material",
+          "Model, vendor, prompt, evaluation, monitoring, and change-management risk",
+          "Balancing innovation goals with audit, oversight, and policy expectations",
+        ],
+      },
+      {
+        heading: "How DefenseEye can help",
+        items: [
+          "Prioritize use cases by value, feasibility, data sensitivity, and risk",
+          "Review AI governance, human oversight, and accountability requirements",
+          "Design secure target architecture for identity, data access, logging, and monitoring",
+          "Assess Microsoft Copilot readiness and broader secure AI implementation needs",
+          "Define pilot success criteria, evaluation practices, and implementation roadmaps",
+        ],
+      },
+      {
+        heading: "Relevant Secure AI solutions and resources",
+        items: [
+          "Secure AI adoption and readiness consultation",
+          "AI governance, AI security, AI transformation, and Microsoft Copilot readiness support",
+          "Representative engagements that show the types of work DefenseEye is positioned to support",
+        ],
+      },
+    ],
+    links: [
+      { label: "Request a Secure AI Readiness Consultation", href: "/secure-ai-adoption#secure-ai-consultation" },
+      { label: "Explore Secure AI adoption", href: "/secure-ai-adoption" },
+      { label: "Review AI governance consulting", href: "/solutions/ai-governance" },
+      { label: "Review AI security consulting", href: "/solutions/ai-security" },
+      { label: "Review AI transformation consulting", href: "/solutions/ai-transformation" },
+      { label: "Review Microsoft Copilot readiness", href: "/solutions/microsoft-copilot-readiness" },
+      { label: "View Representative Engagements", href: "/representative-engagements" },
+    ],
+    schemaKind: "service",
+    serviceType: "Secure AI consulting for financial services and credit unions",
+    topics: [
+      "Financial services AI readiness",
+      "Credit union AI governance",
+      "Secure AI adoption",
+      "Agentic AI governance",
+      "Microsoft Copilot readiness",
+    ],
+    lastmod: industryPagesUpdateDate,
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    path: "/industries/defense-industrial-base",
+    title: "Cybersecurity and Compliance Support for the Defense Industrial Base | DefenseEye",
+    description:
+      "DefenseEye supports defense contractors, subcontractors, suppliers, and federal contractor teams preparing for applicable cybersecurity, CMMC, NIST SP 800-171, evidence, and supplier-readiness requirements.",
+    h1: "Cybersecurity and Compliance Support for the Defense Industrial Base",
+    eyebrow: "Defense Industrial Base & Federal Contractors",
+    summary:
+      "DefenseEye supports defense contractors, subcontractors, suppliers, and organizations preparing for applicable federal cybersecurity requirements with cybersecurity readiness, CMMC and NIST SP 800-171 support, evidence planning, and compliance automation.",
+    sections: [
+      {
+        heading: "Who this is for",
+        body:
+          "Defense contractors, subcontractors, suppliers, and federal contractor teams that need to understand and prepare for requirements that may apply based on contract scope, CUI handling, flow-downs, and customer expectations.",
+        items: [
+          "Organizations handling or preparing to handle controlled unclassified information",
+          "Teams responding to prime contractor, supplier, or federal customer cybersecurity expectations",
+          "Leaders evaluating CMMC readiness, evidence automation, and supplier documentation needs",
+        ],
+      },
+      {
+        heading: "Common readiness and evidence challenges",
+        items: [
+          "Unclear CUI scope, system boundaries, and shared responsibility across suppliers",
+          "Fragmented SSP, POA&M, policy, asset, and evidence materials",
+          "Difficulty mapping evidence to NIST SP 800-171 and CMMC readiness expectations",
+          "Manual readiness reporting without clear ownership or remediation traceability",
+          "Need to present supplier capabilities without overstating readiness or outcomes",
+        ],
+      },
+      {
+        heading: "How DefenseEye can help",
+        items: [
+          "Review readiness scope, control gaps, evidence, SSP, POA&M, and remediation priorities",
+          "Align cybersecurity work with applicable CMMC and NIST SP 800-171 preparation needs",
+          "Use compliance automation where it can improve evidence traceability and readiness visibility",
+          "Assess whether CMMCLens fits the evidence, documentation, and readiness workflow",
+          "Support capability-statement, supplier-readiness, and representative engagement materials",
+        ],
+      },
+      {
+        heading: "Relevant solutions and procurement resources",
+        items: [
+          "CMMC readiness, Level 2 preparation, compliance automation, and evidence automation",
+          "CMMCLens for evidence automation, control mapping, and readiness workflows",
+          "Supplier readiness, capability statement, and representative engagements",
+        ],
+      },
+    ],
+    links: [
+      { label: "Discuss CMMC Readiness", href: "/contact?inquiry=cmmc" },
+      { label: "Review CMMC readiness", href: "/cmmc" },
+      { label: "Review CMMC Level 2 readiness", href: "/cmmc-level-2-readiness" },
+      { label: "Review CMMC compliance automation", href: "/cmmc-compliance-automation" },
+      { label: "Explore CMMCLens", href: "/cmmclens" },
+      { label: "Review supplier readiness", href: "/supplier-readiness" },
+      { label: "Open the capability statement", href: "/capability-statement" },
+      { label: "View Representative Engagements", href: "/representative-engagements" },
+    ],
+    schemaKind: "service",
+    serviceType: "Cybersecurity and compliance readiness support for defense contractors",
+    topics: [
+      "Defense Industrial Base cybersecurity",
+      "Federal contractor cybersecurity",
+      "CMMC readiness",
+      "NIST SP 800-171",
+      "CMMCLens",
+      "Supplier readiness",
+    ],
+    lastmod: industryPagesUpdateDate,
+    changefreq: "monthly",
+    priority: "0.8",
   },
   {
     path: "/solutions/ai-governance",

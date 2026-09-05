@@ -131,6 +131,59 @@ describe("SEO route registry", () => {
       expect(JSON.stringify(schemas)).not.toContain('"@type":"Review"');
     }
   });
+
+  it("defines accurate industry route metadata, direct HTML, and structured data", () => {
+    const financial = TIER_1_ROUTES.find((route) => route.path === "/industries/financial-services-credit-unions");
+    const dib = TIER_1_ROUTES.find((route) => route.path === "/industries/defense-industrial-base");
+
+    expect(financial).toMatchObject({
+      title: "Secure AI for Financial Services and Credit Unions | DefenseEye",
+      h1: "Secure AI for Financial Services and Credit Unions",
+      schemaKind: "service",
+    });
+    expect(dib).toMatchObject({
+      title: "Cybersecurity and Compliance Support for the Defense Industrial Base | DefenseEye",
+      h1: "Cybersecurity and Compliance Support for the Defense Industrial Base",
+      schemaKind: "service",
+    });
+
+    const financialHtml = renderRouteFallbackHtml(financial!);
+    const dibHtml = renderRouteFallbackHtml(dib!);
+
+    [
+      "/secure-ai-adoption#secure-ai-consultation",
+      "/secure-ai-adoption",
+      "/solutions/ai-governance",
+      "/solutions/ai-security",
+      "/solutions/ai-transformation",
+      "/solutions/microsoft-copilot-readiness",
+      "/representative-engagements",
+    ].forEach((href) => expect(financialHtml).toContain(`href="${href}"`));
+
+    [
+      "/contact?inquiry=cmmc",
+      "/cmmc",
+      "/cmmc-level-2-readiness",
+      "/cmmc-compliance-automation",
+      "/cmmclens",
+      "/supplier-readiness",
+      "/capability-statement",
+      "/representative-engagements",
+    ].forEach((href) => expect(dibHtml).toContain(`href="${href}"`));
+
+    expect(financialHtml).toContain("regulated financial-services teams and credit unions");
+    expect(dibHtml).toContain("requirements that may apply based on contract scope");
+
+    const schemas = [...buildRouteSchemas(financial!), ...buildRouteSchemas(dib!)];
+    const schemaText = JSON.stringify(schemas);
+    expect(schemaText).toContain('"@type":"WebPage"');
+    expect(schemaText).toContain('"@type":"BreadcrumbList"');
+    expect(schemaText).not.toContain("FAQPage");
+    expect(schemaText).not.toContain("aggregateRating");
+    expect(schemaText).not.toContain('"@type":"Review"');
+    expect(schemaText).not.toContain("FinancialProduct");
+    expect(schemaText).not.toContain("GovernmentOrganization");
+  });
 });
 
 describe("sitemap and robots", () => {
@@ -140,18 +193,20 @@ describe("sitemap and robots", () => {
 
     expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
     expect(new Set(locations).size).toBe(locations.length);
-    expect(locations).toHaveLength(66);
+    expect(locations).toHaveLength(68);
     for (const route of TIER_1_ROUTES) {
       expect(locations).toContain(canonicalUrl(route.path));
     }
     expect(SITEMAP_ENTRIES.every((entry) => /^\d{4}-\d{2}-\d{2}$/.test(entry.lastmod))).toBe(true);
   });
 
-  it("updates only the changed homepage and Secure AI sitemap dates", () => {
+  it("updates only the changed homepage, Secure AI, and new industry sitemap dates", () => {
     const entriesByPath = new Map(SITEMAP_ENTRIES.map((entry) => [entry.path, entry]));
 
     expect(entriesByPath.get("/")?.lastmod).toBe("2026-09-01");
     expect(entriesByPath.get("/secure-ai-adoption")?.lastmod).toBe("2026-09-01");
+    expect(entriesByPath.get("/industries/financial-services-credit-unions")?.lastmod).toBe("2026-09-04");
+    expect(entriesByPath.get("/industries/defense-industrial-base")?.lastmod).toBe("2026-09-04");
     expect(entriesByPath.get("/cmmc")?.lastmod).toBe("2026-08-31");
     expect(entriesByPath.get("/cmmclens")?.lastmod).toBe("2026-08-31");
     expect(entriesByPath.get("/representative-engagements")?.lastmod).toBe("2026-06-26");

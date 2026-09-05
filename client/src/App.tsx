@@ -47,6 +47,7 @@ const RepresentativeEngagements = lazy(() => import("./pages/RepresentativeEngag
 const MicrosoftEcosystem = lazy(() => import("./pages/MicrosoftEcosystem"));
 const CMMCArchitecturePage = lazy(() => import("./pages/CMMCArchitecturePage"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
+const IndustryPage = lazy(() => import("./pages/IndustryPage"));
 
 // Minimal loading fallback that matches the dark theme
 function PageLoader() {
@@ -90,6 +91,8 @@ function Router() {
         <Route path="/contact" component={ContactUs} />
         <Route path="/support" component={Support} />
         <Route path="/supplier-readiness" component={SupplierReadiness} />
+        <Route path="/industries/financial-services-credit-unions" component={IndustryPage} />
+        <Route path="/industries/defense-industrial-base" component={IndustryPage} />
         <Route path="/secure-ai-adoption" component={SecureAiAdoption} />
         <Route path="/attacksense" component={AttackSense} />
         <Route path="/attacksense/docs" component={AttackSenseDocs} />

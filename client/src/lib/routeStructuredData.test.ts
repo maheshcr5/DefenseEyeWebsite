@@ -59,6 +59,8 @@ const schemaRoutes = [
   "/",
   "/secure-ai-adoption",
   "/solutions/ai-governance",
+  "/industries/financial-services-credit-unions",
+  "/industries/defense-industrial-base",
   "/cmmc-level-2-readiness",
   "/cmmclens",
   "/attacksense",
