@@ -1,13 +1,21 @@
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@/hooks/useSeo", () => ({ useSeo: vi.fn() }));
 vi.mock("@/components/NavBar", () => ({ default: () => <nav>DefenseEye navigation</nav> }));
 vi.mock("@/components/Footer", () => ({ default: () => <footer>DefenseEye footer</footer> }));
-vi.mock("@/lib/tracking", () => ({ trackConversion: vi.fn() }));
 
-import CMMCLens from "./CMMCLens";
+const tracking = vi.hoisted(() => ({
+  trackConversion: vi.fn(),
+}));
+vi.mock("@/lib/tracking", () => tracking);
+
+import CMMCLens, {
+  hasCmmcLensAnalyticsConsent,
+  trackCmmcLensBriefingClick,
+  trackCmmcLensMarketplaceClick,
+} from "./CMMCLens";
 
 const OLD_CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 const BOOKING_URL = "https://cal.com/defenseeye/cmmclens";
@@ -17,6 +25,78 @@ const GENERIC_SEARCH_URL = "https://marketplace.microsoft.com/en-us/search?searc
 const PRIMARY_CTA_LABEL = "Book a 30-Minute CMMCLens Briefing";
 const SECONDARY_CTA_LABEL = "View CMMCLens on Microsoft Marketplace";
 
+function createStorage() {
+  const values = new Map<string, string>();
+  return {
+    getItem: vi.fn((key: string) => values.get(key) ?? null),
+    setItem: vi.fn((key: string, value: string) => values.set(key, value)),
+  };
+}
+
+function acceptedAnalyticsConsent() {
+  return JSON.stringify({
+    status: "accepted",
+    version: 2,
+    purposes: { analytics: true, openaiAdsMeasurement: true },
+    updatedAt: "2026-09-05T00:00:00.000Z",
+  });
+}
+
+function essentialOnlyConsent() {
+  return JSON.stringify({
+    status: "accepted",
+    version: 2,
+    purposes: { analytics: false, openaiAdsMeasurement: false },
+    updatedAt: "2026-09-05T00:00:00.000Z",
+  });
+}
+
+function declinedConsent() {
+  return JSON.stringify({
+    status: "declined",
+    version: 2,
+    purposes: { analytics: false, openaiAdsMeasurement: false },
+    updatedAt: "2026-09-05T00:00:00.000Z",
+  });
+}
+
+function revokedConsent() {
+  return JSON.stringify({
+    status: "revoked",
+    version: 2,
+    purposes: { analytics: false, openaiAdsMeasurement: false },
+    updatedAt: "2026-09-05T00:00:00.000Z",
+  });
+}
+
+function legacyUnversionedConsent() {
+  return JSON.stringify({ analytics: true });
+}
+
+function installGa4Window(consent?: string) {
+  const localStorage = createStorage();
+  if (consent) localStorage.setItem("de_cookie_consent", consent);
+  const gtag = vi.fn();
+  vi.stubGlobal("window", {
+    __gaId: "G-H22Q6LRNWC",
+    gtag,
+    localStorage,
+    location: { pathname: "/cmmclens" },
+  });
+  return { gtag, localStorage };
+}
+
+function installGa4WindowWithoutGtag(consent?: string) {
+  const localStorage = createStorage();
+  if (consent) localStorage.setItem("de_cookie_consent", consent);
+  vi.stubGlobal("window", {
+    __gaId: "G-H22Q6LRNWC",
+    localStorage,
+    location: { pathname: "/cmmclens" },
+  });
+  return { localStorage };
+}
+
 describe("CMMCLens page booking and Marketplace CTAs", () => {
   const html = renderToStaticMarkup(<CMMCLens />);
 
@@ -25,13 +105,17 @@ describe("CMMCLens page booking and Marketplace CTAs", () => {
     expect(html).not.toContain("calendly.com");
   });
 
-  it("links the hero booking CTA to the new Cal.com CMMCLens URL", () => {
-    expect(html).toContain(`href="${BOOKING_URL}"`);
+  it("links both booking CTAs to the same Cal.com CMMCLens URL", () => {
+    const bookingLinkCount = html.match(/href="https:\/\/cal\.com\/defenseeye\/cmmclens"/g)?.length ?? 0;
+    expect(bookingLinkCount).toBe(2);
   });
 
-  it("uses the exact required primary CTA label", () => {
-    expect(html).toContain(PRIMARY_CTA_LABEL);
+  it("uses the exact required label on both the hero and closing booking CTAs", () => {
+    const labelCount = html.match(new RegExp(PRIMARY_CTA_LABEL, "g"))?.length ?? 0;
+    expect(labelCount).toBe(2);
     expect(html).not.toContain("Request CMMCLens Briefing");
+    expect(html).not.toMatch(/Book a CMMCLens Briefing(?! <)/);
+    expect(html).not.toContain(">Book a CMMCLens Briefing<");
   });
 
   it("does not reference the generic Marketplace search URL anywhere", () => {
@@ -65,12 +149,14 @@ describe("CMMCLens page booking and Marketplace CTAs", () => {
     expect(marketplaceAnchorMatch?.[1]).not.toContain("bg-accent");
   });
 
-  it("opens the booking link safely in a new tab", () => {
-    const bookingLinkMatch = html.match(/<a[^>]*href="(https:\/\/cal\.com[^"]*)"([^>]*)>/);
-    expect(bookingLinkMatch).not.toBeNull();
-    expect(bookingLinkMatch![1]).toBe(BOOKING_URL);
-    expect(bookingLinkMatch![2]).toContain('target="_blank"');
-    expect(bookingLinkMatch![2]).toContain('rel="noopener noreferrer"');
+  it("opens both booking links safely in a new tab", () => {
+    const matches = [...html.matchAll(/<a[^>]*href="(https:\/\/cal\.com[^"]*)"([^>]*)>/g)];
+    expect(matches).toHaveLength(2);
+    for (const match of matches) {
+      expect(match[1]).toBe(BOOKING_URL);
+      expect(match[2]).toContain('target="_blank"');
+      expect(match[2]).toContain('rel="noopener noreferrer"');
+    }
   });
 
   it("opens the Marketplace link safely in a new tab", () => {
@@ -90,16 +176,155 @@ describe("CMMCLens page booking and Marketplace CTAs", () => {
   it("does not add tracking parameters to the Marketplace URL", () => {
     expect(html).not.toMatch(/marketplace\.microsoft\.com[^"]*[?&](utm_|ref=|source=)/);
   });
-
-  it("uses the new booking URL for every CMMCLens-page booking CTA, including the final section", () => {
-    const bookingLinkCount = html.match(/href="https:\/\/cal\.com\/defenseeye\/cmmclens"/g)?.length ?? 0;
-    expect(bookingLinkCount).toBe(2);
-  });
 });
 
 describe("Unrelated Calendly links are untouched", () => {
   it("leaves the general company Calendly booking link intact in shared company data", async () => {
     const { CALENDLY_URL } = await import("@/data/companyFacts");
     expect(CALENDLY_URL).toBe(OLD_CALENDLY_URL);
+  });
+});
+
+describe("CMMCLens GA4 buyer-intent click measurement", () => {
+  beforeEach(() => {
+    vi.unstubAllGlobals();
+    vi.clearAllMocks();
+  });
+
+  it("does not fire any event merely from rendering the page", () => {
+    const { gtag } = installGa4Window(acceptedAnalyticsConsent());
+    renderToStaticMarkup(<CMMCLens />);
+    expect(gtag).not.toHaveBeenCalled();
+  });
+
+  it("fires cmmclens_briefing_click exactly once for the hero CTA with the correct location", () => {
+    const { gtag } = installGa4Window(acceptedAnalyticsConsent());
+
+    trackCmmcLensBriefingClick("hero");
+
+    expect(gtag).toHaveBeenCalledTimes(1);
+    expect(gtag).toHaveBeenCalledWith("event", "cmmclens_briefing_click", {
+      cta_location: "hero",
+      page_path: "/cmmclens",
+    });
+  });
+
+  it("fires cmmclens_briefing_click exactly once for the closing CTA with the correct location", () => {
+    const { gtag } = installGa4Window(acceptedAnalyticsConsent());
+
+    trackCmmcLensBriefingClick("closing");
+
+    expect(gtag).toHaveBeenCalledTimes(1);
+    expect(gtag).toHaveBeenCalledWith("event", "cmmclens_briefing_click", {
+      cta_location: "closing",
+      page_path: "/cmmclens",
+    });
+  });
+
+  it("fires cmmclens_marketplace_click exactly once with the correct location", () => {
+    const { gtag } = installGa4Window(acceptedAnalyticsConsent());
+
+    trackCmmcLensMarketplaceClick();
+
+    expect(gtag).toHaveBeenCalledTimes(1);
+    expect(gtag).toHaveBeenCalledWith("event", "cmmclens_marketplace_click", {
+      cta_location: "hero",
+      page_path: "/cmmclens",
+    });
+  });
+
+  it("does not suppress a later legitimate second click", () => {
+    const { gtag } = installGa4Window(acceptedAnalyticsConsent());
+
+    trackCmmcLensBriefingClick("hero");
+    trackCmmcLensBriefingClick("hero");
+
+    expect(gtag).toHaveBeenCalledTimes(2);
+  });
+
+  it("does not fire either event when consent is absent", () => {
+    const { gtag } = installGa4Window(undefined);
+    expect(hasCmmcLensAnalyticsConsent()).toBe(false);
+
+    trackCmmcLensBriefingClick("hero");
+    trackCmmcLensMarketplaceClick();
+
+    expect(gtag).not.toHaveBeenCalled();
+  });
+
+  it("does not fire either event when consent is Essential Only", () => {
+    const { gtag } = installGa4Window(essentialOnlyConsent());
+    expect(hasCmmcLensAnalyticsConsent()).toBe(false);
+
+    trackCmmcLensBriefingClick("hero");
+    trackCmmcLensMarketplaceClick();
+
+    expect(gtag).not.toHaveBeenCalled();
+  });
+
+  it("does not fire either event when consent is declined", () => {
+    const { gtag } = installGa4Window(declinedConsent());
+    expect(hasCmmcLensAnalyticsConsent()).toBe(false);
+
+    trackCmmcLensBriefingClick("hero");
+    trackCmmcLensMarketplaceClick();
+
+    expect(gtag).not.toHaveBeenCalled();
+  });
+
+  it("does not fire either event when consent has been revoked", () => {
+    const { gtag } = installGa4Window(revokedConsent());
+    expect(hasCmmcLensAnalyticsConsent()).toBe(false);
+
+    trackCmmcLensBriefingClick("closing");
+    trackCmmcLensMarketplaceClick();
+
+    expect(gtag).not.toHaveBeenCalled();
+  });
+
+  it("does not fire either event for legacy/unversioned consent records", () => {
+    const { gtag } = installGa4Window(legacyUnversionedConsent());
+    expect(hasCmmcLensAnalyticsConsent()).toBe(false);
+
+    trackCmmcLensBriefingClick("hero");
+    trackCmmcLensMarketplaceClick();
+
+    expect(gtag).not.toHaveBeenCalled();
+  });
+
+  it("does not throw when window.gtag is unavailable", () => {
+    installGa4WindowWithoutGtag(acceptedAnalyticsConsent());
+
+    expect(() => trackCmmcLensBriefingClick("hero")).not.toThrow();
+    expect(() => trackCmmcLensMarketplaceClick()).not.toThrow();
+  });
+
+  it("includes only cta_location and page_path, with no personal or customer-entered fields", () => {
+    const { gtag } = installGa4Window(acceptedAnalyticsConsent());
+
+    trackCmmcLensBriefingClick("hero");
+    trackCmmcLensMarketplaceClick();
+
+    for (const call of gtag.mock.calls) {
+      const params = call[2] as Record<string, unknown>;
+      expect(Object.keys(params).sort()).toEqual(["cta_location", "page_path"]);
+    }
+
+    const payload = JSON.stringify(gtag.mock.calls);
+    expect(payload).not.toMatch(/name|email|company|phone|ip|booking|notes|calendar|referrer|utm_|campaign|oppref/i);
+  });
+
+  it("never fires lead_created, secure_ai_form_submit_success, or a booking-success event from either CTA", () => {
+    const { gtag } = installGa4Window(acceptedAnalyticsConsent());
+
+    trackCmmcLensBriefingClick("hero");
+    trackCmmcLensBriefingClick("closing");
+    trackCmmcLensMarketplaceClick();
+
+    const eventNames = gtag.mock.calls.map((call) => call[1]);
+    expect(eventNames).not.toContain("lead_created");
+    expect(eventNames).not.toContain("secure_ai_form_submit_success");
+    expect(eventNames).not.toContain("cmmclens_booking_success");
+    expect(tracking.trackConversion).not.toHaveBeenCalledWith("lead_created", expect.anything());
   });
 });
