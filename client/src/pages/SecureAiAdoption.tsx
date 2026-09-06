@@ -351,6 +351,12 @@ export default function SecureAiAdoption() {
             >
               View Representative Engagements <ArrowRight className="ml-2 size-4" />
             </a>
+            <p className="mt-3 text-sm text-muted-foreground">
+              Learn how DefenseEye approaches secure AI adoption through architecture, governance, evaluation, and implementation support.{" "}
+              <a href="/why-defenseeye" className="font-semibold text-primary underline-offset-4 hover:underline">
+                Why DefenseEye
+              </a>
+            </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {[

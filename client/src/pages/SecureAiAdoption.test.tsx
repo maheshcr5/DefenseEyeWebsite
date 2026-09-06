@@ -150,6 +150,26 @@ describe("Secure AI adoption landing page", () => {
     expect(html).not.toContain("AttackSense");
   });
 
+  it("adds a small contextual Why DefenseEye trust link near the representative-engagements area", () => {
+    const html = renderToStaticMarkup(<SecureAiAdoption />);
+
+    expect(html).toContain(
+      "Learn how DefenseEye approaches secure AI adoption through architecture, governance, evaluation, and implementation support."
+    );
+    const match = html.match(/<a[^>]*href="\/why-defenseeye"([^>]*)>Why DefenseEye<\/a>/);
+    expect(match).not.toBeNull();
+    expect(match![1]).not.toContain("onclick");
+
+    // Placed after the existing "View Representative Engagements" link, secondary to it.
+    const repEngagementsIndex = html.indexOf("View Representative Engagements");
+    const trustLineIndex = html.indexOf("Why DefenseEye</a>");
+    expect(repEngagementsIndex).toBeLessThan(trustLineIndex);
+
+    // The primary consultation CTA and destination remain unchanged.
+    expect(html).toContain('href="#secure-ai-consultation"');
+    expect(html.match(/<h1[^>]*>/g)).toHaveLength(1);
+  });
+
   it("keeps the approved Secure AI controlled vocabulary visible in the form", () => {
     const html = renderToStaticMarkup(<SecureAiAdoption />);
 

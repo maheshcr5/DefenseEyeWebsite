@@ -9,9 +9,11 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
-import { GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
+import { CMMCLENS_BOOKING_URL, GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
+import { trackCmmcLensBriefingClick } from "@/lib/cmmclensAnalytics";
 
 const SECURE_AI_CONSULTATION_URL = "/secure-ai-adoption#secure-ai-consultation";
+const CMMCLENS_PATH = "/cmmclens";
 
 const SUPPLIER_JOURNEY_PATHS = new Set([
   "/supplier-readiness",
@@ -105,7 +107,17 @@ function normalizePath(path: string) {
 }
 
 export function getHeaderCta(path: string) {
-  return SUPPLIER_JOURNEY_PATHS.has(normalizePath(path))
+  const normalized = normalizePath(path);
+
+  if (normalized === CMMCLENS_PATH) {
+    return {
+      label: "Book a CMMCLens Briefing",
+      href: CMMCLENS_BOOKING_URL,
+      external: true,
+    };
+  }
+
+  return SUPPLIER_JOURNEY_PATHS.has(normalized)
     ? {
         label: "Discuss Supplier Opportunities",
         href: GENERAL_DISCOVERY_BOOKING_URL,
@@ -135,6 +147,9 @@ export default function NavBar({ initialMobileOpen = false, initialMobileExpande
   const currentPath = normalizePath(pathOverride ?? location);
   const headerCta = getHeaderCta(currentPath);
   const headerCtaLinkProps = headerCta.external ? { target: "_blank", rel: "noopener noreferrer" } : {};
+  const handleHeaderCtaClick = () => {
+    if (currentPath === CMMCLENS_PATH) trackCmmcLensBriefingClick("header");
+  };
 
   const handleEnter = (key: string) => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -299,7 +314,7 @@ export default function NavBar({ initialMobileOpen = false, initialMobileExpande
 
         {/* Desktop CTA */}
         <div className="hidden lg:flex">
-          <a href={headerCta.href} {...headerCtaLinkProps}>
+          <a href={headerCta.href} {...headerCtaLinkProps} onClick={handleHeaderCtaClick}>
             <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-5">
               {headerCta.label}
             </Button>
@@ -419,7 +434,14 @@ export default function NavBar({ initialMobileOpen = false, initialMobileExpande
               </a>
 
               <div className="pt-2 border-t border-gray-100 mt-1">
-                <a href={headerCta.href} {...headerCtaLinkProps} onClick={() => setMobileOpen(false)}>
+                <a
+                  href={headerCta.href}
+                  {...headerCtaLinkProps}
+                  onClick={() => {
+                    handleHeaderCtaClick();
+                    setMobileOpen(false);
+                  }}
+                >
                   <Button className="bg-accent text-accent-foreground font-semibold w-full">
                     {headerCta.label}
                   </Button>

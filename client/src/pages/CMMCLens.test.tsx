@@ -176,6 +176,24 @@ describe("CMMCLens page booking and Marketplace CTAs", () => {
   it("does not add tracking parameters to the Marketplace URL", () => {
     expect(html).not.toMatch(/marketplace\.microsoft\.com[^"]*[?&](utm_|ref=|source=)/);
   });
+
+  it("adds a small contextual Why DefenseEye trust line without displacing the booking or Marketplace CTAs", () => {
+    expect(html).toContain(
+      "Learn how DefenseEye combines CMMC readiness experience with practical evidence and remediation workflows."
+    );
+    const match = html.match(/<a[^>]*href="\/why-defenseeye"([^>]*)>Why DefenseEye<\/a>/);
+    expect(match).not.toBeNull();
+    expect(match![1]).not.toContain("onclick");
+
+    // The trust line must come after both hero CTAs, not between or before them.
+    const marketplaceIndex = html.indexOf(SECONDARY_CTA_LABEL);
+    const trustLineIndex = html.indexOf("Why DefenseEye</a>");
+    expect(marketplaceIndex).toBeLessThan(trustLineIndex);
+  });
+
+  it("keeps exactly one visible H1", () => {
+    expect(html.match(/<h1[^>]*>/g)).toHaveLength(1);
+  });
 });
 
 describe("Obsolete Calendly constant fully retired", () => {
@@ -224,6 +242,31 @@ describe("CMMCLens GA4 buyer-intent click measurement", () => {
       cta_location: "closing",
       page_path: "/cmmclens",
     });
+  });
+
+  it("fires cmmclens_briefing_click exactly once for the route-aware NavBar header CTA with the correct location", () => {
+    const { gtag } = installGa4Window(acceptedAnalyticsConsent());
+
+    trackCmmcLensBriefingClick("header");
+
+    expect(gtag).toHaveBeenCalledTimes(1);
+    expect(gtag).toHaveBeenCalledWith("event", "cmmclens_briefing_click", {
+      cta_location: "header",
+      page_path: "/cmmclens",
+    });
+  });
+
+  it("does not fire the header CTA event for any invalid consent state", () => {
+    for (const consent of [undefined, essentialOnlyConsent(), declinedConsent(), revokedConsent(), legacyUnversionedConsent()]) {
+      const { gtag } = installGa4Window(consent);
+      trackCmmcLensBriefingClick("header");
+      expect(gtag).not.toHaveBeenCalled();
+    }
+  });
+
+  it("does not throw for the header CTA when window.gtag is unavailable", () => {
+    installGa4WindowWithoutGtag(acceptedAnalyticsConsent());
+    expect(() => trackCmmcLensBriefingClick("header")).not.toThrow();
   });
 
   it("fires cmmclens_marketplace_click exactly once with the correct location", () => {
@@ -324,6 +367,7 @@ describe("CMMCLens GA4 buyer-intent click measurement", () => {
 
     trackCmmcLensBriefingClick("hero");
     trackCmmcLensBriefingClick("closing");
+    trackCmmcLensBriefingClick("header");
     trackCmmcLensMarketplaceClick();
 
     const eventNames = gtag.mock.calls.map((call) => call[1]);

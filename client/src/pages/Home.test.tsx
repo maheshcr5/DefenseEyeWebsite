@@ -39,6 +39,34 @@ describe("DefenseEye homepage positioning", () => {
     expect(html).toContain("View Representative Engagements");
   });
 
+  it("adds a small contextual Why DefenseEye trust link without a new section or tracking", () => {
+    const html = renderToStaticMarkup(<Home />);
+
+    expect(html).toContain(
+      "See how DefenseEye combines practitioner-led consulting, secure AI expertise, and compliance automation."
+    );
+    const match = html.match(/<a[^>]*href="\/why-defenseeye"([^>]*)>Why DefenseEye<\/a>/);
+    expect(match).not.toBeNull();
+    expect(match![1]).not.toContain("onclick");
+  });
+
+  it("removes the duplicate hero logo while keeping the Navbar and Footer logos", () => {
+    const html = renderToStaticMarkup(<Home />);
+
+    // NavBar/Footer are mocked to plain text in this test file; the real DefenseEyeLogo mock
+    // renders "DefenseEye.ai" — it must not appear anywhere since Home no longer renders it.
+    expect(html).not.toContain("DefenseEye.ai");
+    expect(html).toContain("DefenseEye navigation");
+    expect(html).toContain("DefenseEye footer");
+  });
+
+  it("keeps exactly one H1 and the hero visually unaffected by the logo removal", () => {
+    const html = renderToStaticMarkup(<Home />);
+
+    expect(html.match(/<h1[^>]*>/g)).toHaveLength(1);
+    expect(html).toContain(">Implement Agentic AI Securely</h1>");
+  });
+
   it("keeps CMMC, CMMCLens, AttackSense, and supplier readiness as secondary portfolio paths", () => {
     const html = renderToStaticMarkup(<Home />);
 

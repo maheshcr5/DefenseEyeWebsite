@@ -151,4 +151,45 @@ describe("DefenseEye navigation CTA alignment", () => {
     const source = NavBar.toString();
     expect(source).toContain('"Escape"');
   });
+
+  it("uses the CMMCLens-specific header CTA on /cmmclens, via the shared booking constant", () => {
+    expect(getHeaderCta("/cmmclens")).toMatchObject({
+      label: "Book a CMMCLens Briefing",
+      href: "https://cal.com/defenseeye/cmmclens",
+      external: true,
+    });
+  });
+
+  it("renders the CMMCLens header CTA on desktop and mobile for /cmmclens", () => {
+    const desktopHtml = renderToStaticMarkup(<NavBar pathOverride="/cmmclens" />);
+    const mobileHtml = renderToStaticMarkup(<NavBar pathOverride="/cmmclens" initialMobileOpen />);
+
+    for (const html of [desktopHtml, mobileHtml]) {
+      expect(html).toContain("Book a CMMCLens Briefing");
+      expect(html).toContain('href="https://cal.com/defenseeye/cmmclens"');
+      expect(html).not.toContain("Request a Secure AI Consultation");
+      expect(html).not.toContain("Discuss Supplier Opportunities");
+      expect(html).not.toContain("cal.com/defenseeye/discovery");
+    }
+
+    const match = desktopHtml.match(/<a[^>]*href="https:\/\/cal\.com\/defenseeye\/cmmclens"([^>]*)>/);
+    expect(match).not.toBeNull();
+    expect(match![1]).toContain('target="_blank"');
+    expect(match![1]).toContain('rel="noopener noreferrer"');
+  });
+
+  it("wires the header click to the shared CMMCLens tracker only when the route is /cmmclens", () => {
+    // renderToStaticMarkup cannot dispatch real clicks, so this confirms the click handler
+    // is gated by the exact /cmmclens path check rather than firing unconditionally.
+    const source = NavBar.toString();
+    expect(source).toContain("trackCmmcLensBriefingClick");
+    expect(source).toMatch(/currentPath\s*===\s*CMMCLENS_PATH/);
+  });
+
+  it("leaves every other route's header CTA behavior unchanged", () => {
+    expect(getHeaderCta("/")).toMatchObject({ label: "Request a Secure AI Consultation", external: false });
+    expect(getHeaderCta("/secure-ai-adoption")).toMatchObject({ label: "Request a Secure AI Consultation" });
+    expect(getHeaderCta("/delivery-model")).toMatchObject({ label: "Discuss Supplier Opportunities", external: true });
+    expect(getHeaderCta("/capability-statement")).toMatchObject({ label: "Discuss Supplier Opportunities" });
+  });
 });

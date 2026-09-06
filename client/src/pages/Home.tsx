@@ -13,7 +13,6 @@ import {
   ShieldCheck,
   UserCheck,
 } from "lucide-react";
-import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -124,9 +123,6 @@ export default function Home() {
 
       <section className="section-navy nvidia-grid-bg px-4 py-20 sm:py-24">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-8">
-            <DefenseEyeLogo />
-          </div>
           <div className="max-w-4xl">
             <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-primary">SECURE AGENTIC AI FOR REGULATED ORGANIZATIONS</p>
             <h1 className="font-heading text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl">Implement Agentic AI Securely</h1>
@@ -230,6 +226,12 @@ export default function Home() {
             <h2 className="font-heading text-4xl font-bold">Practitioner-led implementation for regulated environments</h2>
             <p className="mt-4 leading-relaxed text-muted-foreground">
               DefenseEye connects AI/ML engineering, cybersecurity, responsible AI governance, and Microsoft cloud delivery support for teams that need working systems with appropriate controls.
+            </p>
+            <p className="mt-3 text-sm text-muted-foreground">
+              See how DefenseEye combines practitioner-led consulting, secure AI expertise, and compliance automation.{" "}
+              <a href="/why-defenseeye" className="font-semibold text-primary underline-offset-4 hover:underline">
+                Why DefenseEye
+              </a>
             </p>
             <a
               href="/representative-engagements"

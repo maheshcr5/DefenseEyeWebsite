@@ -7,53 +7,11 @@ import Footer from "@/components/Footer";
 import { useSeo } from "@/hooks/useSeo";
 import { trackConversion } from "@/lib/tracking";
 import { CMMCLENS_BOOKING_URL as BOOKING_URL } from "@/data/companyFacts";
+import { hasCmmcLensAnalyticsConsent, trackCmmcLensBriefingClick, trackCmmcLensMarketplaceClick } from "@/lib/cmmclensAnalytics";
+
+export { hasCmmcLensAnalyticsConsent, trackCmmcLensBriefingClick, trackCmmcLensMarketplaceClick };
 
 const MARKETPLACE_URL = "https://marketplace.microsoft.com/en-us/product/cmmc.defenseeye-cmmc-l2-continuous-compliance?tab=Overview";
-const CMMCLENS_PAGE_PATH = "/cmmclens";
-const CONSENT_KEY = "de_cookie_consent";
-const CONSENT_VERSION = 2;
-
-declare global {
-  interface Window {
-    __gaId?: string;
-    gtag?: (...args: unknown[]) => void;
-  }
-}
-
-export function hasCmmcLensAnalyticsConsent() {
-  if (typeof window === "undefined") return false;
-  try {
-    const parsed = JSON.parse(window.localStorage.getItem(CONSENT_KEY) || "{}") as {
-      status?: string;
-      version?: number;
-      purposes?: { analytics?: boolean };
-    };
-
-    return parsed.status === "accepted" && parsed.version === CONSENT_VERSION && parsed.purposes?.analytics === true;
-  } catch {
-    return false;
-  }
-}
-
-export function trackCmmcLensBriefingClick(ctaLocation: "hero" | "closing") {
-  if (!hasCmmcLensAnalyticsConsent()) return;
-  if (typeof window.gtag !== "function") return;
-
-  window.gtag("event", "cmmclens_briefing_click", {
-    cta_location: ctaLocation,
-    page_path: CMMCLENS_PAGE_PATH,
-  });
-}
-
-export function trackCmmcLensMarketplaceClick() {
-  if (!hasCmmcLensAnalyticsConsent()) return;
-  if (typeof window.gtag !== "function") return;
-
-  window.gtag("event", "cmmclens_marketplace_click", {
-    cta_location: "hero",
-    page_path: CMMCLENS_PAGE_PATH,
-  });
-}
 
 const FAQ_ITEMS = [
   {
@@ -211,6 +169,12 @@ export default function CMMCLens() {
               </Button>
             </a>
           </div>
+          <p className="mt-4 text-sm text-muted-foreground">
+            Learn how DefenseEye combines CMMC readiness experience with practical evidence and remediation workflows.{" "}
+            <a href="/why-defenseeye" className="font-semibold text-primary underline-offset-4 hover:underline">
+              Why DefenseEye
+            </a>
+          </p>
         </section>
 
         <section className="max-w-6xl mx-auto pb-14 grid md:grid-cols-4 gap-5">
