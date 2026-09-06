@@ -5,7 +5,7 @@ import { CheckCircle2, ArrowRight, Award, Clock, FileCheck } from "lucide-react"
 import NavBar from "@/components/NavBar";
 import { InfoTooltip } from "@/components/InfoTooltip";
 
-const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
+import { GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 
 const FAQS = [
   {
@@ -59,18 +59,18 @@ export default function CMMCReadinessSprint() {
           </p>
           <p className="text-sm text-white/60 max-w-3xl mb-8">
             If you need urgent CMMC readiness help, book a call now:{" "}
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-              {CALENDLY_URL}
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+              {GENERAL_DISCOVERY_BOOKING_URL}
             </a>
             . Low-friction triage call (20-30 minutes) for defense contractors handling CUI.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
                 Schedule a Fast 30-Min Assessment Call <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </a>
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
               <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
                 Get Immediate Help to Protect Your DoD Contracts
               </Button>
@@ -194,7 +194,7 @@ export default function CMMCReadinessSprint() {
           <p className="text-white/70 mb-8">
             Start with a fixed-price CMMC readiness sprint built for small and mid-sized defense contractors.
           </p>
-          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+          <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
             <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-8">
               Book Your Urgent CMMC Readiness Call <ArrowRight className="w-4 h-4 ml-2" />
             </Button>

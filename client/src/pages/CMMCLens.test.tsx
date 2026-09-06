@@ -178,10 +178,15 @@ describe("CMMCLens page booking and Marketplace CTAs", () => {
   });
 });
 
-describe("Unrelated Calendly links are untouched", () => {
-  it("leaves the general company Calendly booking link intact in shared company data", async () => {
-    const { CALENDLY_URL } = await import("@/data/companyFacts");
-    expect(CALENDLY_URL).toBe(OLD_CALENDLY_URL);
+describe("Obsolete Calendly constant fully retired", () => {
+  it("no longer exports the obsolete CALENDLY_URL from shared company data", async () => {
+    const companyFacts = await import("@/data/companyFacts");
+    expect((companyFacts as Record<string, unknown>).CALENDLY_URL).toBeUndefined();
+  });
+
+  it("exports a CMMCLens-specific booking constant used only by the CMMCLens page", async () => {
+    const { CMMCLENS_BOOKING_URL } = await import("@/data/companyFacts");
+    expect(CMMCLENS_BOOKING_URL).toBe("https://cal.com/defenseeye/cmmclens");
   });
 });
 

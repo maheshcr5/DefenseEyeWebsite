@@ -1,4 +1,4 @@
-import { ArrowRight, Mail, BookOpen, MessageSquare, Calendar, HelpCircle, Zap } from "lucide-react";
+import { ArrowRight, Mail, BookOpen, MessageSquare, HelpCircle, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
@@ -6,7 +6,6 @@ import { useSeo } from "@/hooks/useSeo";
 import { trackConversion } from "@/lib/tracking";
 
 const SUPPORT_EMAIL = "support@defenseeye.ai";
-const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
 export default function Support() {
   useSeo(
@@ -51,14 +50,14 @@ export default function Support() {
             </div>
 
             <div className="bg-card/50 border border-border/40 rounded-sm p-7 flex flex-col">
-              <Calendar className="w-7 h-7 text-primary mb-4" />
+              <Mail className="w-7 h-7 text-primary mb-4" />
               <h3 className="font-heading text-lg font-bold mb-2">Urgent Issues — Discuss Next Steps</h3>
               <p className="text-sm text-muted-foreground leading-relaxed mb-5 flex-1">
-                For time-sensitive contract deadlines, governance needs, security concerns, or critical platform issues, schedule a direct call. We prioritize active subscribers and clients under deadline pressure.
+                For time-sensitive contract deadlines, governance needs, security concerns, or critical platform issues, email our team directly. We prioritize active subscribers and clients under deadline pressure.
               </p>
-              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+              <a href={`mailto:${SUPPORT_EMAIL}?subject=Urgent Support Request`}>
                 <Button variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
-                  Schedule Support Discussion <ArrowRight className="w-4 h-4 ml-2" />
+                  Email Urgent Support <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </a>
             </div>

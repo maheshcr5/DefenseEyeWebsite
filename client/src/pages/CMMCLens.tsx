@@ -6,8 +6,8 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { useSeo } from "@/hooks/useSeo";
 import { trackConversion } from "@/lib/tracking";
+import { CMMCLENS_BOOKING_URL as BOOKING_URL } from "@/data/companyFacts";
 
-const BOOKING_URL = "https://cal.com/defenseeye/cmmclens";
 const MARKETPLACE_URL = "https://marketplace.microsoft.com/en-us/product/cmmc.defenseeye-cmmc-l2-continuous-compliance?tab=Overview";
 const CMMCLENS_PAGE_PATH = "/cmmclens";
 const CONSENT_KEY = "de_cookie_consent";

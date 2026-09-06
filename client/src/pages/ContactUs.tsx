@@ -4,11 +4,9 @@ import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { useSeo } from "@/hooks/useSeo";
-import { CAPABILITY_STATEMENT_URL, COMPANY } from "@/data/companyFacts";
+import { CAPABILITY_STATEMENT_URL, COMPANY, GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 import { getStoredAttribution, trackConversion } from "@/lib/tracking";
 import { reportOpenAiAdsLeadCreated } from "@/lib/openaiAds";
-
-const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
 export type ContactFormValues = {
   firstName: string;
@@ -90,7 +88,7 @@ export default function ContactUs() {
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
               Schedule a 60-minute discussion on AI, cybersecurity, governance, compliance automation, subcontracting, staff augmentation, or CMMCLens fit.
             </p>
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
                 Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
               </Button>

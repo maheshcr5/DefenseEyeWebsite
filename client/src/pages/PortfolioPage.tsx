@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { ArrowRight, CheckCircle2, ClipboardCheck, FileCheck, ShieldCheck } from "lucide-react";
 import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
-import { CALENDLY_URL, CERTIFICATIONS } from "@/data/companyFacts";
+import { CERTIFICATIONS, GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 import { useSeo } from "@/hooks/useSeo";
 import { trackConversion } from "@/lib/tracking";
 
@@ -111,7 +111,7 @@ export default function PortfolioPage() {
           <h1 className="max-w-4xl font-heading text-5xl font-bold leading-tight sm:text-6xl">{config.title}</h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">{config.opening}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion(config.event, { location: "portfolio_hero", path: config.path })}>
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion(config.event, { location: "portfolio_hero", path: config.path })}>
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90">{config.cta} <ArrowRight className="ml-2 size-4" /></Button>
             </a>
             <a href="/datasheets" onClick={() => trackConversion("datasheet_view", { location: config.path })}>
@@ -147,7 +147,7 @@ export default function PortfolioPage() {
           <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
             DefenseEye can help translate governance, compliance, security, and evidence needs into practical workflows and readiness plans.
           </p>
-          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "portfolio_final", path: config.path })}>
+          <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "portfolio_final", path: config.path })}>
             <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">{config.cta}</Button>
           </a>
         </div>

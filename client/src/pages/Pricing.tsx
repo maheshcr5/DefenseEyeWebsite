@@ -5,7 +5,7 @@ import { useSeo } from "@/hooks/useSeo";
 import { CheckCircle2, ArrowRight, Clock, FileCheck, AlertTriangle } from "lucide-react";
 import NavBar from "@/components/NavBar";
 
-const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
+import { GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 
 const FAQS = [
   {
@@ -78,12 +78,12 @@ export default function Pricing() {
           </p>
           <p className="text-sm text-white/60 max-w-3xl mx-auto mb-8">
             If you need urgent CMMC readiness help, book a call now:{" "}
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-              {CALENDLY_URL}
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+              {GENERAL_DISCOVERY_BOOKING_URL}
             </a>
             . Quick 20-30 minute triage for teams handling CUI.
           </p>
-          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+          <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
             <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-8">
               Book your urgent 30-min CMMC readiness call to get your tailored quote
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -185,7 +185,7 @@ export default function Pricing() {
           <p className="text-white/70 mb-8">
             Book now to get a tailored CMMC readiness quote and clear next steps.
           </p>
-          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+          <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
             <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-8">
               Schedule a Fast 30-Min Assessment Call <ArrowRight className="w-4 h-4 ml-2" />
             </Button>

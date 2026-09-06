@@ -24,7 +24,7 @@ import {
 import NavBar from "@/components/NavBar";
 import { InfoTooltip } from "@/components/InfoTooltip";
 
-const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
+import { GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 
 const SCOPE_AREAS = [
   {
@@ -186,7 +186,7 @@ export default function CMMCScoping() {
             CMMC scoping defines your CUI environment boundary — which systems, people, and networks actually need to meet CMMC Level 2 controls. Skip this step and you'll document, remediate, and pay for controls you don't need.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8">
                 Book a Scoping Call <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
@@ -332,7 +332,7 @@ export default function CMMCScoping() {
             Contractors who scope correctly before their gap assessment can reduce rework and focus remediation. Book a 30-minute call to start defining your CUI boundary.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8">
                 Book a Scoping Call <ArrowRight className="w-4 h-4 ml-2" />
               </Button>

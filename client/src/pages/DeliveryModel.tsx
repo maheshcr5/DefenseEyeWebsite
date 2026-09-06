@@ -3,7 +3,7 @@ import { ArrowRight, Target } from "lucide-react";
 import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
-import { CALENDLY_URL, ENGAGEMENT_MODELS } from "@/data/companyFacts";
+import { ENGAGEMENT_MODELS, GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 import { trackConversion } from "@/lib/tracking";
 
 const phases = [
@@ -98,7 +98,7 @@ export default function DeliveryModel() {
             ))}
           </div>
           <div className="text-center">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "delivery_model" })}>
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "delivery_model" })}>
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
                 Discuss an Engagement Model <ArrowRight className="w-4 h-4 ml-2" />
               </Button>

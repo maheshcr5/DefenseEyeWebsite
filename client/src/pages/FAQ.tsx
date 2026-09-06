@@ -12,7 +12,7 @@ import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { useSeo } from "@/hooks/useSeo";
 import NavBar from "@/components/NavBar";
 
-const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
+import { GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 
 // ── FAQ data ──────────────────────────────────────────────────────────────────
 const FAQS: { category: string; q: string; a: string }[] = [
@@ -225,7 +225,7 @@ export default function FAQPage() {
             Every contractor's CUI environment is different. Book a free 30-minute call and get answers specific to your contracts, IT setup, and timeline.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8">
                 Book a Free CMMC Call <ArrowRight className="w-4 h-4 ml-2" />
               </Button>

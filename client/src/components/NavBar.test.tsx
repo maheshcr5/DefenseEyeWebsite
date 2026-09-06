@@ -27,7 +27,8 @@ describe("DefenseEye navigation CTA alignment", () => {
       external: true,
     });
     expect(html).toContain("Discuss Supplier Opportunities");
-    expect(html).toContain("https://calendly.com/maheshcoimbatore/60-minute-meeting");
+    expect(html).toContain("https://cal.com/defenseeye/discovery");
+    expect(html).not.toContain("calendly.com");
     expect(html).not.toContain("Request a Secure AI Consultation");
   });
 

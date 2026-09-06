@@ -5,7 +5,7 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import NavBar from "@/components/NavBar";
 import { InfoTooltip } from "@/components/InfoTooltip";
 
-const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
+import { GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 
 export default function SprintGuide() {
   useSeo(
@@ -109,7 +109,7 @@ export default function SprintGuide() {
           </div>
 
           <div className="mt-10 text-center">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
                 Start My CMMC Sprint Plan <ArrowRight className="w-4 h-4 ml-2" />
               </Button>

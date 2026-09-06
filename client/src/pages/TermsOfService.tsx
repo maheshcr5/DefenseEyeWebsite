@@ -5,7 +5,6 @@ import { useSeo } from "@/hooks/useSeo";
 const SUPPORT_EMAIL = "legal@defenseeye.ai";
 const EFFECTIVE_DATE = "April 1, 2026";
 const LAST_UPDATED = "April 1, 2026";
-const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (

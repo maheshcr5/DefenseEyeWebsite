@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import { useSeo } from "@/hooks/useSeo";
 
-const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
+import { GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 
 type Insight = {
   slug: string;
@@ -238,7 +238,7 @@ export default function ThoughtLeadership() {
                   DefenseEye helps organizations turn these concepts into governed programs, architecture decisions, evidence workflows, and readiness outcomes.
                 </p>
               </div>
-              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+              <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
                 <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
                   Book a Consultation <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>

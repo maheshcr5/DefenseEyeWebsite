@@ -3,7 +3,7 @@ import { ArrowRight, Download, ExternalLink, FileText, ShieldCheck } from "lucid
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { CALENDLY_URL } from "@/data/companyFacts";
+import { GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 import { useSeo } from "@/hooks/useSeo";
 import { trackConversion } from "@/lib/tracking";
 
@@ -107,7 +107,7 @@ export default function AttackSenseDocs() {
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 DefenseEye can help map AttackSense to your current vulnerability, attack surface, cloud security, and remediation workflows.
               </p>
-              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "attacksense_docs_sidebar" })}>
+              <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "attacksense_docs_sidebar" })}>
                 <Button className="mt-5 w-full bg-accent text-accent-foreground hover:bg-accent/90">
                   Discuss AttackSense <ArrowRight className="ml-2 size-4" />
                 </Button>

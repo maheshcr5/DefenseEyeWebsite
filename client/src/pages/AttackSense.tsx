@@ -3,7 +3,7 @@ import { Activity, ArrowRight, CheckCircle2, FileText, Radar, ShieldAlert, Workf
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { CALENDLY_URL, COMPANY } from "@/data/companyFacts";
+import { COMPANY, GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 import { useSeo } from "@/hooks/useSeo";
 import { trackConversion } from "@/lib/tracking";
 
@@ -66,7 +66,7 @@ export default function AttackSense() {
             AttackSense helps security teams move beyond static vulnerability lists by turning exposure data, attack paths, and remediation ownership into a focused operating picture for reducing real risk.
           </p>
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "attacksense_hero" })}>
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "attacksense_hero" })}>
               <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-auto">
                 Discuss AttackSense <ArrowRight className="ml-2 size-4" />
               </Button>

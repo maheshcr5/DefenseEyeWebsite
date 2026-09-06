@@ -4,8 +4,8 @@ import { Activity, ArrowRight, BarChart3, Bot, CheckCircle2, ClipboardCheck, Fil
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
 import { useSeo } from "@/hooks/useSeo";
+import { GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 
-const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 const MARKETPLACE_URL = "https://marketplace.microsoft.com/en-us/product/cmmc.defenseeye-cmmc-l2-continuous-compliance?tab=Overview";
 
 type PageConfig = {
@@ -515,7 +515,7 @@ export default function SolutionPage() {
                 DefenseEye supports advisory, implementation, subcontracting, staff augmentation, and platform-enabled consulting opportunities.
               </p>
             </div>
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
                 Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
               </Button>

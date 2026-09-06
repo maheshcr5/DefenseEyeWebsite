@@ -4,7 +4,7 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
-import { CALENDLY_URL, CAPABILITY_STATEMENT_URL, CERTIFICATIONS } from "@/data/companyFacts";
+import { CAPABILITY_STATEMENT_URL, CERTIFICATIONS, CMMCLENS_BOOKING_URL, GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 import { trackConversion } from "@/lib/tracking";
 
 type LandingConfig = {
@@ -15,6 +15,7 @@ type LandingConfig = {
   outcomes: string[];
   engagement: string;
   cta: string;
+  bookingUrl: string;
 };
 
 const configs: Record<string, LandingConfig> = {
@@ -26,6 +27,7 @@ const configs: Record<string, LandingConfig> = {
     outcomes: ["Reduced AI adoption risk", "Less rework", "Faster governed implementation"],
     engagement: "Representative engagement: secure AI adoption readiness review with policy, control, risk, and implementation roadmap deliverables.",
     cta: "Discuss Secure AI Adoption",
+    bookingUrl: GENERAL_DISCOVERY_BOOKING_URL,
   },
   "/lp/ai-governance-consulting": {
     title: "AI governance consulting for regulated organizations",
@@ -35,6 +37,7 @@ const configs: Record<string, LandingConfig> = {
     outcomes: ["Clearer accountability", "Reduced shadow AI risk", "Better readiness for procurement and assurance reviews"],
     engagement: "Representative engagement: AI governance readiness assessment with a governance roadmap and policy/control recommendations.",
     cta: "Discuss AI Governance Readiness",
+    bookingUrl: GENERAL_DISCOVERY_BOOKING_URL,
   },
   "/lp/microsoft-copilot-readiness": {
     title: "Microsoft Copilot readiness assessment",
@@ -44,6 +47,7 @@ const configs: Record<string, LandingConfig> = {
     outcomes: ["Lower data exposure risk", "More accountable adoption", "Clearer implementation priorities"],
     engagement: "Representative engagement: Copilot governance assessment with data exposure findings, guardrails, and readiness roadmap.",
     cta: "Assess Copilot Readiness",
+    bookingUrl: GENERAL_DISCOVERY_BOOKING_URL,
   },
   "/lp/cmmc-level-2-readiness": {
     title: "CMMC Level 2 readiness consulting",
@@ -53,6 +57,7 @@ const configs: Record<string, LandingConfig> = {
     outcomes: ["Improved readiness visibility", "Reduced assessment friction", "Clearer executive next steps"],
     engagement: "Representative engagement: CMMC Level 2 readiness sprint with findings, roadmap, evidence plan, and executive summary.",
     cta: "Assess CMMC Readiness",
+    bookingUrl: GENERAL_DISCOVERY_BOOKING_URL,
   },
   "/lp/cmmc-compliance-automation": {
     title: "CMMC compliance automation for evidence and readiness workflows",
@@ -62,6 +67,7 @@ const configs: Record<string, LandingConfig> = {
     outcomes: ["Reduced manual evidence burden", "Better traceability", "Clearer remediation priorities"],
     engagement: "Representative engagement: CMMC compliance automation sprint with evidence workflow design, gap priorities, and CMMCLens onboarding plan.",
     cta: "Explore CMMC Automation",
+    bookingUrl: GENERAL_DISCOVERY_BOOKING_URL,
   },
   "/lp/cmmc-evidence-automation": {
     title: "CMMC evidence automation with CMMCLens",
@@ -71,6 +77,7 @@ const configs: Record<string, LandingConfig> = {
     outcomes: ["Reduced manual effort", "Improved traceability", "More consistent documentation"],
     engagement: "Representative engagement: compliance evidence automation implementation with dashboards and control mapping.",
     cta: "Explore Evidence Automation",
+    bookingUrl: GENERAL_DISCOVERY_BOOKING_URL,
   },
   "/lp/cmmclens-demo": {
     title: "CMMCLens demo for CMMC evidence automation",
@@ -80,6 +87,7 @@ const configs: Record<string, LandingConfig> = {
     outcomes: ["Improved evidence discipline", "Better readiness visibility", "More structured remediation"],
     engagement: "Representative engagement: CMMCLens demo and evidence automation fit review.",
     cta: "Request CMMCLens Demo",
+    bookingUrl: CMMCLENS_BOOKING_URL,
   },
   "/lp/microsoft-supplier-ai-consulting": {
     title: "Minority-owned AI governance and cybersecurity supplier for Microsoft-centered environments",
@@ -89,6 +97,7 @@ const configs: Record<string, LandingConfig> = {
     outcomes: ["Easier procurement evaluation", "Specialized delivery capacity", "Clear supplier identifiers and credentials"],
     engagement: "Representative engagement: supplier capability review for AI governance, cybersecurity, cloud security, or compliance automation support.",
     cta: "Discuss Supplier Opportunities",
+    bookingUrl: GENERAL_DISCOVERY_BOOKING_URL,
   },
   "/lp/azure-cloud-security": {
     title: "Azure cloud security and compliance review",
@@ -98,6 +107,7 @@ const configs: Record<string, LandingConfig> = {
     outcomes: ["Stronger cloud security", "Clearer remediation priorities", "Better compliance readiness"],
     engagement: "Representative engagement: Azure security and compliance review with risk-ranked findings and roadmap.",
     cta: "Review Azure Security",
+    bookingUrl: GENERAL_DISCOVERY_BOOKING_URL,
   },
   "/lp/compliance-automation": {
     title: "Compliance automation for evidence, workflows, and readiness reporting",
@@ -107,6 +117,7 @@ const configs: Record<string, LandingConfig> = {
     outcomes: ["Reduced compliance preparation effort", "Improved evidence traceability", "Stronger audit readiness"],
     engagement: "Representative engagement: compliance automation roadmap with workflow design and CMMCLens fit assessment.",
     cta: "Discuss Compliance Automation",
+    bookingUrl: GENERAL_DISCOVERY_BOOKING_URL,
   },
 };
 
@@ -170,7 +181,7 @@ export default function LandingPage() {
           <h1 className="font-heading text-4xl sm:text-5xl font-bold leading-tight mb-5">{config.title}</h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">{config.desc}</p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("landing_page_cta_click", { location, cta: config.cta })}>
+            <a href={config.bookingUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("landing_page_cta_click", { location, cta: config.cta })}>
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">{config.cta} <ArrowRight className="w-4 h-4 ml-2" /></Button>
             </a>
             <a href={CAPABILITY_STATEMENT_URL} onClick={() => trackConversion("landing_page_cta_click", { location, cta: "capability_statement" })}>

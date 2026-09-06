@@ -3,7 +3,7 @@ import { ArrowRight, Award, CheckCircle2, ClipboardCheck, FileCheck, ShieldCheck
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { CALENDLY_URL, COMPANY, MARKETPLACE_URL } from "@/data/companyFacts";
+import { COMPANY, GENERAL_DISCOVERY_BOOKING_URL, MARKETPLACE_URL } from "@/data/companyFacts";
 import { useSeo } from "@/hooks/useSeo";
 import { trackConversion } from "@/lib/tracking";
 
@@ -58,7 +58,7 @@ export default function CmmcComplianceAutomation() {
             DefenseEye provides CCP-led CMMC Level 1 and Level 2 readiness support, NIST SP 800-171 gap assessments, System Security Plan (SSP) execution, and compliance evidence automation for U.S. Defense Contractors.
           </p>
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "cmmc_hero" })}>
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "cmmc_hero" })}>
               <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-auto">
                 Assess CMMC Readiness <ArrowRight className="ml-2 size-4" />
               </Button>
@@ -200,7 +200,7 @@ export default function CmmcComplianceAutomation() {
             Contact DefenseEye to schedule a CCP-led readiness gap assessment and discuss CMMCLens evidence automation.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "cmmc_footer" })}>
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "cmmc_footer" })}>
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
                 Assess CMMC Readiness <ArrowRight className="ml-2 size-4" />
               </Button>

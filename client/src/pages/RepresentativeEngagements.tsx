@@ -4,7 +4,7 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
-import { CALENDLY_URL } from "@/data/companyFacts";
+import { GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 import { trackConversion } from "@/lib/tracking";
 
 const engagements = [
@@ -93,9 +93,9 @@ export default function RepresentativeEngagements() {
           ))}
         </div>
         <div className="max-w-4xl mx-auto text-center mt-12">
-          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "representative_engagements" })}>
+          <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "representative_engagements" })}>
             <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-              Discuss a Representative Engagement <ArrowRight className="w-4 h-4 ml-2" />
+              Book a 30-Minute Discovery Call <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </a>
         </div>

@@ -9,8 +9,8 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
+import { GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 
-const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 const SECURE_AI_CONSULTATION_URL = "/secure-ai-adoption#secure-ai-consultation";
 
 const SUPPLIER_JOURNEY_PATHS = new Set([
@@ -108,7 +108,7 @@ export function getHeaderCta(path: string) {
   return SUPPLIER_JOURNEY_PATHS.has(normalizePath(path))
     ? {
         label: "Discuss Supplier Opportunities",
-        href: CALENDLY_URL,
+        href: GENERAL_DISCOVERY_BOOKING_URL,
         external: true,
       }
     : {

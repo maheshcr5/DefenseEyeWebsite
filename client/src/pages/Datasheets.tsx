@@ -4,7 +4,7 @@ import { ArrowRight, CheckCircle2, Download, FileText } from "lucide-react";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { CALENDLY_URL, CERTIFICATIONS, COMPANY, ENGAGEMENT_MODELS, SUPPLIER_IDENTIFIERS } from "@/data/companyFacts";
+import { CERTIFICATIONS, CMMCLENS_BOOKING_URL, COMPANY, ENGAGEMENT_MODELS, GENERAL_DISCOVERY_BOOKING_URL, SUPPLIER_IDENTIFIERS } from "@/data/companyFacts";
 import { useSeo } from "@/hooks/useSeo";
 import { trackConversion } from "@/lib/tracking";
 
@@ -21,6 +21,7 @@ type Sheet = {
   engagement: string[];
   cta: string;
   contact: "enterprise" | "partners" | "support";
+  bookingUrl: string;
 };
 
 const sheets: Record<string, Sheet> = {
@@ -37,6 +38,7 @@ const sheets: Record<string, Sheet> = {
     engagement: ["AI governance readiness assessment", "Copilot readiness review", "AI operating model design", "Executive AI roadmap"],
     cta: "Discuss Secure AI Adoption",
     contact: "enterprise",
+    bookingUrl: GENERAL_DISCOVERY_BOOKING_URL,
   },
   "cmmc-compliance-automation": {
     slug: "cmmc-compliance-automation",
@@ -51,6 +53,7 @@ const sheets: Record<string, Sheet> = {
     engagement: ["2-4 week readiness sprint", "NIST 800-171 gap assessment", "Evidence automation implementation", "Prime supply-chain readiness support"],
     cta: "Assess CMMC Readiness",
     contact: "enterprise",
+    bookingUrl: GENERAL_DISCOVERY_BOOKING_URL,
   },
   cmmclens: {
     slug: "cmmclens",
@@ -65,6 +68,7 @@ const sheets: Record<string, Sheet> = {
     engagement: ["Product demo", "Implementation planning", "Evidence workflow configuration", "Platform-enabled consulting"],
     cta: "Request CMMCLens Demo",
     contact: "support",
+    bookingUrl: CMMCLENS_BOOKING_URL,
   },
   "microsoft-copilot-readiness": {
     slug: "microsoft-copilot-readiness",
@@ -79,6 +83,7 @@ const sheets: Record<string, Sheet> = {
     engagement: ["Copilot readiness assessment", "Data exposure review", "Governance roadmap", "Implementation support"],
     cta: "Assess Copilot Readiness",
     contact: "enterprise",
+    bookingUrl: GENERAL_DISCOVERY_BOOKING_URL,
   },
   "supplier-readiness": {
     slug: "supplier-readiness",
@@ -93,6 +98,7 @@ const sheets: Record<string, Sheet> = {
     engagement: ["Advisory consulting", "Project delivery", "Staff augmentation", "Specialized subcontracting", "Platform-enabled consulting"],
     cta: "Discuss Supplier Opportunities",
     contact: "partners",
+    bookingUrl: GENERAL_DISCOVERY_BOOKING_URL,
   },
 };
 
@@ -194,7 +200,7 @@ function DatasheetDetail({ sheet }: { sheet: Sheet }) {
           <h1 className="font-heading text-5xl font-bold">{sheet.title}</h1>
           <p className="mt-5 max-w-3xl text-lg leading-relaxed text-muted-foreground">{sheet.value}</p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion(sheet.slug === "cmmclens" ? "cmmclens_demo_click" : "consultation_click", { datasheet: sheet.slug })}>
+            <a href={sheet.bookingUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion(sheet.slug === "cmmclens" ? "cmmclens_demo_click" : "consultation_click", { datasheet: sheet.slug })}>
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90">{sheet.cta} <ArrowRight className="ml-2 size-4" /></Button>
             </a>
             <button type="button" onClick={() => { window.print(); trackConversion("datasheet_download", { datasheet: sheet.slug, format: "print_pdf" }); }}>
