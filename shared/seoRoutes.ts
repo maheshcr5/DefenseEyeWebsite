@@ -6,7 +6,8 @@ export type StructuredDataKind =
   | "service"
   | "software"
   | "collection"
-  | "about";
+  | "about"
+  | "page";
 
 export type SeoLink = {
   label: string;
@@ -853,6 +854,176 @@ export const TIER_1_ROUTES: SeoRoute[] = [
     changefreq: "monthly",
     priority: "0.8",
   },
+  {
+    path: "/privacy-policy",
+    title: "Privacy Policy | DefenseEye",
+    description:
+      "DefenseEye Privacy Policy for DefenseEye.ai, CMMCLens, customer data, privacy requests, and service communications.",
+    h1: "Privacy Policy",
+    eyebrow: "Legal",
+    summary:
+      "DefenseEye's Privacy Policy explains what information DefenseEye collects, how it is used, and how it is protected across DefenseEye.ai and CMMCLens.",
+    sections: [
+      {
+        heading: "Effective and Last Updated",
+        body: "Effective April 1, 2026. Last updated August 29, 2026.",
+      },
+    ],
+    links: [
+      { label: "Contact DefenseEye", href: "/contact" },
+      { label: "Terms of Service", href: "/terms" },
+      { label: "Support", href: "/support" },
+    ],
+    schemaKind: "page",
+    topics: ["Privacy policy", "Data protection", "DefenseEye legal"],
+    lastmod: "2026-08-29",
+    changefreq: "monthly",
+    priority: "0.4",
+  },
+  {
+    path: "/support",
+    title: "Support | DefenseEye",
+    description:
+      "Get CMMCLens product support, marketplace support, billing support, customer issue reporting, and advisory service follow-up from DefenseEye.",
+    h1: "How Can We Help?",
+    eyebrow: "Help & Support",
+    summary:
+      "Support for CMMCLens subscribers and DefenseEye advisory clients, plus self-serve resources for CMMC, AI governance, and compliance automation questions.",
+    sections: [
+      {
+        heading: "Contact Support",
+        items: [
+          "Email Support — support@defenseeye.ai for platform issues, billing questions, and advisory service follow-up",
+          "Urgent Issues — email urgent requests for time-sensitive contract deadlines or critical platform issues",
+        ],
+      },
+      {
+        heading: "Common Topics",
+        items: [
+          "CMMCLens Platform: account access, evidence collection setup, SSP/POA&M exports, control mapping, billing",
+          "Advisory Services: readiness sprint status, gap assessment deliverables, C3PAO prep next steps, scoping",
+          "CMMC Questions: Level 1 vs Level 2, what counts as CUI, SPRS score improvement, C3PAO process, timelines",
+        ],
+      },
+      {
+        heading: "Self-Serve CMMC Resources",
+        body: "The DefenseEye Knowledge Hub covers the most common CMMC questions in depth.",
+      },
+    ],
+    links: [
+      { label: "Browse the CMMC FAQ", href: "/faq" },
+      { label: "Use the CMMC Knowledge Hub", href: "/knowledge-hub" },
+      { label: "Read what CMMC 2.0 means for contractors", href: "/knowledge-hub/what-is-cmmc" },
+      { label: "Contact DefenseEye", href: "/contact" },
+    ],
+    schemaKind: "page",
+    topics: ["DefenseEye support", "CMMCLens support", "Customer support"],
+    lastmod: "2026-09-06",
+    changefreq: "monthly",
+    priority: "0.5",
+  },
+  {
+    path: "/faq",
+    title: "CMMC FAQ — Common Questions Answered | DefenseEye",
+    description:
+      "Answers to the most common CMMC 2.0 questions from defense contractors: Level 1 vs Level 2, CUI, SPRS scores, C3PAO assessments, timelines, and costs.",
+    h1: "CMMC Frequently Asked Questions",
+    eyebrow: "CMMC Answers Without the Runaround",
+    summary:
+      "Plain-language answers to the questions defense contractors ask most — about compliance timelines, costs, Level 2 assessments, and how to protect DoD contract eligibility.",
+    sections: [
+      {
+        heading: "Topics Covered",
+        items: [
+          "CMMC Level 1 vs Level 2",
+          "What counts as CUI",
+          "SPRS score improvement",
+          "C3PAO assessment process",
+          "Timelines and cost estimates",
+        ],
+      },
+    ],
+    links: [
+      { label: "Use the CMMC Knowledge Hub", href: "/knowledge-hub" },
+      { label: "Contact Support", href: "/support" },
+      { label: "Review the CMMC pillar page", href: "/cmmc" },
+    ],
+    schemaKind: "page",
+    topics: ["CMMC FAQ", "CMMC Level 2", "SPRS", "C3PAO"],
+    lastmod: "2026-09-06",
+    changefreq: "monthly",
+    priority: "0.6",
+  },
+  {
+    path: "/capability-statement",
+    title: "DefenseEye Capability Statement | AI, Cybersecurity, CMMC, and Compliance Automation",
+    description:
+      "DefenseEye provides AI governance, cybersecurity, CMMC advisory, Microsoft cloud security, compliance automation, and CMMCLens platform capability for enterprise, government, and regulated environments.",
+    h1: "DefenseEye Capability Statement",
+    eyebrow: "Capability Statement",
+    summary:
+      "AI, cybersecurity, Microsoft cloud, CMMC, and compliance automation capability for enterprise, government, defense contractor, and regulated environments.",
+    sections: [
+      {
+        heading: "Differentiators",
+        items: [
+          "Minority-owned AI, cybersecurity, and compliance automation supplier",
+          "Practitioner-led Microsoft cloud, AI governance, federal cybersecurity, and compliance experience",
+          "Proprietary CMMCLens platform for compliance evidence automation",
+          "Ability to support advisory, implementation, subcontracting, and staff augmentation engagements",
+          "Focus on regulated, defense contractor, and Microsoft-centered environments",
+        ],
+      },
+    ],
+    links: [
+      { label: "Request the PDF capability statement", href: "/contact?inquiry=supplier" },
+      { label: "Review supplier readiness", href: "/supplier-readiness" },
+      { label: "Why DefenseEye", href: "/why-defenseeye" },
+    ],
+    schemaKind: "page",
+    topics: ["Capability statement", "Supplier readiness", "AI governance", "CMMC"],
+    lastmod: "2026-06-26",
+    changefreq: "monthly",
+    priority: "0.9",
+  },
+  {
+    path: "/services/cmmc-scoping",
+    title: "CMMC Scoping | Define Your CUI Boundary | DefenseEye",
+    description:
+      "Professional CMMC scoping for defense contractors. Define your CUI environment boundary, reduce assessment scope, and build assessment-preparation scoping documentation before your gap assessment.",
+    h1: "Know Exactly What You're Defending Before Assessors Arrive",
+    eyebrow: "Start Here — Before the Gap Assessment",
+    summary:
+      "CMMC scoping defines your CUI environment boundary — which systems, people, and networks actually need to meet CMMC Level 2 controls. Skip this step and you'll document, remediate, and pay for controls you don't need.",
+    sections: [
+      {
+        heading: "Scoping Areas We Review",
+        items: [
+          "People & Roles",
+          "Networks & Boundaries",
+          "Systems & Endpoints",
+          "CUI Flows & Data Paths",
+          "Third-Party & External Access",
+          "Physical Locations",
+        ],
+      },
+      {
+        heading: "Why Scoping First",
+        items: ["Smaller Scope = Lower Cost", "Better SPRS Score", "Fewer Failed Controls"],
+      },
+    ],
+    links: [
+      { label: "Discuss CMMC Readiness", href: "/contact?inquiry=cmmc" },
+      { label: "View CMMC Readiness Sprint", href: "/services/cmmc-readiness-sprint" },
+      { label: "Review the CMMC pillar page", href: "/cmmc" },
+    ],
+    schemaKind: "service",
+    serviceType: "CMMC scoping and CUI boundary definition consulting",
+    topics: ["CMMC scoping", "CUI boundary", "CMMC Level 2 readiness"],
+    lastmod: "2026-09-06",
+    changefreq: "monthly",
+    priority: "0.7",
+  },
 ];
 
 export const TIER_1_PATHS = TIER_1_ROUTES.map((route) => route.path);
@@ -1076,7 +1247,6 @@ const additionalSitemapEntries: SitemapEntry[] = [
   { path: "/solutions/compliance-automation", lastmod: "2026-06-25", changefreq: "monthly", priority: "0.8" },
   { path: "/solutions/cloud-security", lastmod: "2026-06-25", changefreq: "monthly", priority: "0.8" },
   { path: "/solutions/cmmclens-platform", lastmod: "2026-06-25", changefreq: "monthly", priority: "0.8" },
-  { path: "/capability-statement", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.9" },
   { path: "/delivery-model", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.8" },
   { path: "/representative-engagements", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.8" },
   { path: "/microsoft-ecosystem", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.8" },
