@@ -1,72 +1,86 @@
-import { useEffect } from "react";
 import NavBar from "@/components/NavBar";
-import DefenseEyeLogo from "@/components/DefenseEyeLogo";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
-import { ArrowRight, BookOpen, TrendingUp, Users, CheckCircle2, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  Award,
+  Bot,
+  Building2,
+  CheckCircle2,
+  ClipboardCheck,
+  MapPin,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 
-const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
-
-const DIFFERENTIATORS = [
-  {
-    image: "/ccp-badge.svg",
-    title: "CCP-Led, Not IT Generalists",
-    body: "Led by Certified CMMC Professionals. We know the difference between what the standard says on paper and what C3PAOs actually flag during assessments.",
-  },
+const APPROACH_POINTS = [
   {
     icon: Users,
-    title: "Built Only for Defense Contractors",
-    body: "Every engagement is designed around CUI handling, DFARS obligations, and active DoD contract risk.",
+    title: "Practitioner-led delivery",
+    body: "DefenseEye connects advisory work to architecture, implementation, testing, remediation, and operational support rather than stopping at recommendations.",
   },
   {
-    icon: BookOpen,
-    title: "Real Deliverables — Not Slide Decks",
-    body: "You get SSP drafts, POA&Ms, scoping documents, and remediation roadmaps your team can act on the same week you receive them. Not a 90-slide readiness overview.",
+    icon: ShieldCheck,
+    title: "Security and governance built into implementation",
+    body: "Identity, access, data protection, evaluation, traceability, monitoring, and human oversight are addressed as part of the delivery approach.",
   },
   {
-    icon: TrendingUp,
-    title: "Fast — Because Contracts Don't Wait",
-    body: "Readiness sprints engineered for defense contractors with active deadlines. Clarity and a prioritized action plan without unnecessary delay.",
+    icon: ClipboardCheck,
+    title: "Evidence and remediation workflows, not documentation alone",
+    body: "CMMC and NIST readiness support connects requirements to evidence, gaps, ownership, POA&M work, and remediation progress.",
+  },
+  {
+    icon: Bot,
+    title: "Consulting supported by DefenseEye-developed capabilities",
+    body: "Consulting can be complemented by the DefenseEye-developed CMMCLens platform and AttackSense security capability when those offerings are appropriate to the engagement.",
   },
 ];
 
-const PROOF_POINTS = [
-  "Contractors who scope before gap assessment can focus remediation on the systems and controls that matter",
-  "CCP credential holders understand C3PAO expectations — not just the NIST text",
-  "Fixed-price engagements mean no billing surprises when your contract timeline shifts",
-  "SSP and POA&M outputs are structured for assessment preparation",
+const HELPS_WITH = [
+  "Evaluate and implement AI and agentic AI with appropriate identity, data-access, security, governance, evaluation, and human-oversight controls",
+  "Prepare for applicable CMMC and NIST SP 800-171 requirements through readiness, evidence, SSP, POA&M, gap-tracking, and remediation support",
+  "Use CMMCLens to support evidence automation, control mapping, traceability, gap tracking, SSP and POA&M workflows, and readiness visibility",
+  "Strengthen Microsoft cloud, Copilot, Azure AI, cybersecurity, and compliance architecture where supported by published capabilities",
+];
+
+const CREDENTIALS = [
+  { icon: MapPin, label: "Redmond, Washington" },
+  { icon: Award, label: "Multiple team members hold CMMC Certified Professional (CCP) credentials" },
+  { icon: Building2, label: "OMWBE Minority Business Enterprise certified" },
+  { icon: Building2, label: "NMSDC Minority Business Enterprise certified" },
+  { icon: Building2, label: "Washington State Small Business Enterprise (SBE)" },
+  { icon: ClipboardCheck, label: "CAGE 9ZDL5 and UEI E4DYPCKN7YN8" },
+];
+
+const STARTING_POINTS = [
+  {
+    title: "Explore CMMCLens",
+    body: "For defense contractors organizing CMMC and NIST SP 800-171 evidence, control mappings, gaps, SSP and POA&M workflows.",
+    href: "/cmmclens",
+  },
+  {
+    title: "Discuss CMMC Readiness",
+    body: "For organizations assessing current readiness, evidence, remediation priorities, and the appropriate consulting or automation path.",
+    href: "/contact?inquiry=cmmc",
+  },
+  {
+    title: "Request a Secure AI Readiness Consultation",
+    body: "For regulated organizations evaluating secure AI or agentic AI use cases, architecture, governance, evaluation, and implementation.",
+    href: "/secure-ai-adoption#secure-ai-consultation",
+  },
+  {
+    title: "Discuss Supplier Opportunities",
+    body: "For prime contractors, delivery partners, procurement teams, and organizations evaluating DefenseEye as a supplier or subcontractor.",
+    href: "/supplier-readiness",
+  },
 ];
 
 export default function WhyDefenseEye() {
   useSeo(
-    "Why DefenseEye | CCP-Led CMMC Advisory for Defense Contractors",
-    "Why U.S. defense contractors choose DefenseEye for CMMC readiness: CCP-led consulting, built only for defense, real deliverables, and fast turnaround for contract-driven timelines."
+    "Why DefenseEye | Secure AI, Cybersecurity and CMMC Practitioners",
+    "Learn how DefenseEye combines secure AI implementation, cybersecurity, Microsoft cloud experience, CMMC readiness, and compliance automation to help regulated organizations and defense contractors move from requirements to practical delivery."
   );
-
-  useEffect(() => {
-    const schema = [
-      {
-        "@context": "https://schema.org",
-        "@type": "ProfessionalService",
-        name: "DefenseEye — CMMC Advisory",
-        description:
-          "CCP-led CMMC advisory and consulting for U.S. defense contractors. Scoping, gap assessment, SSP, POA&M, and assessment-preparation documentation for CMMC Level 2.",
-        url: "https://defenseeye.ai/why-defenseeye",
-        provider: { "@type": "Organization", name: "DefenseEye" },
-        areaServed: "US",
-        serviceType: "CMMC Advisory Consulting",
-      },
-    ];
-    const id = "why-de-schema";
-    if (!document.getElementById(id)) {
-      const s = document.createElement("script");
-      s.id = id;
-      s.type = "application/ld+json";
-      s.text = JSON.stringify(schema);
-      document.head.appendChild(s);
-    }
-    return () => { document.getElementById(id)?.remove(); };
-  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -76,154 +90,157 @@ export default function WhyDefenseEye() {
       <section className="py-20 px-4 section-navy">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-4">Why DefenseEye</p>
-          <h1 className="font-heading text-5xl sm:text-6xl font-bold leading-tight mb-5 text-white">
-            Why Defense Contractors<br className="hidden sm:block" />
-            <span className="text-primary"> Choose DefenseEye</span>
+          <h1 className="font-heading text-4xl sm:text-5xl font-bold leading-tight mb-6 text-white">
+            Secure AI and Compliance Automation, Built by Practitioners
           </h1>
-          <p className="text-lg text-white/75 max-w-3xl mx-auto leading-relaxed mb-8">
-            When your DoD contract depends on CMMC readiness, generic IT advice isn't enough.
-            DefenseEye helps defense contractors turn CMMC requirements into scoped readiness work,
-            documentation, evidence workflows, and remediation priorities.
+          <p className="text-lg text-white/75 max-w-3xl mx-auto leading-relaxed">
+            DefenseEye is a Redmond, Washington cybersecurity and AI company helping regulated organizations and
+            defense contractors turn security, governance, and compliance requirements into practical implementation.
           </p>
-          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
-            <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-8">
-              See If We're the Right Fit — Book a 30-Min Call <ArrowRight className="w-4 h-4 ml-2" />
+        </div>
+      </section>
+
+      {/* ── What DefenseEye Helps Organizations Do ── */}
+      <section className="py-16 px-4 section-light">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-8 text-foreground text-center">
+            What DefenseEye Helps Organizations Do
+          </h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {HELPS_WITH.map((item) => (
+              <div key={item} className="flex items-start gap-3 bg-card border border-border/50 rounded-sm p-5">
+                <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                <p className="text-sm text-muted-foreground leading-relaxed">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── How the DefenseEye Approach Is Different ── */}
+      <section className="py-16 px-4 section-gray">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-8 text-foreground text-center">
+            How the DefenseEye Approach Is Different
+          </h2>
+          <div className="grid sm:grid-cols-2 gap-5">
+            {APPROACH_POINTS.map((point) => (
+              <div key={point.title} className="flex flex-col p-6 bg-card border border-border/50 rounded-sm">
+                <point.icon className="w-6 h-6 text-primary mb-4" />
+                <p className="font-heading font-bold text-foreground mb-2 leading-snug">{point.title}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{point.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Credentials and Company Information ── */}
+      <section className="py-16 px-4 section-light">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-3 text-foreground text-center">
+            Credentials and Company Information
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto text-center mb-8">
+            Published, verifiable facts for procurement and diligence review. Professional credentials are held by
+            individual team members and are not represented as company certifications.
+          </p>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {CREDENTIALS.map((item) => (
+              <div key={item.label} className="flex items-start gap-3 bg-card border border-border/50 rounded-sm p-5">
+                <item.icon className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                <p className="text-sm text-muted-foreground leading-relaxed">{item.label}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            CMMCLens is available on Microsoft Marketplace — see the{" "}
+            <a href="/cmmclens" className="text-primary hover:underline">
+              CMMCLens platform page
+            </a>{" "}
+            for the direct listing.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Leadership and Accountability ── */}
+      <section className="py-16 px-4 section-gray">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-5 text-foreground">
+            Leadership and Accountability
+          </h2>
+          <p className="text-muted-foreground leading-relaxed">
+            DefenseEye is led by founder Mahesh Coimbatore. The company's work brings together cybersecurity, secure
+            AI adoption, enterprise delivery, risk, governance, and compliance automation.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Representative Experience ── */}
+      <section className="py-16 px-4 section-light">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-5 text-foreground">
+            Representative Experience
+          </h2>
+          <p className="text-muted-foreground leading-relaxed mb-8">
+            The linked examples describe representative experience and capabilities DefenseEye is positioned to
+            support. They are not presented as named customer case studies.
+          </p>
+          <a href="/representative-engagements">
+            <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 font-semibold px-8">
+              View Representative Engagements <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </a>
         </div>
       </section>
 
-      {/* ── CCP Credentials ── */}
-      <section className="py-16 px-4 section-light">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">The Credential That Matters</p>
-              <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-5 text-foreground">
-                Led by Certified CMMC Professionals
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                The CCP (Certified CMMC Professional) is the foundational CMMC credential issued through the Cyber AB — the official CMMC accreditation body. CCP holders have completed rigorous CMMC-specific training and examination covering the full assessment methodology.
-              </p>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                This means we understand not just what the 110 NIST SP 800-171 controls require, but how assessors evaluate evidence, what documentation gaps fail audits, and where defense contractors consistently over- or under-invest in remediation.
-              </p>
-              <div className="flex flex-col gap-2.5">
-                {[
-                  "Cyber AB–accredited credential",
-                  "CMMC-specific training, not general cybersecurity",
-                  "Assessment methodology from the assessor's perspective",
-                ].map((point) => (
-                  <div key={point} className="flex items-start gap-2.5">
-                    <ShieldCheck className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                    <span className="text-sm text-muted-foreground">{point}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="flex justify-center">
-              <div className="bg-gray-50 border border-border/50 rounded-md p-10 flex flex-col items-center gap-4">
-                <img src="/ccp-badge.svg" alt="Certified CMMC Professional badge" className="w-28 h-28" />
-                <p className="text-sm font-semibold text-foreground text-center">Certified CMMC Professional</p>
-                <p className="text-xs text-muted-foreground text-center">Issued by the Cyber AB<br />Official CMMC Accreditation Body</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Differentiators ── */}
+      {/* ── Choose the Right Starting Point ── */}
       <section className="py-16 px-4 section-gray">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">What Makes Us Different</p>
-              <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-4 text-foreground">
-              Defense-Specific CMMC Readiness Support
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              DefenseEye focuses CMMC readiness work around CUI handling, DFARS obligations, evidence traceability, SSP/POA&M support, and remediation workflows.
-            </p>
-          </div>
+          <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-8 text-foreground text-center">
+            Choose the Right Starting Point
+          </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {DIFFERENTIATORS.map((d) => (
-              <div key={d.title} className="flex flex-col p-6 bg-card border border-border/50 rounded-sm">
-                {"image" in d ? (
-                  <img src={d.image as string} alt="CCP badge" className="w-9 h-9 mb-4" />
-                ) : (
-                  <d.icon className="w-6 h-6 text-primary mb-4" />
-                )}
-                <p className="font-heading font-bold text-foreground mb-2 leading-snug">{d.title}</p>
-                <p className="text-sm text-muted-foreground leading-relaxed">{d.body}</p>
-              </div>
+            {STARTING_POINTS.map((point) => (
+              <a
+                key={point.title}
+                href={point.href}
+                className="flex flex-col p-6 bg-card border border-border/50 rounded-sm hover:border-primary/40 transition-colors"
+              >
+                <p className="font-heading font-bold text-foreground mb-2 leading-snug">{point.title}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed flex-1">{point.body}</p>
+                <span className="mt-4 inline-flex items-center text-sm font-semibold text-primary">
+                  Learn more <ArrowRight className="w-4 h-4 ml-1.5" />
+                </span>
+              </a>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Proof Points ── */}
-      <section className="py-16 px-4 section-light">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">What You Can Expect</p>
-            <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-4 text-foreground">
-              Outcomes That Protect Your Contracts
-            </h2>
-          </div>
-          <div className="grid sm:grid-cols-2 gap-4">
-            {PROOF_POINTS.map((p) => (
-              <div key={p} className="flex items-start gap-3 bg-card border border-border/50 rounded-sm p-5">
-                <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                <p className="text-sm text-muted-foreground leading-relaxed">{p}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-10 text-center">
-            <a href="/representative-engagements">
-              <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 font-semibold px-8">
-                See Representative Engagements <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── CTA ── */}
+      {/* ── Final CTA ── */}
       <section className="py-20 px-4 section-navy">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-4 text-white">
-            Ready to Clarify Your CMMC Readiness Path?
-          </h2>
+          <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-4 text-white">Start a Conversation</h2>
           <p className="text-white/70 text-lg leading-relaxed mb-8">
-            Book a 30-minute call. We will discuss your current posture, contract timeline, and practical next steps.
+            Discuss your Secure AI, CMMC readiness, CMMCLens, or supplier opportunity with DefenseEye.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+            <a href="/contact">
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8">
-                Book a 30-Min Call <ArrowRight className="w-4 h-4 ml-2" />
+                Start a Conversation <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </a>
-            <a href="/services/cmmc-readiness-sprint">
+            <a href="/representative-engagements">
               <Button variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10 px-8">
-                View CMMC Readiness Sprint
+                View Representative Engagements
               </Button>
             </a>
           </div>
         </div>
       </section>
 
-      {/* ── Footer ── */}
-      <footer className="border-t border-gray-200 py-8 px-4 section-gray">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <DefenseEyeLogo size="sm" />
-          <span>&copy; {new Date().getFullYear()} DefenseEye, Inc. All rights reserved.</span>
-          <div className="flex items-center gap-6">
-            <a href="/" className="hover:text-primary transition-colors">Home</a>
-            <a href="/services/cmmc-readiness-sprint" className="hover:text-primary transition-colors">CMMC Sprint</a>
-            <a href="/faq" className="hover:text-primary transition-colors">FAQ</a>
-            <a href="/pricing" className="hover:text-primary transition-colors">Pricing</a>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

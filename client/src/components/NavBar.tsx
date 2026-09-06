@@ -13,11 +13,6 @@ import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 const CALENDLY_URL = "https://calendly.com/maheshcoimbatore/60-minute-meeting";
 const SECURE_AI_CONSULTATION_URL = "/secure-ai-adoption#secure-ai-consultation";
 
-export const PRIMARY_NAV_LINK = {
-  label: "Secure AI",
-  href: "/secure-ai-adoption",
-};
-
 const SUPPLIER_JOURNEY_PATHS = new Set([
   "/supplier-readiness",
   "/capability-statement",
@@ -41,22 +36,6 @@ type Menu = {
 
 export const NAV_MENUS: Menu[] = [
   {
-    label: "Industries",
-    key: "industries",
-    items: [
-      {
-        label: "Financial Services & Credit Unions",
-        desc: "Secure AI adoption support for regulated financial-services teams",
-        href: "/industries/financial-services-credit-unions",
-      },
-      {
-        label: "Defense Industrial Base & Federal Contractors",
-        desc: "CMMC, NIST 800-171, evidence, and supplier-readiness support",
-        href: "/industries/defense-industrial-base",
-      },
-    ],
-  },
-  {
     label: "Solutions",
     key: "solutions",
     items: [
@@ -76,6 +55,22 @@ export const NAV_MENUS: Menu[] = [
     ],
   },
   {
+    label: "Industries",
+    key: "industries",
+    items: [
+      {
+        label: "Financial Services & Credit Unions",
+        desc: "Secure AI adoption support for regulated financial-services teams",
+        href: "/industries/financial-services-credit-unions",
+      },
+      {
+        label: "Defense Industrial Base & Federal Contractors",
+        desc: "CMMC, NIST 800-171, evidence, and supplier-readiness support",
+        href: "/industries/defense-industrial-base",
+      },
+    ],
+  },
+  {
     label: "Resources",
     key: "resources",
     cols: 2,
@@ -91,13 +86,14 @@ export const NAV_MENUS: Menu[] = [
     ],
   },
   {
-    label: "Supplier Readiness",
-    key: "supplier",
+    label: "Why DefenseEye",
+    key: "why-defenseeye",
     items: [
-      { label: "Supplier Readiness", desc: "Supplier identifiers, certifications, and engagement models", href: "/supplier-readiness" },
+      { label: "Why DefenseEye", desc: "Who DefenseEye is, credentials, and how the approach works", href: "/why-defenseeye" },
+      { label: "Representative Engagements", desc: "Engagement types DefenseEye is positioned to support", href: "/representative-engagements" },
+      { label: "Supplier & Partner Readiness", desc: "Supplier identifiers, certifications, and engagement models", href: "/supplier-readiness" },
       { label: "Capability Statement", desc: "Procurement-ready company overview", href: "/capability-statement" },
       { label: "Delivery Model", desc: "How DefenseEye structures enterprise work", href: "/delivery-model" },
-      { label: "Representative Engagements", desc: "Engagement types DefenseEye is positioned to support", href: "/representative-engagements" },
     ],
   },
 ];
@@ -187,13 +183,6 @@ export default function NavBar({ initialMobileOpen = false, initialMobileExpande
 
         {/* Desktop nav */}
         <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
-          <a
-            href={PRIMARY_NAV_LINK.href}
-            className="px-4 py-2 text-sm font-medium text-[#0D1B33] hover:text-primary hover:bg-gray-50 rounded-md transition-colors"
-            aria-current={currentPath === PRIMARY_NAV_LINK.href ? "page" : undefined}
-          >
-            {PRIMARY_NAV_LINK.label}
-          </a>
           {NAV_MENUS.map((menu) => (
             <div
               key={menu.key}
@@ -338,15 +327,6 @@ export default function NavBar({ initialMobileOpen = false, initialMobileExpande
             className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
           >
             <div className="px-4 py-3 flex flex-col gap-1">
-              <a
-                href={PRIMARY_NAV_LINK.href}
-                className="px-3 py-2.5 text-sm font-semibold text-[#0D1B33] hover:text-primary rounded-md hover:bg-gray-50 transition-colors"
-                onClick={() => setMobileOpen(false)}
-                aria-current={currentPath === PRIMARY_NAV_LINK.href ? "page" : undefined}
-              >
-                {PRIMARY_NAV_LINK.label}
-              </a>
-
               {/* Dropdown categories */}
               {NAV_MENUS.map((menu) => (
                 <div key={menu.key}>

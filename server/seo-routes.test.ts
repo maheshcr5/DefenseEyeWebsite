@@ -200,7 +200,7 @@ describe("sitemap and robots", () => {
 
     expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
     expect(new Set(locations).size).toBe(locations.length);
-    expect(locations).toHaveLength(68);
+    expect(locations).toHaveLength(69);
     for (const route of TIER_1_ROUTES) {
       expect(locations).toContain(canonicalUrl(route.path));
     }
@@ -217,6 +217,10 @@ describe("sitemap and robots", () => {
     expect(entriesByPath.get("/cmmc")?.lastmod).toBe("2026-08-31");
     expect(entriesByPath.get("/cmmclens")?.lastmod).toBe("2026-08-31");
     expect(entriesByPath.get("/representative-engagements")?.lastmod).toBe("2026-06-26");
+    expect(entriesByPath.get("/why-defenseeye")?.lastmod).toBe("2026-09-05");
+    expect(entriesByPath.get("/capability-statement")?.lastmod).toBe("2026-06-26");
+    expect(entriesByPath.get("/supplier-readiness")?.lastmod).toBe("2026-08-31");
+    expect(entriesByPath.get("/delivery-model")?.lastmod).toBe("2026-06-26");
   });
 
   it("keeps robots.txt pointed at the canonical sitemap", () => {

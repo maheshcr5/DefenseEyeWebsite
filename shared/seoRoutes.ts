@@ -5,7 +5,8 @@ export type StructuredDataKind =
   | "home"
   | "service"
   | "software"
-  | "collection";
+  | "collection"
+  | "about";
 
 export type SeoLink = {
   label: string;
@@ -45,6 +46,7 @@ export type SitemapEntry = {
 const materialSeoUpdateDate = "2026-08-31";
 const customerJourneyUpdateDate = "2026-09-01";
 const industryPagesUpdateDate = "2026-09-04";
+const whyDefenseEyeUpdateDate = "2026-09-05";
 
 export const TIER_1_ROUTES: SeoRoute[] = [
   {
@@ -774,6 +776,80 @@ export const TIER_1_ROUTES: SeoRoute[] = [
     changefreq: "weekly",
     priority: "0.8",
   },
+  {
+    path: "/why-defenseeye",
+    title: "Why DefenseEye | Secure AI, Cybersecurity and CMMC Practitioners",
+    description:
+      "Learn how DefenseEye combines secure AI implementation, cybersecurity, Microsoft cloud experience, CMMC readiness, and compliance automation to help regulated organizations and defense contractors move from requirements to practical delivery.",
+    h1: "Secure AI and Compliance Automation, Built by Practitioners",
+    eyebrow: "Why DefenseEye",
+    summary:
+      "DefenseEye is a Redmond, Washington cybersecurity and AI company helping regulated organizations and defense contractors turn security, governance, and compliance requirements into practical implementation.",
+    sections: [
+      {
+        heading: "What DefenseEye Helps Organizations Do",
+        items: [
+          "Evaluate and implement AI and agentic AI with identity, data-access, security, governance, evaluation, and human-oversight controls",
+          "Prepare for applicable CMMC and NIST SP 800-171 requirements through readiness, evidence, SSP, POA&M, gap-tracking, and remediation support",
+          "Use CMMCLens to support evidence automation, control mapping, traceability, gap tracking, SSP and POA&M workflows, and readiness visibility",
+          "Strengthen Microsoft cloud, Copilot, Azure AI, cybersecurity, and compliance architecture where supported by published capabilities",
+        ],
+      },
+      {
+        heading: "How the DefenseEye Approach Is Different",
+        items: [
+          "Practitioner-led delivery: advisory work connects to architecture, implementation, testing, remediation, and operational support rather than stopping at recommendations",
+          "Security and governance built into implementation: identity, access, data protection, evaluation, traceability, monitoring, and human oversight are part of the delivery approach",
+          "Evidence and remediation workflows, not documentation alone: CMMC and NIST readiness support connects requirements to evidence, gaps, ownership, POA&M work, and remediation progress",
+          "Consulting can be complemented by the DefenseEye-developed CMMCLens platform and AttackSense security capability when those offerings are appropriate to the engagement",
+        ],
+      },
+      {
+        heading: "Credentials and Company Information",
+        body: "Published, verifiable facts for procurement and diligence review. Professional credentials are held by individual team members, not represented as company certifications.",
+        items: [
+          "Redmond, Washington",
+          "Multiple team members hold CMMC Certified Professional (CCP) credentials",
+          "OMWBE Minority Business Enterprise certified",
+          "NMSDC Minority Business Enterprise certified",
+          "Washington State Small Business Enterprise (SBE)",
+          "CAGE 9ZDL5 and UEI E4DYPCKN7YN8",
+          "CMMCLens is available on Microsoft Marketplace",
+        ],
+      },
+      {
+        heading: "Leadership and Accountability",
+        body: "DefenseEye is led by founder Mahesh Coimbatore. The company's work brings together cybersecurity, secure AI adoption, enterprise delivery, risk, governance, and compliance automation.",
+      },
+      {
+        heading: "Representative Experience",
+        body: "The linked examples describe representative experience and capabilities DefenseEye is positioned to support. They are not presented as named customer case studies.",
+      },
+      {
+        heading: "Choose the Right Starting Point",
+        items: [
+          "Explore CMMCLens: for defense contractors organizing CMMC and NIST SP 800-171 evidence, control mappings, gaps, SSP and POA&M workflows",
+          "Discuss CMMC Readiness: for organizations assessing current readiness, evidence, remediation priorities, and the appropriate consulting or automation path",
+          "Request a Secure AI Readiness Consultation: for regulated organizations evaluating secure AI or agentic AI use cases, architecture, governance, evaluation, and implementation",
+          "Discuss Supplier Opportunities: for prime contractors, delivery partners, procurement teams, and organizations evaluating DefenseEye as a supplier or subcontractor",
+        ],
+      },
+    ],
+    links: [
+      { label: "Explore CMMCLens", href: "/cmmclens" },
+      { label: "Discuss CMMC Readiness", href: "/contact?inquiry=cmmc" },
+      { label: "Request a Secure AI Readiness Consultation", href: "/secure-ai-adoption#secure-ai-consultation" },
+      { label: "Discuss Supplier Opportunities", href: "/supplier-readiness" },
+      { label: "View Representative Engagements", href: "/representative-engagements" },
+      { label: "Open the capability statement", href: "/capability-statement" },
+      { label: "Start a Conversation", href: "/contact" },
+    ],
+    schemaKind: "about",
+    topics: ["Why DefenseEye", "Company overview", "Secure AI", "Cybersecurity", "CMMC readiness", "Compliance automation"],
+    lastmod: whyDefenseEyeUpdateDate,
+    changefreq: "monthly",
+    priority: "0.8",
+  },
 ];
 
 export const TIER_1_PATHS = TIER_1_ROUTES.map((route) => route.path);
@@ -903,7 +979,8 @@ export function buildRouteSchemas(route: SeoRoute) {
 
   const webPage = {
     "@context": "https://schema.org",
-    "@type": route.schemaKind === "collection" ? "CollectionPage" : "WebPage",
+    "@type":
+      route.schemaKind === "collection" ? "CollectionPage" : route.schemaKind === "about" ? "AboutPage" : "WebPage",
     "@id": `${canonical}#webpage`,
     name: route.h1,
     url: canonical,
