@@ -1,4 +1,11 @@
 export const SITE_ORIGIN = "https://defenseeye.ai";
+import { blogPosts } from "../client/src/data/blogPosts";
+import { WHAT_IS_CMMC_CONTENT } from "./whatIsCmmcContent";
+import { CERTIFICATION_PROCESS_CONTENT } from "./certificationProcessContent";
+import { CMMC_LEVELS_CONTENT } from "./cmmcLevelsContent";
+import { EVIDENCE_MAPPING_CONTENT } from "./evidenceMappingContent";
+import { SPRS_SCORE_CONTENT } from "./sprsScoreContent";
+
 export const ROUTE_SCHEMA_SCRIPT_ID = "defenseeye-route-schema";
 
 export type StructuredDataKind =
@@ -35,6 +42,7 @@ export type SeoRoute = {
   lastmod: string;
   changefreq: "weekly" | "monthly";
   priority: string;
+  bodyHtml?: string;
 };
 
 export type SitemapEntry = {
@@ -43,6 +51,53 @@ export type SitemapEntry = {
   changefreq: "weekly" | "monthly";
   priority: string;
 };
+
+// These are the ordinary, always-available links in the rendered site header and
+// footer. Keep the server-rendered document on the same public navigation graph:
+// the React header uses hover menus, which should not be a prerequisite for a
+// crawler (or a keyboard-only visitor) to discover these destinations.
+const PUBLIC_NAVIGATION_LINKS: SeoLink[] = [
+  { label: "Secure AI Adoption", href: "/secure-ai-adoption" },
+  { label: "AI Governance", href: "/solutions/ai-governance" },
+  { label: "Microsoft Copilot Readiness", href: "/solutions/microsoft-copilot-readiness" },
+  { label: "Financial Services and Credit Unions", href: "/industries/financial-services-credit-unions" },
+  { label: "CMMC and Compliance Automation", href: "/cmmc-compliance-automation" },
+  { label: "CMMCLens", href: "/cmmclens" },
+  { label: "AttackSense", href: "/attacksense" },
+  { label: "CMMC Knowledge Hub", href: "/knowledge-hub" },
+  { label: "CMMC Blog", href: "/blog" },
+  { label: "Datasheets", href: "/datasheets" },
+  { label: "Supplier Readiness", href: "/supplier-readiness" },
+  { label: "Delivery Model", href: "/delivery-model" },
+  { label: "Representative Engagements", href: "/representative-engagements" },
+  { label: "Capability Statement", href: "/capability-statement" },
+  { label: "Contact DefenseEye", href: "/contact" },
+  { label: "Support", href: "/support" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
+];
+
+const BLOG_INDEX_LINKS: SeoLink[] = [
+  { label: "CMMC Level 2 Compliance Checklist for DoD Contractors", href: "/blog/cmmc-level-2-compliance-checklist-2025" },
+  { label: "How to Improve Your SPRS Score Fast", href: "/blog/how-to-improve-sprs-score-fast" },
+  { label: "What to Expect During a C3PAO Assessment", href: "/blog/what-to-expect-c3pao-assessment" },
+  { label: "What Counts as CUI?", href: "/blog/what-counts-as-cui-plain-english-guide" },
+  { label: "CMMC Level 2 for Small Businesses", href: "/blog/cmmc-level-2-small-business-guide" },
+  { label: "GCC High vs M365 Commercial for CMMC", href: "/blog/gcc-high-vs-m365-commercial-cmmc" },
+  { label: "CMMC POA&M: What Assessors Look For", href: "/blog/cmmc-poam-guide-what-assessors-want" },
+  { label: "CMMC Consultant Red Flags", href: "/blog/cmmc-consultant-red-flags" },
+];
+
+const KNOWLEDGE_HUB_LINKS: SeoLink[] = [
+  { label: "What is CMMC?", href: "/knowledge-hub/what-is-cmmc" },
+  { label: "CMMC Level 1 vs Level 2", href: "/knowledge-hub/cmmc-levels" },
+  { label: "Automated Evidence Mapping for NIST 800-171", href: "/knowledge-hub/evidence-mapping" },
+  { label: "Understanding Your SPRS Score", href: "/knowledge-hub/sprs-score" },
+  { label: "CMMC Certification Process", href: "/knowledge-hub/certification-process" },
+  { label: "What is CMMC Level 2?", href: "/insights/what-is-cmmc-level-2" },
+  { label: "What is NIST AI RMF?", href: "/insights/what-is-nist-ai-rmf" },
+  { label: "How can organizations implement AI governance?", href: "/insights/implement-ai-governance" },
+  { label: "How can AI automate evidence collection?", href: "/insights/ai-automated-evidence-collection" },
+];
 
 const materialSeoUpdateDate = "2026-08-31";
 const customerJourneyUpdateDate = "2026-09-01";
@@ -1028,8 +1083,83 @@ export const TIER_1_ROUTES: SeoRoute[] = [
 
 export const TIER_1_PATHS = TIER_1_ROUTES.map((route) => route.path);
 
+const INDEXED_RESOURCE_ROUTES: SeoRoute[] = [
+  ...blogPosts.map((post) => ({
+    path: `/blog/${post.slug}`,
+    title: `${post.title} | DefenseEye`,
+    description: post.metaDescription,
+    h1: post.title,
+    summary: post.excerpt,
+    sections: [],
+    links: [{ label: "Browse all CMMC articles", href: "/blog" }, { label: "Explore the CMMC Knowledge Hub", href: "/knowledge-hub" }],
+    schemaKind: "page" as const,
+    topics: ["CMMC", "Defense contractor readiness"],
+    lastmod: "2026-04-01",
+    changefreq: "monthly" as const,
+    priority: "0.8",
+    bodyHtml: renderBlogContent(post.content),
+  })),
+  ...KNOWLEDGE_HUB_LINKS.slice(0, 5).map((link) => ({
+    path: link.href,
+    title: link.label + " | DefenseEye Knowledge Hub",
+    description: "DefenseEye Knowledge Hub resource: " + link.label + ".",
+    h1: link.label,
+    summary: "Explore DefenseEye's CMMC Knowledge Hub guidance on " + link.label + ".",
+    sections: [{ heading: "CMMC readiness resource", body: "This resource supports practical CMMC readiness, scoping, evidence, and assessment preparation." }],
+    links: [{ label: "Explore the CMMC Knowledge Hub", href: "/knowledge-hub" }, { label: "Browse CMMC articles", href: "/blog" }],
+    schemaKind: "page" as const,
+    topics: ["CMMC", "NIST SP 800-171"],
+    lastmod: "2026-04-04",
+    changefreq: "monthly" as const,
+    priority: "0.8",
+    ...getKnowledgeHubContentOverride(link.href),
+  })),
+  ...[
+    ["/services/cmmc-readiness-sprint", "CMMC Readiness Sprint", "A focused CMMC readiness engagement for defense contractors.", ["What You Get in the Sprint", "Why DefenseEye", "CMMC Readiness FAQ"]],
+    ["/attacksense/docs", "DefenseEye AttackSense Guide", "Practical guidance for applying AttackSense cybersecurity intelligence.", ["Use This Guide For", "Need Help Applying It?"]],
+    ["/pricing", "DefenseEye Engagement Pricing", "Explore DefenseEye engagement formats and pricing guidance.", ["Choose the Right Engagement Speed", "Pricing FAQ"]],
+    ["/cmmc-readiness-sprint-guide", "CMMC Readiness Sprint Guide", "A practical guide to organizing CMMC readiness work.", ["Sprint phases", "Readiness priorities"]],
+    ["/cmmc-readiness-sprint", "CMMC Readiness Sprint", "Focused readiness and evidence support for CMMC preparation.", ["Readiness approach", "What the sprint covers"]],
+    ["/microsoft-ecosystem", "Microsoft Ecosystem Experience", "DefenseEye experience supporting Microsoft cloud, security, and AI initiatives.", ["Procurement-Safe Positioning", "Enterprise and Multi-Cloud AI Consulting"]],
+    ["/delivery-model", "DefenseEye Delivery Model", "How DefenseEye structures practical delivery engagements.", ["Engagement Formats", "Assess, design, and implement"]],
+    ["/representative-engagements", "Representative Engagements", "Representative engagement types DefenseEye is positioned to support.", ["Secure AI implementation", "CMMC readiness and automation"]],
+    ["/datasheets", "DefenseEye Datasheets", "Downloadable summaries of DefenseEye services and products.", ["Secure AI Adoption", "CMMC Compliance Automation", "CMMCLens", "Microsoft Copilot Readiness", "Supplier Readiness"]],
+    ["/datasheets/secure-ai-adoption", "Secure AI Adoption", "Secure AI adoption, governance, and implementation overview.", ["Who It Is For", "Problems Addressed", "How DefenseEye Helps"]],
+    ["/datasheets/cmmc-compliance-automation", "CMMC Compliance Automation", "CMMC readiness and evidence automation overview.", ["Who It Is For", "Problems Addressed", "How DefenseEye Helps"]],
+    ["/datasheets/cmmclens", "CMMCLens", "CMMCLens compliance evidence automation overview.", ["Who It Is For", "Problems Addressed", "How DefenseEye Helps"]],
+    ["/datasheets/microsoft-copilot-readiness", "Microsoft Copilot Readiness", "Microsoft Copilot readiness overview.", ["Who It Is For", "Problems Addressed", "How DefenseEye Helps"]],
+    ["/datasheets/supplier-readiness", "Supplier Readiness", "Supplier and partner readiness overview.", ["Who It Is For", "Supplier Facts", "Engagement Options"]],
+    ["/insights/what-is-cmmc-level-2", "What is CMMC Level 2?", "A guide to CMMC Level 2 requirements for defense contractors.", ["CMMC Level 2 requirements", "Readiness priorities"]],
+    ["/insights/what-is-rmf-readiness", "What is RMF readiness?", "A guide to preparing boundaries, controls, evidence, and risk decisions for RMF work.", ["RMF readiness", "Evidence and monitoring"]],
+    ["/insights/what-is-nist-ai-rmf", "What is NIST AI RMF?", "A guide to governing, mapping, measuring, and managing AI risk.", ["AI risk management", "Governance foundations"]],
+    ["/insights/ai-automated-evidence-collection", "How can AI automate evidence collection?", "How AI can support evidence classification, control mapping, and traceability.", ["Evidence collection", "Control mapping"]],
+    ["/insights/implement-ai-governance", "How can organizations implement AI governance?", "Practical AI governance program design guidance.", ["AI inventories and risk tiering", "Governance evidence"]],
+    ["/insights/security-copilot-cybersecurity-operations", "How can Security Copilot improve cybersecurity operations?", "How Security Copilot can support analyst workflows with governance.", ["Security operations", "Human oversight"]],
+    ["/insights/continuous-compliance-monitoring", "What is continuous compliance monitoring?", "How teams monitor controls, evidence freshness, and configuration drift.", ["Control monitoring", "Evidence freshness"]],
+    ["/insights/ai-audit-readiness", "How can AI improve audit readiness?", "How AI can organize evidence and support human-reviewed audit preparation.", ["Audit readiness", "Evidence organization"]],
+    ["/solutions/cybersecurity-risk", "Cybersecurity Risk Consulting for Regulated Environments", "Cybersecurity risk consulting for regulated organizations.", ["Business Challenge", "Key Outcomes", "Deliverables"]],
+    ["/solutions/compliance-automation", "Compliance Evidence Automation and Readiness Consulting", "Compliance evidence automation and readiness consulting.", ["Business Challenge", "Key Outcomes", "Deliverables"]],
+    ["/solutions/cloud-security", "Azure Cloud Security and GCC High Compliance Consulting", "Azure cloud security and GCC High compliance consulting.", ["Business Challenge", "Key Outcomes", "Deliverables"]],
+    ["/solutions/cmmclens-platform", "CMMCLens Compliance Automation Platform", "CMMCLens platform overview for compliance evidence automation.", ["Business Challenge", "Key Outcomes", "Deliverables"]],
+  ].map(([path, h1, description, headings]) => ({
+    path: path as string,
+    title: (h1 as string) + " | DefenseEye",
+    description: description as string,
+    h1: h1 as string,
+    summary: description as string,
+    sections: (headings as string[]).map((heading) => ({ heading, body: description as string })),
+    links: [{ label: "CMMC Knowledge Hub", href: "/knowledge-hub" }, { label: "Contact DefenseEye", href: "/contact" }],
+    schemaKind: "page" as const,
+    topics: ["Secure AI", "CMMC readiness", "Compliance automation"],
+    lastmod: "2026-09-13",
+    changefreq: "monthly" as const,
+    priority: "0.8",
+  })),
+];
+
 export function getSeoRoute(routePath: string) {
-  return TIER_1_ROUTES.find((route) => route.path === normalizePath(routePath)) ?? null;
+  const path = normalizePath(routePath);
+  return TIER_1_ROUTES.find((route) => route.path === path) ?? INDEXED_RESOURCE_ROUTES.find((route) => route.path === path) ?? null;
 }
 
 export function normalizePath(routePath: string) {
@@ -1059,28 +1189,290 @@ function renderList(items: string[] = []) {
   return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
 }
 
+function renderBlogContent(blocks: Array<{ type: string; content: unknown }>) {
+  return blocks.map((block) => {
+    if (block.type === "h2" || block.type === "h3" || block.type === "p") {
+      return "<" + block.type + ">" + escapeHtml(block.content as string) + "</" + block.type + ">";
+    }
+    if (block.type === "ul") return renderList(block.content as string[]);
+    if (block.type === "table") {
+      const table = block.content as { headers: string[]; rows: string[][] };
+      return "<table><thead><tr>" + table.headers.map((cell) => "<th>" + escapeHtml(cell) + "</th>").join("") + "</tr></thead><tbody>" + table.rows.map((row) => "<tr>" + row.map((cell) => "<td>" + escapeHtml(cell) + "</td>").join("") + "</tr>").join("") + "</tbody></table>";
+    }
+    return "";
+  }).join("");
+}
+
+function renderWhatIsCmmcTable(table: { headers: readonly string[]; rows: readonly (readonly string[])[] }) {
+  return "<table><thead><tr>" +
+    table.headers.map((cell) => "<th>" + escapeHtml(cell) + "</th>").join("") +
+    "</tr></thead><tbody>" +
+    table.rows.map((row) => "<tr>" + row.map((cell) => "<td>" + escapeHtml(cell) + "</td>").join("") + "</tr>").join("") +
+    "</tbody></table>";
+}
+
+function renderWhatIsCmmcContent() {
+  const article = WHAT_IS_CMMC_CONTENT;
+  const section = (id: string, heading: string, body: string) =>
+    '<section id="' + escapeAttribute(id) + '"><h2>' + escapeHtml(heading) + "</h2>" + body + "</section>";
+  const paragraphs = (items: readonly string[]) => items.map((item) => "<p>" + escapeHtml(item) + "</p>").join("");
+  const cards = (items: readonly { title: string; description: string }[]) =>
+    "<dl>" + items.map((item) => "<dt>" + escapeHtml(item.title) + "</dt><dd>" + escapeHtml(item.description) + "</dd>").join("") + "</dl>";
+  const emphasized = (text: string, emphasis: readonly string[]) => {
+    let output = escapeHtml(text);
+    for (const value of emphasis) output = output.replace(escapeHtml(value), "<strong>" + escapeHtml(value) + "</strong>");
+    return output;
+  };
+
+  return [
+    '<section aria-labelledby="quick-answer"><h2 id="quick-answer">Quick Answer</h2><p>' + emphasized(article.quickAnswer, article.quickAnswerEmphasis) + "</p></section>",
+    section(article.definition.id, article.definition.heading, article.definition.paragraphs.map((item, index) => "<p>" + emphasized(item, article.definition.paragraphEmphasis[index] ?? []) + "</p>").join("") + cards(article.definition.cards)),
+    section(article.history.id, article.history.heading,
+      "<p>" + escapeHtml(article.history.introduction) + "</p><ol>" +
+      article.history.items.map((item) => "<li><strong>" + escapeHtml(item.year + " — " + item.event) + "</strong><p>" + escapeHtml(item.description) + "</p></li>").join("") + "</ol>"),
+    section(article.whoNeedsIt.id, article.whoNeedsIt.heading,
+      "<p>" + escapeHtml(article.whoNeedsIt.introduction) + "</p>" + renderList([...article.whoNeedsIt.items]) +
+      "<p><strong>Important:</strong> " + escapeHtml(article.whoNeedsIt.note) + "</p>"),
+    section(article.levels.id, article.levels.heading,
+      "<p>" + escapeHtml(article.levels.introduction) + "</p>" + renderWhatIsCmmcTable(article.levels.table) + "<p>" + escapeHtml(article.levels.note) + "</p>"),
+    section(article.comparison.id, article.comparison.heading,
+      "<p>" + escapeHtml(article.comparison.introduction) + "</p>" + renderWhatIsCmmcTable(article.comparison.table)),
+    section(article.terms.id, article.terms.heading,
+      "<p>" + escapeHtml(article.terms.introduction) + "</p>" + cards(article.terms.items)),
+    section(article.automation.id, article.automation.heading,
+      article.automation.paragraphs.map((item, index) => "<p>" + emphasized(item, article.automation.paragraphEmphasis[index] ?? []) + "</p>").join("") + "<h3>" + escapeHtml(article.automation.title) + "</h3><p>" +
+      escapeHtml(article.automation.subtitle) + "</p>" + renderList([...article.automation.capabilities]) +
+      "<p>Learn more: " + article.automation.links.map((link) => '<a href="' + escapeAttribute(link.href) + '">' + escapeHtml(link.label) + "</a>").join(" · ") + "</p>"),
+    section(article.faq.id, article.faq.heading,
+      "<dl>" + article.faq.items.map((item) => "<dt>" + escapeHtml(item.question) + "</dt><dd>" + escapeHtml(item.answer) + "</dd>").join("") + "</dl>"),
+  ].join("");
+}
+
+function renderCertificationProcessContent() {
+  const article = CERTIFICATION_PROCESS_CONTENT;
+  const list = (items: readonly string[]) => renderList([...items]);
+  const stepHtml = article.steps.map((step) =>
+    '<section id="' + escapeAttribute(step.id) + '"><h2>' + escapeHtml(step.title) + "</h2><p>" +
+    escapeHtml(step.description) + "</p>" + list(step.details) +
+    "<dl><dt>Manual Timeline</dt><dd>" + escapeHtml(step.timeManual) +
+    "</dd><dt>With CMMC Lens</dt><dd>" + escapeHtml(step.timeWithLens) +
+    "</dd></dl><p><strong>Note:</strong> " + escapeHtml(step.note) + "</p></section>"
+  ).join("");
+  const table = "<table><thead><tr>" + article.timeline.headers.map((cell) => "<th>" + escapeHtml(cell) + "</th>").join("") +
+    "</tr></thead><tbody>" + article.timeline.rows.map((row) => "<tr>" + row.map((cell) => "<td>" + escapeHtml(cell) + "</td>").join("") + "</tr>").join("") + "</tbody></table>";
+
+  return [
+    '<section aria-labelledby="certification-quick-answer"><h2 id="certification-quick-answer">Quick Answer</h2><p>' + escapeHtml(article.quickAnswer) + "</p></section>",
+    '<section id="' + article.overview.id + '"><h2>' + escapeHtml(article.overview.heading) + "</h2>" + article.overview.paragraphs.map((item) => "<p>" + escapeHtml(item) + "</p>").join("") + "</section>",
+    stepHtml,
+    '<section id="' + article.postCertification.id + '"><h2>' + escapeHtml(article.postCertification.heading) + "</h2><p>" + escapeHtml(article.postCertification.paragraph) + "</p>" + list(article.postCertification.items) + "</section>",
+    '<section id="' + article.timeline.id + '"><h2>' + escapeHtml(article.timeline.heading) + "</h2>" + table + "<p>" + escapeHtml(article.timeline.note) + "</p></section>",
+    '<section id="' + article.automation.id + '"><h2>' + escapeHtml(article.automation.heading) + "</h2><p>" + escapeHtml(article.automation.paragraph) + "</p><dl>" + article.automation.items.map((item) => "<dt>" + escapeHtml(item.step) + "</dt><dd>" + escapeHtml(item.impact) + "</dd>").join("") + "</dl><p>" + escapeHtml(article.automation.cta) + "</p></section>",
+    '<section id="' + article.faq.id + '"><h2>' + escapeHtml(article.faq.heading) + "</h2><dl>" + article.faq.items.map((item) => "<dt>" + escapeHtml(item.question) + "</dt><dd>" + escapeHtml(item.answer) + "</dd>").join("") + "</dl></section>",
+    '<nav aria-label="Continue reading">' + article.related.map((item) => '<a href="' + escapeAttribute(item.href) + '">' + escapeHtml(item.title) + "</a>").join(" · ") + "</nav>",
+  ].join("");
+}
+
+function renderCmmcLevelsContent() {
+  const article = CMMC_LEVELS_CONTENT;
+  const paragraphs = (items: readonly string[]) =>
+    items.map((item) => "<p>" + escapeHtml(item) + "</p>").join("");
+  const section = (id: string, heading: string, body: string) =>
+    '<section id="' + escapeAttribute(id) + '"><h2>' + escapeHtml(heading) + "</h2>" + body + "</section>";
+
+  return [
+    '<section aria-labelledby="cmmc-levels-quick-answer"><h2 id="cmmc-levels-quick-answer">Quick Answer</h2><p>' +
+      article.quickAnswer.map((part) => part.strong === true ? "<strong>" + escapeHtml(part.text) + "</strong>" : escapeHtml(part.text)).join("") + "</p></section>",
+    section(article.level1.id, article.level1.heading,
+      paragraphs(article.level1.paragraphs) + "<h3>" + escapeHtml(article.level1.listHeading) + "</h3>" +
+      renderList([...article.level1.practices]) + "<p><strong>Note:</strong> " + escapeHtml(article.level1.note) + "</p>"),
+    section(article.level2.id, article.level2.heading,
+      paragraphs(article.level2.paragraphs) + "<dl>" + article.level2.stats.map((stat) =>
+        "<dt>" + escapeHtml(stat.label) + "</dt><dd>" + escapeHtml(stat.value) + "</dd>").join("") + "</dl>"),
+    section(article.comparison.id, article.comparison.heading,
+      "<p>" + escapeHtml(article.comparison.introduction) + "</p>" + renderWhatIsCmmcTable(article.comparison)),
+    section(article.determine.id, article.determine.heading,
+      "<p>" + escapeHtml(article.determine.introduction) + "</p><ol>" + article.determine.items.map((item) =>
+        "<li><strong>" + escapeHtml(item.step + ". " + item.title) + "</strong><p>" + escapeHtml(item.description) + "</p></li>").join("") + "</ol>"),
+    section(article.domains.id, article.domains.heading,
+      "<p>" + escapeHtml(article.domains.introduction) + "</p>" + renderWhatIsCmmcTable(article.domains)),
+    section(article.sprs.id, article.sprs.heading,
+      paragraphs(article.sprs.paragraphs) + '<p><a href="' + escapeAttribute(article.sprs.link.href) + '">' + escapeHtml(article.sprs.link.label) + "</a></p>"),
+    section(article.automation.id, article.automation.heading,
+      "<p>" + escapeHtml(article.automation.paragraph) + "</p>" + article.automation.groups.map((group) =>
+        "<h3>" + escapeHtml(group.title) + "</h3>" + renderList([...group.features])).join("")),
+    section(article.faq.id, article.faq.heading,
+      "<dl>" + article.faq.items.map((item) =>
+        "<dt>" + escapeHtml(item.question) + "</dt><dd>" + escapeHtml(item.answer) + "</dd>").join("") + "</dl>"),
+    '<nav aria-label="Continue reading">' + article.related.map((item) =>
+      '<a href="' + escapeAttribute(item.href) + '">' + escapeHtml(item.title) + "</a>").join(" · ") + "</nav>",
+  ].join("");
+}
+
+function renderEvidenceMappingContent() {
+  const article = EVIDENCE_MAPPING_CONTENT;
+  const paragraphs = (items: readonly string[]) => items.map((item) => "<p>" + escapeHtml(item) + "</p>").join("");
+  const section = (id: string, heading: string, body: string) =>
+    '<section id="' + escapeAttribute(id) + '"><h2>' + escapeHtml(heading) + "</h2>" + body + "</section>";
+
+  return [
+    '<section aria-labelledby="evidence-mapping-quick-answer"><h2 id="evidence-mapping-quick-answer">Quick Answer</h2><p>' +
+      article.quickAnswer.map((part) => part.strong ? "<strong>" + escapeHtml(part.text) + "</strong>" : escapeHtml(part.text)).join("") + "</p></section>",
+    section(article.definition.id, article.definition.heading,
+      paragraphs(article.definition.paragraphs) + "<dl>" + article.definition.stats.map((stat) =>
+        "<dt>" + escapeHtml(stat.label) + "</dt><dd>" + escapeHtml(stat.value) + "</dd>").join("") + "</dl>"),
+    section(article.controlFamilies.id, article.controlFamilies.heading,
+      "<p>" + escapeHtml(article.controlFamilies.introduction) + "</p>" + renderWhatIsCmmcTable(article.controlFamilies)),
+    section(article.comparison.id, article.comparison.heading,
+      "<p>" + escapeHtml(article.comparison.introduction) + "</p>" + renderWhatIsCmmcTable(article.comparison)),
+    section(article.collection.id, article.collection.heading,
+      "<p>" + escapeHtml(article.collection.introduction) + "</p><ol>" + article.collection.steps.map((step) =>
+        "<li><strong>" + escapeHtml(step.step + " — " + step.title) + "</strong><p>" + escapeHtml(step.description) + "</p></li>").join("") + "</ol>"),
+    section(article.cloud.id, article.cloud.heading,
+      "<p>" + escapeHtml(article.cloud.introduction) + "</p>" + article.cloud.platforms.map((platform) =>
+        "<h3>" + escapeHtml(platform.platform) + "</h3>" + renderList([...platform.evidence])).join("")),
+    section(article.documents.id, article.documents.heading,
+      "<p>" + escapeHtml(article.documents.introduction) + "</p>" + article.documents.items.map((item) =>
+        "<h3>" + escapeHtml(item.title) + "</h3>" + paragraphs(item.paragraphs)).join("")),
+    section(article.automation.id, article.automation.heading,
+      "<p>" + escapeHtml(article.automation.paragraph) + "</p><h3>" + escapeHtml(article.automation.cardTitle) +
+      "</h3><p>" + escapeHtml(article.automation.cardSubtitle) + "</p>" + renderList([...article.automation.capabilities]) +
+      "<p>Related: " + article.automation.links.map((link) => '<a href="' + escapeAttribute(link.href) + '">' + escapeHtml(link.label) + "</a>").join(" · ") + "</p>"),
+    section(article.faq.id, article.faq.heading,
+      "<dl>" + article.faq.items.map((item) => "<dt>" + escapeHtml(item.question) + "</dt><dd>" + escapeHtml(item.answer) + "</dd>").join("") + "</dl>"),
+    '<nav aria-label="Continue reading">' + article.related.map((item) =>
+      '<a href="' + escapeAttribute(item.href) + '">' + escapeHtml(item.title) + "</a>").join(" · ") + "</nav>",
+  ].join("");
+}
+
+function renderSprsScoreContent() {
+  const article = SPRS_SCORE_CONTENT;
+  const section = (id: string, heading: string, body: string) =>
+    '<section id="' + escapeAttribute(id) + '"><h2>' + escapeHtml(heading) + "</h2>" + body + "</section>";
+  const table = (value: { headers: readonly string[]; rows: readonly (readonly string[])[] }) => renderWhatIsCmmcTable(value);
+  const orderedCards = (items: readonly { step?: string; number?: string; title: string; description?: string; detail?: string }[]) =>
+    "<ol>" + items.map((item) => "<li><strong>" + escapeHtml((item.step ?? item.number ?? "") + " — " + item.title) +
+      "</strong><p>" + escapeHtml(item.description ?? item.detail ?? "") + "</p></li>").join("") + "</ol>";
+
+  return [
+    '<section aria-labelledby="sprs-quick-answer"><h2 id="sprs-quick-answer">Quick Answer</h2><p>' +
+      article.quickAnswer.map((part) => part.strong ? "<strong>" + escapeHtml(part.text) + "</strong>" : escapeHtml(part.text)).join("") + "</p></section>",
+    section(article.overview.id, article.overview.heading,
+      article.overview.paragraphs.map((paragraph) => "<p>" + (paragraph.emphasis ? "<strong>" + escapeHtml(paragraph.emphasis) + "</strong>" : "") + escapeHtml(paragraph.text) + "</p>").join("") +
+      "<dl>" + article.overview.stats.map((stat) => "<dt>" + escapeHtml(stat.label) + "</dt><dd>" + escapeHtml(stat.value) + "</dd>").join("") + "</dl>"),
+    section(article.calculation.id, article.calculation.heading,
+      "<p>" + escapeHtml(article.calculation.introduction) + "</p><h3>" + escapeHtml(article.calculation.formulaHeading) +
+      "</h3><pre>" + article.calculation.formula.map(escapeHtml).join("\n") + "</pre><p>" + escapeHtml(article.calculation.explanation) +
+      "</p><p>" + escapeHtml(article.calculation.assessmentIntroduction) + " " + article.calculation.assessmentStates.map((state, index) =>
+        (index === 0 ? "" : index === article.calculation.assessmentStates.length - 1 ? ", or " : ", ") + "<strong>" + escapeHtml(state.label) + "</strong> (" + escapeHtml(state.description) + ")").join("") + ".</p>"),
+    section(article.scoreRanges.id, article.scoreRanges.heading, table(article.scoreRanges)),
+    section(article.domainImpact.id, article.domainImpact.heading,
+      "<p>" + escapeHtml(article.domainImpact.introduction) + "</p>" + table(article.domainImpact)),
+    section(article.submission.id, article.submission.heading,
+      "<p>" + escapeHtml(article.submission.introduction) + "</p>" + orderedCards(article.submission.steps)),
+    section(article.improvements.id, article.improvements.heading,
+      "<p>" + escapeHtml(article.improvements.introduction) + "</p>" + orderedCards(article.improvements.items)),
+    section(article.comparison.id, article.comparison.heading,
+      "<p>" + escapeHtml(article.comparison.introduction) + "</p>" + table(article.comparison)),
+    section(article.automation.id, article.automation.heading,
+      "<p>" + escapeHtml(article.automation.paragraph) + "</p><h3>" + escapeHtml(article.automation.cardTitle) +
+      "</h3><p>" + escapeHtml(article.automation.cardSubtitle) + "</p>" + renderList([...article.automation.capabilities])),
+    section(article.faq.id, article.faq.heading,
+      "<dl>" + article.faq.items.map((item) => "<dt>" + escapeHtml(item.question) + "</dt><dd>" + escapeHtml(item.answer) + "</dd>").join("") + "</dl>"),
+    '<nav aria-label="Continue reading">' + article.related.map((item) =>
+      '<a href="' + escapeAttribute(item.href) + '">' + escapeHtml(item.title) + "</a>").join(" · ") + "</nav>",
+  ].join("");
+}
+
+function getKnowledgeHubContentOverride(path: string): Partial<SeoRoute> {
+  if (path === "/knowledge-hub/what-is-cmmc") {
+    return {
+      title: WHAT_IS_CMMC_CONTENT.title + " | DefenseEye Knowledge Hub",
+      description: WHAT_IS_CMMC_CONTENT.description,
+      h1: WHAT_IS_CMMC_CONTENT.h1,
+      summary: WHAT_IS_CMMC_CONTENT.description,
+      sections: [],
+      bodyHtml: renderWhatIsCmmcContent(),
+    };
+  }
+  if (path === "/knowledge-hub/certification-process") {
+    return {
+      title: CERTIFICATION_PROCESS_CONTENT.title + " | DefenseEye Knowledge Hub",
+      description: CERTIFICATION_PROCESS_CONTENT.description,
+      h1: CERTIFICATION_PROCESS_CONTENT.h1,
+      summary: CERTIFICATION_PROCESS_CONTENT.description,
+      sections: [],
+      bodyHtml: renderCertificationProcessContent(),
+    };
+  }
+  if (path === "/knowledge-hub/cmmc-levels") {
+    return {
+      title: CMMC_LEVELS_CONTENT.title + " | DefenseEye Knowledge Hub",
+      description: CMMC_LEVELS_CONTENT.description,
+      h1: CMMC_LEVELS_CONTENT.h1,
+      summary: CMMC_LEVELS_CONTENT.description,
+      sections: [],
+      bodyHtml: renderCmmcLevelsContent(),
+    };
+  }
+  if (path === "/knowledge-hub/evidence-mapping") {
+    return {
+      title: EVIDENCE_MAPPING_CONTENT.title + " | DefenseEye Knowledge Hub",
+      description: EVIDENCE_MAPPING_CONTENT.description,
+      h1: EVIDENCE_MAPPING_CONTENT.h1,
+      summary: EVIDENCE_MAPPING_CONTENT.description,
+      sections: [],
+      bodyHtml: renderEvidenceMappingContent(),
+    };
+  }
+  if (path === "/knowledge-hub/sprs-score") {
+    return {
+      title: SPRS_SCORE_CONTENT.title + " | DefenseEye Knowledge Hub",
+      description: SPRS_SCORE_CONTENT.description,
+      h1: SPRS_SCORE_CONTENT.h1,
+      summary: SPRS_SCORE_CONTENT.description,
+      sections: [],
+      bodyHtml: renderSprsScoreContent(),
+    };
+  }
+  return {};
+}
+
 function renderLinkList(links: SeoLink[] = []) {
   if (links.length === 0) return "";
   return `<ul>${links.map((link) => `<li><a href="${escapeAttribute(link.href)}">${escapeHtml(link.label)}</a></li>`).join("")}</ul>`;
 }
 
+function renderNavigation(links: SeoLink[], className = "") {
+  return `<nav class="${className}" aria-label="DefenseEye navigation"><ul>${links
+    .map((link) => `<li><a href="${escapeAttribute(link.href)}">${escapeHtml(link.label)}</a></li>`)
+    .join("")}</ul></nav>`;
+}
+
+function renderIndexResources(route: SeoRoute) {
+  if (route.path === "/blog") {
+    return `<section><h2>Published CMMC articles</h2><p>Browse every published article without using search or filters.</p>${renderLinkList(BLOG_INDEX_LINKS)}</section>`;
+  }
+  if (route.path === "/knowledge-hub") {
+    return `<section><h2>Knowledge Hub resources</h2><p>Explore CMMC readiness, evidence, and AI governance resources.</p>${renderLinkList(KNOWLEDGE_HUB_LINKS)}</section>`;
+  }
+  return "";
+}
+
 export function renderRouteFallbackHtml(route: SeoRoute) {
+  const pageLinks = route.links.filter((link) => !PUBLIC_NAVIGATION_LINKS.some((navLink) => navLink.href === link.href));
   return `
-      <!-- Route-specific no-JavaScript content generated from the SEO route registry. React replaces this on load. -->
+      <!-- Route-specific public content generated from the shared SEO route registry. React hydrates this route on load. -->
       <div class="de-pr" data-seo-route="${escapeAttribute(route.path)}">
-        <nav>
+        <header>
           <a class="brand" href="${SITE_ORIGIN}">DefenseEye.ai</a>
-          <p style="margin-top:.6rem;font-size:.85rem;line-height:1.6">
-            ${route.links
-              .slice(0, 5)
-              .map((link) => `<a class="klink" href="${escapeAttribute(link.href)}">${escapeHtml(link.label)}</a>`)
-              .join(" · ")}
-          </p>
-        </nav>
+          ${renderNavigation(PUBLIC_NAVIGATION_LINKS, "de-pr-nav")}
+        </header>
         <main>
           ${route.eyebrow ? `<p class="eyebrow">${escapeHtml(route.eyebrow)}</p>` : ""}
           <h1>${escapeHtml(route.h1)}</h1>
           <p class="lead">${escapeHtml(route.summary)}</p>
+          ${route.bodyHtml ? `<article>${route.bodyHtml}</article>` : ""}
           ${route.sections
             .map(
               (section) => `
@@ -1091,11 +1483,16 @@ export function renderRouteFallbackHtml(route: SeoRoute) {
           </section>`
             )
             .join("")}
+          ${renderIndexResources(route)}
           <section>
             <h2>Related DefenseEye Resources</h2>
-            ${renderLinkList(route.links)}
+            ${renderLinkList(pageLinks)}
           </section>
         </main>
+        <footer>
+          <p>DefenseEye provides secure AI adoption, Microsoft cloud security, CMMC readiness, and compliance automation for regulated organizations.</p>
+          ${renderNavigation(PUBLIC_NAVIGATION_LINKS, "de-pr-footer-nav")}
+        </footer>
       </div>`;
 }
 

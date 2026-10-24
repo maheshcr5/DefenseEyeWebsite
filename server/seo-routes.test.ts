@@ -16,11 +16,17 @@ import {
 import {
   buildRouteSchemas,
   canonicalUrl,
+  getSeoRoute,
   renderRouteFallbackHtml,
   renderSitemapXml,
   SITEMAP_ENTRIES,
   TIER_1_ROUTES,
 } from "../shared/seoRoutes";
+import { EVIDENCE_MAPPING_CONTENT } from "../shared/evidenceMappingContent";
+import { CMMC_LEVELS_CONTENT } from "../shared/cmmcLevelsContent";
+import { CERTIFICATION_PROCESS_CONTENT } from "../shared/certificationProcessContent";
+import { SPRS_SCORE_CONTENT } from "../shared/sprsScoreContent";
+import { WHAT_IS_CMMC_CONTENT } from "../shared/whatIsCmmcContent";
 
 const baseHtml = `<!doctype html>
 <html>
@@ -91,6 +97,392 @@ describe("SEO route registry", () => {
         expect(fallback).not.toContain(`<h1>${homeH1}</h1>`);
       }
     }
+  });
+
+  it("keeps rendered header/footer destinations and every published blog article available in initial HTML", () => {
+    const blog = TIER_1_ROUTES.find((route) => route.path === "/blog")!;
+    const blogHtml = renderRouteFallbackHtml(blog);
+
+    [
+      "/secure-ai-adoption",
+      "/industries/financial-services-credit-unions",
+      "/solutions/ai-governance",
+      "/knowledge-hub",
+      "/contact",
+      "/privacy-policy",
+      "/blog/cmmc-level-2-compliance-checklist-2025",
+      "/blog/how-to-improve-sprs-score-fast",
+      "/blog/what-to-expect-c3pao-assessment",
+      "/blog/what-counts-as-cui-plain-english-guide",
+      "/blog/cmmc-level-2-small-business-guide",
+      "/blog/gcc-high-vs-m365-commercial-cmmc",
+      "/blog/cmmc-poam-guide-what-assessors-want",
+      "/blog/cmmc-consultant-red-flags",
+    ].forEach((href) => expect(blogHtml).toContain(`href=\"${href}\"`));
+  });
+
+  it("keeps the Knowledge Hub's core published resources available in initial HTML", () => {
+    const hub = TIER_1_ROUTES.find((route) => route.path === "/knowledge-hub")!;
+    const hubHtml = renderRouteFallbackHtml(hub);
+
+    [
+      "/knowledge-hub/what-is-cmmc",
+      "/knowledge-hub/cmmc-levels",
+      "/knowledge-hub/evidence-mapping",
+      "/knowledge-hub/sprs-score",
+      "/knowledge-hub/certification-process",
+      "/insights/what-is-nist-ai-rmf",
+      "/insights/implement-ai-governance",
+    ].forEach((href) => expect(hubHtml).toContain(`href=\"${href}\"`));
+  });
+
+  it("renders a direct initial-HTML document for published blog and Knowledge Hub resources", () => {
+    const article = getSeoRoute("/blog/how-to-improve-sprs-score-fast")!;
+    const hubResource = getSeoRoute("/knowledge-hub/sprs-score")!;
+
+    expect(renderRouteFallbackHtml(article)).toContain("<h1>How to Improve Your SPRS Score Fast");
+    expect(renderRouteFallbackHtml(article)).toContain('href="/blog"');
+    expect(renderRouteFallbackHtml(hubResource)).toContain(`<h1>${SPRS_SCORE_CONTENT.h1}</h1>`);
+    expect(renderRouteFallbackHtml(hubResource)).toContain('href="/knowledge-hub"');
+  });
+
+  it("renders the shared substantive What is CMMC article in initial HTML", () => {
+    const route = getSeoRoute("/knowledge-hub/what-is-cmmc")!;
+    const html = renderRouteFallbackHtml(route);
+
+    expect(route.h1).toBe(WHAT_IS_CMMC_CONTENT.h1);
+
+    const expectedInOrder = [
+      "Quick Answer",
+      "CMMC Definition and Purpose",
+      "The History of CMMC — From DFARS to CMMC 2.0",
+      "Who Needs CMMC Certification?",
+      "The Three Levels of CMMC 2.0",
+      "CMMC vs. NIST 800-171: What&#39;s the Difference?",
+      "Key CMMC Terms Explained",
+      "How DefenseEye Automates CMMC Readiness",
+      "Frequently Asked Questions About CMMC",
+    ];
+    let previousIndex = -1;
+    for (const text of expectedInOrder) {
+      const index = html.indexOf(text);
+      expect(index).toBeGreaterThan(previousIndex);
+      previousIndex = index;
+    }
+
+    expect(html).toContain("only 1 of 5 sampled contractors");
+    expect(html).toContain("<strong>CMMC (Cybersecurity Maturity Model Certification)</strong>");
+    expect(html).toContain("<strong>Federal Contract Information (FCI)</strong>");
+    expect(html).toContain("<strong>Controlled Unclassified Information (CUI)</strong>");
+    expect(html).toContain("<strong>CMMC Lens by DefenseEye</strong>");
+    expect(html).toContain("15 requirements (FAR 52.204-21)");
+    expect(html).toContain("maps to three separate NIST requirements");
+    expect(html).toContain("CMMC Proposed Rule");
+    expect(html).toContain("final rule on October 15, 2024");
+    expect(html).toContain("Phase I begins November 10, 2025");
+    expect(html).toContain("suspends the planned Phase II requirements");
+    expect(html).toContain("Triennial self-assessment or triennial C3PAO assessment, with annual affirmation");
+    expect(html).toContain("Yes, subject to Level 3 limits and 180-day DIBCAC closeout");
+    expect(html).toContain("Contract award eligibility condition when required by the applicable solicitation");
+    expect(html).not.toContain("17 practices");
+    expect(html).not.toContain("Final Rule Dec 2023");
+    expect(html).not.toContain("starting October 1, 2025");
+    expect(html).toContain("<th>Level 3 — Expert</th>");
+    expect(html).toContain("<td>Triennial DCMA DIBCAC assessment and annual affirmation</td>");
+    expect(html).toContain("SPRS score ranges from -203 to +110");
+    expect(html).toContain("Automated evidence collection across 110 controls");
+    expect(html).toContain('href="/knowledge-hub/certification-process"');
+    expect(html).toContain("Does CMMC apply to foreign companies with U.S. DoD contracts?");
+    expect(html).toContain("foreign ownership, control, or influence (FOCI) considerations.");
+    expect((html.match(/<dt>/g) ?? [])).toHaveLength(15);
+    expect((html.match(/<table>/g) ?? [])).toHaveLength(2);
+    expect(html).not.toContain("<h1>Implement Agentic AI Securely</h1>");
+  });
+
+  it("renders the shared substantive certification-process article in initial HTML", () => {
+    const route = getSeoRoute("/knowledge-hub/certification-process")!;
+    const html = renderRouteFallbackHtml(route);
+    expect(route.h1).toBe(CERTIFICATION_PROCESS_CONTENT.h1);
+    const orderedHeadings = [
+      "Overview: The CMMC Level 2 C3PAO Assessment Roadmap",
+      "Gap Assessment and Baseline Evaluation",
+      "Remediation Planning: SSP and POA&amp;M",
+      "Implementing Required Controls",
+      "Selecting a C3PAO",
+      "Pre-Assessment Preparation",
+      "The C3PAO Assessment Process",
+      "Receiving and Affirming Your CMMC Status",
+      "Maintaining CMMC Compliance Post-Certification",
+      "Timeline and Cost Expectations",
+      "How CMMC Lens Accelerates Each Step",
+      "Frequently Asked Questions",
+    ];
+    let previousIndex = -1;
+    for (const heading of orderedHeadings) {
+      const index = html.indexOf(heading);
+      expect(index).toBeGreaterThan(previousIndex);
+      previousIndex = index;
+    }
+
+    for (const step of CERTIFICATION_PROCESS_CONTENT.steps) {
+      expect(html).toContain(htmlEscaped(step.description));
+      for (const detail of step.details) expect(html).toContain(`<li>${htmlEscaped(detail)}</li>`);
+      expect(html).toContain(htmlEscaped(step.note));
+    }
+    for (const item of CERTIFICATION_PROCESS_CONTENT.faq.items) {
+      expect(html).toContain(`<dt>${htmlEscaped(item.question)}</dt>`);
+      expect(html).toContain(`<dd>${htmlEscaped(item.answer)}</dd>`);
+    }
+    expect(html).toContain("This roadmap addresses the C3PAO pathway for an information system when the applicable solicitation requires Level 2 (C3PAO)");
+    expect(html).toContain("The score is weighted under the DoD Assessment Methodology");
+    expect(html).toContain("does not mean that meeting any 88 requirements establishes Conditional eligibility");
+    expect(html).toContain("Enable FIPS-validated cryptography where the applicable requirement calls for protecting CUI confidentiality");
+    expect(html).toContain("C3PAO uploads the Level 2 certification-assessment results into the CMMC instantiation of eMASS");
+    expect(html).toContain("affirming official must submit the required affirmation of continuous compliance in SPRS");
+    expect(html).toContain("retain the artifacts used as assessment evidence for at least six years");
+    expect(html).toContain("annual affirmation is not an annual self-assessment");
+    expect(html).toContain("suspended the planned Phase II requirements on July 13, 2026");
+    expect(html).toContain("<td>Total (excl. remediation)</td>");
+    expect(html).toContain("<td>$65,000–$195,000+</td>");
+    expect(html).toContain("365-day continuous monitoring with annual affirmation support");
+    expect(html).toContain("What is the difference between CMMC and DFARS 252.204-7012?");
+    expect(html).toContain("CMMC does not replace DFARS 252.204-7012.");
+    expect(html).toContain('href="/knowledge-hub/sprs-score"');
+    expect((html.match(/<table>/g) ?? [])).toHaveLength(1);
+    expect((html.match(/<section id="step/g) ?? [])).toHaveLength(7);
+    expect(html).not.toContain("POFAM");
+    expect(html).not.toContain("mandatory third-party assessment (for Level 2)");
+    expect(html).not.toContain("Maintain audit logs for minimum 3 years");
+    expect(html).not.toContain("CMMC-AB quality review");
+    expect(html).not.toContain("(2025)");
+    expect(html).not.toContain("<h1>Implement Agentic AI Securely</h1>");
+  });
+
+  it("renders the shared substantive CMMC levels article in initial HTML", () => {
+    const route = getSeoRoute("/knowledge-hub/cmmc-levels")!;
+    const html = renderRouteFallbackHtml(route);
+    expect(route.h1).toBe(CMMC_LEVELS_CONTENT.h1);
+    const orderedHeadings = [
+      "Quick Answer",
+      "CMMC Level 1 — Federal Contract Information (FCI) Protection",
+      "CMMC Level 2 — Controlled Unclassified Information (CUI) Protection",
+      "Side-by-Side Comparison Table",
+      "How to Determine Your Required CMMC Level",
+      "CMMC Level 2 Requirement-Family Breakdown",
+      "The Role of SPRS Score in CMMC Level 2",
+      "How CMMC Lens Supports Both Levels",
+      "Frequently Asked Questions",
+    ];
+    let previousIndex = -1;
+    for (const heading of orderedHeadings) {
+      const index = html.indexOf(heading);
+      expect(index).toBeGreaterThan(previousIndex);
+      previousIndex = index;
+    }
+
+    expect(html).toContain("AC.L1-3.1.1 — Limit information system access to authorized users");
+    expect(CMMC_LEVELS_CONTENT.level1.practices).toHaveLength(17);
+    for (const reference of CMMC_LEVELS_CONTENT.level1.practices) expect(html).toContain(htmlEscaped(reference));
+    for (const row of CMMC_LEVELS_CONTENT.comparison.rows) {
+      for (const cell of row) expect(html).toContain(`<td>${htmlEscaped(cell)}</td>`);
+    }
+    for (const item of CMMC_LEVELS_CONTENT.faq.items) {
+      expect(html).toContain(`<dt>${htmlEscaped(item.question)}</dt>`);
+      expect(html).toContain(`<dd>${htmlEscaped(item.answer)}</dd>`);
+    }
+    expect(html).toContain("15 FAR 52.204-21 requirements (mapped to 17 NIST assessment references)");
+    expect(html).toContain("FAR 52.204-21(b)(1)(ix) maps to three NIST requirements while the other 14 map one-to-one");
+    expect(html).toContain("Self-assessment every 3 years or C3PAO assessment every 3 years");
+    expect(html).toContain("The annual affirmation is not an annual self-assessment");
+    expect(html).toContain("Department suspended the planned Phase II requirements");
+    expect(html).toContain("Conditional Level 2 requires a score of at least 88 of 110");
+    expect(html).toContain("DD Form 254 specifies classified-information security requirements and does not by itself determine a CMMC status");
+    expect(html).toContain("are not automatically CUI");
+    expect(html).toContain("System and Comm. Protection (SC)");
+    expect(html).toContain("There is no single minimum SPRS score that governs every DoD award");
+    expect(html).toContain("Full 110-control evidence collection from cloud environments");
+    expect(html).toContain("Automated evidence for all 17 mapped Level 1 assessment references");
+    expect(html).toContain("Does CMMC Level 2 require FedRAMP-authorized cloud services?");
+    expect(html).toContain("M365 GCC High for evidence collection.");
+    expect(html).toContain('href="/knowledge-hub/sprs-score"');
+    expect(html).toContain('href="/knowledge-hub/what-is-cmmc"');
+    expect(html).toContain('href="/knowledge-hub/certification-process"');
+    expect((html.match(/<table>/g) ?? [])).toHaveLength(2);
+    const faqHtml = html.slice(html.indexOf('<section id="faq"'), html.indexOf('<nav aria-label="Continue reading">'));
+    expect((faqHtml.match(/<dt>/g) ?? [])).toHaveLength(5);
+    expect((faqHtml.match(/<dd>/g) ?? [])).toHaveLength(5);
+    expect((html.match(/<dt>/g) ?? [])).toHaveLength(8);
+    expect(html).not.toContain("17 cybersecurity practices");
+    expect(html).not.toContain("17 FCI protection practices");
+    expect(html).not.toContain("self-assessment annually between");
+    expect(html).not.toContain("no mandated minimum SPRS score for contract award");
+    expect(html).not.toContain("(2025 Guide)");
+    expect(html).not.toContain("<h1>Implement Agentic AI Securely</h1>");
+  });
+
+  it("renders every shared Evidence Mapping field in initial HTML and preserves source order", () => {
+    const article = EVIDENCE_MAPPING_CONTENT;
+    const route = getSeoRoute("/knowledge-hub/evidence-mapping")!;
+    const html = renderRouteFallbackHtml(route);
+    expect(route.h1).toBe(article.h1);
+    const expectInOrder = (values: readonly string[]) => {
+      let cursor = -1;
+      for (const value of values) {
+        const next = html.indexOf(value, cursor + 1);
+        expect(next, value).toBeGreaterThan(cursor);
+        cursor = next;
+      }
+    };
+    const tableFields = (table: { headers: readonly string[]; rows: readonly (readonly string[])[] }) => [
+      ...table.headers.map((value) => `<th>${htmlEscaped(value)}</th>`),
+      ...table.rows.flatMap((row) => row.map((value) => `<td>${htmlEscaped(value)}</td>`)),
+    ];
+
+    expectInOrder([
+      "Quick Answer",
+      htmlEscaped(article.definition.heading),
+      htmlEscaped(article.controlFamilies.heading),
+      htmlEscaped(article.comparison.heading),
+      htmlEscaped(article.collection.heading),
+      htmlEscaped(article.cloud.heading),
+      htmlEscaped(article.documents.heading),
+      htmlEscaped(article.automation.heading),
+      htmlEscaped(article.faq.heading),
+    ]);
+    expectInOrder(tableFields(article.controlFamilies));
+    expectInOrder(tableFields(article.comparison));
+    expectInOrder(article.collection.steps.flatMap((step) => [htmlEscaped(step.title), htmlEscaped(step.description)]));
+    expectInOrder(article.cloud.platforms.flatMap((platform) => [htmlEscaped(platform.platform), ...platform.evidence.map(htmlEscaped)]));
+    expectInOrder(article.documents.items.flatMap((item) => [htmlEscaped(item.title), ...item.paragraphs.map(htmlEscaped)]));
+    expectInOrder(article.automation.capabilities.map((value) => `<li>${htmlEscaped(value)}</li>`));
+    expectInOrder(article.faq.items.flatMap((item) => [`<dt>${htmlEscaped(item.question)}</dt>`, `<dd>${htmlEscaped(item.answer)}</dd>`]));
+    const substantiveFields = [
+      ...article.quickAnswer.map((part) => part.text),
+      ...article.definition.paragraphs,
+      ...article.definition.stats.flatMap((stat) => [stat.value, stat.label]),
+      article.controlFamilies.introduction,
+      article.comparison.introduction,
+      article.collection.introduction,
+      article.cloud.introduction,
+      article.documents.introduction,
+      ...article.documents.items.flatMap((item) => item.paragraphs),
+      article.automation.paragraph,
+      article.automation.cardTitle,
+      article.automation.cardSubtitle,
+    ];
+    for (const field of substantiveFields) expect(html).toContain(htmlEscaped(field));
+    for (const link of [...article.automation.links, ...article.related]) {
+      expect(html).toContain(`href="${link.href}"`);
+      expect(html).toContain(`>${htmlEscaped("label" in link ? link.label : link.title)}</a>`);
+    }
+
+    expect(article.controlFamilies.rows.slice(0, -1).reduce((sum, row) => sum + Number(row[1]), 0)).toBe(110);
+    expect(article.controlFamilies.rows.at(-1)).toEqual(["TOTAL", "110", "Full NIST SP 800-171 Revision 2 requirement set used by CMMC Level 2"]);
+    expect((html.match(/<table>/g) ?? [])).toHaveLength(2);
+    expect(html).toContain("current CMMC Level 2 model uses the 110 requirements in NIST SP 800-171 Revision 2");
+    expect(html).toContain("possessing one example artifact does not automatically make the requirement MET");
+    expect(html).toContain("apply examine, interview, and test methods");
+    expect(html).toContain("A score of 88 does not mean that meeting any 88 requirements is sufficient");
+    expect(html).toContain("only the C3PAO closeout assessment can verify official POA&amp;M closeout");
+    expect(html).toContain("retain the artifacts used as assessment evidence for at least six years");
+    expect(html).toContain("does not establish one universal retention period for every operational audit log");
+    expect(html).toContain("Department suspended the planned Phase II requirements on July 13, 2026");
+    expect(html).toContain("No evidence source is automatically sufficient or accepted for every environment or assessment objective");
+    expect(html).toContain("Evidence is refreshed on a configurable schedule");
+    expect(html).toContain("formats compatible with leading C3PAO workflow tools");
+    expect(html).not.toContain("An active POA&amp;M demonstrating remediation progress is required to maintain a negative SPRS score");
+    expect(html).not.toContain("satisfy C3PAO evidence requirements");
+    expect(html).not.toContain("Every one of the 110 NIST 800-171 controls requires documented evidence");
+    expect(html).not.toContain("April 2025");
+    expect(html).not.toContain("<h1>Implement Agentic AI Securely</h1>");
+  });
+
+  it("renders every shared SPRS Score field in initial HTML and preserves source order", () => {
+    const article = SPRS_SCORE_CONTENT;
+    const html = renderRouteFallbackHtml(getSeoRoute("/knowledge-hub/sprs-score")!);
+    const expectInOrder = (values: readonly string[]) => {
+      let cursor = -1;
+      for (const value of values) {
+        const next = html.indexOf(value, cursor + 1);
+        expect(next, value).toBeGreaterThan(cursor);
+        cursor = next;
+      }
+    };
+    const tableFields = (value: { headers: readonly string[]; rows: readonly (readonly string[])[] }) => [
+      ...value.headers.map((cell) => `<th>${htmlEscaped(cell)}</th>`),
+      ...value.rows.flatMap((row) => row.map((cell) => `<td>${htmlEscaped(cell)}</td>`)),
+    ];
+
+    expectInOrder([
+      "Quick Answer",
+      htmlEscaped(article.overview.heading),
+      htmlEscaped(article.calculation.heading),
+      htmlEscaped(article.scoreRanges.heading),
+      htmlEscaped(article.domainImpact.heading),
+      htmlEscaped(article.submission.heading),
+      htmlEscaped(article.improvements.heading),
+      htmlEscaped(article.comparison.heading),
+      htmlEscaped(article.automation.heading),
+      htmlEscaped(article.faq.heading),
+    ]);
+    expectInOrder(article.calculation.formula.map(htmlEscaped));
+    expectInOrder(tableFields(article.scoreRanges));
+    expectInOrder(tableFields(article.domainImpact));
+    expectInOrder(article.submission.steps.flatMap((step) => [htmlEscaped(step.title), htmlEscaped(step.description)]));
+    expectInOrder(article.improvements.items.flatMap((item) => [htmlEscaped(item.title), htmlEscaped(item.detail)]));
+    expectInOrder(tableFields(article.comparison));
+    expectInOrder(article.automation.capabilities.map((value) => `<li>${htmlEscaped(value)}</li>`));
+    expectInOrder(article.faq.items.flatMap((item) => [`<dt>${htmlEscaped(item.question)}</dt>`, `<dd>${htmlEscaped(item.answer)}</dd>`]));
+
+    const substantiveFields = [
+      ...article.quickAnswer.map((part) => part.text),
+      ...article.overview.paragraphs.flatMap((paragraph) => [paragraph.emphasis, paragraph.text]),
+      ...article.overview.stats.flatMap((stat) => [stat.value, stat.label]),
+      article.calculation.introduction,
+      article.calculation.formulaHeading,
+      article.calculation.explanation,
+      article.calculation.assessmentIntroduction,
+      ...article.calculation.assessmentStates.flatMap((state) => [state.label, state.description]),
+      article.domainImpact.introduction,
+      article.submission.introduction,
+      article.improvements.introduction,
+      article.comparison.introduction,
+      article.automation.paragraph,
+      article.automation.cardTitle,
+      article.automation.cardSubtitle,
+    ].filter(Boolean);
+    for (const field of substantiveFields) expect(html).toContain(htmlEscaped(field));
+    for (const link of article.related) {
+      expect(html).toContain(`href="${link.href}"`);
+      expect(html).toContain(`>${htmlEscaped(link.title)}</a>`);
+    }
+
+    expect(article.domainImpact.rows.slice(0, -1).reduce((sum, row) => sum + Number(row[1]), 0)).toBe(110);
+    expect(article.domainImpact.rows.slice(0, -1).reduce((sum, row) => sum + Number(row[2]), 0)).toBe(313);
+    expect(article.domainImpact.rows.at(-1)).toEqual([
+      "TOTAL",
+      "110",
+      "313",
+      "Maximum deductions from a starting score of 110 produce an arithmetic minimum of -203",
+    ]);
+    expect((html.match(/<table>/g) ?? [])).toHaveLength(3);
+    expect(html).toContain("one NOT MET 5-point requirement produces a score of 105");
+    expect(html).toContain("only IA.L2-3.5.3 (MFA) and SC.L2-3.13.11 (FIPS-validated encryption)");
+    expect(html).toContain("there is no generic partial-credit category");
+    expect(html).toContain("A user entering or editing Basic Assessment information needs the SPRS Cyber Vendor User role");
+    expect(html).toContain("current for no more than three years unless the solicitation specifies a shorter period");
+    expect(html).toContain("meeting any 88 requirements is not sufficient");
+    expect(html).toContain("C3PAO Level 2 certification assessment is not a Medium NIST SP 800-171 DoD Assessment");
+    expect(html).toContain("C3PAO uploads CMMC assessment results into the CMMC instantiation of eMASS");
+    expect(html).toContain("planned Phase II requirements suspended as of July 13, 2026");
+    expect(html).toContain("there is no universal three-year operational-log retention rule here");
+    expect(html).not.toContain("partial credit may apply under self-assessment");
+    expect(html).not.toContain("submit a Level 1 (Basic) Assessment");
+    expect(html).not.toContain("updated annually for Level 1 self-assessments");
+    expect(html).not.toContain("Medium Assessment (Level 2) score");
+    expect(html).not.toContain("3-year retention period satisfies multiple AU family controls");
+    expect(html).not.toContain("April 2025");
+    expect(html).not.toContain("<h1>Implement Agentic AI Securely</h1>");
   });
 
   it("injects route-specific body and structured data into SPA HTML", () => {
