@@ -2,7 +2,178 @@
 
 Branch `seo-geo-conversion-remediation`, compared with production `51108e4`. Input: Ahrefs Site Audit export "Orphan page (has no incoming internal links)", crawl of 2026-10-18, 41 URLs. Tables were generated from server output, not typed by hand.
 
+## Final review update (round 3): newsletter, primary-source verification, dates
+
+Two new commits: `669d167` (newsletter) and `bf8c9e9` (regulatory and claims). Each passes type-check and the full suite on its own (268 and 269 tests). **Production was not deployed or changed.**
+
+### F1. Newsletter decision
+
+**No approved newsletter or email-marketing provider exists.** None appears in the code or in the environment-variable names; the only email capability is the SMTP transport for the contact form. The old forms showed "You're subscribed!" and sent the address nowhere.
+
+**Decision: replace the false success with a truthful state routed to the existing contact workflow.** Both the Blog and Knowledge Hub blocks now say "Email updates aren't available yet" and offer two routes:
+- **Ask About CMMC Updates** → `/contact?inquiry=cmmc`, the existing lead form, pre-set to CMMC readiness. Fires `newsletter_unavailable_cta_click`.
+- A link to the free guides.
+
+No email field is shown, and nothing is stored in files, logs, browser storage, or any database. The visual design is unchanged. A provider-ready, accessible form is already built in `NewsletterSignup` and activates when `NEWSLETTER_PROVIDER` is set.
+
+### F2. Newsletter test results
+
+| Case | Result |
+|---|---|
+| Empty email | Rejected ("Enter your work email address."); provider not called |
+| Invalid email | Rejected ("Enter an email address in the format name@company.com."); provider not called |
+| Valid email | Passed to the provider trimmed; success only after the provider resolves |
+| Provider success | `role="status"` success, `newsletter_subscribe` event |
+| Provider failure | Visible `role="alert"` error linked to the field (`aria-describedby`, `aria-invalid`), `newsletter_subscribe_failed` event; retry allowed |
+| Duplicate submission | Ignored while in flight and after success; provider called once |
+| No configured provider (current) | `unavailable` result; the rendered block has no form and no "subscribed" text, and routes to contact |
+| Analytics | Events carry location and provider name only; a test asserts no email address appears in any event |
+| Site-wide guard | A test fails if any page hard-codes "You're subscribed" copy |
+| Live browser (390 px) | `/blog` and `/knowledge-hub`: no "subscribed" text, 0 email inputs, CTA → `/contact?inquiry=cmmc`, event fires, no overflow |
+
+15 newsletter tests in `client/src/lib/newsletter.test.ts` and `client/src/components/NewsletterSignup.test.tsx`.
+
+### F3. Provider configuration requirements (business decision)
+
+To enable real signups, choose an approved provider and implement `NewsletterProvider.subscribe` in `client/src/lib/newsletter.ts`, preferably through a small server endpoint so no API key reaches the browser. Also:
+- **Credentials:** store them only in the server environment.
+- **Consent:** confirm double opt-in and unsubscribe handling. The current consent text ("You can unsubscribe at any time. See our Privacy Policy.") matches the existing Privacy Policy's marketing-opt-out section.
+- **Privacy Policy:** confirm the provider is covered as a processor.
+
+### F4. CMMC and regulatory corrections, with primary sources
+
+| Statement | Primary source | Outcome |
+|---|---|---|
+| **Phase II suspended on 13 July 2026** (knowledge hub: 5 guides, FAQs, timeline) | Not verifiable. The eCFR 32 CFR 170.3(e), current to 22 Oct 2026, has no suspension language. The DoD class-deviation lists ([current](https://www.acq.osd.mil/dpap/dars/class_deviations.html), [2026 archive](https://www.acq.osd.mil/dpap/dars/archive/2026/class_deviations.html)) do not include the cited 2026-O0025. dodcio.defense.gov and defense.gov refused automated access. | **Rewritten.** Phase 1 began 10 Nov 2025, when the DFARS CMMC rule took effect; 32 CFR 170.3(e) schedules Phase 2, which adds Level 2 (C3PAO) requirements, one calendar year later. "DoD can adjust implementation timing through policy, so confirm the current phase with official DoD CIO guidance and the CMMC requirement stated in each solicitation." Removed all "suspended" and "paused in Phase I" claims. |
+| Phase 1 start date | [Federal Register 90 FR 43560](https://www.federalregister.gov/documents/2025/09/10/2025-17359/defense-federal-acquisition-regulation-supplement-assessing-contractor-implementation-of) (DFARS Case 2019-D041): "This rule is effective November 10, 2025." [32 CFR 170.3(e)(1)](https://www.ecfr.gov/current/title-32/subtitle-A/chapter-I/subchapter-G/part-170/subpart-A/section-170.3): Phase 1 "Begins on the effective date of the complementary 48 CFR part 204 CMMC Acquisition final rule." | **Verified; kept.** |
+| Who publishes the CMMC Assessment Process (CAP) | [cyberab.org/Resources/Downloads](https://cyberab.org/Resources/Downloads) hosts "CMMC Assessment Process (CAP)" (file named v2.0). The publisher could not be confirmed from the document. | **Rewritten** to "available from the Cyber AB's resources page"; no publisher named. |
+| Typical assessment phase durations, "6–16 weeks", "3–5 days on-site", "3–5 months", remediation months, SPRS "30–90 days" | No authoritative source | **Removed.** The phase table's duration column is dropped. The text now says timing depends on scope, readiness, and C3PAO availability and is agreed with the C3PAO. |
+| Conditional window | [32 CFR 170.17(a)(1)(ii)(B)](https://www.ecfr.gov/current/title-32/subtitle-A/chapter-I/subchapter-G/part-170/subpart-D/section-170.17) and [170.21(b)](https://www.ecfr.gov/current/title-32/subtitle-A/chapter-I/subchapter-G/part-170/subpart-D/section-170.21): closeout by a C3PAO "within 180 days of the CMMC Status Date associated with the Conditional Level 2 (C3PAO)", or the status "will expire" | **Verified; reworded to the rule**, including the 170.21(a)(2) eligibility conditions (score ≥ 80%, eligible requirements only) |
+| "Certificate valid for three years" | 32 CFR 170.17(a)(1): "the Level 2 certification assessment must be completed within three years of the CMMC Status Date" | **Reworded**: "a new Level 2 certification assessment is required within three years of the CMMC Status Date", plus annual affirmation in SPRS (170.17(a)(2)) |
+| C3PAO definition: "certified by the CMMC Accreditation Body" | 32 CFR 170.9(a) | **Corrected** to "accredited or authorized by the CMMC Accreditation Body (The Cyber AB)", with CCAs certified by the CAICO (170.10) |
+
+Earlier rounds used news and law-firm reporting for the Phase II suspension; that reliance is now removed. Only the primary sources above are relied on. DefenseEye is described throughout as a readiness and consulting provider that does not assess or certify.
+
+### F5. Additional unverified claims removed
+
+Found while verifying the regulatory statements; none has an authoritative source, and several contradicted the site's own published claim boundaries.
+- **Pricing and offers:**
+  - CMMCLens "$199/month" and "$499/month": the Pricing page states there is no public price list.
+  - "14-day free trial, no credit card required": no trial is offered anywhere on the site.
+  - "Start Free Trial" and "Book Free Assessment" buttons, which also pointed to a homepage `#contact` anchor that doesn't exist. They now go to `/lp/cmmclens-demo` (the CMMCLens calendar) or the contact form ("Request a Free Consultation", matching the contact page's "Your first call is free").
+- **Performance:** "up to 80%" and "60–80%" reductions, "60–90 days with CMMCLens", "4–8 weeks → 3–5 days", "8–24 hours vs 400–800 hours", "under 30 minutes", "one-click", "live SPRS score". All are replaced with the product page's own qualified wording: "Effort savings depend on environment maturity, integrations, available source data, and implementation scope."
+- **Cost estimates:** consultant and C3PAO dollar ranges in the knowledge hub and content API. In the small-business guide, the CMMCLens row now reads "quoted to scope" and the year-1 total "varies widely"; the other third-party estimate rows, labelled "Estimated Range", are unchanged.
+- **Dead links:** `/#features` and `/#pricing`, plus a "Careers" link with no page. A new test rejects any `/#anchor` the homepage does not define.
+- **Content API** (`/api/cmmc-content`, read by AI systems) and **`.well-known/ai-plugin.json`**: same corrections.
+
+### F6. Date validation
+
+| Page | Visible date | Basis |
+|---|---|---|
+| C3PAO assessment post | Updated 24 Oct 2026 | Revised today (rules, durations, CAP) |
+| Small-business guide | Updated 24 Oct 2026 | Revised today (pricing row, total) |
+| Checklist and red-flags posts | Updated 23 Oct 2026 | Revised in round 2; not changed today |
+| Other blog posts | Unchanged | Only product-name or citation tweaks; not labelled as updated |
+| Five knowledge-hub guides | "Last updated: October 2026" (was September 2026) | Phase wording, durations, and product claims revised today |
+| Insight pages | No date shown, none in schema | No date recorded |
+
+Schema `dateModified` equals the visible date (knowledge hub `2026-10`; blog ISO dates). Sitemap `lastmod` was updated only for pages revised today. No future, fabricated, or year-only "updates" remain, and a test enforces schema/visible parity.
+
+### F7. Redirect verification (consolidated page)
+
+`/cmmc-readiness-sprint` → **301, single hop** → `/services/cmmc-readiness-sprint`:
+- The destination returns **200**, with canonical `https://defenseeye.ai/services/cmmc-readiness-sprint`.
+- The destination is **in** the sitemap; the old URL is not, and no internal link points to it.
+- The moved FAQ ("What does a readiness sprint produce?") renders on the destination.
+- There is no chain or loop (test-enforced and checked over live HTTP).
+
+### F8. Indexing decisions: landing pages
+
+All 10 `/lp/` pages stay **indexable**. Nothing in the repository identifies them as paid-only or campaign-only, and they are not noindexed to hide thin content. Each has a unique title, a substantive description, a self-referencing canonical, a sitemap entry, meaningful CTAs, and a distinct title from its related canonical page:
+
+| Landing page | Title (unique) | Description | Canonical | In sitemap | Primary CTA | Related canonical page (distinct title) |
+|---|---|---|---|---|---|---|
+| `/lp/secure-ai-adoption` | Secure AI Adoption Consulting for Regulated Teams \| DefenseEye | 142 chars | https://defenseeye.ai/lp/secure-ai-adoption | Yes | Discuss Secure AI Adoption (discovery calendar) + Request Capability Statement | `/secure-ai-adoption`: Secure Agentic AI Readiness & Implementation \| DefenseEye |
+| `/lp/ai-governance-consulting` | AI Governance Readiness Assessment \| DefenseEye | 122 chars | https://defenseeye.ai/lp/ai-governance-consulting | Yes | Discuss AI Governance Readiness (discovery calendar) + Request Capability Statement | `/solutions/ai-governance`: AI Governance & NIST AI RMF Consulting \| DefenseEye |
+| `/lp/microsoft-copilot-readiness` | Microsoft Copilot Readiness Assessment \| DefenseEye | 137 chars | https://defenseeye.ai/lp/microsoft-copilot-readiness | Yes | Assess Copilot Readiness (discovery calendar) + Request Capability Statement | `/solutions/microsoft-copilot-readiness`: Microsoft Copilot Readiness Consulting \| DefenseEye |
+| `/lp/cmmc-level-2-readiness` | CMMC Level 2 Readiness Assessment \| DefenseEye | 133 chars | https://defenseeye.ai/lp/cmmc-level-2-readiness | Yes | Assess CMMC Readiness (discovery calendar) + Request Capability Statement | `/cmmc-level-2-readiness`: CMMC Level 2 Readiness Consulting \| DefenseEye |
+| `/lp/cmmc-compliance-automation` | CMMC Compliance Automation Sprint \| DefenseEye | 135 chars | https://defenseeye.ai/lp/cmmc-compliance-automation | Yes | Explore CMMC Automation (discovery calendar) + Request Capability Statement | `/cmmc-compliance-automation`: CMMC Compliance Automation & CCP-Led Readiness \| DefenseEye |
+| `/lp/cmmc-evidence-automation` | CMMC Evidence Automation with CMMCLens \| DefenseEye | 135 chars | https://defenseeye.ai/lp/cmmc-evidence-automation | Yes | Explore Evidence Automation (discovery calendar) + Request Capability Statement | `/cmmc-evidence-automation`: CMMC Evidence Automation & Traceability \| DefenseEye |
+| `/lp/cmmclens-demo` | Request a CMMCLens Demo \| DefenseEye | 141 chars | https://defenseeye.ai/lp/cmmclens-demo | Yes | Request CMMCLens Demo (CMMCLens calendar) + Request Capability Statement | `/cmmclens`: CMMCLens CMMC & NIST 800-171 Compliance Platform \| DefenseEye |
+| `/lp/microsoft-supplier-ai-consulting` | Minority-Owned AI & Cybersecurity Supplier \| DefenseEye | 139 chars | https://defenseeye.ai/lp/microsoft-supplier-ai-consulting | Yes | Discuss Supplier Opportunities (discovery calendar) + Request Capability Statement | `/supplier-readiness`: Supplier Readiness: Minority-Owned AI & Cyber Firm \| DefenseEye |
+| `/lp/azure-cloud-security` | Azure Cloud Security & Compliance Review \| DefenseEye | 129 chars | https://defenseeye.ai/lp/azure-cloud-security | Yes | Review Azure Security (discovery calendar) + Request Capability Statement | `/solutions/cloud-security`: Azure & GCC High Cloud Security Consulting \| DefenseEye |
+| `/lp/compliance-automation` | Compliance Automation for Evidence & Reporting \| DefenseEye | 131 chars | https://defenseeye.ai/lp/compliance-automation | Yes | Discuss Compliance Automation (discovery calendar) + Request Capability Statement | `/solutions/compliance-automation`: Compliance Evidence Automation Consulting \| DefenseEye |
+
+### F9. Full test results (round 3)
+
+| Check | Result |
+|---|---|
+| Dependencies (`pnpm install --frozen-lockfile --offline`) | OK; lockfile unchanged |
+| Type-check (`pnpm check`) | Pass |
+| Unit and integration tests (`npx vitest run --root .`) | **28 files, 269 tests, all pass** (each new commit also passes on its own) |
+| Production build (`pnpm build`) | Pass |
+| Routes, redirects, sitemap, canonicals, robots (live production build) | 74 sitemap URLs: 200, `index, follow`, self canonical, unique titles, one H1; redirects single-hop; well-formed sitemap; 404 → noindex |
+| Structured data (74 pages) | **0 errors** |
+| Accessibility and mobile (18+ pages, 390 px and 1440 px) | No overflow, labels and names present, skip link works, focus visible |
+| Contact form (browser, API stubbed) | 0 requests while invalid, 1 on valid; `contact_form_submit` fires; success focused |
+| Newsletter (unit and browser) | See F2 |
+| Internal links (source scan) | All destinations live; no redirected links; no undefined `/#anchors` |
+| Secrets | None in the diff; no env, key, deploy, or dependency files changed |
+| Lint | **Unavailable**: no lint script in `package.json` (not created) |
+
+### F10. Remaining warnings
+
+- **Schema:** 13 knowledge-hub and insight Articles have no `datePublished` (none recorded or shown).
+- **Rich results:**
+  - CMMCLens isn't eligible for Google software rich results without public pricing or reviews.
+  - Google limits FAQ rich results to government and health sites.
+- **Accessibility:** the blog-post template skips one heading level (pre-existing).
+- **Product features:** qualitative CMMCLens feature names (for example "score trend chart", "drill-down by domain", "policy templates") remain in the guides and should be confirmed by the product owner.
+- **Historical statements** outside this review's scope (for example a "2019 DoD Inspector General audit" figure in "What is CMMC") were not re-verified.
+
+### F11. Business decisions still required
+
+1. **Newsletter provider:** choose and approve one (F3), or keep the contact-routing state.
+2. **Phase II status:** if DoD has published an official notice suspending Phase 2, supply its link so the knowledge hub can cite it; until then the content states the verified schedule and points to DoD CIO guidance.
+3. **CMMCLens pricing and trial:** if public pricing or a free trial is approved, supply the approved terms; all such claims were removed.
+4. **Product-owner check** of the qualitative CMMCLens feature names (F10).
+5. **Open items from earlier rounds:**
+   - DefyAIRisk Monitor facts
+   - industry hubs (not created)
+   - whether any `/lp/` page is campaign-only
+   - a designed share image
+
+### F12. Production
+
+**No production deployment occurred.** No command was run against the VPS, `main` is unchanged at `51108e4`, and this pull request remains open and unmerged.
+
+### Reviewer checklist (round 3)
+
+- [ ] Newsletter form never claims success unless a real subscription succeeds.
+- [ ] Newsletter failures are visible and accessible.
+- [ ] Newsletter data is not stored in an unapproved location.
+- [ ] Privacy and consent requirements were considered.
+- [ ] CMMC terminology is accurate and current.
+- [ ] Regulatory claims use authoritative sources.
+- [ ] Unverified claims were removed or qualified.
+- [ ] DefenseEye is not described as issuing certification unless verified.
+- [ ] All 41 Ahrefs URLs have documented outcomes.
+- [ ] The one consolidated URL has a valid single redirect.
+- [ ] All important pages have relevant internal links.
+- [ ] Campaign pages remain intentionally indexable or noindex.
+- [ ] Sitemap and canonical behavior are correct.
+- [ ] Structured data validates.
+- [ ] Forms and analytics work.
+- [ ] Mobile and accessibility checks pass.
+- [ ] No secrets were committed.
+- [ ] No unrelated changes were included.
+- [ ] Production was not modified.
+
+---
+
 ## Review update (round 2): CMMC accuracy, form accessibility, dates
+
+> Historical record. Superseded by round 3 where they differ, notably the Phase II wording (no longer sourced from news reports) and the newsletter, which is now resolved.
 
 Three new commits: `bf3f0ff`, `7677d92`, `9d873bb`. Each was verified independently (type-check and full test suite pass at each). The sections below this update have been refreshed to match.
 
@@ -172,20 +343,23 @@ Help search engines and AI answer systems find and describe DefenseEye accuratel
 | `bf3f0ff` | Round 2: CMMC certification terminology corrected against 32 CFR Part 170 |
 | `7677d92` | Round 2: timeless guide headings; schema dates match visible dates |
 | `9d873bb` | Round 2: accessible lead forms and a skip-to-content link |
+| `9fa18d0` | Round 2 report |
+| `669d167` | Round 3: newsletter forms no longer claim subscriptions; truthful contact routing |
+| `bf8c9e9` | Round 3: CMMC statements verified against primary sources; unverified durations, costs, pricing, trial, and performance claims removed; dead CTAs fixed |
 
-Each review-fix commit was checked on its own: type-check and the full test suite pass at `bd08bf1`, `7ab8f17`, `4a73cc8`, `bf3f0ff`, `7677d92`, `9d873bb`, and the head.
+Each review-fix commit was checked on its own: type-check and the full test suite pass at `bd08bf1`, `7ab8f17`, `4a73cc8`, `bf3f0ff`, `7677d92`, `9d873bb`, `669d167`, `bf8c9e9`, and the head.
 
 **Not included:** the Ahrefs CSV export (diagnostic input, left untracked), `dist/` (gitignored build output), and any environment, deploy, or server configuration.
 
-## 4. Changed files (59, against `51108e4`)
+## 4. Changed files (63, against `51108e4`)
 
 - **Shared SEO, architecture, and content data:** `shared/certificationProcessContent.ts` (added), `shared/cmmcLevelsContent.ts` (added), `shared/datasheetContent.ts` (added), `shared/evidenceMappingContent.ts` (added), `shared/homeContent.ts` (added), `shared/insightsContent.ts` (added), `shared/landingPageContent.ts` (added), `shared/relatedLinks.ts` (added), `shared/routeMetadata.ts` (added), `shared/seoRoutes.ts` (modified), `shared/siteArchitecture.ts` (added), `shared/solutionPageContent.ts` (added), `shared/sprsScoreContent.ts` (added), `shared/whatIsCmmcContent.ts` (added)
 - **Server:** `server/copilot.ts` (modified), `server/index.ts` (modified)
-- **Client components, hooks, and lib:** `client/src/App.tsx` (modified), `client/src/components/Breadcrumbs.tsx` (added), `client/src/components/Footer.tsx` (modified), `client/src/components/KnowledgeHubLayout.tsx` (modified), `client/src/components/NavBar.tsx` (modified), `client/src/components/RelatedResources.tsx` (added), `client/src/hooks/useSeo.ts` (modified), `client/src/index.css` (modified), `client/src/lib/tracking.ts` (modified)
+- **Client components, hooks, and lib:** `client/src/App.tsx` (modified), `client/src/components/Breadcrumbs.tsx` (added), `client/src/components/Footer.tsx` (modified), `client/src/components/KnowledgeHubLayout.tsx` (modified), `client/src/components/NavBar.tsx` (modified), `client/src/components/NewsletterSignup.tsx` (added), `client/src/components/RelatedResources.tsx` (added), `client/src/hooks/useSeo.ts` (modified), `client/src/index.css` (modified), `client/src/lib/newsletter.ts` (added), `client/src/lib/tracking.ts` (modified)
 - **Client pages:** `client/src/pages/Blog.tsx` (modified), `client/src/pages/BlogPost.tsx` (modified), `client/src/pages/CMMCArchitecturePage.tsx` (modified), `client/src/pages/CMMCReadinessSprint.tsx` (modified), `client/src/pages/ContactUs.tsx` (modified), `client/src/pages/Datasheets.tsx` (modified), `client/src/pages/DeliveryModel.tsx` (modified), `client/src/pages/Home.tsx` (modified), `client/src/pages/KnowledgeHub.tsx` (modified), `client/src/pages/LandingPage.tsx` (modified), `client/src/pages/SolutionPage.tsx` (modified), `client/src/pages/SprintGuide.tsx` (modified), `client/src/pages/SupplierReadiness.tsx` (modified), `client/src/pages/ThoughtLeadership.tsx` (modified), `client/src/pages/knowledge-hub/CMMCLevels.tsx` (modified), `client/src/pages/knowledge-hub/CertificationProcess.tsx` (modified), `client/src/pages/knowledge-hub/EvidenceMapping.tsx` (modified), `client/src/pages/knowledge-hub/SPRSScore.tsx` (modified), `client/src/pages/knowledge-hub/WhatIsCMMC.tsx` (modified)
 - **Client data:** `client/src/data/blogPosts.ts` (modified), `client/src/data/companyFacts.ts` (modified)
 - **Public files:** `client/public/.well-known/ai-plugin.json` (modified), `client/public/llms.txt` (modified), `client/public/og-default.png` (added), `client/public/robots.txt` (modified)
-- **Tests:** `client/src/pages/ContactUs.a11y.test.tsx` (added), `server/css-sources.test.ts` (added), `server/internal-links.test.ts` (added), `server/route-metadata.test.ts` (added), `server/secure-ai-route.test.ts` (modified), `server/seo-routes.test.ts` (modified), `server/site-architecture.test.ts` (added)
+- **Tests:** `client/src/components/NewsletterSignup.test.tsx` (added), `client/src/lib/newsletter.test.ts` (added), `client/src/pages/ContactUs.a11y.test.tsx` (added), `server/css-sources.test.ts` (added), `server/internal-links.test.ts` (added), `server/route-metadata.test.ts` (added), `server/secure-ai-route.test.ts` (modified), `server/seo-routes.test.ts` (modified), `server/site-architecture.test.ts` (added)
 - **Docs and root HTML:** `client/index.html` (modified), `docs/seo/2026-10-seo-geo-remediation.md` (added)
 
 ## 5. Routes
@@ -285,7 +459,7 @@ Sitewide footer groups (React and server fallback): Secure AI · Cybersecurity &
 | `/blog/gcc-high-vs-m365-commercial-cmmc` | GCC High vs M365 for CMMC \| DefenseEye (38) | GCC High vs M365 Commercial for CMMC Level 2 \| DefenseEye (57) | 130 → 138 | Y → Y | index, follow |
 | `/blog/how-to-improve-sprs-score-fast` | Improve SPRS Score Fast \| DefenseEye (36) | How to Improve Your SPRS Score Fast \| DefenseEye (48) | 139 → 138 | Y → Y | index, follow |
 | `/blog/what-counts-as-cui-plain-english-guide` | What Counts as CUI? \| DefenseEye (32) | What Counts as CUI? A Plain-English Guide \| DefenseEye (54) | 129 → 129 | Y → Y | index, follow |
-| `/blog/what-to-expect-c3pao-assessment` | C3PAO Assessment Walkthrough \| DefenseEye (41) | What to Expect in a C3PAO Assessment \| DefenseEye (49) | 130 → 140 | Y → Y | index, follow |
+| `/blog/what-to-expect-c3pao-assessment` | C3PAO Assessment Walkthrough \| DefenseEye (41) | What to Expect in a C3PAO Assessment \| DefenseEye (49) | 130 → 144 | Y → Y | index, follow |
 | `/capability-statement` | DefenseEye Capability Statement \| AI, Cybersecurity, CMMC, and Compliance Automation (84) | DefenseEye Capability Statement: AI, Cyber & CMMC (49) | 202 → 147 | Y → Y | index, follow |
 | `/cmmc` | CMMC Readiness, Evidence Automation, and Advisory Support \| DefenseEye (70) | CMMC Readiness, Evidence & Advisory Support \| DefenseEye (56) | 137 → 137 | Y → Y | index, follow |
 | `/cmmc-compliance-automation` | CMMC Compliance Automation \| DefenseEye CCP-Led CMMC Readiness and CMMCLens (75) | CMMC Compliance Automation & CCP-Led Readiness \| DefenseEye (59) | 182 → 139 | Y → Y | index, follow |
@@ -414,7 +588,7 @@ Device-emulated audit (Chrome DevTools Protocol) of 18 key pages at 390 px and 1
 |---|---|---|
 | Dependencies | `pnpm install --frozen-lockfile --offline` | OK; lockfile unchanged |
 | Type check | `pnpm check` (`tsc --noEmit`) | Pass |
-| Unit/integration tests | `npx vitest run --root .` | **26 files, 253 tests, all pass** |
+| Unit/integration tests | `npx vitest run --root .` | **28 files, 269 tests, all pass** |
 | Production build | `pnpm build` (vite build + server bundle) | Pass |
 | Route/metadata | `server/route-metadata.test.ts` | Unique titles and descriptions, length budgets, every client route covered or redirected, single-hop redirects |
 | Architecture/orphans | `server/site-architecture.test.ts` | All 41 orphans have an outcome; ≥ 2 raw-HTML inlinks; one H1 per page; no links to unknown or redirected URLs; breadcrumb/schema parity; llms.txt URLs valid; no pricing in schema; share image 1200×630 |
@@ -424,7 +598,7 @@ Device-emulated audit (Chrome DevTools Protocol) of 18 key pages at 390 px and 1
 | Sitemap XML | Parsed with an XML parser | Well-formed, 74 URLs |
 | Structured data | Script checking JSON syntax, required properties per Google docs, `@id` resolution, and visible-content consistency | 0 errors (warnings in §17) |
 | Mobile/a11y and CTAs | Chrome DevTools Protocol scripts (18+ pages at 390 px and 1440 px) | No overflow, one H1, no missing alt text or unnamed controls; skip link works; focus visible |
-| Forms | Browser test with `/api/contact` stubbed; 19 contact unit tests | See R3 |
+| Forms | Browser test with `/api/contact` stubbed; 19 contact unit tests; 15 newsletter tests | See F2 and R3 |
 | Dates | `server/site-architecture.test.ts` "article dates" | Every schema date matches the visible date |
 | Secrets | Diff scan for keys, tokens, passwords, and private keys; tracked-file check | None found; no `.env`, keys, or `node_modules` tracked (`.env.example` template pre-exists, unchanged) |
 
@@ -443,7 +617,7 @@ Device-emulated audit (Chrome DevTools Protocol) of 18 key pages at 390 px and 1
 | `Article` without `datePublished` | 13 knowledge-hub and insight pages | Publish dates are not recorded in the repo or shown on the page; not invented |
 | `SoftwareApplication` lacks `offers` / `aggregateRating` (not eligible for Google software rich results) | `/cmmclens` | No public pricing or reviews exist |
 | `FAQPage` rich results are limited by Google to authoritative government/health sites | 22 pages | Markup stays valid and useful to other parsers and AI systems |
-| CMMC statements not verifiable from the rule text (CAP publisher, phase durations and costs, the 180-day conditional window) | Blog posts | Left unchanged; SME review requested (R1) |
+| Qualitative CMMCLens feature names in the guides | Knowledge hub | Product-owner confirmation requested (F10) |
 | Blog-post template skips one heading level | All blog posts | Pre-existing template issue |
 | Main JS chunk > 500 kB (Vite warning) | Global | Pre-existing; the lazy `CopilotChat` chunk (894 kB) is the bigger opportunity |
 
@@ -458,8 +632,8 @@ Device-emulated audit (Chrome DevTools Protocol) of 18 key pages at 390 px and 1
    - integrations, target customers, and any pricing
 4. **Industry hubs** for healthcare, SaaS, manufacturing, and professional services were **not created**. The repo has no industry-specific offerings, use cases, or proof for them. Each would need a defined audience, a genuine industry problem, a relevant capability, accurate use cases, and supporting pages.
 5. **Share image:** `og-default.png` is a simple card built from the existing logo and tagline. Replace it with a designed asset if preferred (same path).
-6. **Newsletter forms don't submit anywhere** (see R7.1). This is the highest-priority item.
-7. **SME review:** the Phase II suspension wording against the DoD memo, and the unverified CMMC statements in R1.
+6. **Newsletter provider:** the false success state is removed (F1); approving a provider is still open (F3).
+7. **Phase II status, CMMCLens pricing and trial terms, and product feature names** (F11).
 
 ## 19. Rollback
 
