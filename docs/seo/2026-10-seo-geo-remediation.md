@@ -2,6 +2,55 @@
 
 Branch `seo-geo-conversion-remediation`, compared with production `51108e4`. Input: Ahrefs Site Audit export "Orphan page (has no incoming internal links)", crawl of 2026-10-18, 41 URLs. Tables were generated from server output, not typed by hand.
 
+## Current newsletter fallback and attribution (round 4, commit `824a2a0`)
+
+This section describes the **current** implementation. It corrects earlier sections of this report that described a CMMC-specific fallback ("Ask About CMMC Updates" → `/contact?inquiry=cmmc`); those passages are marked as corrected where they appear.
+
+### Newsletter signup: current behaviour
+
+1. **No provider connected.** Newsletter signup is not connected to any approved email-marketing provider. `NEWSLETTER_PROVIDER` in `client/src/lib/newsletter.ts` is `null`.
+2. **No email handling.** In this state the newsletter component renders no email field and does not collect, store, or transmit email addresses.
+3. **Neutral language.** The Blog and Knowledge Hub blocks show the heading "Want to Hear From DefenseEye?", the message "Email updates aren't available yet. To ask a question or talk about your goals, contact our team, or keep reading our free guides.", and the button **Contact Our Team**. A secondary link points to free guides on the site.
+4. **General inquiry.** The button links to `/contact?inquiry=newsletter`, which pre-selects **General inquiry** in the contact form's Inquiry Type field.
+5. **CMMC CTAs unchanged.** Links built for a CMMC context (`/contact?inquiry=cmmc`, for example the Knowledge Hub sidebar consultation link) still pre-select **CMMC readiness**. The other existing `?inquiry=` values are unchanged.
+6. **Plain visits.** Visiting `/contact` without an `inquiry` parameter pre-selects no inquiry type.
+7. **Attribution preserved.** The button keeps every query parameter already on the page (UTM tags, ad-click IDs such as `gclid`, referral codes such as `oppref`) and sets only `inquiry`. The original landing page and referring site are kept as described below.
+8. **Separate event.** A click on the button fires `newsletter_unavailable_cta_click`, separate from the contact-form submission event.
+9. **No personal data.** The event carries only `{ location: "blog" | "knowledge_hub", intent: "newsletter" }`; it contains no email address or other personal data.
+10. **No subscription claim.** The fallback never states or implies that the visitor subscribed. A test fails if any page hard-codes "You're subscribed" copy.
+11. **No delivery promise.** The fallback does not promise newsletter delivery, email frequency, or mailing-list enrollment. It offers a conversation through the existing contact form.
+12. **Future provider.** If a provider is approved later, it can replace the fallback. `NewsletterSignup` already contains an accessible signup form that is shown only when `NEWSLETTER_PROVIDER` is set. Its consent wording, consent handling, and any provider integration must be reviewed and approved before it is enabled; none is active today.
+
+### Attribution fix
+
+**Problem (pre-existing).** The site reloads on any plain link to another page. On every load, `captureUtmParameters` (in `client/src/lib/tracking.ts`) replaced the stored session attribution. So following the fallback to `/contact` overwrote the visitor's campaign source with the contact page and the site's own domain before the form was submitted.
+
+**Current behaviour:**
+- **Internal navigation** (a page load whose referrer is this site) no longer overwrites the original campaign source. The stored landing page and external referring site are kept. Campaign values present on the new URL are merged into the stored record.
+- **External arrivals** (a page load from another site, or a first visit) still establish new attribution, as before.
+- **Through to submission:** the original landing page and referring site remain in the stored attribution. The contact form already sends that stored attribution with each submission (`getStoredAttribution()`), so they reach the enquiry.
+
+**Tests:**
+
+| Test file | Tests | Covers |
+|---|---|---|
+| `client/src/lib/attribution.test.ts` | 5 | Landing attribution kept across an internal reload; landing page and referrer kept when the fallback carries the same parameters; new campaign values merged; fresh attribution on an external arrival; first landing recorded |
+| `client/src/pages/SecureAiAdoption.test.tsx` (existing) | 1 | UTM and ad-ID capture on a campaign landing, unchanged and passing |
+
+### Tests for the fallback
+
+| Test file | Tests | Covers |
+|---|---|---|
+| `client/src/components/NewsletterSignup.test.tsx` | 12 | Neutral copy; no form or "subscribed" text; `/contact?inquiry=newsletter` link; preserved query parameters; stale `inquiry` replaced; separate analytics event without personal data; accessible link name; provider-mode states |
+| `client/src/pages/ContactUs.a11y.test.tsx` | 10 | `newsletter`/`general` → General inquiry; `cmmc` → CMMC readiness; `cmmclens` → CMMCLens demo; unknown or missing → none; General inquiry option rendered; label, required, and validation tests |
+| `client/src/lib/newsletter.test.ts` | 9 | Provider-gated logic (unchanged in round 4) |
+
+**Browser check (390 px):** from `/blog` and `/knowledge-hub` with `?utm_source=linkedin&utm_campaign=q4&gclid=g1`, the button opened `/contact?utm_source=linkedin&utm_campaign=q4&gclid=g1&inquiry=newsletter`. General inquiry was pre-selected, the stored attribution kept the campaign values and original landing page, the event fired without personal data, and nothing overflowed. `/contact?inquiry=cmmc` pre-selected CMMC readiness; plain `/contact` pre-selected nothing.
+
+**Full suite at `824a2a0`:** 29 files, 284 tests, all passing; type-check and production build pass.
+
+---
+
 ## Final review update (round 3): newsletter, primary-source verification, dates
 
 Two new commits: `669d167` (newsletter) and `bf8c9e9` (regulatory and claims). Each passes type-check and the full suite on its own (268 and 269 tests). **Production was not deployed or changed.**
@@ -11,7 +60,7 @@ Two new commits: `669d167` (newsletter) and `bf8c9e9` (regulatory and claims). E
 **No approved newsletter or email-marketing provider exists.** None appears in the code or in the environment-variable names; the only email capability is the SMTP transport for the contact form. The old forms showed "You're subscribed!" and sent the address nowhere.
 
 **Decision: replace the false success with a truthful state routed to the existing contact workflow.** Both the Blog and Knowledge Hub blocks now say "Email updates aren't available yet" and offer two routes:
-- **Ask About CMMC Updates** → `/contact?inquiry=cmmc`, the existing lead form, pre-set to CMMC readiness. Fires `newsletter_unavailable_cta_click`.
+- ~~**Ask About CMMC Updates** → `/contact?inquiry=cmmc`, the existing lead form, pre-set to CMMC readiness.~~ **Corrected in round 4:** the button is **Contact Our Team** → `/contact?inquiry=newsletter`, which pre-selects **General inquiry** and keeps existing query parameters. It fires `newsletter_unavailable_cta_click` with `{ location, intent: "newsletter" }`. See "Current newsletter fallback and attribution" above.
 - A link to the free guides.
 
 No email field is shown, and nothing is stored in files, logs, browser storage, or any database. The visual design is unchanged. A provider-ready, accessible form is already built in `NewsletterSignup` and activates when `NEWSLETTER_PROVIDER` is set.
@@ -29,15 +78,15 @@ No email field is shown, and nothing is stored in files, logs, browser storage, 
 | No configured provider (current) | `unavailable` result; the rendered block has no form and no "subscribed" text, and routes to contact |
 | Analytics | Events carry location and provider name only; a test asserts no email address appears in any event |
 | Site-wide guard | A test fails if any page hard-codes "You're subscribed" copy |
-| Live browser (390 px) | `/blog` and `/knowledge-hub`: no "subscribed" text, 0 email inputs, CTA → `/contact?inquiry=cmmc`, event fires, no overflow |
+| Live browser (390 px) | `/blog` and `/knowledge-hub`: no "subscribed" text, 0 email inputs, event fires, no overflow. **Corrected in round 4:** the CTA now goes to `/contact?inquiry=newsletter` (General inquiry), not `/contact?inquiry=cmmc` |
 
-15 newsletter tests in `client/src/lib/newsletter.test.ts` and `client/src/components/NewsletterSignup.test.tsx`.
+15 newsletter tests in round 3 (`client/src/lib/newsletter.test.ts` and `client/src/components/NewsletterSignup.test.tsx`); 21 after round 4.
 
 ### F3. Provider configuration requirements (business decision)
 
 To enable real signups, choose an approved provider and implement `NewsletterProvider.subscribe` in `client/src/lib/newsletter.ts`, preferably through a small server endpoint so no API key reaches the browser. Also:
 - **Credentials:** store them only in the server environment.
-- **Consent:** confirm double opt-in and unsubscribe handling. The current consent text ("You can unsubscribe at any time. See our Privacy Policy.") matches the existing Privacy Policy's marketing-opt-out section.
+- **Consent:** confirm double opt-in and unsubscribe handling with the chosen provider. The provider-mode form contains draft consent wording that refers to the existing Privacy Policy. That wording is shown only when a provider is configured (none is today), and it must be reviewed and approved before any provider is enabled.
 - **Privacy Policy:** confirm the provider is covered as a processor.
 
 ### F4. CMMC and regulatory corrections, with primary sources
@@ -261,7 +310,7 @@ All 10 `/lp/` pages are **indexable**, in the sitemap, and self-canonical, each 
 
 ### R7. Items requiring business approval (new this round, highest priority first)
 
-1. **The newsletter forms don't subscribe anyone.** Blog's "Stay Ahead of CMMC Rule Changes" and Knowledge Hub's "CMMC Updates to Your Inbox" show "You're subscribed!" but send the address nowhere (no request, storage, or analytics event), so visitors are told they're subscribed and the lead is lost. Choose one:
+1. **Resolved (rounds 3 and 4):** the false success state is removed and the fallback routes to a General inquiry; see "Current newsletter fallback and attribution". Original note: **The newsletter forms don't subscribe anyone.** Blog's "Stay Ahead of CMMC Rule Changes" and Knowledge Hub's "CMMC Updates to Your Inbox" show "You're subscribed!" but send the address nowhere (no request, storage, or analytics event), so visitors are told they're subscribed and the lead is lost. Choose one:
    - connect them to a mailing-list provider
    - route them to `/api/contact`
    - remove them, or reword them as a link to the contact page
@@ -346,12 +395,14 @@ Help search engines and AI answer systems find and describe DefenseEye accuratel
 | `9fa18d0` | Round 2 report |
 | `669d167` | Round 3: newsletter forms no longer claim subscriptions; truthful contact routing |
 | `bf8c9e9` | Round 3: CMMC statements verified against primary sources; unverified durations, costs, pricing, trial, and performance claims removed; dead CTAs fixed |
+| `e3d5d15` | Round 3 report |
+| `824a2a0` | Round 4: neutral newsletter fallback (General inquiry); attribution kept across internal navigation |
 
 Each review-fix commit was checked on its own: type-check and the full test suite pass at `bd08bf1`, `7ab8f17`, `4a73cc8`, `bf3f0ff`, `7677d92`, `9d873bb`, `669d167`, `bf8c9e9`, and the head.
 
 **Not included:** the Ahrefs CSV export (diagnostic input, left untracked), `dist/` (gitignored build output), and any environment, deploy, or server configuration.
 
-## 4. Changed files (63, against `51108e4`)
+## 4. Changed files (64, against `51108e4`)
 
 - **Shared SEO, architecture, and content data:** `shared/certificationProcessContent.ts` (added), `shared/cmmcLevelsContent.ts` (added), `shared/datasheetContent.ts` (added), `shared/evidenceMappingContent.ts` (added), `shared/homeContent.ts` (added), `shared/insightsContent.ts` (added), `shared/landingPageContent.ts` (added), `shared/relatedLinks.ts` (added), `shared/routeMetadata.ts` (added), `shared/seoRoutes.ts` (modified), `shared/siteArchitecture.ts` (added), `shared/solutionPageContent.ts` (added), `shared/sprsScoreContent.ts` (added), `shared/whatIsCmmcContent.ts` (added)
 - **Server:** `server/copilot.ts` (modified), `server/index.ts` (modified)
@@ -359,7 +410,7 @@ Each review-fix commit was checked on its own: type-check and the full test suit
 - **Client pages:** `client/src/pages/Blog.tsx` (modified), `client/src/pages/BlogPost.tsx` (modified), `client/src/pages/CMMCArchitecturePage.tsx` (modified), `client/src/pages/CMMCReadinessSprint.tsx` (modified), `client/src/pages/ContactUs.tsx` (modified), `client/src/pages/Datasheets.tsx` (modified), `client/src/pages/DeliveryModel.tsx` (modified), `client/src/pages/Home.tsx` (modified), `client/src/pages/KnowledgeHub.tsx` (modified), `client/src/pages/LandingPage.tsx` (modified), `client/src/pages/SolutionPage.tsx` (modified), `client/src/pages/SprintGuide.tsx` (modified), `client/src/pages/SupplierReadiness.tsx` (modified), `client/src/pages/ThoughtLeadership.tsx` (modified), `client/src/pages/knowledge-hub/CMMCLevels.tsx` (modified), `client/src/pages/knowledge-hub/CertificationProcess.tsx` (modified), `client/src/pages/knowledge-hub/EvidenceMapping.tsx` (modified), `client/src/pages/knowledge-hub/SPRSScore.tsx` (modified), `client/src/pages/knowledge-hub/WhatIsCMMC.tsx` (modified)
 - **Client data:** `client/src/data/blogPosts.ts` (modified), `client/src/data/companyFacts.ts` (modified)
 - **Public files:** `client/public/.well-known/ai-plugin.json` (modified), `client/public/llms.txt` (modified), `client/public/og-default.png` (added), `client/public/robots.txt` (modified)
-- **Tests:** `client/src/components/NewsletterSignup.test.tsx` (added), `client/src/lib/newsletter.test.ts` (added), `client/src/pages/ContactUs.a11y.test.tsx` (added), `server/css-sources.test.ts` (added), `server/internal-links.test.ts` (added), `server/route-metadata.test.ts` (added), `server/secure-ai-route.test.ts` (modified), `server/seo-routes.test.ts` (modified), `server/site-architecture.test.ts` (added)
+- **Tests:** `client/src/components/NewsletterSignup.test.tsx` (added), `client/src/lib/attribution.test.ts` (added), `client/src/lib/newsletter.test.ts` (added), `client/src/pages/ContactUs.a11y.test.tsx` (added), `server/css-sources.test.ts` (added), `server/internal-links.test.ts` (added), `server/route-metadata.test.ts` (added), `server/secure-ai-route.test.ts` (modified), `server/seo-routes.test.ts` (modified), `server/site-architecture.test.ts` (added)
 - **Docs and root HTML:** `client/index.html` (modified), `docs/seo/2026-10-seo-geo-remediation.md` (added)
 
 ## 5. Routes
@@ -588,7 +639,7 @@ Device-emulated audit (Chrome DevTools Protocol) of 18 key pages at 390 px and 1
 |---|---|---|
 | Dependencies | `pnpm install --frozen-lockfile --offline` | OK; lockfile unchanged |
 | Type check | `pnpm check` (`tsc --noEmit`) | Pass |
-| Unit/integration tests | `npx vitest run --root .` | **28 files, 269 tests, all pass** |
+| Unit/integration tests | `npx vitest run --root .` | **29 files, 284 tests, all pass** (as of round 4) |
 | Production build | `pnpm build` (vite build + server bundle) | Pass |
 | Route/metadata | `server/route-metadata.test.ts` | Unique titles and descriptions, length budgets, every client route covered or redirected, single-hop redirects |
 | Architecture/orphans | `server/site-architecture.test.ts` | All 41 orphans have an outcome; ≥ 2 raw-HTML inlinks; one H1 per page; no links to unknown or redirected URLs; breadcrumb/schema parity; llms.txt URLs valid; no pricing in schema; share image 1200×630 |
@@ -598,7 +649,7 @@ Device-emulated audit (Chrome DevTools Protocol) of 18 key pages at 390 px and 1
 | Sitemap XML | Parsed with an XML parser | Well-formed, 74 URLs |
 | Structured data | Script checking JSON syntax, required properties per Google docs, `@id` resolution, and visible-content consistency | 0 errors (warnings in §17) |
 | Mobile/a11y and CTAs | Chrome DevTools Protocol scripts (18+ pages at 390 px and 1440 px) | No overflow, one H1, no missing alt text or unnamed controls; skip link works; focus visible |
-| Forms | Browser test with `/api/contact` stubbed; 19 contact unit tests; 15 newsletter tests | See F2 and R3 |
+| Forms | Browser test with `/api/contact` stubbed; contact unit tests; 21 newsletter tests; 5 attribution tests | See round 4, F2, and R3 |
 | Dates | `server/site-architecture.test.ts` "article dates" | Every schema date matches the visible date |
 | Secrets | Diff scan for keys, tokens, passwords, and private keys; tracked-file check | None found; no `.env`, keys, or `node_modules` tracked (`.env.example` template pre-exists, unchanged) |
 
