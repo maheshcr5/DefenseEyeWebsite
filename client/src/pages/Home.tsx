@@ -17,6 +17,7 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
+import { HOME_AT_A_GLANCE, HOME_PATHS } from "@shared/homeContent";
 import { COMPANY } from "@/data/companyFacts";
 import { trackConversion } from "@/lib/tracking";
 
@@ -147,6 +148,28 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section-gray px-4 py-12" aria-labelledby="home-paths-heading">
+        <div className="mx-auto max-w-6xl">
+          <h2 id="home-paths-heading" className="font-heading text-3xl font-bold">Find your starting point</h2>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {HOME_PATHS.map((path) => (
+              <a
+                key={path.href}
+                href={path.href}
+                onClick={() => trackConversion("home_path_click", { path: path.href, location: "home_paths" })}
+                className="group flex flex-col border border-border/50 bg-card p-5 transition-colors hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50"
+              >
+                <h3 className="font-heading text-lg font-bold leading-snug">{path.audience}</h3>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">{path.description}</p>
+                <span className="mt-4 inline-flex items-center text-sm font-semibold text-primary group-hover:underline">
+                  {path.cta} <ArrowRight className="ml-1 size-4" aria-hidden="true" />
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="section-light px-4 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="max-w-3xl">
@@ -248,6 +271,21 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section-light px-4 py-16" aria-labelledby="home-glance-heading">
+        <div className="mx-auto max-w-4xl">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">DefenseEye at a Glance</p>
+          <h2 id="home-glance-heading" className="font-heading text-4xl font-bold">What DefenseEye does, for whom, and with what safeguards</h2>
+          <dl className="mt-8 space-y-6">
+            {HOME_AT_A_GLANCE.map((item) => (
+              <div key={item.question} className="border-l-2 border-primary/40 pl-5">
+                <dt className="font-heading text-lg font-bold">{item.question}</dt>
+                <dd className="mt-2 leading-relaxed text-muted-foreground">{item.answer}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 

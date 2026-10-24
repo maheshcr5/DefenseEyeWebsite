@@ -5,18 +5,14 @@
 // Only add a link when a reader of the source page would plausibly want the
 // destination next. Do not add links just to raise inlink counts.
 
+import { HOME_PATHS } from "./homeContent";
 import { ROUTE_PARENTS, type ArchitectureLink } from "./siteArchitecture";
 
 const link = (href: string, label: string, description?: string): ArchitectureLink => ({ href, label, description });
 
 export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
-  "/": [
-    link("/secure-ai-adoption", "Secure agentic AI readiness and implementation", "Governance, secure architecture, and human oversight for AI agents."),
-    link("/industries/financial-services-credit-unions", "Secure AI for financial services and credit unions", "AI adoption with data-access controls, traceability, and oversight."),
-    link("/solutions/cybersecurity-risk", "Cybersecurity risk and remediation", "Prioritize exposures and remediation in regulated environments."),
-    link("/cmmc-compliance-automation", "CMMC readiness and evidence automation", "CCP-led readiness and CMMCLens for defense suppliers."),
-    link("/industries/defense-industrial-base", "Support for defense suppliers", "CUI scoping, NIST SP 800-171 readiness, and evidence workflows."),
-  ],
+  // Homepage audience paths (shared/homeContent.ts).
+  "/": HOME_PATHS.map((path) => link(path.href, path.cta, `${path.audience}: ${path.description}`)),
 
   // Secure AI
   "/secure-ai-adoption": [

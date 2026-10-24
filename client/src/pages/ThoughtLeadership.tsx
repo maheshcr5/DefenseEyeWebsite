@@ -10,11 +10,15 @@ import { useSeo } from "@/hooks/useSeo";
 import { GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 
 import { INSIGHTS } from "@shared/insightsContent";
+import { ROUTE_PARENTS, getRouteName } from "@shared/siteArchitecture";
+import { trackConversion } from "@/lib/tracking";
 
 export default function ThoughtLeadership() {
   const [location] = useLocation();
   const slug = location.split("/").filter(Boolean).pop() ?? "";
   const page = INSIGHTS.find((item) => item.slug === slug) ?? INSIGHTS[0];
+  // Readers not ready to book can continue to the service page this insight sits under.
+  const parentPath = ROUTE_PARENTS[`/insights/${page.slug}`];
 
   useSeo(`${page.title} | DefenseEye`, page.description);
 
@@ -101,11 +105,18 @@ export default function ThoughtLeadership() {
                   DefenseEye helps organizations turn these concepts into governed programs, architecture decisions, evidence workflows, and readiness outcomes.
                 </p>
               </div>
-              <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-                <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-                  Book a Consultation <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </a>
+              <div className="flex flex-col gap-3 sm:items-end">
+                <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "insight_cta", insight: page.slug })}>
+                  <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+                    Book a Consultation <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </a>
+                {parentPath && (
+                  <a href={parentPath} className="text-sm font-semibold text-primary hover:underline">
+                    Or explore {getRouteName(parentPath)}
+                  </a>
+                )}
+              </div>
             </div>
           </section>
           <RelatedResources className="mt-14" />

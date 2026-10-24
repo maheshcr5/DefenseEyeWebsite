@@ -131,3 +131,19 @@ describe("server-rendered fallback HTML", () => {
     }
   });
 });
+
+describe("llms.txt", () => {
+  it("lists only live, indexable DefenseEye pages", () => {
+    const llms = fs.readFileSync(path.resolve(__dirname, "../client/public/llms.txt"), "utf-8");
+    const urls = Array.from(llms.matchAll(/https:\/\/defenseeye\.ai(\/[^\s)]*[^\s).,])?/g), (match) => match[1] ?? "/");
+    expect(urls.length).toBeGreaterThan(20);
+    for (const url of urls) {
+      if (/\.(pdf|xml|txt)$/.test(url)) {
+        if (url.endsWith(".pdf")) expect(fs.existsSync(path.resolve(__dirname, "../client/public", url.slice(1))), url).toBe(true);
+        continue;
+      }
+      expect(isLive(url), url).toBe(true);
+      expect(isNoindexRoute(url), url).toBe(false);
+    }
+  });
+});

@@ -7,6 +7,7 @@ import { EVIDENCE_MAPPING_CONTENT } from "./evidenceMappingContent";
 import { SPRS_SCORE_CONTENT } from "./sprsScoreContent";
 import { getRouteMetadata, isNoindexRoute } from "./routeMetadata";
 import { INSIGHTS } from "./insightsContent";
+import { HOME_AT_A_GLANCE } from "./homeContent";
 import { LANDING_PAGE_CONTENT } from "./landingPageContent";
 import { DATASHEET_CONTENT } from "./datasheetContent";
 import { SOLUTION_PAGE_CONTENT } from "./solutionPageContent";
@@ -162,6 +163,7 @@ const TIER_1_ROUTE_DEFINITIONS: SeoRoute[] = [
       { label: "View Representative Engagements", href: "/representative-engagements" },
       { label: "Why DefenseEye", href: "/why-defenseeye" },
     ],
+    faqs: HOME_AT_A_GLANCE,
     schemaKind: "home",
     topics: ["Secure AI adoption", "AI governance", "Agentic AI implementation", "CMMC", "CMMCLens", "AttackSense"],
     lastmod: customerJourneyUpdateDate,
@@ -1777,6 +1779,7 @@ export function buildRouteSchemas(route: SeoRoute) {
         areaServed: { "@type": "Country", name: "United States" },
         knowsAbout: route.topics,
       },
+      ...faqPage,
     ];
   }
 
