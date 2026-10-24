@@ -7,7 +7,7 @@ vi.mock("@/components/NavBar", () => ({ default: () => <nav>DefenseEye navigatio
 vi.mock("@/lib/tracking", () => ({ trackConversion: vi.fn(), getStoredAttribution: vi.fn(() => ({})) }));
 vi.mock("@/lib/openaiAds", () => ({ reportOpenAiAdsLeadCreated: vi.fn() }));
 
-import ContactUs, { validateContactForm, type ContactFormValues } from "./ContactUs";
+import ContactUs, { inquiryTypeFromParam, validateContactForm, type ContactFormValues } from "./ContactUs";
 
 const complete: ContactFormValues = {
   firstName: "Ada",
@@ -63,5 +63,29 @@ describe("contact form markup", () => {
   it("uses the app's own validation messages instead of browser bubbles", () => {
     // HTML attribute names are case-insensitive; React 19 serializes this one as noValidate.
     expect(form).toMatch(/<form[^>]*novalidate=""/i);
+  });
+});
+
+describe("contact inquiry preselection from ?inquiry=", () => {
+  it("maps the newsletter fallback to a neutral General inquiry, not CMMC", () => {
+    expect(inquiryTypeFromParam("newsletter")).toBe("General inquiry");
+    expect(inquiryTypeFromParam("general")).toBe("General inquiry");
+  });
+
+  it("keeps CMMC preselection for CMMC-specific CTAs", () => {
+    expect(inquiryTypeFromParam("cmmc")).toBe("CMMC readiness");
+    expect(inquiryTypeFromParam("cmmclens")).toBe("CMMCLens demo");
+  });
+
+  it("selects nothing for missing or unknown values", () => {
+    expect(inquiryTypeFromParam(null)).toBeNull();
+    expect(inquiryTypeFromParam("unknown-topic")).toBeNull();
+  });
+
+  it("offers General inquiry as a selectable Inquiry Type option", () => {
+    const html = renderToStaticMarkup(<ContactUs />);
+    const select = html.slice(html.indexOf('id="contact-inquiryType"'), html.indexOf("</select>", html.indexOf('id="contact-inquiryType"')));
+    expect(select).toMatch(/<option[^>]*>General inquiry<\/option>/);
+    expect(select).toMatch(/<option[^>]*>CMMC readiness<\/option>/);
   });
 });

@@ -34,8 +34,26 @@ type NewsletterSignupProps = {
   initialResult?: NewsletterResult | null;
 };
 
-export const NEWSLETTER_UNAVAILABLE_HEADING = "Questions About CMMC Rule Changes?";
-export const NEWSLETTER_CONTACT_HREF = "/contact?inquiry=cmmc";
+export const NEWSLETTER_UNAVAILABLE_HEADING = "Want to Hear From DefenseEye?";
+export const NEWSLETTER_CONTACT_PATH = "/contact";
+/** Neutral contact intent: maps to "General inquiry", not to any specific topic. */
+export const NEWSLETTER_INQUIRY = "newsletter";
+
+/**
+ * Contact link for the fallback. Keeps every query parameter already on the page
+ * (UTM tags, ad and campaign identifiers, referral codes) and only sets the
+ * neutral inquiry value, so attribution survives the navigation.
+ */
+export function buildNewsletterContactHref(currentSearch = ""): string {
+  const params = new URLSearchParams(currentSearch);
+  params.set("inquiry", NEWSLETTER_INQUIRY);
+  return `${NEWSLETTER_CONTACT_PATH}?${params.toString()}`;
+}
+
+/** Separate analytics event for the fallback; carries no personal data. */
+export function trackNewsletterFallbackClick(location: NewsletterLocation) {
+  trackConversion("newsletter_unavailable_cta_click", { location, intent: NEWSLETTER_INQUIRY });
+}
 
 export default function NewsletterSignup({
   location,
@@ -60,12 +78,19 @@ export default function NewsletterSignup({
       <div>
         <h2 className={headingClassName}>{NEWSLETTER_UNAVAILABLE_HEADING}</h2>
         <p className={introClassName}>
-          Email updates aren't available yet. To understand how CMMC rule changes affect your contracts, talk with our team, or keep reading our free guides.
+          Email updates aren't available yet. To ask a question or talk about your goals, contact our team, or keep reading our free guides.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <a href={NEWSLETTER_CONTACT_HREF} onClick={() => trackConversion("newsletter_unavailable_cta_click", { location })}>
+          <a
+            href={buildNewsletterContactHref()}
+            onClick={(event) => {
+              // Carry the current page's query parameters (campaign attribution) forward.
+              event.currentTarget.href = buildNewsletterContactHref(window.location.search);
+              trackNewsletterFallbackClick(location);
+            }}
+          >
             <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-              Ask About CMMC Updates <ArrowRight className="w-4 h-4 ml-1.5" aria-hidden="true" />
+              Contact Our Team <ArrowRight className="w-4 h-4 ml-1.5" aria-hidden="true" />
             </Button>
           </a>
           <a href={resourcesLink.href} className="text-sm font-semibold text-primary hover:underline">
@@ -131,7 +156,7 @@ export default function NewsletterSignup({
       )}
       {result?.status !== "success" && (
         <p className="text-muted-foreground/70 text-xs mt-4">
-          By subscribing, you agree to receive CMMC update emails from DefenseEye. You can unsubscribe at any time. See our{" "}
+          By subscribing, you agree to receive email updates from DefenseEye. You can unsubscribe at any time. See our{" "}
           <a href="/privacy-policy" className="underline hover:text-primary">Privacy Policy</a>.
         </p>
       )}

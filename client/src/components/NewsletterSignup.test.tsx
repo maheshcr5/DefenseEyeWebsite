@@ -4,9 +4,14 @@ import path from "path";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("@/lib/tracking", () => ({ trackConversion: vi.fn() }));
+const tracking = vi.hoisted(() => ({ trackConversion: vi.fn() }));
+vi.mock("@/lib/tracking", () => tracking);
 
-import NewsletterSignup, { NEWSLETTER_CONTACT_HREF, NEWSLETTER_UNAVAILABLE_HEADING } from "./NewsletterSignup";
+import NewsletterSignup, {
+  NEWSLETTER_UNAVAILABLE_HEADING,
+  buildNewsletterContactHref,
+  trackNewsletterFallbackClick,
+} from "./NewsletterSignup";
 import { NEWSLETTER_MESSAGES, type NewsletterProvider } from "@/lib/newsletter";
 
 const provider: NewsletterProvider = { name: "test-provider", subscribe: async () => undefined };
@@ -28,9 +33,55 @@ describe("NewsletterSignup without a configured provider (current site state)", 
     expect(html).toContain("Email updates aren&#x27;t available yet.");
   });
 
-  it("routes visitors to the existing contact workflow and free guides", () => {
-    expect(html).toContain(`href="${NEWSLETTER_CONTACT_HREF.replace("&", "&amp;")}"`);
+  it("uses neutral copy that does not assume a CMMC (or any other) interest", () => {
+    // Heading, message, and contact CTA (the secondary free-guides link is a content pointer, not an intent).
+    const start = html.indexOf(NEWSLETTER_UNAVAILABLE_HEADING);
+    const fallback = html.slice(start, html.indexOf("Contact Our Team", start) + "Contact Our Team".length);
+    expect(fallback).not.toMatch(/CMMC/);
+    expect(fallback).toContain("Email updates aren&#x27;t available yet.");
+  });
+
+  it("routes to the general contact flow with a neutral inquiry, not CMMC", () => {
+    expect(html).toContain('href="/contact?inquiry=newsletter"');
+    expect(html).not.toContain("inquiry=cmmc");
     expect(html).toContain('href="/knowledge-hub"');
+  });
+
+  it("renders the CTA as a real link with an accessible name for keyboard and screen-reader users", () => {
+    expect(html).toMatch(/<a[^>]*href="\/contact\?inquiry=newsletter"[^>]*>[\s\S]*?Contact Our Team[\s\S]*?<\/a>/);
+    expect(html).toMatch(/<svg[^>]*aria-hidden="true"/);
+  });
+});
+
+describe("newsletter fallback contact link", () => {
+  it("sets only the neutral inquiry when the page has no query string", () => {
+    expect(buildNewsletterContactHref("")).toBe("/contact?inquiry=newsletter");
+  });
+
+  it("preserves existing campaign, referral, and click-id parameters", () => {
+    const href = buildNewsletterContactHref("?utm_source=linkedin&utm_campaign=cmmc-q4&gclid=abc123&oppref=opp_9");
+    const params = new URL(href, "https://defenseeye.ai").searchParams;
+    expect(params.get("utm_source")).toBe("linkedin");
+    expect(params.get("utm_campaign")).toBe("cmmc-q4");
+    expect(params.get("gclid")).toBe("abc123");
+    expect(params.get("oppref")).toBe("opp_9");
+    expect(params.get("inquiry")).toBe("newsletter");
+  });
+
+  it("replaces a stale inquiry value instead of duplicating it", () => {
+    const href = buildNewsletterContactHref("?inquiry=cmmc&utm_source=x");
+    const params = new URL(href, "https://defenseeye.ai").searchParams;
+    expect(params.getAll("inquiry")).toEqual(["newsletter"]);
+    expect(params.get("utm_source")).toBe("x");
+  });
+});
+
+describe("newsletter fallback analytics", () => {
+  it("fires its own event with location and neutral intent, and no personal data", () => {
+    tracking.trackConversion.mockClear();
+    trackNewsletterFallbackClick("knowledge_hub");
+    expect(tracking.trackConversion).toHaveBeenCalledTimes(1);
+    expect(tracking.trackConversion).toHaveBeenCalledWith("newsletter_unavailable_cta_click", { location: "knowledge_hub", intent: "newsletter" });
   });
 });
 
@@ -39,7 +90,7 @@ describe("NewsletterSignup with a provider", () => {
     const html = renderToStaticMarkup(<NewsletterSignup {...base} provider={provider} />);
     expect(html).toMatch(/<label[^>]*for="blog-newsletter-email"/);
     expect(html).toMatch(/id="blog-newsletter-email"[^>]*required=""[^>]*aria-required="true"/);
-    expect(html).toContain("By subscribing, you agree to receive CMMC update emails from DefenseEye");
+    expect(html).toContain("By subscribing, you agree to receive email updates from DefenseEye");
     expect(html).toContain('href="/privacy-policy"');
   });
 

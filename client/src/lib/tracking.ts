@@ -52,6 +52,16 @@ export type ConversionName =
   | "partners_email_click"
   | "enterprise_email_click";
 
+function isSameSiteReferrer(referrer: string) {
+  if (!referrer || !window.location.hostname) return false;
+  try {
+    const host = (value: string) => value.replace(/^www\./, "");
+    return host(new URL(referrer).hostname) === host(window.location.hostname);
+  } catch {
+    return false;
+  }
+}
+
 export function captureUtmParameters() {
   if (typeof window === "undefined") return;
   const params = new URLSearchParams(window.location.search);
@@ -62,9 +72,28 @@ export function captureUtmParameters() {
     if (value) captured[key] = value;
   }
 
+  // A full page load from another page on this site (for example following a plain
+  // link to /contact) keeps the session's landing page and external referrer.
+  // Campaign values on the new URL are merged in; only an arrival from another
+  // site, or a first visit, starts a fresh record.
+  const referrer = document.referrer;
+  const stored = sessionStorage.getItem("defenseeye_utm");
+  if (stored && isSameSiteReferrer(referrer)) {
+    if (Object.keys(captured).length === 0) return;
+    let previous: Record<string, string> = {};
+    try {
+      previous = JSON.parse(stored);
+    } catch {
+      // Unreadable stored attribution is replaced below.
+    }
+    const merged = { ...previous, ...captured };
+    sessionStorage.setItem("defenseeye_utm", JSON.stringify(merged));
+    localStorage.setItem("defenseeye_utm_last", JSON.stringify(merged));
+    return;
+  }
+
   captured.landing_pathname = window.location.pathname;
 
-  const referrer = document.referrer;
   if (referrer && !captured.referrer_domain) {
     try {
       captured.referrer_domain = new URL(referrer).hostname.replace(/^www\./, "");

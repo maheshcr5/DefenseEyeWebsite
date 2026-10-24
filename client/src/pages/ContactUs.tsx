@@ -204,6 +204,31 @@ export default function ContactUs() {
   );
 }
 
+// Maps the ?inquiry= value used by CTAs across the site to an Inquiry Type option.
+// "newsletter" is the neutral value from the newsletter fallback: it must not imply
+// a CMMC (or any other) topic the visitor did not choose.
+export const INQUIRY_PARAM_MAP: Record<string, string> = {
+  newsletter: "General inquiry",
+  general: "General inquiry",
+  supplier: "Supplier / procurement inquiry",
+  partner: "Partnership / subcontracting",
+  "ai-transformation": "AI governance consulting",
+  "ai-governance": "AI governance consulting",
+  "ai-security": "AI governance consulting",
+  "microsoft-copilot-readiness": "Microsoft Copilot readiness",
+  cmmc: "CMMC readiness",
+  "compliance-automation": "Compliance automation",
+  "cybersecurity-risk": "Cloud security",
+  "cloud-security": "Cloud security",
+  "staff-augmentation": "Staff augmentation",
+  cmmclens: "CMMCLens demo",
+  support: "Product support",
+};
+
+export function inquiryTypeFromParam(param: string | null): string | null {
+  return param ? INQUIRY_PARAM_MAP[param] ?? null : null;
+}
+
 type ContactField = keyof ContactFormValues;
 export type ContactFormErrors = Partial<Record<ContactField, string>>;
 
@@ -251,25 +276,8 @@ function ContactFormSection() {
   });
 
   useEffect(() => {
-    const inquiry = new URLSearchParams(window.location.search).get("inquiry");
-    const map: Record<string, string> = {
-      supplier: "Supplier / procurement inquiry",
-      partner: "Partnership / subcontracting",
-      "ai-transformation": "AI governance consulting",
-      "ai-governance": "AI governance consulting",
-      "ai-security": "AI governance consulting",
-      "microsoft-copilot-readiness": "Microsoft Copilot readiness",
-      cmmc: "CMMC readiness",
-      "compliance-automation": "Compliance automation",
-      "cybersecurity-risk": "Cloud security",
-      "cloud-security": "Cloud security",
-      "staff-augmentation": "Staff augmentation",
-      cmmclens: "CMMCLens demo",
-      support: "Product support",
-    };
-    if (inquiry && map[inquiry]) {
-      setForm((current) => ({ ...current, inquiryType: map[inquiry] }));
-    }
+    const inquiryType = inquiryTypeFromParam(new URLSearchParams(window.location.search).get("inquiry"));
+    if (inquiryType) setForm((current) => ({ ...current, inquiryType }));
   }, []);
 
   // Move focus to the confirmation so keyboard and screen-reader users know the form was sent.
@@ -384,6 +392,7 @@ function ContactFormSection() {
                 {label("inquiryType", "Inquiry Type")}
                 <select {...fieldProps("inquiryType")} className={fieldClass("inquiryType")}>
                   <option value="">Select inquiry type...</option>
+                  <option>General inquiry</option>
                   <option>Supplier / procurement inquiry</option>
                   <option>Partnership / subcontracting</option>
                   <option>AI governance consulting</option>
