@@ -994,6 +994,50 @@ export function resolveUrlDisposition(
   return { kind: "pass" };
 }
 
+// ─── Preferred hostname and protocol ─────────────────────────────────────────
+// The canonical origin is https://defenseeye.ai. Requests that reach the app on
+// www.defenseeye.ai, or over plain HTTP through the reverse proxy (which sets
+// X-Forwarded-Proto), get exactly one redirect: straight to the canonical origin
+// and the *final* path, folding in any legacy or trailing-slash redirect so no
+// redirect chain is created. Other hosts (localhost, 127.0.0.1 health checks)
+// are never redirected, and the Host header is never reflected into the target.
+export const CANONICAL_HOST = "defenseeye.ai";
+const CANONICAL_ORIGIN = `https://${CANONICAL_HOST}`;
+const ALTERNATE_HOSTS = new Set([`www.${CANONICAL_HOST}`]);
+
+export function resolveCanonicalRedirect(
+  request: { host?: string; forwardedProto?: string; path: string; search: string },
+  isKnownRoute: (path: string) => boolean
+): string | null {
+  const host = (request.host ?? "").trim().toLowerCase().replace(/:\d+$/, "");
+  const protocol = (request.forwardedProto ?? "").split(",")[0].trim().toLowerCase();
+  const isAlternateHost = ALTERNATE_HOSTS.has(host);
+  const isPlainHttpOnCanonicalHost = host === CANONICAL_HOST && protocol === "http";
+  if (!isAlternateHost && !isPlainHttpOnCanonicalHost) return null;
+
+  const disposition = resolveUrlDisposition(request.path, isKnownRoute);
+  const finalPath = disposition.kind === "redirect" ? disposition.location : request.path;
+  return CANONICAL_ORIGIN + finalPath + request.search;
+}
+
+export function canonicalHostMiddleware(isKnownRoute: (path: string) => boolean): express.RequestHandler {
+  return (req, res, next) => {
+    const queryIndex = req.originalUrl.indexOf("?");
+    const target = resolveCanonicalRedirect(
+      {
+        host: req.headers.host,
+        forwardedProto: req.headers["x-forwarded-proto"] as string | undefined,
+        path: req.path,
+        search: queryIndex === -1 ? "" : req.originalUrl.slice(queryIndex),
+      },
+      isKnownRoute
+    );
+    if (!target) return next();
+    // 301 for GET/HEAD; 308 keeps the method and body for anything else.
+    res.redirect(req.method === "GET" || req.method === "HEAD" ? 301 : 308, target);
+  };
+}
+
 // Per-route title/description/robots come from the shared registry so the server
 // and the hydrated client always agree (see shared/routeMetadata.ts).
 export function getRouteMeta(routePath: string): RouteMetadata | null {
@@ -1030,6 +1074,7 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
 
+  app.use(canonicalHostMiddleware((candidate) => getRouteMeta(candidate) !== null));
   app.use(express.json());
   registerCopilotRoutes(app, rateLimit);
 
