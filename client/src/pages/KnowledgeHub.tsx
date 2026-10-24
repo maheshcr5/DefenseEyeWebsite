@@ -3,6 +3,7 @@
  * Route: /knowledge-hub
  * The authoritative resource center for DoD contractors navigating CMMC 2.0.
  */
+import { useSeo } from "@/hooks/useSeo";
 
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
@@ -185,16 +186,13 @@ export default function KnowledgeHub() {
   const heroRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true });
 
+  // Title and meta description come from shared/routeMetadata.ts for this path.
+  useSeo(
+    "CMMC Knowledge Hub: Guides for DoD Contractors | DefenseEye",
+    "Plain-English CMMC 2.0 guides for DoD contractors: CMMC levels, NIST 800-171 evidence mapping, SPRS scoring, and the certification process."
+  );
+
   useEffect(() => {
-    document.title = "CMMC 2.0 Knowledge Hub — NIST 800-171, SPRS, C3PAO Guides for DoD Contractors | DefenseEye.ai";
-    // Inject meta description
-    let metaDesc = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement("meta");
-      metaDesc.setAttribute("name", "description");
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.content = "Authoritative CMMC 2.0 compliance guides for DoD contractors — what CMMC is, Level 1 vs Level 2 requirements, SPRS score calculation, C3PAO assessment process, evidence mapping, and SSP/POA&M guidance. All content references DODCIO, NIST, DFARS, and Cyber AB authoritative sources.";
     // Inject WebPage + SpecialAnnouncement + ItemList schema for LLM/AI engine visibility
     const script = document.createElement("script");
     script.type = "application/ld+json";

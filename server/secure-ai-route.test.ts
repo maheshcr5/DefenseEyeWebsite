@@ -28,14 +28,16 @@ const baseHtml = `
 describe("secure-ai-adoption direct route HTML", () => {
   it("has the required route metadata values", () => {
     expect(SECURE_AI_ROUTE_META).toEqual({
-      title: "Secure Agentic AI Consulting | DefenseEye",
+      title: "Secure Agentic AI Readiness & Implementation | DefenseEye",
       description:
         "DefenseEye helps regulated organizations implement agentic AI with secure architecture, responsible governance, risk controls, and hands-on delivery support.",
     });
   });
 
   it("renders route-specific no-JavaScript content without homepage portfolio leakage", () => {
-    const html = secureAiPrerenderHtml();
+    // The shared site header/footer navigation legitimately links every portfolio;
+    // "leakage" means homepage portfolio copy inside this route's own main content.
+    const html = secureAiPrerenderHtml().match(/<main>[\s\S]*<\/main>/)?.[0] ?? "";
 
     expect(html).toContain("Implement Agentic AI Securely");
     expect(html).toContain("Secure Agentic AI Readiness");

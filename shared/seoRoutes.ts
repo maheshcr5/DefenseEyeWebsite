@@ -5,6 +5,7 @@ import { CERTIFICATION_PROCESS_CONTENT } from "./certificationProcessContent";
 import { CMMC_LEVELS_CONTENT } from "./cmmcLevelsContent";
 import { EVIDENCE_MAPPING_CONTENT } from "./evidenceMappingContent";
 import { SPRS_SCORE_CONTENT } from "./sprsScoreContent";
+import { getRouteMetadata, isNoindexRoute } from "./routeMetadata";
 
 export const ROUTE_SCHEMA_SCRIPT_ID = "defenseeye-route-schema";
 
@@ -104,7 +105,7 @@ const customerJourneyUpdateDate = "2026-09-01";
 const industryPagesUpdateDate = "2026-09-04";
 const whyDefenseEyeUpdateDate = "2026-09-05";
 
-export const TIER_1_ROUTES: SeoRoute[] = [
+const TIER_1_ROUTE_DEFINITIONS: SeoRoute[] = [
   {
     path: "/",
     title: "DefenseEye | Secure Agentic AI Implementation",
@@ -1081,9 +1082,18 @@ export const TIER_1_ROUTES: SeoRoute[] = [
   },
 ];
 
+// Titles and descriptions always come from the shared metadata registry so the
+// server-injected <title>, the schema, and the hydrated client title match.
+function withRouteMetadata(route: SeoRoute): SeoRoute {
+  const metadata = getRouteMetadata(route.path);
+  return metadata ? { ...route, title: metadata.title, description: metadata.description } : route;
+}
+
+export const TIER_1_ROUTES: SeoRoute[] = TIER_1_ROUTE_DEFINITIONS.map(withRouteMetadata);
+
 export const TIER_1_PATHS = TIER_1_ROUTES.map((route) => route.path);
 
-const INDEXED_RESOURCE_ROUTES: SeoRoute[] = [
+const INDEXED_RESOURCE_ROUTE_DEFINITIONS: SeoRoute[] = [
   ...blogPosts.map((post) => ({
     path: `/blog/${post.slug}`,
     title: `${post.title} | DefenseEye`,
@@ -1156,6 +1166,8 @@ const INDEXED_RESOURCE_ROUTES: SeoRoute[] = [
     priority: "0.8",
   })),
 ];
+
+const INDEXED_RESOURCE_ROUTES: SeoRoute[] = INDEXED_RESOURCE_ROUTE_DEFINITIONS.map(withRouteMetadata);
 
 export function getSeoRoute(routePath: string) {
   const path = normalizePath(routePath);
@@ -1658,12 +1670,16 @@ const additionalSitemapEntries: SitemapEntry[] = [
   { path: "/lp/microsoft-supplier-ai-consulting", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.7" },
   { path: "/lp/azure-cloud-security", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.7" },
   { path: "/lp/compliance-automation", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.7" },
+  { path: "/contact", lastmod: "2026-10-23", changefreq: "monthly", priority: "0.7" },
+  { path: "/terms", lastmod: "2026-10-23", changefreq: "monthly", priority: "0.3" },
 ];
 
+// Routes marked noindex in shared/routeMetadata.ts are excluded: a sitemap should
+// list only canonical, indexable URLs.
 export const SITEMAP_ENTRIES: SitemapEntry[] = [
   ...TIER_1_ROUTES.map(({ path, lastmod, changefreq, priority }) => ({ path, lastmod, changefreq, priority })),
   ...additionalSitemapEntries,
-].sort((a, b) => canonicalUrl(a.path).localeCompare(canonicalUrl(b.path)));
+].filter((entry) => !isNoindexRoute(entry.path)).sort((a, b) => canonicalUrl(a.path).localeCompare(canonicalUrl(b.path)));
 
 export function renderSitemapXml(entries: SitemapEntry[] = SITEMAP_ENTRIES) {
   return `<?xml version="1.0" encoding="UTF-8"?>

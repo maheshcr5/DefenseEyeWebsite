@@ -4,6 +4,7 @@
  * Includes nav, breadcrumb, ToC sidebar, related articles sidebar,
  * article content area, and footer — all matching Home.tsx conventions.
  */
+import { useSeo } from "@/hooks/useSeo";
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -54,19 +55,11 @@ export default function KnowledgeHubLayout({
 }: KnowledgeHubLayoutProps) {
   const [activeSection, setActiveSection] = useState<string>("");
 
-  // ── Set document title & inject JSON-LD schema ──────────────────────────
+  // Title and meta description follow shared/routeMetadata.ts for registered paths.
+  useSeo(`${title} | DefenseEye`, description);
+
+  // ── Inject JSON-LD schema ────────────────────────────────────────────────
   useEffect(() => {
-    document.title = `${title} | DefenseEye CMMC Knowledge Hub`;
-
-    // Inject meta description
-    let metaDesc = document.querySelector<HTMLMetaElement>('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement("meta");
-      metaDesc.setAttribute("name", "description");
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.content = description;
-
     // Build JSON-LD
     const schema = {
       "@context": "https://schema.org",

@@ -592,12 +592,12 @@ describe("SEO route registry", () => {
     const dib = TIER_1_ROUTES.find((route) => route.path === "/industries/defense-industrial-base");
 
     expect(financial).toMatchObject({
-      title: "Secure AI for Financial Services and Credit Unions | DefenseEye",
+      title: "Secure AI for Financial Services & Credit Unions | DefenseEye",
       h1: "Secure AI for Financial Services and Credit Unions",
       schemaKind: "service",
     });
     expect(dib).toMatchObject({
-      title: "Cybersecurity and Compliance Support for the Defense Industrial Base | DefenseEye",
+      title: "Defense Industrial Base Cybersecurity & CMMC | DefenseEye",
       h1: "Cybersecurity and Compliance Support for the Defense Industrial Base",
       schemaKind: "service",
     });
@@ -655,7 +655,9 @@ describe("sitemap and robots", () => {
 
     expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
     expect(new Set(locations).size).toBe(locations.length);
-    expect(locations).toHaveLength(73);
+    // 73 before the 2026-10 remediation, minus the ten noindexed /lp/ campaign
+    // pages, plus /contact and /terms.
+    expect(locations).toHaveLength(65);
     for (const route of TIER_1_ROUTES) {
       expect(locations).toContain(canonicalUrl(route.path));
     }
@@ -687,9 +689,11 @@ describe("sitemap and robots", () => {
     // /capability-statement already existed in additionalSitemapEntries and was
     // merely relocated into TIER_1_ROUTES (same lastmod "2026-06-26", same URL) —
     // it does not count toward the four newly-added URLs.
+    // The 2026-10 remediation then removed the ten noindexed /lp/ campaign pages
+    // and added /contact and /terms (73 - 10 + 2 = 65).
     const xml = renderSitemapXml();
     const locations = Array.from(xml.matchAll(/<loc>(.*?)<\/loc>/g), (match) => match[1]);
-    expect(locations).toHaveLength(73);
+    expect(locations).toHaveLength(65);
 
     for (const newPath of ["/privacy-policy", "/support", "/faq", "/services/cmmc-scoping"]) {
       expect(xml).toContain(`<loc>${canonicalUrl(newPath)}</loc>`);
@@ -750,14 +754,14 @@ describe("cache-control policy", () => {
 describe("newly-registered route metadata parity", () => {
   it("serves real metadata (not the 404 fallback) for /faq and /services/cmmc-scoping", () => {
     expect(getRouteMeta("/faq")).toEqual({
-      title: "CMMC FAQ — Common Questions Answered | DefenseEye",
+      title: "CMMC FAQ: Common Questions Answered | DefenseEye",
       description:
-        "Answers to the most common CMMC 2.0 questions from defense contractors: Level 1 vs Level 2, CUI, SPRS scores, C3PAO assessments, timelines, and costs.",
+        "Answers to common CMMC 2.0 questions from defense contractors: Level 1 vs Level 2, CUI, SPRS scores, C3PAO assessments, timelines, and costs.",
     });
     expect(getRouteMeta("/services/cmmc-scoping")).toEqual({
-      title: "CMMC Scoping | Define Your CUI Boundary | DefenseEye",
+      title: "CMMC Scoping: Define Your CUI Boundary | DefenseEye",
       description:
-        "Professional CMMC scoping for defense contractors. Define your CUI environment boundary, reduce assessment scope, and build assessment-preparation scoping documentation before your gap assessment.",
+        "CMMC scoping for defense contractors: define your CUI environment boundary, reduce assessment scope, and document scope before your gap assessment.",
     });
   });
 
