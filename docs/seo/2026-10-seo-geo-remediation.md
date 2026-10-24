@@ -2,6 +2,124 @@
 
 Branch `seo-geo-conversion-remediation`, compared with production `51108e4`. Input: Ahrefs Site Audit export "Orphan page (has no incoming internal links)", crawl of 2026-10-18, 41 URLs. Tables were generated from server output, not typed by hand.
 
+## Review update (round 2): CMMC accuracy, form accessibility, dates
+
+Three new commits: `bf3f0ff`, `7677d92`, `9d873bb`. Each was verified independently (type-check and full test suite pass at each). The sections below this update have been refreshed to match.
+
+### R1. CMMC terminology corrections
+
+Statements were checked against the regulation **before** any text was changed. Only what the sources state was used.
+
+| Article | Statements corrected |
+|---|---|
+| **What to Expect During a C3PAO Assessment** (`/blog/what-to-expect-c3pao-assessment`) | "CMMC-AB reviews submission; issues CMMC Level 2 certification" → the **C3PAO issues the Certificate of CMMC Status**, and the CMMC Status (Final or Conditional Level 2 (C3PAO)) is stored in SPRS. "Submits to CMMC-AB eMASS" → results go to the **CMMC instantiation of eMASS, a DoD system**. "Authorized by the Cyber AB … CCAs individually credentialed" → C3PAOs are **accredited by the Accreditation Body**; CCAs are certified by the **CAICO**. Removed the "Certified Lead Assessor (CLA)" requirement, which 32 CFR 170 does not define. The contractor step is now "confirm your CMMC Status in SPRS and submit the affirmation in SPRS". Dead `marketplace.cmmcab.org` → `cyberab.org/Catalog`. Added a role note: readiness advisors such as DefenseEye support gap assessment, SSP and documentation, and remediation, but **cannot conduct the certification assessment or issue a Certificate of CMMC Status**, and contract eligibility remains with DoD. |
+| **7 Red Flags When Hiring a CMMC Consultant** (`/blog/cmmc-consultant-red-flags`) | "The Cyber AB … certifies individual assessors and organizations" → the **Accreditation Body accredits C3PAOs; the CAICO certifies individual assessors**. Dead marketplace link and unverified `cyberaccreditation.us` → `cyberab.org/Catalog`. "CMMC-AB rules" → CMMC conflict-of-interest rules. Removed unverified "formerly CMMC-AB" assertions. Its existing warning against "guaranteed certification" is kept. |
+| Related lines in the **Level 2 Compliance Checklist** (`/blog/cmmc-level-2-compliance-checklist-2025`, the eMASS line flagged in round 1) | eMASS submission wording, marketplace link, Accreditation Body description, and the undefined CLA credential. |
+| Source citations in the **Small-Business** and **POA&M** posts, and the AI-ingestion content API `/api/cmmc-content` | Same terminology; unverified domain replaced. |
+
+No guarantees, certification claims, or new regulatory promises were added. Each corrected article now states that DefenseEye does not certify, and the posts keep their search intent and CTAs. The three substantively corrected posts show **23 October 2026** as their updated date (visible label, `dateModified`, and sitemap `lastmod`), because their content changed today.
+
+**Editorial and source note (factual basis):**
+- [eCFR 32 CFR Part 170](https://www.ecfr.gov/current/title-32/subtitle-A/chapter-I/subchapter-G/part-170), shown as current to 22 October 2026, read 23 October 2026. Where the rule states each fact:
+
+  | Fact | Section |
+  |---|---|
+  | The Accreditation Body accredits C3PAOs | §170.8(a), §170.8(b)(3)(ii) |
+  | C3PAOs conduct Level 2 certification assessments and issue Certificates of CMMC Status | §170.9(a), §170.9(b)(18) |
+  | C3PAOs submit reports and certificates to the CMMC instantiation of eMASS, a government-owned system | §170.9(b)(8), §170.4(b) |
+  | The CAICO certifies assessors | §170.10(a) |
+  | CMMC Status is stored in SPRS | §170.4(b) |
+  | Affirmation is made in SPRS | §170.16(b)(2) |
+
+- [cyberab.org](https://cyberab.org/): the legal name is "Cybersecurity Maturity Model Certification Accreditation Body, Inc."; the "CMMC Marketplace" links to `cyberab.org/Catalog`.
+- `marketplace.cmmcab.org` no longer resolves (DNS lookup fails).
+- `dodcio.defense.gov/CMMC/` returned 403 to automated access and was not used.
+- **Not changed, because they could not be verified:**
+  - who publishes the CMMC Assessment Process (CAP)
+  - typical phase durations and costs
+  - the 180-day conditional window, cited in the POA&M post
+- The 2026 rollout statements added to the knowledge hub (Phase I from November 2025; the planned 10 November 2026 Phase II suspended by DoD memos of 13 July 2026) match public reporting: [Federal News Network](https://federalnewsnetwork.com/cybersecurity/2026/07/pentagon-suspends-cmmc-phase-two-requirements-launches-review-of-program/), [National Defense Magazine](https://www.nationaldefensemagazine.org/articles/2026/7/13/breaking-pentagon-suspends-phase-2-of-cmmc-program), [Latham & Watkins](https://www.lw.com/en/insights/what-defense-contractors-should-know-about-dod-suspension-of-cmmc-phase-2), [Greenberg Traurig](https://www.gtlaw.com/en/insights/2026/7/dod-suspends-cmmc-deadlines-and-seeks-to-reassess-requirements). These are secondary sources; an SME should confirm against the DoD memo.
+
+### R2. Accessibility fixes
+
+| Area | Fix |
+|---|---|
+| **Contact form** (`/contact`) | Labels associated with all 9 controls (`htmlFor`/`id`). The 8 required fields carry `required` and `aria-required`; the asterisk is `aria-hidden`, with a "Fields marked * are required" note. App-level validation (`noValidate`) gives a plain-language message per field, linked by `aria-describedby` and `aria-invalid`, plus an announced summary (`role="alert"`). Focus moves to the first invalid field, and an error clears as soon as its field is fixed. The submission-error message is announced. The success confirmation is `role="status"` and receives focus. Added `autocomplete` tokens and `type="tel"` for phone. |
+| **Newsletter forms** (Blog, Knowledge Hub) | Visually hidden labels; the Blog error is linked and announced; success states are announced. Behaviour unchanged (see R7). |
+| **Blog search** | `aria-label="Search articles"`. |
+| **Skip link** (every page) | "Skip to main content" is the first focusable element. It's hidden until focused, then shown as a high-contrast pill, and moves focus past the header and breadcrumb. |
+
+The Secure AI consultation form already met these requirements. The "unlabeled" control the round-1 audit reported there is Radix's `aria-hidden` native `<select>`, a false positive.
+
+### R3. Contact-form behaviour (verified in a real browser, with `/api/contact` stubbed so no email was sent)
+
+| Scenario | Result |
+|---|---|
+| Empty submit (390 px viewport) | 8 fields flagged, each error linked, summary "Please correct the 8 highlighted fields." announced, focus on First name, **0 requests** |
+| Fix one field | Its `aria-invalid` and error clear immediately |
+| Malformed email | "Enter an email address in the format name@company.com.", focus on email, **0 requests** |
+| Valid submit | **1 request**; `contact_form_submit` fires once; "Thank you." visible and focused |
+| Unit tests | `submitContactInquiry` (13 existing tests: success, failure, timeout, duplicate guard, OpenAI lead event) unchanged and passing; 6 new tests for validation messages, label/id association, required marking, and `noValidate` |
+| Server | `POST /api/contact` with an invalid body still returns 400 |
+
+### R4. Date and year validation
+
+| Item | Decision | Basis |
+|---|---|---|
+| Knowledge-hub H1s "(2026)" / "(2026 Guide)" (from the pre-existing WIP) | **Removed**, so the headings are timeless | The year label adds nothing the "Last updated" line doesn't say, and it goes stale |
+| Knowledge-hub "Last updated: September 2026" (WIP) | **Kept** | The content was revised 13–14 September 2026 (file history) with the 2026 rollout statements verified in R1 |
+| Knowledge-hub Article `dateModified` | Now `2026-09`, **derived from the visible label** (was a 2026-04-04 sitemap date) | Must match the page |
+| Insight pages' Article `dateModified` (2026-06-25) | **Removed** | No date is shown on those pages |
+| Checklist title "(2025 Complete Guide)" | Already "(Complete Guide)" | Stale year label (round 1) |
+| Three corrected blog posts: `updatedAt` 2026-04-01 → 2026-10-23 | **Updated** | Their content changed in this PR |
+| `/terms` sitemap `lastmod` (had been set to 2026-10-23) | **2026-04-01** | Matches the page's visible "Last updated" |
+| Blog `datePublished` / `dateModified` | Unchanged; equal to the visible "Published" and "Updated" | Test-enforced |
+
+A new test asserts that every Article/BlogPosting date equals the date the page shows, and that no knowledge-hub H1 carries a year.
+
+### R5. Consolidated page verification (`/cmmc-readiness-sprint`)
+
+- **Redirect:** intentional; a single-hop 301 to `/services/cmmc-readiness-sprint`. There's no chain: the destination returns 200 directly and is not itself redirected.
+- **Destination:** canonical is `https://defenseeye.ai/services/cmmc-readiness-sprint`, and it is **in** the sitemap. The old URL is **not**.
+- **No content lost:** the moved FAQ ("What does a readiness sprint produce?") and its answer render on the destination (checked in the browser after the redirect).
+- **No stale links:** no internal link points to the old URL (test-enforced).
+
+### R6. Campaign landing pages
+
+All 10 `/lp/` pages are **indexable**, in the sitemap, and self-canonical, each with 2 or more contextual links from the solution, insight, or datasheet page whose offer it describes. **No campaign page is noindexed**, because nothing in the repository says any of them is limited to paid, outreach, or private traffic. Their CTAs use the correct booking links and fire `landing_page_cta_click` (verified). If some are campaign-only, set `robots: "noindex, follow"` on those entries in `shared/routeMetadata.ts`; that also removes them from the sitemap.
+
+### R7. Items requiring business approval (new this round, highest priority first)
+
+1. **The newsletter forms don't subscribe anyone.** Blog's "Stay Ahead of CMMC Rule Changes" and Knowledge Hub's "CMMC Updates to Your Inbox" show "You're subscribed!" but send the address nowhere (no request, storage, or analytics event), so visitors are told they're subscribed and the lead is lost. Choose one:
+   - connect them to a mailing-list provider
+   - route them to `/api/contact`
+   - remove them, or reword them as a link to the contact page
+
+   This PR only made them accessible.
+2. **SME confirmation** of the Phase II suspension wording against the DoD memo, and of the three unverified CMMC statements listed in R1.
+
+### Reviewer checklist (round 2)
+
+- [ ] CMMC terminology is accurate and current.
+- [ ] DefenseEye is not described as issuing certification unless verified.
+- [ ] No unsupported compliance or regulatory guarantees were added.
+- [ ] All form labels are associated with inputs.
+- [ ] Form errors are accessible.
+- [ ] Skip-to-content behavior works.
+- [ ] Analytics and form submission still work.
+- [ ] Date and year changes are factually supported.
+- [ ] All 41 orphan URLs have a documented outcome.
+- [ ] The consolidated page has a valid redirect with no chain.
+- [ ] Campaign noindex decisions are intentional.
+- [ ] Sitemap and canonical behavior are correct.
+- [ ] Structured data validates.
+- [ ] Mobile checks passed.
+- [ ] No secrets were committed.
+- [ ] No unrelated changes were included.
+- [ ] Production was not modified.
+
+---
+
 ## 1. Executive summary
 
 Ahrefs reported 41 "orphan" pages. The pages were linked in the browser-rendered React UI, but not in the **HTML the server sends**. Ahrefs crawled without running JavaScript (`Is rendered page = false`), and so do most AI crawlers (GPTBot, ClaudeBot, PerplexityBot). In that HTML, routes outside a small SEO registry received the homepage's static body and almost no links.
@@ -50,20 +168,24 @@ Help search engines and AI answer systems find and describe DefenseEye accuratel
 | `7ab8f17` | Review fix: consolidate the duplicate sprint page; keep `/lp/` pages indexable with contextual links |
 | `4a73cc8` | Review fix: self-hosted share image; breadcrumb/WebSite schema consistency; apex domain |
 | `db66276` | Test that every internal link and CTA in source resolves to a live, non-redirecting route |
+| `991ea77` | Remediation report (round 1) |
+| `bf3f0ff` | Round 2: CMMC certification terminology corrected against 32 CFR Part 170 |
+| `7677d92` | Round 2: timeless guide headings; schema dates match visible dates |
+| `9d873bb` | Round 2: accessible lead forms and a skip-to-content link |
 
-Each review-fix commit was checked on its own (type-check and full test suite pass at `bd08bf1`, `7ab8f17`, `4a73cc8`, and the head).
+Each review-fix commit was checked on its own: type-check and the full test suite pass at `bd08bf1`, `7ab8f17`, `4a73cc8`, `bf3f0ff`, `7677d92`, `9d873bb`, and the head.
 
 **Not included:** the Ahrefs CSV export (diagnostic input, left untracked), `dist/` (gitignored build output), and any environment, deploy, or server configuration.
 
-## 4. Changed files (57, against `51108e4`)
+## 4. Changed files (59, against `51108e4`)
 
 - **Shared SEO, architecture, and content data:** `shared/certificationProcessContent.ts` (added), `shared/cmmcLevelsContent.ts` (added), `shared/datasheetContent.ts` (added), `shared/evidenceMappingContent.ts` (added), `shared/homeContent.ts` (added), `shared/insightsContent.ts` (added), `shared/landingPageContent.ts` (added), `shared/relatedLinks.ts` (added), `shared/routeMetadata.ts` (added), `shared/seoRoutes.ts` (modified), `shared/siteArchitecture.ts` (added), `shared/solutionPageContent.ts` (added), `shared/sprsScoreContent.ts` (added), `shared/whatIsCmmcContent.ts` (added)
 - **Server:** `server/copilot.ts` (modified), `server/index.ts` (modified)
 - **Client components, hooks, and lib:** `client/src/App.tsx` (modified), `client/src/components/Breadcrumbs.tsx` (added), `client/src/components/Footer.tsx` (modified), `client/src/components/KnowledgeHubLayout.tsx` (modified), `client/src/components/NavBar.tsx` (modified), `client/src/components/RelatedResources.tsx` (added), `client/src/hooks/useSeo.ts` (modified), `client/src/index.css` (modified), `client/src/lib/tracking.ts` (modified)
-- **Client pages:** `client/src/pages/Blog.tsx` (modified), `client/src/pages/BlogPost.tsx` (modified), `client/src/pages/CMMCArchitecturePage.tsx` (modified), `client/src/pages/CMMCReadinessSprint.tsx` (modified), `client/src/pages/Datasheets.tsx` (modified), `client/src/pages/DeliveryModel.tsx` (modified), `client/src/pages/Home.tsx` (modified), `client/src/pages/KnowledgeHub.tsx` (modified), `client/src/pages/LandingPage.tsx` (modified), `client/src/pages/SolutionPage.tsx` (modified), `client/src/pages/SprintGuide.tsx` (modified), `client/src/pages/SupplierReadiness.tsx` (modified), `client/src/pages/ThoughtLeadership.tsx` (modified), `client/src/pages/knowledge-hub/CMMCLevels.tsx` (modified), `client/src/pages/knowledge-hub/CertificationProcess.tsx` (modified), `client/src/pages/knowledge-hub/EvidenceMapping.tsx` (modified), `client/src/pages/knowledge-hub/SPRSScore.tsx` (modified), `client/src/pages/knowledge-hub/WhatIsCMMC.tsx` (modified)
+- **Client pages:** `client/src/pages/Blog.tsx` (modified), `client/src/pages/BlogPost.tsx` (modified), `client/src/pages/CMMCArchitecturePage.tsx` (modified), `client/src/pages/CMMCReadinessSprint.tsx` (modified), `client/src/pages/ContactUs.tsx` (modified), `client/src/pages/Datasheets.tsx` (modified), `client/src/pages/DeliveryModel.tsx` (modified), `client/src/pages/Home.tsx` (modified), `client/src/pages/KnowledgeHub.tsx` (modified), `client/src/pages/LandingPage.tsx` (modified), `client/src/pages/SolutionPage.tsx` (modified), `client/src/pages/SprintGuide.tsx` (modified), `client/src/pages/SupplierReadiness.tsx` (modified), `client/src/pages/ThoughtLeadership.tsx` (modified), `client/src/pages/knowledge-hub/CMMCLevels.tsx` (modified), `client/src/pages/knowledge-hub/CertificationProcess.tsx` (modified), `client/src/pages/knowledge-hub/EvidenceMapping.tsx` (modified), `client/src/pages/knowledge-hub/SPRSScore.tsx` (modified), `client/src/pages/knowledge-hub/WhatIsCMMC.tsx` (modified)
 - **Client data:** `client/src/data/blogPosts.ts` (modified), `client/src/data/companyFacts.ts` (modified)
 - **Public files:** `client/public/.well-known/ai-plugin.json` (modified), `client/public/llms.txt` (modified), `client/public/og-default.png` (added), `client/public/robots.txt` (modified)
-- **Tests:** `server/css-sources.test.ts` (added), `server/internal-links.test.ts` (added), `server/route-metadata.test.ts` (added), `server/secure-ai-route.test.ts` (modified), `server/seo-routes.test.ts` (modified), `server/site-architecture.test.ts` (added)
+- **Tests:** `client/src/pages/ContactUs.a11y.test.tsx` (added), `server/css-sources.test.ts` (added), `server/internal-links.test.ts` (added), `server/route-metadata.test.ts` (added), `server/secure-ai-route.test.ts` (modified), `server/seo-routes.test.ts` (modified), `server/site-architecture.test.ts` (added)
 - **Docs and root HTML:** `client/index.html` (modified), `docs/seo/2026-10-seo-geo-remediation.md` (added)
 
 ## 5. Routes
@@ -83,49 +205,49 @@ The sitemap goes from 73 to 74 URLs (+2, −1).
 
 "New incoming links" lists distinct linking pages and their anchor text, taken from the actual server-rendered `<main>` content, plus sitewide header/footer links where present. Every URL had 0 incoming links in the Ahrefs crawl.
 
-| # | URL | Status | Indexable | Page type | Hub | New incoming links (linking page → anchor text) | Action taken | Reason / note |
-|---|---|---|---|---|---|---|---|---|
-| 1 | `/knowledge-hub/sprs-score` | 200 | Yes | Knowledge Hub guide | CMMC Knowledge Hub | `/blog/cmmc-poam-guide-what-assessors-want` → "How POA&M items affect your SPRS score"; `/blog/how-to-improve-sprs-score-fast` → "How SPRS scoring works"; `/faq` → "SPRS score guide"; +5 more | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 2 | `/knowledge-hub/certification-process` | 200 | Yes | Knowledge Hub guide | CMMC Knowledge Hub | `/blog/what-to-expect-c3pao-assessment` → "The CMMC certification process step by step"; `/cmmc-readiness-sprint-guide` → "The CMMC certification process step by step"; `/knowledge-hub` → "CMMC Certification Process"; +4 more | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 3 | `/blog/cmmc-consultant-red-flags` | 200 | Yes | Blog article | CMMC Blog | `/blog` → "CMMC Consultant Red Flags"; `/blog/cmmc-level-2-small-business-guide` → "Red flags when hiring a CMMC consultant"; `/pricing` → "Red flags when hiring a CMMC consultant" | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 4 | `/blog/cmmc-poam-guide-what-assessors-want` | 200 | Yes | Blog article | CMMC Blog | `/blog` → "CMMC POA&M: What Assessors Look For"; `/blog/how-to-improve-sprs-score-fast` → "Writing a POA&M assessors accept"; `/blog/what-to-expect-c3pao-assessment` → "What assessors look for in a POA&M"; +3 more | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 5 | `/cmmc-readiness-sprint-guide` | 200 | Yes | Commercial / company page | CMMC & Compliance Automation | `/blog/what-to-expect-c3pao-assessment` → "Prepare with a 4-week readiness sprint"; `/knowledge-hub/certification-process` → "4-week CMMC readiness sprint guide"; `/services/cmmc-readiness-sprint` → "4-Week CMMC Readiness Sprint Guide" | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 6 | `/datasheets` | 200 | Yes | Datasheet index | Supplier Readiness | `/capability-statement` → "DefenseEye datasheets"; `/datasheets/cmmc-compliance-automation` → "Datasheets"; `/datasheets/cmmclens` → "Datasheets"; +4 more; sitewide header + sitewide footer | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 7 | `/blog/cmmc-level-2-small-business-guide` | 200 | Yes | Blog article | CMMC Blog | `/blog` → "CMMC Level 2 for Small Businesses"; `/blog/cmmc-consultant-red-flags` → "CMMC Level 2 for small businesses"; `/blog/cmmc-level-2-compliance-checklist-2025` → "CMMC Level 2 for small businesses"; +1 more | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 8 | `/blog/what-counts-as-cui-plain-english-guide` | 200 | Yes | Blog article | CMMC Blog | `/blog` → "What Counts as CUI?"; `/blog/gcc-high-vs-m365-commercial-cmmc` → "What counts as CUI?"; `/industries/defense-industrial-base` → "What counts as CUI?"; +2 more | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 9 | `/pricing` | 200 | Yes | Commercial / company page | CMMC & Compliance Automation | `/blog/cmmc-consultant-red-flags` → "CMMC readiness pricing"; `/blog/cmmc-level-2-small-business-guide` → "CMMC readiness pricing for small contractors"; `/cmmc` → "CMMC readiness pricing and engagement options"; +4 more; sitewide footer | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 10 | `/privacy-policy` | 200 | Yes | Legal | Privacy Policy | `/` → "Privacy Policy"; sitewide header + sitewide footer | Sitewide footer link (legal) | Legal page; footer is the appropriate level of linking |
-| 11 | `/blog/gcc-high-vs-m365-commercial-cmmc` | 200 | Yes | Blog article | CMMC Blog | `/blog` → "GCC High vs M365 Commercial for CMMC"; `/blog/what-counts-as-cui-plain-english-guide` → "Where CUI can live: GCC High vs M365 Commercial"; `/services/cmmc-scoping` → "Choosing GCC High or M365 Commercial for CUI"; +1 more | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 12 | `/datasheets/microsoft-copilot-readiness` | 200 | Yes | Datasheet | Supplier Readiness | `/datasheets` → "Microsoft Copilot Readiness Datasheet"; `/microsoft-ecosystem` → "Microsoft Copilot readiness datasheet"; `/solutions/microsoft-copilot-readiness` → "Microsoft Copilot readiness datasheet" | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 13 | `/delivery-model` | 200 | Yes | Commercial / company page | Supplier Readiness | `/capability-statement` → "Engagement formats"; `/pricing` → "DefenseEye engagement formats"; `/representative-engagements` → "How engagements are structured"; +2 more; sitewide header + sitewide footer | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 14 | `/insights/implement-ai-governance` | 200 | Yes | Answer page (insight) | Secure AI Adoption | `/industries/financial-services-credit-unions` → "How to implement AI governance in practice"; `/insights/what-is-nist-ai-rmf` → "Practical steps to implement AI governance"; `/knowledge-hub` → "How can organizations implement AI governance?"; +2 more | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 15 | `/datasheets/cmmc-compliance-automation` | 200 | Yes | Datasheet | Supplier Readiness | `/cmmc-compliance-automation` → "CMMC & compliance automation datasheet"; `/datasheets` → "CMMC & Compliance Automation Datasheet" | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 16 | `/lp/microsoft-supplier-ai-consulting` | 200 | Yes | Focused offer / campaign landing page | Supplier Readiness | `/datasheets/supplier-readiness` → "Supplier capability review for Microsoft-centered environments"; `/supplier-readiness` → "Minority-owned supplier support for Microsoft-centered programs" | Kept indexable; unique title and server-rendered content; contextual links from the related solution/insight/datasheet pages; breadcrumb | Campaign-only intent not confirmed in the repository, so not noindexed (see business decisions) |
-| 17 | `/lp/ai-governance-consulting` | 200 | Yes | Focused offer / campaign landing page | Secure AI Adoption | `/insights/implement-ai-governance` → "Start with an AI governance readiness assessment"; `/solutions/ai-governance` → "AI governance readiness assessment" | Kept indexable; unique title and server-rendered content; contextual links from the related solution/insight/datasheet pages; breadcrumb | Campaign-only intent not confirmed in the repository, so not noindexed (see business decisions) |
-| 18 | `/solutions/compliance-automation` | 200 | Yes | Solution / service page | CMMC & Compliance Automation | `/cmmc-compliance-automation` → "Compliance Automation Consulting"; `/insights/ai-audit-readiness` → "Compliance Automation Consulting"; `/insights/ai-automated-evidence-collection` → "Compliance Automation Consulting"; +3 more; sitewide footer | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 19 | `/insights/security-copilot-cybersecurity-operations` | 200 | Yes | Answer page (insight) | Cybersecurity Risk | `/microsoft-ecosystem` → "Security Copilot for cybersecurity operations"; `/solutions/ai-security` → "Using Security Copilot in security operations"; `/solutions/cybersecurity-risk` → "Security Copilot for Security Operations"; +1 more | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 20 | `/industries/defense-industrial-base` | 200 | Yes | Industry page | CMMC & Compliance Automation | `/` → "Prepare for CMMC"; `/cmmc-compliance-automation` → "Defense Industrial Base"; sitewide footer | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 21 | `/datasheets/cmmclens` | 200 | Yes | Datasheet | Supplier Readiness | `/cmmclens` → "CMMCLens product sheet"; `/datasheets` → "CMMCLens Product Sheet"; `/solutions/cmmclens-platform` → "CMMCLens product sheet" | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 22 | `/lp/compliance-automation` | 200 | Yes | Focused offer / campaign landing page | CMMC & Compliance Automation | `/insights/ai-audit-readiness` → "Plan compliance automation for evidence and reporting"; `/solutions/compliance-automation` → "Compliance automation roadmap and CMMCLens fit assessment" | Kept indexable; unique title and server-rendered content; contextual links from the related solution/insight/datasheet pages; breadcrumb | Campaign-only intent not confirmed in the repository, so not noindexed (see business decisions) |
-| 23 | `/solutions/cmmclens-platform` | 200 | Yes | Solution / service page | CMMC & Compliance Automation | `/cmmc-evidence-automation` → "CMMCLens platform overview"; `/cmmclens` → "CMMCLens Platform Overview"; `/datasheets/cmmclens` → "CMMCLens platform overview" | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 24 | `/lp/secure-ai-adoption` | 200 | Yes | Focused offer / campaign landing page | Secure AI Adoption | `/secure-ai-adoption` → "Secure AI adoption readiness review"; `/solutions/ai-transformation` → "Secure AI adoption readiness review" | Kept indexable; unique title and server-rendered content; contextual links from the related solution/insight/datasheet pages; breadcrumb | Campaign-only intent not confirmed in the repository, so not noindexed (see business decisions) |
-| 25 | `/solutions/cloud-security` | 200 | Yes | Solution / service page | Cybersecurity Risk | `/attacksense` → "Microsoft cloud security review"; `/blog/gcc-high-vs-m365-commercial-cmmc` → "Azure and GCC High cloud security consulting"; `/lp/azure-cloud-security` → "Microsoft Cloud Security"; +2 more; sitewide footer | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 26 | `/industries/financial-services-credit-unions` | 200 | Yes | Industry page | Secure AI Adoption | `/` → "See the financial services path"; `/insights/implement-ai-governance` → "AI governance for financial institutions"; `/secure-ai-adoption` → "Financial Services & Credit Unions"; +2 more; sitewide header + sitewide footer | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 27 | `/lp/cmmc-evidence-automation` | 200 | Yes | Focused offer / campaign landing page | CMMC & Compliance Automation | `/cmmc-evidence-automation` → "Evidence automation implementation with CMMCLens"; `/insights/ai-automated-evidence-collection` → "Put CMMC evidence automation in place" | Kept indexable; unique title and server-rendered content; contextual links from the related solution/insight/datasheet pages; breadcrumb | Campaign-only intent not confirmed in the repository, so not noindexed (see business decisions) |
-| 28 | `/cmmc-readiness-sprint` | 301 → `/services/cmmc-readiness-sprint` | No (redirected) | Duplicate service page | CMMC & Compliance Automation | None — links point to the target instead | Consolidated into `/services/cmmc-readiness-sprint`; unique FAQ moved; removed from sitemap | Thin page with the same intent and CTA as the full fixed-scope sprint offer |
-| 29 | `/datasheets/supplier-readiness` | 200 | Yes | Datasheet | Supplier Readiness | `/datasheets` → "Supplier Readiness Datasheet"; `/supplier-readiness` → "Supplier readiness datasheet" | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 30 | `/insights/ai-automated-evidence-collection` | 200 | Yes | Answer page (insight) | CMMC & Compliance Automation | `/cmmc-evidence-automation` → "How AI can automate evidence collection"; `/insights/continuous-compliance-monitoring` → "AI-automated evidence collection"; `/knowledge-hub` → "How can AI automate evidence collection?"; +2 more | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 31 | `/lp/cmmclens-demo` | 200 | Yes | Focused offer / campaign landing page | CMMC & Compliance Automation | `/cmmclens` → "CMMCLens demo and evidence automation fit review"; `/solutions/cmmclens-platform` → "Request a CMMCLens demo and fit review" | Kept indexable; unique title and server-rendered content; contextual links from the related solution/insight/datasheet pages; breadcrumb | Campaign-only intent not confirmed in the repository, so not noindexed (see business decisions) |
-| 32 | `/insights/continuous-compliance-monitoring` | 200 | Yes | Answer page (insight) | CMMC & Compliance Automation | `/insights/ai-audit-readiness` → "Continuous compliance monitoring"; `/insights/what-is-rmf-readiness` → "Continuous monitoring for compliance programs"; `/solutions/compliance-automation` → "Continuous Compliance Monitoring"; +1 more | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 33 | `/lp/cmmc-compliance-automation` | 200 | Yes | Focused offer / campaign landing page | CMMC & Compliance Automation | `/cmmc` → "CMMC compliance automation sprint"; `/cmmc-compliance-automation` → "CMMC compliance automation sprint" | Kept indexable; unique title and server-rendered content; contextual links from the related solution/insight/datasheet pages; breadcrumb | Campaign-only intent not confirmed in the repository, so not noindexed (see business decisions) |
-| 34 | `/lp/azure-cloud-security` | 200 | Yes | Focused offer / campaign landing page | Cybersecurity Risk | `/microsoft-ecosystem` → "Azure cloud security and compliance review"; `/solutions/cloud-security` → "Azure security and compliance review" | Kept indexable; unique title and server-rendered content; contextual links from the related solution/insight/datasheet pages; breadcrumb | Campaign-only intent not confirmed in the repository, so not noindexed (see business decisions) |
-| 35 | `/insights/ai-audit-readiness` | 200 | Yes | Answer page (insight) | CMMC & Compliance Automation | `/insights/ai-automated-evidence-collection` → "How AI can improve audit readiness"; `/solutions/compliance-automation` → "AI and Audit Readiness" | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 36 | `/lp/microsoft-copilot-readiness` | 200 | Yes | Focused offer / campaign landing page | Secure AI Adoption | `/datasheets/microsoft-copilot-readiness` → "Microsoft Copilot readiness assessment"; `/solutions/microsoft-copilot-readiness` → "Copilot governance assessment" | Kept indexable; unique title and server-rendered content; contextual links from the related solution/insight/datasheet pages; breadcrumb | Campaign-only intent not confirmed in the repository, so not noindexed (see business decisions) |
-| 37 | `/microsoft-ecosystem` | 200 | Yes | Commercial / company page | Supplier Readiness | `/datasheets/microsoft-copilot-readiness` → "Microsoft ecosystem experience"; `/insights/security-copilot-cybersecurity-operations` → "Microsoft security and cloud experience"; `/solutions/cloud-security` → "DefenseEye's Microsoft ecosystem experience"; +2 more; sitewide footer | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 38 | `/lp/cmmc-level-2-readiness` | 200 | Yes | Focused offer / campaign landing page | CMMC & Compliance Automation | `/cmmc-level-2-readiness` → "CMMC Level 2 readiness assessment"; `/insights/what-is-cmmc-level-2` → "Assess your CMMC Level 2 readiness" | Kept indexable; unique title and server-rendered content; contextual links from the related solution/insight/datasheet pages; breadcrumb | Campaign-only intent not confirmed in the repository, so not noindexed (see business decisions) |
-| 39 | `/datasheets/secure-ai-adoption` | 200 | Yes | Datasheet | Supplier Readiness | `/datasheets` → "Secure AI Adoption Datasheet"; `/secure-ai-adoption` → "Secure AI adoption one-page datasheet"; `/solutions/ai-governance` → "Secure AI adoption datasheet" | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 40 | `/services/cmmc-scoping` | 200 | Yes | Solution / service page | CMMC & Compliance Automation | `/blog/what-counts-as-cui-plain-english-guide` → "Define your CUI boundary with CMMC scoping"; `/cmmc` → "CMMC scoping service"; `/cmmc-compliance-automation` → "CMMC Scoping"; +5 more; sitewide footer | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
-| 41 | `/insights/what-is-rmf-readiness` | 200 | Yes | Answer page (insight) | CMMC & Compliance Automation | `/insights/continuous-compliance-monitoring` → "Continuous monitoring in RMF readiness"; `/nist-800-171` → "RMF readiness for federal systems"; `/solutions/compliance-automation` → "What Is RMF Readiness?" | Kept indexable; server-rendered content, breadcrumb, hub section listing, contextual links | Linked only from client-rendered React before; invisible to non-JS crawlers |
+| # | Original URL | Current route status | Indexable / noindex | Incoming internal link added | Source page of new link | Anchor text | Redirect destination | Final status | Reason for exclusion, redirect, or noindex |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | `/knowledge-hub/sprs-score` | 200 | Indexable | Yes (8 contextual pages) | `/blog/cmmc-poam-guide-what-assessors-want`<br>`/blog/how-to-improve-sprs-score-fast`<br>`/faq`<br>`/knowledge-hub`<br>+4 more pages | "How POA&M items affect your SPRS score"<br>"How SPRS scoring works"<br>"SPRS score guide"<br>"Understanding Your SPRS Score" | — | Fixed: linked in server HTML | — |
+| 2 | `/knowledge-hub/certification-process` | 200 | Indexable | Yes (7 contextual pages) | `/blog/what-to-expect-c3pao-assessment`<br>`/cmmc-readiness-sprint-guide`<br>`/knowledge-hub`<br>`/knowledge-hub/cmmc-levels`<br>+3 more pages | "The CMMC certification process step by step"<br>"The CMMC certification process step by step"<br>"CMMC Certification Process"<br>"CMMC Certification Process Step-by-Step" | — | Fixed: linked in server HTML | — |
+| 3 | `/blog/cmmc-consultant-red-flags` | 200 | Indexable | Yes (3 contextual pages) | `/blog`<br>`/blog/cmmc-level-2-small-business-guide`<br>`/pricing` | "CMMC Consultant Red Flags"<br>"Red flags when hiring a CMMC consultant"<br>"Red flags when hiring a CMMC consultant" | — | Fixed: linked in server HTML | — |
+| 4 | `/blog/cmmc-poam-guide-what-assessors-want` | 200 | Indexable | Yes (6 contextual pages) | `/blog`<br>`/blog/how-to-improve-sprs-score-fast`<br>`/blog/what-to-expect-c3pao-assessment`<br>`/knowledge-hub/certification-process`<br>+2 more pages | "CMMC POA&M: What Assessors Look For"<br>"Writing a POA&M assessors accept"<br>"What assessors look for in a POA&M"<br>"What assessors look for in a POA&M" | — | Fixed: linked in server HTML | — |
+| 5 | `/cmmc-readiness-sprint-guide` | 200 | Indexable | Yes (3 contextual pages) | `/blog/what-to-expect-c3pao-assessment`<br>`/knowledge-hub/certification-process`<br>`/services/cmmc-readiness-sprint` | "Prepare with a 4-week readiness sprint"<br>"4-week CMMC readiness sprint guide"<br>"4-Week CMMC Readiness Sprint Guide" | — | Fixed: linked in server HTML | — |
+| 6 | `/datasheets` | 200 | Indexable | Yes (7 contextual pages + sitewide nav) | `/capability-statement`<br>`/datasheets/cmmc-compliance-automation`<br>`/datasheets/cmmclens`<br>`/datasheets/microsoft-copilot-readiness`<br>+3 more pages; sitewide header; sitewide footer | "DefenseEye datasheets"<br>"Datasheets"<br>"Datasheets"<br>"Datasheets" | — | Fixed: linked in server HTML | — |
+| 7 | `/blog/cmmc-level-2-small-business-guide` | 200 | Indexable | Yes (4 contextual pages) | `/blog`<br>`/blog/cmmc-consultant-red-flags`<br>`/blog/cmmc-level-2-compliance-checklist-2025`<br>`/knowledge-hub/cmmc-levels` | "CMMC Level 2 for Small Businesses"<br>"CMMC Level 2 for small businesses"<br>"CMMC Level 2 for small businesses"<br>"CMMC Level 2 for small businesses" | — | Fixed: linked in server HTML | — |
+| 8 | `/blog/what-counts-as-cui-plain-english-guide` | 200 | Indexable | Yes (5 contextual pages) | `/blog`<br>`/blog/gcc-high-vs-m365-commercial-cmmc`<br>`/industries/defense-industrial-base`<br>`/knowledge-hub/what-is-cmmc`<br>+1 more pages | "What Counts as CUI?"<br>"What counts as CUI?"<br>"What counts as CUI?"<br>"What counts as CUI?" | — | Fixed: linked in server HTML | — |
+| 9 | `/pricing` | 200 | Indexable | Yes (7 contextual pages + sitewide nav) | `/blog/cmmc-consultant-red-flags`<br>`/blog/cmmc-level-2-small-business-guide`<br>`/cmmc`<br>`/cmmc-compliance-automation`<br>+3 more pages; sitewide footer | "CMMC readiness pricing"<br>"CMMC readiness pricing for small contractors"<br>"CMMC readiness pricing and engagement options"<br>"CMMC Readiness Pricing" | — | Fixed: linked in server HTML | — |
+| 10 | `/privacy-policy` | 200 | Indexable | Yes (1 contextual page + sitewide nav) | `/`<br>sitewide header; sitewide footer | "Privacy Policy" | — | Fixed: linked in server HTML | — |
+| 11 | `/blog/gcc-high-vs-m365-commercial-cmmc` | 200 | Indexable | Yes (4 contextual pages) | `/blog`<br>`/blog/what-counts-as-cui-plain-english-guide`<br>`/services/cmmc-scoping`<br>`/solutions/cloud-security` | "GCC High vs M365 Commercial for CMMC"<br>"Where CUI can live: GCC High vs M365 Commercial"<br>"Choosing GCC High or M365 Commercial for CUI"<br>"GCC High vs M365 Commercial for CMMC" | — | Fixed: linked in server HTML | — |
+| 12 | `/datasheets/microsoft-copilot-readiness` | 200 | Indexable | Yes (3 contextual pages) | `/datasheets`<br>`/microsoft-ecosystem`<br>`/solutions/microsoft-copilot-readiness` | "Microsoft Copilot Readiness Datasheet"<br>"Microsoft Copilot readiness datasheet"<br>"Microsoft Copilot readiness datasheet" | — | Fixed: linked in server HTML | — |
+| 13 | `/delivery-model` | 200 | Indexable | Yes (5 contextual pages + sitewide nav) | `/capability-statement`<br>`/pricing`<br>`/representative-engagements`<br>`/supplier-readiness`<br>+1 more pages; sitewide header; sitewide footer | "Engagement formats"<br>"DefenseEye engagement formats"<br>"How engagements are structured"<br>"Delivery Model" | — | Fixed: linked in server HTML | — |
+| 14 | `/insights/implement-ai-governance` | 200 | Indexable | Yes (5 contextual pages) | `/industries/financial-services-credit-unions`<br>`/insights/what-is-nist-ai-rmf`<br>`/knowledge-hub`<br>`/secure-ai-adoption`<br>+1 more pages | "How to implement AI governance in practice"<br>"Practical steps to implement AI governance"<br>"How can organizations implement AI governance?"<br>"Practical steps to implement AI governance" | — | Fixed: linked in server HTML | — |
+| 15 | `/datasheets/cmmc-compliance-automation` | 200 | Indexable | Yes (2 contextual pages) | `/cmmc-compliance-automation`<br>`/datasheets` | "CMMC & compliance automation datasheet"<br>"CMMC & Compliance Automation Datasheet" | — | Fixed: linked in server HTML | — |
+| 16 | `/lp/microsoft-supplier-ai-consulting` | 200 | Indexable | Yes (2 contextual pages) | `/datasheets/supplier-readiness`<br>`/supplier-readiness` | "Supplier capability review for Microsoft-centered environments"<br>"Minority-owned supplier support for Microsoft-centered programs" | — | Fixed: linked in server HTML | — |
+| 17 | `/lp/ai-governance-consulting` | 200 | Indexable | Yes (2 contextual pages) | `/insights/implement-ai-governance`<br>`/solutions/ai-governance` | "Start with an AI governance readiness assessment"<br>"AI governance readiness assessment" | — | Fixed: linked in server HTML | — |
+| 18 | `/solutions/compliance-automation` | 200 | Indexable | Yes (6 contextual pages + sitewide nav) | `/cmmc-compliance-automation`<br>`/insights/ai-audit-readiness`<br>`/insights/ai-automated-evidence-collection`<br>`/insights/continuous-compliance-monitoring`<br>+2 more pages; sitewide footer | "Compliance Automation Consulting"<br>"Compliance Automation Consulting"<br>"Compliance Automation Consulting"<br>"Compliance Automation Consulting" | — | Fixed: linked in server HTML | — |
+| 19 | `/insights/security-copilot-cybersecurity-operations` | 200 | Indexable | Yes (4 contextual pages) | `/microsoft-ecosystem`<br>`/solutions/ai-security`<br>`/solutions/cybersecurity-risk`<br>`/solutions/microsoft-copilot-readiness` | "Security Copilot for cybersecurity operations"<br>"Using Security Copilot in security operations"<br>"Security Copilot for Security Operations"<br>"Security Copilot for cybersecurity operations" | — | Fixed: linked in server HTML | — |
+| 20 | `/industries/defense-industrial-base` | 200 | Indexable | Yes (2 contextual pages + sitewide nav) | `/`<br>`/cmmc-compliance-automation`<br>sitewide footer | "Prepare for CMMC"<br>"Defense Industrial Base" | — | Fixed: linked in server HTML | — |
+| 21 | `/datasheets/cmmclens` | 200 | Indexable | Yes (3 contextual pages) | `/cmmclens`<br>`/datasheets`<br>`/solutions/cmmclens-platform` | "CMMCLens product sheet"<br>"CMMCLens Product Sheet"<br>"CMMCLens product sheet" | — | Fixed: linked in server HTML | — |
+| 22 | `/lp/compliance-automation` | 200 | Indexable | Yes (2 contextual pages) | `/insights/ai-audit-readiness`<br>`/solutions/compliance-automation` | "Plan compliance automation for evidence and reporting"<br>"Compliance automation roadmap and CMMCLens fit assessment" | — | Fixed: linked in server HTML | — |
+| 23 | `/solutions/cmmclens-platform` | 200 | Indexable | Yes (3 contextual pages) | `/cmmc-evidence-automation`<br>`/cmmclens`<br>`/datasheets/cmmclens` | "CMMCLens platform overview"<br>"CMMCLens Platform Overview"<br>"CMMCLens platform overview" | — | Fixed: linked in server HTML | — |
+| 24 | `/lp/secure-ai-adoption` | 200 | Indexable | Yes (2 contextual pages) | `/secure-ai-adoption`<br>`/solutions/ai-transformation` | "Secure AI adoption readiness review"<br>"Secure AI adoption readiness review" | — | Fixed: linked in server HTML | — |
+| 25 | `/solutions/cloud-security` | 200 | Indexable | Yes (5 contextual pages + sitewide nav) | `/attacksense`<br>`/blog/gcc-high-vs-m365-commercial-cmmc`<br>`/lp/azure-cloud-security`<br>`/microsoft-ecosystem`<br>+1 more pages; sitewide footer | "Microsoft cloud security review"<br>"Azure and GCC High cloud security consulting"<br>"Microsoft Cloud Security"<br>"Azure and GCC High cloud security consulting" | — | Fixed: linked in server HTML | — |
+| 26 | `/industries/financial-services-credit-unions` | 200 | Indexable | Yes (5 contextual pages + sitewide nav) | `/`<br>`/insights/implement-ai-governance`<br>`/secure-ai-adoption`<br>`/solutions/ai-governance`<br>+1 more pages; sitewide header; sitewide footer | "See the financial services path"<br>"AI governance for financial institutions"<br>"Financial Services & Credit Unions"<br>"AI risk management for financial institutions" | — | Fixed: linked in server HTML | — |
+| 27 | `/lp/cmmc-evidence-automation` | 200 | Indexable | Yes (2 contextual pages) | `/cmmc-evidence-automation`<br>`/insights/ai-automated-evidence-collection` | "Evidence automation implementation with CMMCLens"<br>"Put CMMC evidence automation in place" | — | Fixed: linked in server HTML | — |
+| 28 | `/cmmc-readiness-sprint` | 301 (single hop) | — (redirect) | No — links point to the destination | — | — | `/services/cmmc-readiness-sprint` (200, self-canonical, in sitemap) | Consolidated | Thin template page with the same intent and booking CTA as the full fixed-scope sprint offer; its one unique FAQ moved to the destination |
+| 29 | `/datasheets/supplier-readiness` | 200 | Indexable | Yes (2 contextual pages) | `/datasheets`<br>`/supplier-readiness` | "Supplier Readiness Datasheet"<br>"Supplier readiness datasheet" | — | Fixed: linked in server HTML | — |
+| 30 | `/insights/ai-automated-evidence-collection` | 200 | Indexable | Yes (5 contextual pages) | `/cmmc-evidence-automation`<br>`/insights/continuous-compliance-monitoring`<br>`/knowledge-hub`<br>`/knowledge-hub/evidence-mapping`<br>+1 more pages | "How AI can automate evidence collection"<br>"AI-automated evidence collection"<br>"How can AI automate evidence collection?"<br>"How AI can automate evidence collection" | — | Fixed: linked in server HTML | — |
+| 31 | `/lp/cmmclens-demo` | 200 | Indexable | Yes (2 contextual pages) | `/cmmclens`<br>`/solutions/cmmclens-platform` | "CMMCLens demo and evidence automation fit review"<br>"Request a CMMCLens demo and fit review" | — | Fixed: linked in server HTML | — |
+| 32 | `/insights/continuous-compliance-monitoring` | 200 | Indexable | Yes (4 contextual pages) | `/insights/ai-audit-readiness`<br>`/insights/what-is-rmf-readiness`<br>`/solutions/compliance-automation`<br>`/solutions/cybersecurity-risk` | "Continuous compliance monitoring"<br>"Continuous monitoring for compliance programs"<br>"Continuous Compliance Monitoring"<br>"Continuous compliance monitoring explained" | — | Fixed: linked in server HTML | — |
+| 33 | `/lp/cmmc-compliance-automation` | 200 | Indexable | Yes (2 contextual pages) | `/cmmc`<br>`/cmmc-compliance-automation` | "CMMC compliance automation sprint"<br>"CMMC compliance automation sprint" | — | Fixed: linked in server HTML | — |
+| 34 | `/lp/azure-cloud-security` | 200 | Indexable | Yes (2 contextual pages) | `/microsoft-ecosystem`<br>`/solutions/cloud-security` | "Azure cloud security and compliance review"<br>"Azure security and compliance review" | — | Fixed: linked in server HTML | — |
+| 35 | `/insights/ai-audit-readiness` | 200 | Indexable | Yes (2 contextual pages) | `/insights/ai-automated-evidence-collection`<br>`/solutions/compliance-automation` | "How AI can improve audit readiness"<br>"AI and Audit Readiness" | — | Fixed: linked in server HTML | — |
+| 36 | `/lp/microsoft-copilot-readiness` | 200 | Indexable | Yes (2 contextual pages) | `/datasheets/microsoft-copilot-readiness`<br>`/solutions/microsoft-copilot-readiness` | "Microsoft Copilot readiness assessment"<br>"Copilot governance assessment" | — | Fixed: linked in server HTML | — |
+| 37 | `/microsoft-ecosystem` | 200 | Indexable | Yes (5 contextual pages + sitewide nav) | `/datasheets/microsoft-copilot-readiness`<br>`/insights/security-copilot-cybersecurity-operations`<br>`/solutions/cloud-security`<br>`/solutions/microsoft-copilot-readiness`<br>+1 more pages; sitewide footer | "Microsoft ecosystem experience"<br>"Microsoft security and cloud experience"<br>"DefenseEye's Microsoft ecosystem experience"<br>"DefenseEye experience in Microsoft-centered environments" | — | Fixed: linked in server HTML | — |
+| 38 | `/lp/cmmc-level-2-readiness` | 200 | Indexable | Yes (2 contextual pages) | `/cmmc-level-2-readiness`<br>`/insights/what-is-cmmc-level-2` | "CMMC Level 2 readiness assessment"<br>"Assess your CMMC Level 2 readiness" | — | Fixed: linked in server HTML | — |
+| 39 | `/datasheets/secure-ai-adoption` | 200 | Indexable | Yes (3 contextual pages) | `/datasheets`<br>`/secure-ai-adoption`<br>`/solutions/ai-governance` | "Secure AI Adoption Datasheet"<br>"Secure AI adoption one-page datasheet"<br>"Secure AI adoption datasheet" | — | Fixed: linked in server HTML | — |
+| 40 | `/services/cmmc-scoping` | 200 | Indexable | Yes (8 contextual pages + sitewide nav) | `/blog/what-counts-as-cui-plain-english-guide`<br>`/cmmc`<br>`/cmmc-compliance-automation`<br>`/cmmc-readiness-sprint-guide`<br>+4 more pages; sitewide footer | "Define your CUI boundary with CMMC scoping"<br>"CMMC scoping service"<br>"CMMC Scoping"<br>"CMMC scoping service" | — | Fixed: linked in server HTML | — |
+| 41 | `/insights/what-is-rmf-readiness` | 200 | Indexable | Yes (3 contextual pages) | `/insights/continuous-compliance-monitoring`<br>`/nist-800-171`<br>`/solutions/compliance-automation` | "Continuous monitoring in RMF readiness"<br>"RMF readiness for federal systems"<br>"What Is RMF Readiness?" | — | Fixed: linked in server HTML | — |
 
 **Totals:** 40 fixed and indexable, all with ≥ 2 raw-HTML inlinks. 1 consolidated by 301. 0 excluded via noindex.
 
@@ -258,7 +380,8 @@ Three consolidation redirects were added (§5). Live check: all legacy and conso
 | Solution, insight, datasheet, CMMC, sprint guide, delivery model, supplier pages | Related-resources block and the full footer, where these templates previously had none | Links validated |
 | `/lp/*` | Primary CTA (booking) and secondary CTA (capability statement) unchanged; CMMCLens demo still uses the CMMCLens calendar | `landing_page_cta_click` fires |
 | `/services/cmmc-readiness-sprint` | Gains the FAQ moved from the consolidated page | Visible |
-| Contact form | Unchanged. Empty submit is blocked and the 8 required fields are flagged; nothing is posted. Server returns 400 on an invalid body. Unit tests cover success and error states (32 contact tests) | A live submission was **not** sent, to avoid real emails |
+| Contact form | Accessible validation, error, and success states (round 2, see R2/R3); submission and events unchanged | Browser-verified with the API stubbed; no real email sent |
+| Every page | Skip-to-content link | Browser-verified |
 
 No new offers or CTAs were invented; all link to existing services, pages, or booking links.
 
@@ -273,11 +396,9 @@ Device-emulated audit (Chrome DevTools Protocol) of 18 key pages at 390 px and 1
 - **Tap targets:** CTAs are ≥ 36 px tall (WCAG 2.2 AA minimum is 24 px).
 - **Breadcrumb** wraps cleanly on mobile; heading order is correct in the new sections (footer headings changed from `h4` to `h2`).
 
-**Pre-existing issues not caused by this branch (documented, not fixed):**
+**Fixed in round 2:** contact-form label association, accessible errors, and focus management; newsletter and search labels; the skip-to-content link (see R2).
 
-1. **Contact form labels** are not programmatically associated with inputs (no `htmlFor`/`id`), so screen readers do not announce them. The same applies to one field on `/secure-ai-adoption`. High priority.
-2. **No skip-to-content link**: keyboard users tab through about 60 header stops first.
-3. **Blog post template** skips one heading level.
+**Remaining pre-existing issue (not caused by this branch):** the shared blog-post template skips one heading level in a sidebar card heading. It affects all blog posts.
 
 ## 14. Performance
 
@@ -293,7 +414,7 @@ Device-emulated audit (Chrome DevTools Protocol) of 18 key pages at 390 px and 1
 |---|---|---|
 | Dependencies | `pnpm install --frozen-lockfile --offline` | OK; lockfile unchanged |
 | Type check | `pnpm check` (`tsc --noEmit`) | Pass |
-| Unit/integration tests | `npx vitest run --root .` | **25 files, 246 tests, all pass** |
+| Unit/integration tests | `npx vitest run --root .` | **26 files, 253 tests, all pass** |
 | Production build | `pnpm build` (vite build + server bundle) | Pass |
 | Route/metadata | `server/route-metadata.test.ts` | Unique titles and descriptions, length budgets, every client route covered or redirected, single-hop redirects |
 | Architecture/orphans | `server/site-architecture.test.ts` | All 41 orphans have an outcome; ≥ 2 raw-HTML inlinks; one H1 per page; no links to unknown or redirected URLs; breadcrumb/schema parity; llms.txt URLs valid; no pricing in schema; share image 1200×630 |
@@ -302,7 +423,9 @@ Device-emulated audit (Chrome DevTools Protocol) of 18 key pages at 390 px and 1
 | Live HTTP | Local production build: all 74 sitemap URLs plus redirects, 404, robots.txt, llms.txt, API | 200 + `index, follow` + self canonical + `og:url` + one H1 + valid JSON-LD + unique titles; redirects single-hop; 404 → noindex |
 | Sitemap XML | Parsed with an XML parser | Well-formed, 74 URLs |
 | Structured data | Script checking JSON syntax, required properties per Google docs, `@id` resolution, and visible-content consistency | 0 errors (warnings in §17) |
-| Mobile/a11y and CTAs | Chrome DevTools Protocol scripts | See §12 and §13 |
+| Mobile/a11y and CTAs | Chrome DevTools Protocol scripts (18+ pages at 390 px and 1440 px) | No overflow, one H1, no missing alt text or unnamed controls; skip link works; focus visible |
+| Forms | Browser test with `/api/contact` stubbed; 19 contact unit tests | See R3 |
+| Dates | `server/site-architecture.test.ts` "article dates" | Every schema date matches the visible date |
 | Secrets | Diff scan for keys, tokens, passwords, and private keys; tracked-file check | None found; no `.env`, keys, or `node_modules` tracked (`.env.example` template pre-exists, unchanged) |
 
 ## 16. Unavailable tests
@@ -317,10 +440,11 @@ Device-emulated audit (Chrome DevTools Protocol) of 18 key pages at 390 px and 1
 
 | Warning | Pages | Why it remains |
 |---|---|---|
-| `Article` has `dateModified` but no `datePublished` | 13 knowledge-hub / insight pages | Publish dates are not recorded in the repo; not invented |
+| `Article` without `datePublished` | 13 knowledge-hub and insight pages | Publish dates are not recorded in the repo or shown on the page; not invented |
 | `SoftwareApplication` lacks `offers` / `aggregateRating` (not eligible for Google software rich results) | `/cmmclens` | No public pricing or reviews exist |
 | `FAQPage` rich results are limited by Google to authoritative government/health sites | 22 pages | Markup stays valid and useful to other parsers and AI systems |
-| Blog posts still contain CMMC-AB **process statements** (who issues certification, eMASS submission) and the `marketplace.cmmcab.org` URL | 2 posts | Needs SME confirmation before rewriting regulatory process claims |
+| CMMC statements not verifiable from the rule text (CAP publisher, phase durations and costs, the 180-day conditional window) | Blog posts | Left unchanged; SME review requested (R1) |
+| Blog-post template skips one heading level | All blog posts | Pre-existing template issue |
 | Main JS chunk > 500 kB (Vite warning) | Global | Pre-existing; the lazy `CopilotChat` chunk (894 kB) is the bigger opportunity |
 
 ## 18. Assumptions and decisions requiring business approval
@@ -334,8 +458,8 @@ Device-emulated audit (Chrome DevTools Protocol) of 18 key pages at 390 px and 1
    - integrations, target customers, and any pricing
 4. **Industry hubs** for healthcare, SaaS, manufacturing, and professional services were **not created**. The repo has no industry-specific offerings, use cases, or proof for them. Each would need a defined audience, a genuine industry problem, a relevant capability, accurate use cases, and supporting pages.
 5. **Share image:** `og-default.png` is a simple card built from the existing logo and tagline. Replace it with a designed asset if preferred (same path).
-6. **Knowledge-hub copy in `be1773e`:** confirm that the "(2026)" H1 labels and the retitled certification-process guide reflect a real content review.
-7. **Content SME review** of the CMMC-AB process statements in §17.
+6. **Newsletter forms don't submit anywhere** (see R7.1). This is the highest-priority item.
+7. **SME review:** the Phase II suspension wording against the DoD memo, and the unverified CMMC statements in R1.
 
 ## 19. Rollback
 
