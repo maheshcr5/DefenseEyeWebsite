@@ -1703,6 +1703,8 @@ export function renderRouteFallbackHtml(route: SeoRoute) {
 }
 
 export const ORGANIZATION_LOGO_URL = `${SITE_ORIGIN}/defenseeye-logo.png`;
+// Same 1200x630 card as og:image in client/index.html.
+export const SHARE_IMAGE_URL = `${SITE_ORIGIN}/og-default.png`;
 
 // One Organization entity, referenced by @id from every page. Only facts published
 // on the site (name, URL, Redmond WA location, contact email, LinkedIn) are used.
@@ -1726,7 +1728,8 @@ export function buildRouteSchemas(route: SeoRoute) {
     itemListElement: trail.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      name: index === trail.length - 1 && route.path !== "/" ? route.h1 : item.label,
+      // Same labels as the visible breadcrumb (client/src/components/Breadcrumbs.tsx).
+      name: item.label,
       item: canonicalUrl(item.href),
     })),
   };
@@ -1796,10 +1799,11 @@ export function buildRouteSchemas(route: SeoRoute) {
     about: route.topics.map((name) => ({ "@type": "Thing", name })),
   };
 
-  // The Organization node is repeated (compactly) on every page so @id references
-  // from publisher/provider resolve within the page's own structured data.
+  // The Organization and WebSite nodes are repeated (compactly) on every page so @id
+  // references from publisher/provider/isPartOf resolve within the page's own data.
   const shared = [
     { "@context": "https://schema.org", ...organization },
+    { "@context": "https://schema.org", "@type": "WebSite", "@id": `${SITE_ORIGIN}/#website`, name: "DefenseEye.ai", url: `${SITE_ORIGIN}/`, publisher: { "@id": `${SITE_ORIGIN}/#organization` } },
     { "@context": "https://schema.org", ...breadcrumb },
     ...faqPage,
   ];
@@ -1860,7 +1864,7 @@ export function buildRouteSchemas(route: SeoRoute) {
         description: route.description,
         url: canonical,
         mainEntityOfPage: { "@id": `${canonical}#webpage` },
-        image: ORGANIZATION_LOGO_URL,
+        image: SHARE_IMAGE_URL,
         author,
         publisher: { "@id": `${SITE_ORIGIN}/#organization` },
         ...(route.article.datePublished ? { datePublished: route.article.datePublished } : {}),

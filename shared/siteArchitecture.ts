@@ -47,7 +47,7 @@ export const ROUTE_NAMES: Record<string, string> = {
   "/cmmc-evidence-automation": "CMMC Evidence Automation",
   "/nist-800-171": "NIST SP 800-171 Readiness",
   "/cmmc-readiness-sprint-guide": "4-Week CMMC Readiness Sprint Guide",
-  "/solutions/compliance-automation": "Compliance Evidence Automation",
+  "/solutions/compliance-automation": "Compliance Automation Consulting",
   "/cmmclens": "CMMCLens",
   "/solutions/cmmclens-platform": "CMMCLens Platform Overview",
   "/pricing": "CMMC Readiness Pricing",

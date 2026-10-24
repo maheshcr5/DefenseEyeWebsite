@@ -1,7 +1,7 @@
 export const COMPANY = {
   name: "DefenseEye",
   legalName: "DefenseEye, Inc.",
-  website: "https://www.defenseeye.ai",
+  website: "https://defenseeye.ai",
   location: "Redmond, WA",
   locationLong: "Redmond, Washington",
   email: "enterprise@defenseeye.ai",

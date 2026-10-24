@@ -356,7 +356,7 @@ export default function BlogPostPage() {
       },
       image: {
         "@type": "ImageObject",
-        url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663028771419/EuH9Png2HimpzgUP2fBtWN/hero-dashboard-MRfN7kPE4hmjGfzaoj2jb9.png",
+        url: "https://defenseeye.ai/og-default.png",
         width: 1200,
         height: 630,
       },

@@ -136,8 +136,9 @@ describe("server-rendered fallback HTML", () => {
       if (article) expect(String(article.headline).length, entry.path).toBeLessThanOrEqual(110);
       if (entry.path === "/") continue;
       const breadcrumb = schemas.find((schema) => schema["@type"] === "BreadcrumbList") as
-        | { itemListElement: Array<{ item: string }> }
+        | { itemListElement: Array<{ item: string; name: string }> }
         | undefined;
+      expect(breadcrumb?.itemListElement.map((item) => item.name), entry.path).toEqual(getBreadcrumbTrail(entry.path).map((item) => item.label));
       expect(breadcrumb?.itemListElement.map((item) => item.item), entry.path).toEqual(
         getBreadcrumbTrail(entry.path).map((item) => `https://defenseeye.ai${item.href === "/" ? "/" : item.href}`)
       );
@@ -158,5 +159,17 @@ describe("llms.txt", () => {
       expect(isLive(url), url).toBe(true);
       expect(isNoindexRoute(url), url).toBe(false);
     }
+  });
+});
+
+describe("social sharing metadata", () => {
+  it("uses a self-hosted 1200x630 share image", () => {
+    const html = fs.readFileSync(path.resolve(__dirname, "../client/index.html"), "utf-8");
+    for (const tag of ['property="og:image"', 'name="twitter:image"']) {
+      const url = html.match(new RegExp(`<meta ${tag} content="([^"]+)"`))?.[1];
+      expect(url, tag).toBe("https://defenseeye.ai/og-default.png");
+    }
+    const png = fs.readFileSync(path.resolve(__dirname, "../client/public/og-default.png"));
+    expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630]);
   });
 });
