@@ -211,12 +211,14 @@
     <script type="module" src="/src/main.tsx"></script>
 
     <!-- Google Analytics 4 — loads only after cookie consent granted -->
+    <!-- The ID comes only from VITE_GA4_MEASUREMENT_ID; production builds fail without a valid one (vite.config.ts). -->
     <script>
       window.__gaId = "%VITE_GA4_MEASUREMENT_ID%";
       window.__gaLoaded = false;
       window.__gaLastPage = "";
       window.loadGA4 = function() {
-        if (window.__gaLoaded || !window.__gaId || window.__gaId.startsWith('%')) return;
+        // Loads gtag.js at most once per page; SPA route changes use trackGA4PageView instead.
+        if (window.__gaLoaded || !/^G-[A-Z0-9]{6,12}$/.test(window.__gaId || '')) return;
         var s = document.createElement('script');
         s.async = true;
         s.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.__gaId;
@@ -248,7 +250,7 @@
         var raw = localStorage.getItem('de_cookie_consent');
         try {
           var parsed = JSON.parse(raw || '{}');
-          return parsed && parsed.status === 'accepted' && parsed.purposes && parsed.purposes.analytics === true;
+          return parsed && parsed.status === 'accepted' && parsed.version === 2 && parsed.purposes && parsed.purposes.analytics === true;
         } catch (e) {
           return false;
         }

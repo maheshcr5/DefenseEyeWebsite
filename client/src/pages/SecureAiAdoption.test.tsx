@@ -259,14 +259,20 @@ describe("Secure AI adoption landing page", () => {
     });
   });
 
-  it("fires secure_ai_form_start once per page lifecycle", () => {
+  it("fires secure_ai_form_start and the site-wide form_start once per page lifecycle", () => {
     const { gtag } = installGa4Window(acceptedAnalyticsConsent());
     const started = { current: false };
 
     trackSecureAiFormStartOnce(started);
     trackSecureAiFormStartOnce(started);
 
-    expect(gtag).toHaveBeenCalledTimes(1);
+    expect(gtag).toHaveBeenCalledTimes(2);
+    expect(gtag).toHaveBeenCalledWith("event", "form_start", {
+      send_to: "G-H22Q6LRNWC",
+      form_name: "secure_ai_adoption",
+      form_intent: "secure_ai",
+      page_path: "/secure-ai-adoption",
+    });
     expect(gtag).toHaveBeenCalledWith("event", "secure_ai_form_start", {
       send_to: "G-H22Q6LRNWC",
       event_category: "secure_ai_funnel",

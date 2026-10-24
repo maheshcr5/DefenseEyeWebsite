@@ -20,11 +20,11 @@ function createStorage(initial?: string) {
   };
 }
 
-function analyticsScriptFromIndex() {
+function analyticsScriptFromIndex(measurementId = NEW_MEASUREMENT_ID) {
   const html = readFileSync(path.resolve(process.cwd(), "client/index.html"), "utf8");
   const match = html.match(/<!-- Google Analytics 4[\s\S]*?<script>([\s\S]*?)<\/script>/);
   if (!match) throw new Error("GA4 inline script not found");
-  return match[1].replace("%VITE_GA4_MEASUREMENT_ID%", NEW_MEASUREMENT_ID);
+  return match[1].replace("%VITE_GA4_MEASUREMENT_ID%", measurementId);
 }
 
 function installBrowser(consent?: string, url = "https://defenseeye.ai/secure-ai-adoption?utm_source=openai&utm_medium=paid&utm_campaign=secure-ai") {
@@ -51,8 +51,8 @@ function installBrowser(consent?: string, url = "https://defenseeye.ai/secure-ai
   return { appended, document, storage, window };
 }
 
-function runGa4InlineScript() {
-  new Function(analyticsScriptFromIndex())();
+function runGa4InlineScript(measurementId?: string) {
+  new Function(analyticsScriptFromIndex(measurementId))();
 }
 
 function dataLayerCalls(window: { dataLayer?: unknown[] }) {
@@ -136,6 +136,26 @@ describe("GA4 consent loader", () => {
 
       runGa4InlineScript();
 
+      expect(appended).toHaveLength(0);
+      expect(window.gtag).toBeUndefined();
+    }
+  });
+
+  it("does not load GA4 for consent saved under an older consent version", () => {
+    const { appended, window } = installBrowser(JSON.stringify({ status: "accepted", version: 1, purposes: { analytics: true } }));
+    window.addEventListener = vi.fn((_event, callback) => callback());
+
+    runGa4InlineScript();
+
+    expect(appended).toHaveLength(0);
+    expect(window.gtag).toBeUndefined();
+  });
+
+  it("never loads gtag.js with an unresolved placeholder or malformed Measurement ID", () => {
+    for (const id of ["%VITE_GA4_MEASUREMENT_ID%", "", "UA-12345-1", "G-XXXXX", "G-H22Q6LRNWC extra", "g-h22q6lrnwc"]) {
+      const { appended, window } = installBrowser(undefined);
+      runGa4InlineScript(id);
+      window.loadGA4();
       expect(appended).toHaveLength(0);
       expect(window.gtag).toBeUndefined();
     }

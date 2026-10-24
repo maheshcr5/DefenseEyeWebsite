@@ -12,6 +12,7 @@ import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { CMMCLENS_BOOKING_URL, GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 import { trackCmmcLensBriefingClick } from "@/lib/cmmclensAnalytics";
+import { trackCtaClick, type CtaClick } from "@/lib/analytics";
 
 const SECURE_AI_CONSULTATION_URL = "/secure-ai-adoption#secure-ai-consultation";
 const CMMCLENS_PATH = "/cmmclens";
@@ -131,6 +132,14 @@ export function getHeaderCta(path: string) {
       };
 }
 
+/** cta_click for the route-aware header CTA; each variant is topic-specific. */
+export function headerCtaClick(path: string): CtaClick {
+  const normalized = normalizePath(path);
+  if (normalized === CMMCLENS_PATH) return { name: "header_cmmclens_briefing", location: "header", intent: "cmmc", product: "cmmclens" };
+  if (SUPPLIER_JOURNEY_PATHS.has(normalized)) return { name: "header_supplier_opportunities", location: "header", intent: "supplier" };
+  return { name: "header_secure_ai_consultation", location: "header", intent: "secure_ai" };
+}
+
 type NavBarProps = {
   initialMobileOpen?: boolean;
   initialMobileExpanded?: string | null;
@@ -150,6 +159,7 @@ export default function NavBar({ initialMobileOpen = false, initialMobileExpande
   const headerCtaLinkProps = headerCta.external ? { target: "_blank", rel: "noopener noreferrer" } : {};
   const handleHeaderCtaClick = () => {
     if (currentPath === CMMCLENS_PATH) trackCmmcLensBriefingClick("header");
+    trackCtaClick(headerCtaClick(currentPath));
   };
 
   const handleEnter = (key: string) => {

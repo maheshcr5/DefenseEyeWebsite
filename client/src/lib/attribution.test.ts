@@ -62,6 +62,20 @@ describe("campaign attribution across page loads", () => {
     expect(getStoredAttribution().utm_source).toBeUndefined();
   });
 
+  it("keeps campaign attribution when the visitor later loads a page directly (typed URL, bookmark, reload)", () => {
+    const storage = visit("https://defenseeye.ai/blog?utm_source=linkedin&utm_campaign=q4", "https://www.linkedin.com/");
+    visit("https://defenseeye.ai/contact", "", storage);
+
+    expect(getStoredAttribution()).toEqual({ utm_source: "linkedin", utm_campaign: "q4", landing_pathname: "/blog", referrer_domain: "linkedin.com" });
+  });
+
+  it("starts a fresh record for a direct load that carries a new campaign", () => {
+    const storage = visit("https://defenseeye.ai/blog?utm_source=linkedin", "https://www.linkedin.com/");
+    visit("https://defenseeye.ai/pricing?utm_source=newsletter", "", storage);
+
+    expect(getStoredAttribution()).toEqual({ utm_source: "newsletter", landing_pathname: "/pricing" });
+  });
+
   it("records the first landing even without campaign parameters", () => {
     visit("https://defenseeye.ai/knowledge-hub", "");
     expect(getStoredAttribution()).toMatchObject({ landing_pathname: "/knowledge-hub" });

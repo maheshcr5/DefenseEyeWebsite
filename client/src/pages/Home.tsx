@@ -83,8 +83,8 @@ const secondaryCapabilities: CapabilityLink[] = [
 const secondaryCapabilityEvents = {
   "/cmmc-compliance-automation": "portfolio_cmmc_click",
   "/cmmclens": "cmmclens_click",
-  "/attacksense": "attacksense_view",
-  "/supplier-readiness": "supplier_readiness_view",
+  "/attacksense": "attacksense_click",
+  "/supplier-readiness": "supplier_readiness_click",
 } as const;
 
 export default function Home() {
@@ -156,7 +156,7 @@ export default function Home() {
               <a
                 key={path.href}
                 href={path.href}
-                onClick={() => trackConversion("home_path_click", { path: path.href, location: "home_paths" })}
+                onClick={() => trackConversion("home_path_click", { path: path.href, location: "home_paths", audience: path.audience, intent: path.intent })}
                 className="group flex flex-col border border-border/50 bg-card p-5 transition-colors hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
                 <h3 className="font-heading text-lg font-bold leading-snug">{path.audience}</h3>

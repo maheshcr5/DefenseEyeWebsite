@@ -149,7 +149,7 @@ else
   # Create .env for production build
   if [[ ! -f ".env" ]]; then
     cp .env.example .env
-    warn "Created .env from template — update VITE_GA4_MEASUREMENT_ID if you have it"
+    warn "Created .env from template — set VITE_GA4_MEASUREMENT_ID (production: G-H22Q6LRNWC) or the build will fail"
   fi
 
   # Set production env vars
