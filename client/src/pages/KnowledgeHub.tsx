@@ -11,6 +11,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import NavBar from "@/components/NavBar";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import {
   BookOpen,
   BarChart3,
@@ -181,8 +182,6 @@ const ALL_TAGS: { label: string; href: string }[] = [
 ];
 
 export default function KnowledgeHub() {
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true });
 
@@ -226,10 +225,6 @@ export default function KnowledgeHub() {
     return () => { document.getElementById("schema-knowledge-hub")?.remove(); };
   }, []);
 
-  function handleSubscribe(e: React.FormEvent) {
-    e.preventDefault();
-    if (email) setSubscribed(true);
-  }
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -407,35 +402,12 @@ export default function KnowledgeHub() {
         <div className="container">
           <div className="max-w-xl mx-auto text-center">
             <Mail className="w-8 h-8 text-primary mx-auto mb-4" />
-            <h2 className="font-heading text-2xl font-bold mb-2">
-              CMMC Updates to Your Inbox
-            </h2>
-            <p className="text-muted-foreground text-sm mb-6">
-              Get notified when new guides are published and when CMMC regulations change. No spam — unsubscribe anytime.
-            </p>
-            {subscribed ? (
-              <div role="status" className="flex items-center justify-center gap-2 text-primary font-medium">
-                <CheckCircle2 className="w-5 h-5" aria-hidden="true" />
-                You're subscribed — thanks!
-              </div>
-            ) : (
-              <form onSubmit={handleSubscribe} className="flex gap-2 max-w-sm mx-auto">
-                <label htmlFor="knowledge-hub-newsletter-email" className="sr-only">Work email address</label>
-                <input
-                  id="knowledge-hub-newsletter-email"
-                  type="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@company.com"
-                  required
-                  className="flex-1 bg-background border border-border/60 text-foreground text-sm px-3 py-2 focus:outline-none focus:border-primary/60 placeholder:text-muted-foreground/50"
-                />
-                <Button type="submit" size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold shrink-0">
-                  Subscribe
-                </Button>
-              </form>
-            )}
+            <NewsletterSignup
+              location="knowledge_hub"
+              heading="CMMC Updates to Your Inbox"
+              intro="Get notified when new guides are published and when CMMC regulations change. No spam — unsubscribe anytime."
+              resourcesLink={{ label: "Read the CMMC blog", href: "/blog" }}
+            />
           </div>
         </div>
       </section>

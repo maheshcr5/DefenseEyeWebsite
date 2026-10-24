@@ -18,6 +18,9 @@ const UTM_KEYS = [
 
 export type ConversionName =
   | "home_path_click"
+  | "newsletter_subscribe"
+  | "newsletter_subscribe_failed"
+  | "newsletter_unavailable_cta_click"
   | "capability_statement_download"
   | "capability_statement_view"
   | "supplier_readiness_view"

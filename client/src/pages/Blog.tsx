@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { blogPosts, type BlogPost } from "@/data/blogPosts";
 import NavBar from "@/components/NavBar";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
@@ -219,87 +220,22 @@ function PostCard({ post, index }: { post: BlogPost; index: number }) {
 // ─── Newsletter Section ─────────────────────────────────────────────────────
 
 function NewsletterSection() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setStatus("error");
-      return;
-    }
-    setStatus("success");
-    setEmail("");
-  }
-
   return (
     <Section className="py-16 px-4">
       <div className="max-w-2xl mx-auto text-center">
         <div className="bracket-decoration bg-card/60 backdrop-blur-sm border border-border/40 p-8 md:p-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-heading font-semibold bg-accent/10 text-accent border border-accent/30 uppercase tracking-wider mb-6">
-            <Mail className="w-3 h-3" />
+            <Mail className="w-3 h-3" aria-hidden="true" />
             CMMC Intelligence
           </div>
-          <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-3">
-            Stay Ahead of CMMC Rule Changes
-          </h2>
-          <p className="text-muted-foreground mb-8 leading-relaxed">
-            Get practical guidance on readiness priorities, SPRS score movement, and C3PAO prep
-            decisions while intent is high and award windows are open.
-          </p>
-
-          {status === "success" ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              role="status"
-              className="flex items-center justify-center gap-3 py-4 px-6 bg-primary/10 border border-primary/30 rounded"
-            >
-              <CheckCircle2 className="w-5 h-5 text-primary" />
-              <span className="font-heading font-semibold text-primary">
-                You're subscribed! First issue coming soon.
-              </span>
-            </motion.div>
-          ) : (
-            <form onSubmit={handleSubmit} noValidate className="flex flex-col sm:flex-row gap-3">
-              <label htmlFor="blog-newsletter-email" className="sr-only">Work email address</label>
-              <input
-                id="blog-newsletter-email"
-                type="email"
-                autoComplete="email"
-                aria-invalid={status === "error" ? true : undefined}
-                aria-describedby={status === "error" ? "blog-newsletter-error" : undefined}
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (status === "error") setStatus("idle");
-                }}
-                placeholder="your@company.com"
-                className={`flex-1 px-4 py-3 bg-secondary/40 border rounded text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all ${
-                  status === "error"
-                    ? "border-red-500/50 focus:ring-red-500/30"
-                    : "border-border/60"
-                }`}
-              />
-              <Button
-                type="submit"
-                className="bg-accent text-background hover:bg-accent/90 font-heading font-bold px-6 whitespace-nowrap"
-              >
-                Subscribe
-                <ArrowRight className="w-4 h-4 ml-1.5" />
-              </Button>
-            </form>
-          )}
-
-          {status === "error" && (
-            <p id="blog-newsletter-error" role="alert" className="text-red-400 text-sm mt-2 text-left">
-              Please enter a valid email address.
-            </p>
-          )}
-
-          <p className="text-muted-foreground/60 text-xs mt-4">
-            By subscribing you agree to our privacy policy. We never sell your data.
-          </p>
+          <NewsletterSignup
+            location="blog"
+            heading="Stay Ahead of CMMC Rule Changes"
+            intro="Get practical guidance on readiness priorities, SPRS score movement, and C3PAO prep decisions while intent is high and award windows are open."
+            resourcesLink={{ label: "Browse the CMMC Knowledge Hub", href: "/knowledge-hub" }}
+            headingClassName="font-heading text-2xl md:text-3xl font-bold text-foreground mb-3"
+            introClassName="text-muted-foreground mb-8 leading-relaxed"
+          />
         </div>
       </div>
     </Section>
