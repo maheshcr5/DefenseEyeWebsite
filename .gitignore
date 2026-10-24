@@ -119,3 +119,24 @@ venv/
 .venv/
 __pycache__/
 *.pyc
+
+# Secrets and production configuration (scripts/check-secrets.mjs enforces this in the build and CI)
+.env
+.env.*
+!.env.example
+*.env
+.envrc
+.npmrc
+.netrc
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+id_rsa*
+id_ed25519*
+credentials*.json
+service-account*.json
+*-service-account*.json
+secrets.*

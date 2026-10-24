@@ -297,6 +297,17 @@ The update script: pulls latest code → reinstalls deps → rebuilds → reload
 | `VITE_ANALYTICS_ENDPOINT` | Optional | Umami instance URL |
 | `VITE_ANALYTICS_WEBSITE_ID` | Optional | Umami website ID |
 | `VITE_SITE_URL` | Optional | Canonical site URL for SEO |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | For Copilot | Gemini key. **Server-only.** Read only by `lib/ai/gemini.ts`. |
+| `SMTP_PASS` | For the contact form | SMTP password. **Server-only.** |
+
+### Secret handling
+
+- **Server-only variables.** Anything prefixed `VITE_` is compiled into public JavaScript, so never put a secret in a `VITE_` variable. `GOOGLE_GENERATIVE_AI_API_KEY` and `SMTP_PASS` are read only on the server, at runtime (`node --env-file=.env` in `ecosystem.config.cjs`).
+- **Where `.env` lives.** Keep it at `/var/www/defenseeye/.env`, outside `dist/public`, mode `600`, owned by the user that runs the app (currently `root`). If the app ever runs as a dedicated user, use `chown root:<group>` with mode `640` instead. Release builds link to it (`<release>/.env -> /var/www/defenseeye/.env`); do not copy it.
+- **Build check.** `pnpm build` ends with `scripts/check-secrets.mjs --build`. The build fails if `dist/` contains an environment or key file, the value of any secret-named server variable, or a credential pattern. It also fails if `dist/public` contains a server-only variable name. Values are never printed.
+- **Repository and CI checks.** `pnpm check:secrets` and the CI workflows also run `--repo`, which fails if a tracked file is an environment, key, or credential file, or contains a credential pattern. `.gitignore` covers `.env`, `.env.*` (except `.env.example`), key files, and credential files.
+- **Copies.** Do not keep copies such as `.env.backup.*` on the server. If a copy is needed, keep it outside the app directory with mode `600`.
+- **Health check.** `GET /api/copilot/status` returns `"configured": true` when the key is loaded. It never returns the key.
 
 **Important:** Variables prefixed `VITE_` are baked into the frontend at build time by Vite. They are NOT secret — they will be visible in the browser's page source. Never put secrets (API keys, database passwords) in `VITE_` variables.
 

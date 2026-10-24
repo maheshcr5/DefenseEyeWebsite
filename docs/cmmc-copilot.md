@@ -48,7 +48,7 @@ When PostgreSQL is connected, persist source rows, chunks, embeddings, and analy
 ## Deployment
 
 1. Install dependencies with `pnpm install`.
-2. Add `GOOGLE_GENERATIVE_AI_API_KEY` to the production environment.
+2. Add `GOOGLE_GENERATIVE_AI_API_KEY` to the production `.env` (server-only, never a `VITE_` variable; see "Secret handling" in DEPLOY.md).
 3. Optionally set `COPILOT_GEMINI_MODEL=gemini-2.5-pro` for admin override.
 4. Build with `pnpm run build`.
 5. Start with the existing production command.
