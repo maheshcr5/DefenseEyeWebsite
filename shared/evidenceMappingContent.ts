@@ -2,12 +2,12 @@ export const EVIDENCE_MAPPING_CONTENT = {
   title: "Automated Evidence Mapping for NIST 800-171: How AI Transforms CMMC Readiness",
   description: "Learn how evidence maps to the 110 NIST SP 800-171 Revision 2 requirements used by CMMC Level 2, including assessment methods, SSP and POA&M responsibilities, and illustrative artifact examples.",
   h1: "Automated Evidence Mapping for NIST 800-171: A Complete Guide",
-  lastUpdated: "September 2026",
+  lastUpdated: "October 2026",
   quickAnswer: [
     { text: "NIST 800-171 evidence mapping", strong: true },
     { text: " is the process of collecting, organizing, and linking potential evidence to the 110 NIST SP 800-171 Revision 2 security requirements used by the current CMMC Level 2 model. A mapped artifact can support an assessment, but it does not by itself establish that a requirement or every assessment objective is MET. Historically done manually — requiring hundreds of hours of screenshots, configuration exports, and policy documents — AI-driven evidence mapping tools like ", strong: false },
     { text: "CMMCLens", strong: true },
-    { text: " now automate collection and organization by connecting directly to your cloud infrastructure and generating mapped evidence, reducing preparation time by up to 80%.", strong: false },
+    { text: " can help automate evidence collection and organization and map evidence to requirements. Effort savings depend on environment maturity, integrations, available source data, and implementation scope.", strong: false },
   ],
   toc: [
     { id: "what-is-evidence-mapping", label: "What is Evidence Mapping?" },
@@ -35,7 +35,7 @@ export const EVIDENCE_MAPPING_CONTENT = {
     stats: [
       { value: "110", label: "Revision 2 Requirements Assessed" },
       { value: "300–600", label: "Avg. Evidence Artifacts" },
-      { value: "80%", label: "Time Reduction with Automation" },
+      { value: "14", label: "Requirement Families (Rev. 2)" },
     ],
   },
   controlFamilies: {
@@ -67,14 +67,14 @@ export const EVIDENCE_MAPPING_CONTENT = {
     introduction: "The traditional approach to CMMC preparation relies on consultants conducting interviews, manually pulling configuration exports, and organizing evidence in spreadsheets. Automated evidence mapping changes this paradigm fundamentally.",
     headers: ["Dimension", "Manual Collection", "Automated Mapping (CMMCLens)"],
     rows: [
-      ["Time to collect evidence", "400–800 hours", "8–24 hours (initial scan)"],
-      ["Accuracy", "Human error; outdated at collection", "Real-time configuration data; always current"],
-      ["Cost", "$100,000–$300,000 in consultant fees", "Flat SaaS subscription; 60–80% cost reduction"],
-      ["Scalability", "Linear with contractor count; not scalable", "Scales to thousands of controls; multi-environment"],
+      ["Time to collect evidence", "Labor-intensive; grows with environment size", "Reduced where integrations and source data are available"],
+      ["Accuracy", "Human error; can be outdated by collection time", "Refreshed from connected sources on a schedule"],
+      ["Cost", "Significant consultant and staff time", "Subscription plus advisory support as needed; contact DefenseEye for pricing"],
+      ["Scalability", "Effort grows with each environment", "Supports multiple environments where integrations are configured"],
       ["Audit readiness", "Point-in-time; stale within weeks", "Continuous; evidence refreshed on schedule"],
       ["Gap identification", "Manual review; often incomplete", "Automated gap analysis with prioritized remediation"],
-      ["SSP generation", "3–6 weeks of writing; prone to errors", "AI-generated first draft in hours"],
-      ["POA&M creation", "Spreadsheet-based; manual tracking", "Auto-generated from gaps; tracked to closure"],
+      ["SSP generation", "Weeks of manual writing; prone to inconsistency", "AI-assisted first draft for human review"],
+      ["POA&M creation", "Spreadsheet-based; manual tracking", "Populated from identified gaps; tracked to closure"],
     ],
   },
   collection: {
@@ -86,7 +86,7 @@ export const EVIDENCE_MAPPING_CONTENT = {
       { step: "02", title: "Requirement Mapping Engine", description: "The AI engine maps discovered assets and configuration settings to potentially relevant NIST SP 800-171 requirements using a proprietary taxonomy. For example, Azure Conditional Access policies may support objectives in the Access Control (AC) and Identification and Authentication (IA) families. The mapping is an evidence lead, not a MET finding." },
       { step: "03", title: "Evidence Extraction", description: "For each mapped requirement, CMMCLens extracts potentially relevant artifacts: configuration exports, access logs, policy definitions, encryption settings, vulnerability scan results, and more. Evidence is timestamped and stored in an assessment-ready format for review." },
       { step: "04", title: "Gap Analysis", description: "The AI analyzes extracted evidence to flag potential gaps — requirements with no mapped evidence, partial coverage, or configurations that may conflict with an assessment objective. Each gap is scored by severity and weighted impact on the preliminary assessment score. The assessor or self-assessing organization remains responsible for the official finding." },
-      { step: "05", title: "Continuous Refresh", description: "Evidence is refreshed on a configurable schedule (daily, weekly, or monthly). Drift alerts identify changes to configurations previously mapped as supporting evidence — for example, if MFA is disabled for a user or a security policy is modified. A drift alert is not itself an official compliance finding." },
+      { step: "05", title: "Continuous Refresh", description: "Evidence can be refreshed from connected sources on a schedule, so changes to configurations previously mapped as supporting evidence — for example, MFA being disabled for a user or a security policy being modified — can be reviewed. A detected change is not itself an official compliance finding." },
     ],
   },
   cloud: {
@@ -105,7 +105,7 @@ export const EVIDENCE_MAPPING_CONTENT = {
     heading: "SSP and POA&M Generation from Evidence",
     introduction: "Collected and mapped evidence can support preparation of the SSP and internal remediation records, but the organization remains responsible for their accuracy and for implementing the requirements. A generated document or mapped artifact does not establish a CMMC finding.",
     items: [
-      { title: "System Security Plan (SSP)", paragraphs: ["NIST SP 800-171 Revision 2 requirement 3.12.4, identified as CA.L2-3.12.4 in the CMMC model, requires an SSP. The organization must describe the system boundary and operating environment, how applicable requirements are implemented, and relationships with or connections to other systems. The organization is responsible for keeping the SSP accurate; generated text must be reviewed against the actual environment.", "CMMCLens generates a pre-populated SSP using collected evidence to auto-fill requirement implementation descriptions, system component inventory, network diagrams, and interconnection tables — a process that typically takes consultants 3–6 weeks to complete manually."] },
+      { title: "System Security Plan (SSP)", paragraphs: ["NIST SP 800-171 Revision 2 requirement 3.12.4, identified as CA.L2-3.12.4 in the CMMC model, requires an SSP. The organization must describe the system boundary and operating environment, how applicable requirements are implemented, and relationships with or connections to other systems. The organization is responsible for keeping the SSP accurate; generated text must be reviewed against the actual environment.", "CMMCLens supports AI-assisted SSP drafting from collected evidence, such as requirement implementation descriptions and system component inventory, for human review and approval."] },
       { title: "Plan of Action and Milestones (POA&M)", paragraphs: ["Organizations may use remediation plans operationally, but a CMMC POA&M supporting Conditional Level 2 status is restricted by 32 CFR 170.21. Conditional eligibility requires a weighted assessment score of at least 80 percent (88 of 110 points), permits only eligible unmet requirements, and requires successful closeout within 180 days. A score of 88 does not mean that meeting any 88 requirements is sufficient.", "CMMCLens auto-generates a prioritized POA&M from the gap analysis, ranks items by SPRS score impact and remediation complexity, and tracks remediation progress with evidence re-collection. For a C3PAO assessment, only the C3PAO closeout assessment can verify official POA&M closeout; tool output does not replace that determination."] },
       { title: "Assessment Artifacts and Operational Logs", paragraphs: ["Assessment artifacts and operational audit logs have different retention bases. Under 32 CFR 170.17(c)(4), an organization undergoing a Level 2 C3PAO assessment must retain the artifacts used as assessment evidence for at least six years from the certification-assessment date. This does not establish one universal retention period for every operational audit log; log retention follows the applicable security requirements, contract, system needs, and organizational policy."] },
     ],
@@ -116,7 +116,7 @@ export const EVIDENCE_MAPPING_CONTENT = {
     paragraph: "CMMCLens is DefenseEye's AI-powered compliance platform built specifically for DoD contractors pursuing CMMC 2.0 certification. It eliminates the manual burden of evidence collection, documentation, and continuous monitoring.",
     cardTitle: "CMMCLens Evidence Automation",
     cardSubtitle: "From connection to assessment-ready evidence in 24 hours",
-    capabilities: ["Connect cloud environments in under 30 minutes", "Auto-collect evidence for all 110 NIST 800-171 controls", "AI-generated SSP with pre-populated control descriptions", "Auto-generated POA&M ranked by SPRS score impact", "Continuous compliance monitoring with drift alerts", "C3PAO readiness score showing pre-assessment preparedness", "Evidence versioning and audit trail for assessors", "One-click SPRS score calculation and export"],
+    capabilities: ["Connect Microsoft cloud evidence sources where integrations are configured", "Evidence collection and mapping across the 110 NIST SP 800-171 requirements", "AI-assisted SSP drafting for human review", "POA&M workflows prioritized by SPRS impact", "Continuous readiness monitoring", "Readiness dashboards showing pre-assessment preparedness", "Evidence traceability for assessors", "SPRS readiness tracking"],
     links: [
       { label: "What is CMMC?", href: "/knowledge-hub/what-is-cmmc" },
       { label: "CMMC Level 1 vs Level 2", href: "/knowledge-hub/cmmc-levels" },
@@ -127,8 +127,8 @@ export const EVIDENCE_MAPPING_CONTENT = {
     id: "faq",
     heading: "Frequently Asked Questions",
     items: [
-      { question: "How long does automated evidence collection take with CMMCLens?", answer: "Initial evidence collection for a typical small-to-mid-size contractor using Microsoft 365 GCC High and Azure Government takes 4–8 hours for the first full scan. Subsequent refreshes typically run in under 2 hours. This compares to 400–800 hours for manual evidence collection using a traditional consultant approach." },
-      { question: "Does automated evidence collection replace a required assessment?", answer: "No. Automated collection can support either readiness work or a self-assessment, but it does not replace the assessment identified by the applicable solicitation. The regulations define Level 2 Self and Level 2 C3PAO pathways. Current rollout policy is separate: Phase I began November 10, 2025, and the Department suspended the planned Phase II requirements on July 13, 2026 while keeping Phase I self-assessment requirements in effect. If a solicitation requires Level 2 (C3PAO), an authorized or accredited C3PAO must conduct that assessment." },
+      { question: "How long does automated evidence collection take with CMMCLens?", answer: "It depends on the number of environments, the integrations configured, and the source data available. Initial collection takes longer than later scheduled refreshes, and automated collection can be faster than gathering the same evidence manually. Effort savings depend on environment maturity, integrations, available source data, and implementation scope." },
+      { question: "Does automated evidence collection replace a required assessment?", answer: "No. Automated collection can support either readiness work or a self-assessment, but it does not replace the assessment identified by the applicable solicitation. The regulations define Level 2 Self and Level 2 C3PAO pathways. Implementation timing is separate: Phase 1 began November 10, 2025, when the DFARS CMMC acquisition rule took effect, and 32 CFR 170.3(e) schedules Phase 2, which adds Level 2 (C3PAO) requirements for applicable contracts, one calendar year later. DoD can adjust implementation timing through policy, so confirm the current phase with official DoD CIO guidance and the CMMC requirement stated in each solicitation. If a solicitation requires Level 2 (C3PAO), an authorized or accredited C3PAO must conduct that assessment." },
       { question: "What if my environment is entirely on-premises with no cloud services?", answer: "CMMCLens supports on-premises environments through agent-based collection and integration with common enterprise tools such as Active Directory, SCCM, Tenable, Qualys, and Splunk. Evidence can also be manually uploaded for systems that don't support API-based collection, which the platform then maps to the appropriate NIST 800-171 controls." },
       { question: "How does CMMCLens handle multi-tenant or multi-entity environments?", answer: "CMMCLens supports multi-entity environments with separate assessment boundaries for each entity. This is particularly useful for managed service providers (MSPs) or holding companies supporting multiple subsidiaries with distinct CMMC scopes. Each entity maintains independent evidence, SSP, and POA&M while benefiting from centralized administration." },
       { question: "Is evidence collected by CMMCLens automatically accepted by C3PAO assessors?", answer: "No evidence source is automatically sufficient or accepted for every environment or assessment objective. CMMCLens records timestamps, source identifiers, and version history and produces evidence packages in formats compatible with leading C3PAO workflow tools. The assessment team determines whether particular evidence is adequate when it applies the required examine, interview, and test methods to the scoped implementation." },

@@ -162,13 +162,13 @@ function CTABox({ variant = "inline" }: { variant?: "inline" | "bottom" }) {
             Automate Your CMMC Readiness with CMMCLens
           </h3>
           <p className="text-muted-foreground text-sm md:text-base mb-4 leading-relaxed">
-            Stop managing compliance in spreadsheets. CMMCLens maps all 110 NIST 800-171
-            controls to your environment, calculates your live SPRS score, generates your SSP,
-            and tracks POA&M items — all in one platform built for defense contractors.
+            Stop managing compliance in spreadsheets. CMMCLens supports evidence automation, control mapping to the 110 NIST 800-171
+            requirements, gap tracking, SSP and POA&M workflows, and readiness dashboards for
+            defense contractors.
           </p>
-          <Link href="/#contact">
+          <Link href="/lp/cmmclens-demo">
             <Button className="bg-accent text-background hover:bg-accent/90 font-heading font-bold">
-              Start Free Trial — CMMCLens
+              Request a CMMCLens Demo
               <ArrowRight className="w-4 h-4 ml-1.5" />
             </Button>
           </Link>

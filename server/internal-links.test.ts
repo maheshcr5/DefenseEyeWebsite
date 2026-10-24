@@ -43,3 +43,16 @@ describe("internal links in source", () => {
     expect([...new Set(problems)]).toEqual([]);
   });
 });
+
+describe("homepage anchor links", () => {
+  it("only link to /#anchor when the homepage defines that id", () => {
+    const home = fs.readFileSync(path.resolve(__dirname, "../client/src/pages/Home.tsx"), "utf-8");
+    const problems: string[] = [];
+    for (const file of roots.flatMap(sourceFiles)) {
+      for (const match of fs.readFileSync(file, "utf-8").matchAll(/["'`]\/#([\w-]+)["'`]/g)) {
+        if (!home.includes(`id="${match[1]}"`)) problems.push(`${path.relative(process.cwd(), file)} -> /#${match[1]}`);
+      }
+    }
+    expect(problems).toEqual([]);
+  });
+});

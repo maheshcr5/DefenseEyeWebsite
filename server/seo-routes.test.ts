@@ -179,8 +179,9 @@ describe("SEO route registry", () => {
     expect(html).toContain("maps to three separate NIST requirements");
     expect(html).toContain("CMMC Proposed Rule");
     expect(html).toContain("final rule on October 15, 2024");
-    expect(html).toContain("Phase I begins November 10, 2025");
-    expect(html).toContain("suspends the planned Phase II requirements");
+    // Phase timing is stated only as verified (90 FR 43560; 32 CFR 170.3(e)); no unverified suspension claim.
+    expect(html).toContain("Phase 1 begins November 10, 2025, the effective date of the DFARS CMMC acquisition rule");
+    expect(html).not.toContain("suspend");
     expect(html).toContain("Triennial self-assessment or triennial C3PAO assessment, with annual affirmation");
     expect(html).toContain("Yes, subject to Level 3 limits and 180-day DIBCAC closeout");
     expect(html).toContain("Contract award eligibility condition when required by the applicable solicitation");
@@ -190,7 +191,7 @@ describe("SEO route registry", () => {
     expect(html).toContain("<th>Level 3 — Expert</th>");
     expect(html).toContain("<td>Triennial DCMA DIBCAC assessment and annual affirmation</td>");
     expect(html).toContain("SPRS score ranges from -203 to +110");
-    expect(html).toContain("Automated evidence collection across 110 controls");
+    expect(html).toContain("Evidence automation and control mapping across the 110 requirements");
     expect(html).toContain('href="/knowledge-hub/certification-process"');
     expect(html).toContain("Does CMMC apply to foreign companies with U.S. DoD contracts?");
     expect(html).toContain("foreign ownership, control, or influence (FOCI) considerations.");
@@ -213,8 +214,8 @@ describe("SEO route registry", () => {
       "The C3PAO Assessment Process",
       "Receiving and Affirming Your CMMC Status",
       "Maintaining CMMC Compliance Post-Certification",
-      "Timeline and Cost Expectations",
-      "How CMMCLens Accelerates Each Step",
+      "What Drives Timeline and Cost",
+      "How CMMCLens Supports Each Step",
       "Frequently Asked Questions",
     ];
     let previousIndex = -1;
@@ -241,10 +242,12 @@ describe("SEO route registry", () => {
     expect(html).toContain("affirming official must submit the required affirmation of continuous compliance in SPRS");
     expect(html).toContain("retain the artifacts used as assessment evidence for at least six years");
     expect(html).toContain("annual affirmation is not an annual self-assessment");
-    expect(html).toContain("suspended the planned Phase II requirements on July 13, 2026");
-    expect(html).toContain("<td>Total (excl. remediation)</td>");
-    expect(html).toContain("<td>$65,000–$195,000+</td>");
-    expect(html).toContain("365-day continuous monitoring with annual affirmation support");
+    expect(html).toContain("32 CFR 170.3(e) schedules Phase 2");
+    expect(html).not.toContain("suspend");
+    // Timing and cost are described by their drivers; no unverified durations, costs, or pricing.
+    expect(html).toContain("<th>What drives timing and cost</th>");
+    expect(html).not.toMatch(/\$\d/);
+    expect(html).toContain("Continuous readiness monitoring and support for annual affirmation evidence");
     expect(html).toContain("What is the difference between CMMC and DFARS 252.204-7012?");
     expect(html).toContain("CMMC does not replace DFARS 252.204-7012.");
     expect(html).toContain('href="/knowledge-hub/sprs-score"');
@@ -294,14 +297,14 @@ describe("SEO route registry", () => {
     expect(html).toContain("FAR 52.204-21(b)(1)(ix) maps to three NIST requirements while the other 14 map one-to-one");
     expect(html).toContain("Self-assessment every 3 years or C3PAO assessment every 3 years");
     expect(html).toContain("The annual affirmation is not an annual self-assessment");
-    expect(html).toContain("Department suspended the planned Phase II requirements");
+    expect(html).toContain("32 CFR 170.3(e) schedules Phase 2");
     expect(html).toContain("Conditional Level 2 requires a score of at least 88 of 110");
     expect(html).toContain("DD Form 254 specifies classified-information security requirements and does not by itself determine a CMMC status");
     expect(html).toContain("are not automatically CUI");
     expect(html).toContain("System and Comm. Protection (SC)");
     expect(html).toContain("There is no single minimum SPRS score that governs every DoD award");
-    expect(html).toContain("Full 110-control evidence collection from cloud environments");
-    expect(html).toContain("Automated evidence for all 17 mapped Level 1 assessment references");
+    expect(html).toContain("Evidence collection and mapping across the 110 requirements where integrations are configured");
+    expect(html).toContain("Evidence organization for the 17 mapped Level 1 assessment references");
     expect(html).toContain("Does CMMC Level 2 require FedRAMP-authorized cloud services?");
     expect(html).toContain("M365 GCC High for evidence collection.");
     expect(html).toContain('href="/knowledge-hub/sprs-score"');
@@ -386,9 +389,9 @@ describe("SEO route registry", () => {
     expect(html).toContain("only the C3PAO closeout assessment can verify official POA&amp;M closeout");
     expect(html).toContain("retain the artifacts used as assessment evidence for at least six years");
     expect(html).toContain("does not establish one universal retention period for every operational audit log");
-    expect(html).toContain("Department suspended the planned Phase II requirements on July 13, 2026");
+    expect(html).toContain("32 CFR 170.3(e) schedules Phase 2");
     expect(html).toContain("No evidence source is automatically sufficient or accepted for every environment or assessment objective");
-    expect(html).toContain("Evidence is refreshed on a configurable schedule");
+    expect(html).toContain("Evidence can be refreshed from connected sources on a schedule");
     expect(html).toContain("formats compatible with leading C3PAO workflow tools");
     expect(html).not.toContain("An active POA&amp;M demonstrating remediation progress is required to maintain a negative SPRS score");
     expect(html).not.toContain("satisfy C3PAO evidence requirements");
@@ -474,7 +477,7 @@ describe("SEO route registry", () => {
     expect(html).toContain("meeting any 88 requirements is not sufficient");
     expect(html).toContain("C3PAO Level 2 certification assessment is not a Medium NIST SP 800-171 DoD Assessment");
     expect(html).toContain("C3PAO uploads CMMC assessment results into the CMMC instantiation of eMASS");
-    expect(html).toContain("planned Phase II requirements suspended as of July 13, 2026");
+    expect(html).toContain("Implementation is phased under 32 CFR 170.3(e)");
     expect(html).toContain("there is no universal three-year operational-log retention rule here");
     expect(html).not.toContain("partial credit may apply under self-assessment");
     expect(html).not.toContain("submit a Level 1 (Basic) Assessment");

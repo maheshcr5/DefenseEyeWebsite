@@ -210,7 +210,7 @@ export const ROUTE_METADATA: Record<string, RouteMetadata> = {
   "/blog/what-to-expect-c3pao-assessment": {
     title: "What to Expect in a C3PAO Assessment | DefenseEye",
     description:
-      "What to expect in a C3PAO assessment: choosing an assessor, assessment phases, common failure points, and a realistic CMMC Level 2 timeline.",
+      "What to expect in a C3PAO assessment: choosing an assessor, assessment phases, common failure points, and what drives the CMMC Level 2 timeline.",
   },
   "/blog/what-counts-as-cui-plain-english-guide": {
     title: "What Counts as CUI? A Plain-English Guide | DefenseEye",

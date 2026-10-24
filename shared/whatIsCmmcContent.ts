@@ -9,9 +9,9 @@ export const WHAT_IS_CMMC_CONTENT = {
   description:
     "CMMC (Cybersecurity Maturity Model Certification) is a DoD framework requiring defense contractors to demonstrate cybersecurity practices protecting Federal Contract Information and Controlled Unclassified Information. Learn everything about CMMC 2.0 levels, requirements, and certification.",
   h1: "What is CMMC? The Complete Guide for DoD Contractors",
-  lastUpdated: "September 2026",
+  lastUpdated: "October 2026",
   quickAnswer:
-    "CMMC (Cybersecurity Maturity Model Certification) is a U.S. Department of Defense program implemented through solicitation and contract requirements to verify that defense contractors protect Federal Contract Information and Controlled Unclassified Information. Its regulations define three levels with annual Level 1 self-assessment, triennial Level 2 self-assessment or C3PAO assessment pathways, and triennial Level 3 government assessment. Phase I began November 10, 2025. On July 13, 2026, the Department suspended the planned Phase II requirements; Phase I self-assessment requirements remain in effect.",
+    "CMMC (Cybersecurity Maturity Model Certification) is a U.S. Department of Defense program implemented through solicitation and contract requirements to verify that defense contractors protect Federal Contract Information and Controlled Unclassified Information. Its regulations define three levels with annual Level 1 self-assessment, triennial Level 2 self-assessment or C3PAO assessment pathways, and triennial Level 3 government assessment. Phase 1 began November 10, 2025, when the DFARS CMMC acquisition rule took effect, and 32 CFR 170.3(e) schedules Phase 2, which adds Level 2 (C3PAO) requirements for applicable contracts, one calendar year later. DoD can adjust implementation timing through policy, so confirm the current phase with official DoD CIO guidance and the CMMC requirement stated in each solicitation.",
   quickAnswerEmphasis: ["CMMC (Cybersecurity Maturity Model Certification)"],
   toc: [
     { id: "definition-purpose", label: "Definition & Purpose" },
@@ -59,7 +59,7 @@ export const WHAT_IS_CMMC_CONTENT = {
       { year: "Nov 2021", event: "CMMC 2.0 Announced", description: "DoD revises CMMC to three levels, removes unique process maturity practices, aligns Level 2 to NIST 800-171, and allows self-assessment for some Level 2 contracts." },
       { year: "Dec 2023", event: "CMMC Proposed Rule", description: "DoD publishes the proposed 32 CFR part 170 CMMC program rule on December 26, 2023." },
       { year: "Oct 2024", event: "CMMC Program Final Rule", description: "DoD publishes the 32 CFR part 170 final rule on October 15, 2024; it becomes effective December 16, 2024." },
-      { year: "2025–2026", event: "Phase I Begins; Phase II Suspended", description: "Phase I begins November 10, 2025. On July 13, 2026, the Department suspends the planned Phase II requirements, originally scheduled for November 10, 2026, while keeping Phase I self-assessment requirements in effect." },
+      { year: "Nov 2025", event: "Phase 1 Begins", description: "Phase 1 begins November 10, 2025, the effective date of the DFARS CMMC acquisition rule. 32 CFR 170.3(e) schedules Phase 2, which adds Level 2 (C3PAO) requirements for applicable contracts, one calendar year later, with later phases at one-year intervals. DoD can adjust implementation timing through policy; confirm the current phase with official DoD CIO guidance." },
     ] as WhatIsCmmcTimelineItem[],
   },
   whoNeedsIt: {
@@ -90,7 +90,7 @@ export const WHAT_IS_CMMC_CONTENT = {
         ["POA&M Allowed", "No", "Yes, subject to Level 2 limits and 180-day closeout", "Yes, subject to Level 3 limits and 180-day DIBCAC closeout"],
       ],
     } as WhatIsCmmcTable,
-    note: "These assessment types are defined in 32 CFR part 170. Current rollout policy is separate: Phase I began November 10, 2025, and the Department suspended the planned Phase II requirements on July 13, 2026 while keeping Phase I self-assessment requirements in effect.",
+    note: "These assessment types are defined in 32 CFR part 170. Implementation timing is separate: Phase 1 began November 10, 2025, when the DFARS CMMC acquisition rule took effect, and 32 CFR 170.3(e) schedules Phase 2, which adds Level 2 (C3PAO) requirements for applicable contracts, one calendar year later. DoD can adjust implementation timing through policy, so confirm the current phase with official DoD CIO guidance and the CMMC requirement stated in each solicitation.",
   },
   comparison: {
     id: "vs-nist",
@@ -115,29 +115,29 @@ export const WHAT_IS_CMMC_CONTENT = {
     items: [
       { title: "CUI — Controlled Unclassified Information", description: "Information the government creates or possesses, or that an entity creates or possesses for or on behalf of the government, that a law, regulation, or government-wide policy requires or permits an agency to handle using safeguarding or dissemination controls. CUI is sensitive but not classified. Examples include export-controlled technical data, personally identifiable information (PII), and defense acquisition program information." },
       { title: "FCI — Federal Contract Information", description: "Information provided by or generated for the government under a contract to develop or deliver a product or service to the government, but not intended for public release. FCI is a broader category than CUI and has less stringent protection requirements. CMMC Level 1 uses the 15 basic safeguarding requirements in FAR 52.204-21. Its assessment mapping contains 17 NIST SP 800-171 references because FAR 52.204-21(b)(1)(ix) maps to three separate NIST requirements." },
-      { title: "C3PAO — Certified Third-Party Assessment Organization", description: "An organization certified by the CMMC Accreditation Body (Cyber AB) to conduct official CMMC Level 2 assessments. C3PAOs employ Certified CMMC Assessors (CCAs) who perform the actual assessment of a contractor's cybersecurity practices. A list of authorized C3PAOs is published at cyberab.org." },
+      { title: "C3PAO — CMMC Third-Party Assessment Organization", description: "An organization accredited or authorized by the CMMC Accreditation Body (The Cyber AB) to conduct Level 2 certification assessments and issue Certificates of CMMC Status (32 CFR 170.9). C3PAOs use Certified CMMC Assessors (CCAs), who are certified by the CAICO, to perform the assessment. Authorized C3PAOs are listed in the CMMC Marketplace at cyberab.org/Catalog." },
       { title: "SPRS — Supplier Performance Risk System", description: "The DoD's Supplier Performance Risk System where contractors submit their self-assessed NIST 800-171 score. The SPRS score ranges from -203 to +110, with 110 representing full compliance. Contracting Officers can view SPRS scores during source selection. A negative score is permissible with an active POA&M showing remediation progress." },
       { title: "POA&M — Plan of Action and Milestones", description: "A documented plan that identifies tasks needed to remediate security requirement deficiencies, assigns resources, and establishes milestones and completion dates. CMMC permits limited POA&Ms at Levels 2 and 3 when the applicable minimum score and requirement restrictions are met. POA&M closeout must be confirmed within 180 days; Level 1 does not permit POA&Ms." },
-      { title: "SSP — System Security Plan", description: "A formal document that describes the security requirements for an information system and describes the security controls in place or planned for meeting those requirements. The SSP is a core CMMC deliverable documenting all 110 NIST 800-171 controls and is reviewed during C3PAO assessments. CMMCLens automates SSP generation from collected evidence." },
+      { title: "SSP — System Security Plan", description: "A formal document that describes the security requirements for an information system and describes the security controls in place or planned for meeting those requirements. The SSP is a core CMMC deliverable documenting all 110 NIST 800-171 controls and is reviewed during C3PAO assessments. CMMCLens supports AI-assisted SSP drafting from collected evidence, for human review." },
     ] as WhatIsCmmcCard[],
   },
   automation: {
     id: "automation",
     heading: "How DefenseEye Automates CMMC Readiness",
     paragraphs: [
-      "For most DoD contractors, the path to CMMC Level 2 certification is daunting: 110 controls to implement, hundreds of evidence artifacts to collect, SSPs and POA&Ms to write, and an SPRS score to calculate and submit. Without automation, this process typically takes 12–18 months and $150,000–$500,000 in consultant fees.",
-      "CMMCLens by DefenseEye uses AI-driven automation to compress this timeline to 60–90 days for most small and mid-size contractors. The platform connects to your cloud environments (Azure Commercial, Azure GCC, Microsoft 365 Commercial, and M365 GCC High), automatically collects evidence for each NIST 800-171 control, generates a pre-populated SSP, calculates your live SPRS score, and produces remediation guidance ranked by priority.",
+      "For most DoD contractors, the path to CMMC Level 2 certification is daunting: 110 controls to implement, hundreds of evidence artifacts to collect, SSPs and POA&Ms to write, and an SPRS score to calculate and submit. The time and cost depend heavily on your current security posture, scope, and the providers you use.",
+      "CMMCLens by DefenseEye supports this work by connecting evidence sources — including Microsoft 365, Azure Government, and GCC High environments where integrations are configured — organizing artifacts, mapping them to NIST SP 800-171 requirements, supporting SSP and POA&M drafting for human review, and prioritizing remediation. Effort savings depend on environment maturity, integrations, available source data, and implementation scope.",
     ],
     paragraphEmphasis: [[], ["CMMCLens by DefenseEye"]],
     title: "CMMCLens — Key Capabilities",
     subtitle: "AI-powered CMMC 2.0 readiness in a single platform",
     capabilities: [
-      "Automated evidence collection across 110 controls",
-      "AI-generated SSP with control descriptions",
-      "Live SPRS score calculation and SPRS submission support",
-      "POA&M generation with prioritized remediation tasks",
-      "Continuous compliance monitoring with drift alerts",
-      "C3PAO readiness scoring and gap analysis",
+      "Evidence automation and control mapping across the 110 requirements",
+      "AI-assisted SSP drafting for human review",
+      "SPRS readiness tracking",
+      "POA&M workflows with prioritized remediation tasks",
+      "Continuous readiness monitoring",
+      "Readiness dashboards and gap tracking",
     ],
     links: [
       { label: "CMMC Level 1 vs Level 2 →", href: "/knowledge-hub/cmmc-levels" },
@@ -149,9 +149,9 @@ export const WHAT_IS_CMMC_CONTENT = {
     id: "faq",
     heading: "Frequently Asked Questions About CMMC",
     items: [
-      { question: "When does CMMC 2.0 go into effect for DoD contracts?", answer: "Phase I began November 10, 2025. On July 13, 2026, the Department suspended the planned Phase II requirements, which had been scheduled to begin November 10, 2026. Phase I self-assessment requirements remain in effect. Contractors should read each solicitation and contract to identify the CMMC level and status required for the information systems used in performance." },
-      { question: "Can small businesses self-attest to CMMC Level 2?", answer: "Company size does not determine the assessment pathway. The CMMC regulations define a Level 2 self-assessment pathway conducted every three years and a Level 2 C3PAO assessment pathway conducted every three years, both with annual affirmation. The applicable CMMC level and assessment type are identified through solicitation and contract requirements. Current rollout policy keeps Phase I self-assessment requirements in effect while the planned Phase II requirements are suspended." },
-      { question: "How much does CMMC Level 2 certification cost?", answer: "A C3PAO assessment typically costs $50,000–$150,000 depending on company size, system complexity, and scope. Pre-assessment preparation (gap analysis, remediation, SSP writing) can cost an additional $100,000–$400,000 using traditional consultants. With tools like CMMCLens, preparation costs can be reduced by 60–80% through automation of evidence collection and documentation." },
+      { question: "When does CMMC 2.0 go into effect for DoD contracts?", answer: "Phase 1 began November 10, 2025, when the DFARS CMMC acquisition rule took effect, and 32 CFR 170.3(e) schedules Phase 2, which adds Level 2 (C3PAO) requirements for applicable contracts, one calendar year later. DoD can adjust implementation timing through policy, so confirm the current phase with official DoD CIO guidance and the CMMC requirement stated in each solicitation. Contractors should read each solicitation and contract to identify the CMMC level and status required for the information systems used in performance." },
+      { question: "Can small businesses self-attest to CMMC Level 2?", answer: "Company size does not determine the assessment pathway. The CMMC regulations define a Level 2 self-assessment pathway conducted every three years and a Level 2 C3PAO assessment pathway conducted every three years, both with annual affirmation. The applicable CMMC level and assessment type are identified through solicitation and contract requirements. Confirm the current implementation phase with official DoD CIO guidance." },
+      { question: "How much does CMMC Level 2 certification cost?", answer: "C3PAO assessment fees and preparation costs (gap analysis, remediation, SSP writing) vary widely with company size, system complexity, scope, and existing security posture; request proposals from authorized C3PAOs. Tools like CMMCLens may reduce manual evidence collection effort. Effort savings depend on environment maturity, integrations, available source data, and implementation scope." },
       { question: "What happens if I lose my CMMC certification?", answer: "If a contractor fails to maintain CMMC compliance after certification, they may lose their certification status, which can result in contract termination for the relevant contract and ineligibility for future DoD contracts requiring CMMC. Contractors should maintain continuous compliance monitoring — a key capability provided by platforms like CMMCLens." },
       { question: "Does CMMC apply to foreign companies with U.S. DoD contracts?", answer: "Yes. CMMC requirements apply to all entities receiving DoD contracts that handle FCI or CUI, regardless of country of domicile. Non-U.S. companies must comply with CMMC just as U.S.-based contractors do, though implementation may have additional complexity due to cross-border data handling and foreign ownership, control, or influence (FOCI) considerations." },
     ] as WhatIsCmmcFaq[],

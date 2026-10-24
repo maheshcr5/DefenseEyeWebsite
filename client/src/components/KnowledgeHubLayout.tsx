@@ -258,16 +258,17 @@ export default function KnowledgeHubLayout({
                   Automate your CMMC readiness
                 </p>
                 <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-                  CMMCLens reduces documentation time by up to 80%.
+                  CMMCLens supports evidence automation, control mapping, and SSP and POA&amp;M workflows.
                 </p>
-                <Button
-                  size="sm"
-                  className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full text-xs"
-                  onClick={() => window.location.href = "/#contact"}
-                >
-                  Book Free Assessment
-                  <ArrowRight className="w-3 h-3 ml-1.5" />
-                </Button>
+                <a href="/contact?inquiry=cmmc">
+                  <Button
+                    size="sm"
+                    className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full text-xs"
+                  >
+                    Request a Free Consultation
+                    <ArrowRight className="w-3 h-3 ml-1.5" aria-hidden="true" />
+                  </Button>
+                </a>
               </div>
             </div>
           </aside>
@@ -299,11 +300,11 @@ export default function KnowledgeHubLayout({
               </h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: "CMMCLens", href: "/#features" },
-                  { label: "Evidence Collection", href: "/#features" },
-                  { label: "SSP Generation", href: "/#features" },
-                  { label: "SPRS Monitoring", href: "/#features" },
-                  { label: "Pricing", href: "/#pricing" },
+                  { label: "CMMCLens", href: "/cmmclens" },
+                  { label: "Evidence Automation", href: "/cmmc-evidence-automation" },
+                  { label: "CMMCLens Platform Overview", href: "/solutions/cmmclens-platform" },
+                  { label: "SPRS Score Guide", href: "/knowledge-hub/sprs-score" },
+                  { label: "Pricing", href: "/pricing" },
                 ].map((item) => (
                   <li key={item.label}>
                     <a
@@ -358,9 +359,8 @@ export default function KnowledgeHubLayout({
               </h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: "About DefenseEye", href: "/#contact" },
-                  { label: "Careers", href: "/#contact" },
-                  { label: "Contact Us", href: "/#contact" },
+                  { label: "About DefenseEye", href: "/why-defenseeye" },
+                  { label: "Contact Us", href: "/contact" },
                   { label: "Privacy Policy", href: "/privacy-policy" },
                   { label: "Terms of Service", href: "/terms" },
                 ].map((item) => (

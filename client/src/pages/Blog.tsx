@@ -432,9 +432,9 @@ export default function Blog() {
             DefenseEye combines advisory and CMMCLens automation to prioritize remediation,
             generate clean evidence, and shorten the cycle from "we might fail" to "we are ready."
           </p>
-          <Link href="/#contact">
+          <Link href="/lp/cmmclens-demo">
             <Button className="bg-accent text-background hover:bg-accent/90 font-heading font-bold text-base px-8 py-3">
-              Start Free Trial with CMMCLens
+              Request a CMMCLens Demo
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </Link>

@@ -1400,8 +1400,8 @@ function renderCertificationProcessContent() {
   const stepHtml = article.steps.map((step) =>
     '<section id="' + escapeAttribute(step.id) + '"><h2>' + escapeHtml(step.title) + "</h2><p>" +
     escapeHtml(step.description) + "</p>" + list(step.details) +
-    "<dl><dt>Manual Timeline</dt><dd>" + escapeHtml(step.timeManual) +
-    "</dd><dt>With CMMCLens</dt><dd>" + escapeHtml(step.timeWithLens) +
+    "<dl><dt>Timing</dt><dd>" + escapeHtml(step.timeManual) +
+    "</dd><dt>How CMMCLens can help</dt><dd>" + escapeHtml(step.timeWithLens) +
     "</dd></dl><p><strong>Note:</strong> " + escapeHtml(step.note) + "</p></section>"
   ).join("");
   const table = "<table><thead><tr>" + article.timeline.headers.map((cell) => "<th>" + escapeHtml(cell) + "</th>").join("") +
@@ -1919,16 +1919,16 @@ const additionalSitemapEntries: SitemapEntry[] = [
   { path: "/insights/ai-audit-readiness", lastmod: "2026-06-25", changefreq: "monthly", priority: "0.9" },
   { path: "/pricing", lastmod: "2026-04-04", changefreq: "weekly", priority: "0.9" },
   { path: "/cmmc-readiness-sprint-guide", lastmod: "2026-04-04", changefreq: "weekly", priority: "0.9" },
-  { path: "/knowledge-hub/what-is-cmmc", lastmod: "2026-04-04", changefreq: "monthly", priority: "0.9" },
-  { path: "/knowledge-hub/cmmc-levels", lastmod: "2026-04-04", changefreq: "monthly", priority: "0.9" },
-  { path: "/knowledge-hub/evidence-mapping", lastmod: "2026-04-04", changefreq: "monthly", priority: "0.8" },
-  { path: "/knowledge-hub/sprs-score", lastmod: "2026-04-04", changefreq: "monthly", priority: "0.9" },
-  { path: "/knowledge-hub/certification-process", lastmod: "2026-04-04", changefreq: "monthly", priority: "0.9" },
+  { path: "/knowledge-hub/what-is-cmmc", lastmod: "2026-10-24", changefreq: "monthly", priority: "0.9" },
+  { path: "/knowledge-hub/cmmc-levels", lastmod: "2026-10-24", changefreq: "monthly", priority: "0.9" },
+  { path: "/knowledge-hub/evidence-mapping", lastmod: "2026-10-24", changefreq: "monthly", priority: "0.8" },
+  { path: "/knowledge-hub/sprs-score", lastmod: "2026-10-24", changefreq: "monthly", priority: "0.9" },
+  { path: "/knowledge-hub/certification-process", lastmod: "2026-10-24", changefreq: "monthly", priority: "0.9" },
   { path: "/blog/cmmc-level-2-compliance-checklist-2025", lastmod: "2026-10-23", changefreq: "monthly", priority: "0.8" },
   { path: "/blog/how-to-improve-sprs-score-fast", lastmod: "2026-04-01", changefreq: "monthly", priority: "0.8" },
-  { path: "/blog/what-to-expect-c3pao-assessment", lastmod: "2026-10-23", changefreq: "monthly", priority: "0.8" },
+  { path: "/blog/what-to-expect-c3pao-assessment", lastmod: "2026-10-24", changefreq: "monthly", priority: "0.8" },
   { path: "/blog/what-counts-as-cui-plain-english-guide", lastmod: "2026-04-01", changefreq: "monthly", priority: "0.8" },
-  { path: "/blog/cmmc-level-2-small-business-guide", lastmod: "2026-04-01", changefreq: "monthly", priority: "0.8" },
+  { path: "/blog/cmmc-level-2-small-business-guide", lastmod: "2026-10-24", changefreq: "monthly", priority: "0.8" },
   { path: "/blog/gcc-high-vs-m365-commercial-cmmc", lastmod: "2026-04-01", changefreq: "monthly", priority: "0.8" },
   { path: "/blog/cmmc-poam-guide-what-assessors-want", lastmod: "2026-04-01", changefreq: "monthly", priority: "0.8" },
   { path: "/blog/cmmc-consultant-red-flags", lastmod: "2026-10-23", changefreq: "monthly", priority: "0.8" },
