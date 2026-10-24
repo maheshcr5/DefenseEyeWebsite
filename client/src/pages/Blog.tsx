@@ -252,6 +252,7 @@ function NewsletterSection() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              role="status"
               className="flex items-center justify-center gap-3 py-4 px-6 bg-primary/10 border border-primary/30 rounded"
             >
               <CheckCircle2 className="w-5 h-5 text-primary" />
@@ -260,9 +261,14 @@ function NewsletterSection() {
               </span>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+            <form onSubmit={handleSubmit} noValidate className="flex flex-col sm:flex-row gap-3">
+              <label htmlFor="blog-newsletter-email" className="sr-only">Work email address</label>
               <input
+                id="blog-newsletter-email"
                 type="email"
+                autoComplete="email"
+                aria-invalid={status === "error" ? true : undefined}
+                aria-describedby={status === "error" ? "blog-newsletter-error" : undefined}
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -286,7 +292,7 @@ function NewsletterSection() {
           )}
 
           {status === "error" && (
-            <p className="text-red-400 text-sm mt-2 text-left">
+            <p id="blog-newsletter-error" role="alert" className="text-red-400 text-sm mt-2 text-left">
               Please enter a valid email address.
             </p>
           )}
@@ -393,6 +399,7 @@ export default function Blog() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/60" />
             <input
               type="search"
+              aria-label="Search articles"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search articles — e.g. SPRS score, MFA, C3PAO..."

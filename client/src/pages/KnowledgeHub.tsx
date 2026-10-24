@@ -414,14 +414,17 @@ export default function KnowledgeHub() {
               Get notified when new guides are published and when CMMC regulations change. No spam — unsubscribe anytime.
             </p>
             {subscribed ? (
-              <div className="flex items-center justify-center gap-2 text-primary font-medium">
-                <CheckCircle2 className="w-5 h-5" />
+              <div role="status" className="flex items-center justify-center gap-2 text-primary font-medium">
+                <CheckCircle2 className="w-5 h-5" aria-hidden="true" />
                 You're subscribed — thanks!
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="flex gap-2 max-w-sm mx-auto">
+                <label htmlFor="knowledge-hub-newsletter-email" className="sr-only">Work email address</label>
                 <input
+                  id="knowledge-hub-newsletter-email"
                   type="email"
+                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="your@company.com"

@@ -204,11 +204,40 @@ export default function ContactUs() {
   );
 }
 
+type ContactField = keyof ContactFormValues;
+export type ContactFormErrors = Partial<Record<ContactField, string>>;
+
+// Order matters: the first invalid field in this order receives focus.
+const REQUIRED_FIELD_MESSAGES: Array<[ContactField, string]> = [
+  ["firstName", "Enter your first name."],
+  ["lastName", "Enter your last name."],
+  ["email", "Enter your work email address."],
+  ["company", "Enter your organization."],
+  ["title", "Enter your role."],
+  ["inquiryType", "Choose an inquiry type."],
+  ["timeline", "Choose a timeline."],
+  ["message", "Tell us briefly what you need."],
+];
+
+export function validateContactForm(form: ContactFormValues): ContactFormErrors {
+  const errors: ContactFormErrors = {};
+  for (const [field, message] of REQUIRED_FIELD_MESSAGES) {
+    if (!form[field].trim()) errors[field] = message;
+  }
+  if (!errors.email && !/^\S+@\S+\.\S+$/.test(form.email.trim())) {
+    errors.email = "Enter an email address in the format name@company.com.";
+  }
+  return errors;
+}
+
 function ContactFormSection() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<ContactFormErrors>({});
   const submissionGuardRef = useRef<ContactSubmissionGuard>({ inFlight: false, completed: false });
+  const formRef = useRef<HTMLFormElement>(null);
+  const successRef = useRef<HTMLDivElement>(null);
   const [form, setForm] = useState<ContactFormValues>({
     firstName: "",
     lastName: "",
@@ -243,12 +272,50 @@ function ContactFormSection() {
     }
   }, []);
 
+  // Move focus to the confirmation so keyboard and screen-reader users know the form was sent.
+  useEffect(() => {
+    if (submitted) successRef.current?.focus();
+  }, [submitted]);
+
   const inputCls =
     "w-full bg-background border border-border/60 rounded-sm px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/20";
+  const invalidCls = "border-destructive focus:border-destructive focus:ring-destructive/30";
   const labelCls = "text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block";
+
+  // Shared props that tie each control to its label, required state, and error message.
+  const fieldProps = (name: ContactField, required = true) => ({
+    id: `contact-${name}`,
+    name,
+    value: form[name],
+    onChange: handleChange,
+    required,
+    "aria-required": required || undefined,
+    "aria-invalid": fieldErrors[name] ? true : undefined,
+    "aria-describedby": fieldErrors[name] ? `contact-${name}-error` : undefined,
+  });
+  const fieldClass = (name: ContactField, extra = "") => `${inputCls} ${fieldErrors[name] ? invalidCls : ""} ${extra}`.trim();
+  const label = (name: ContactField, text: string, required = true) => (
+    <label htmlFor={`contact-${name}`} className={labelCls}>
+      {text}
+      {required && <span aria-hidden="true"> *</span>}
+    </label>
+  );
+  const fieldError = (name: ContactField) =>
+    fieldErrors[name] ? (
+      <p id={`contact-${name}-error`} className="mt-1.5 text-sm text-destructive">
+        {fieldErrors[name]}
+      </p>
+    ) : null;
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
+    const errors = validateContactForm(form);
+    setFieldErrors(errors);
+    const firstInvalid = REQUIRED_FIELD_MESSAGES.find(([field]) => errors[field])?.[0];
+    if (firstInvalid) {
+      formRef.current?.querySelector<HTMLElement>(`#contact-${firstInvalid}`)?.focus();
+      return;
+    }
     if (!beginContactSubmission(submissionGuardRef.current)) return;
     setSubmitting(true);
     setError("");
@@ -264,9 +331,13 @@ function ContactFormSection() {
     }
   }
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
-  };
+  function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
+    const name = event.target.name as ContactField;
+    setForm((current) => ({ ...current, [name]: event.target.value }));
+    if (fieldErrors[name]) setFieldErrors((current) => ({ ...current, [name]: undefined }));
+  }
+
+  const errorCount = Object.values(fieldErrors).filter(Boolean).length;
 
   return (
     <section className="py-16 px-4 section-light">
@@ -279,28 +350,39 @@ function ContactFormSection() {
           </p>
         </div>
         {submitted ? (
-          <div className="bg-card/50 border border-border/40 rounded-sm p-8 text-center">
+          <div
+            ref={successRef}
+            tabIndex={-1}
+            role="status"
+            className="bg-card/50 border border-border/40 rounded-sm p-8 text-center focus:outline-none focus:ring-2 focus:ring-primary/50"
+          >
             <h3 className="font-heading text-xl font-bold mb-2">Thank you.</h3>
             <p className="text-sm text-muted-foreground">DefenseEye will review your inquiry and respond through the appropriate enterprise or partner channel.</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="bg-card/50 border border-border/40 rounded-sm p-6 space-y-5">
+          <form ref={formRef} onSubmit={handleSubmit} noValidate className="bg-card/50 border border-border/40 rounded-sm p-6 space-y-5">
+            <p className="text-xs text-muted-foreground">Fields marked * are required.</p>
+            {errorCount > 0 && (
+              <p role="alert" className="text-sm text-destructive">
+                {errorCount === 1 ? "Please correct the highlighted field." : `Please correct the ${errorCount} highlighted fields.`}
+              </p>
+            )}
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className={labelCls}>Name *</label><input required name="firstName" value={form.firstName} onChange={handleChange} className={inputCls} placeholder="First name" /></div>
-              <div><label className={labelCls}>Last Name *</label><input required name="lastName" value={form.lastName} onChange={handleChange} className={inputCls} placeholder="Last name" /></div>
+              <div>{label("firstName", "Name")}<input {...fieldProps("firstName")} autoComplete="given-name" className={fieldClass("firstName")} placeholder="First name" />{fieldError("firstName")}</div>
+              <div>{label("lastName", "Last Name")}<input {...fieldProps("lastName")} autoComplete="family-name" className={fieldClass("lastName")} placeholder="Last name" />{fieldError("lastName")}</div>
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className={labelCls}>Work Email *</label><input required type="email" name="email" value={form.email} onChange={handleChange} className={inputCls} /></div>
-              <div><label className={labelCls}>Organization *</label><input required name="company" value={form.company} onChange={handleChange} className={inputCls} /></div>
+              <div>{label("email", "Work Email")}<input {...fieldProps("email")} type="email" autoComplete="email" className={fieldClass("email")} />{fieldError("email")}</div>
+              <div>{label("company", "Organization")}<input {...fieldProps("company")} autoComplete="organization" className={fieldClass("company")} />{fieldError("company")}</div>
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className={labelCls}>Role *</label><input required name="title" value={form.title} onChange={handleChange} className={inputCls} /></div>
-              <div><label className={labelCls}>Optional Phone</label><input name="phone" value={form.phone} onChange={handleChange} className={inputCls} /></div>
+              <div>{label("title", "Role")}<input {...fieldProps("title")} autoComplete="organization-title" className={fieldClass("title")} />{fieldError("title")}</div>
+              <div>{label("phone", "Optional Phone", false)}<input {...fieldProps("phone", false)} type="tel" autoComplete="tel" className={fieldClass("phone")} /></div>
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className={labelCls}>Inquiry Type *</label>
-                <select required name="inquiryType" value={form.inquiryType} onChange={handleChange} className={inputCls}>
+                {label("inquiryType", "Inquiry Type")}
+                <select {...fieldProps("inquiryType")} className={fieldClass("inquiryType")}>
                   <option value="">Select inquiry type...</option>
                   <option>Supplier / procurement inquiry</option>
                   <option>Partnership / subcontracting</option>
@@ -314,10 +396,11 @@ function ContactFormSection() {
                   <option>Product support</option>
                   <option>Other</option>
                 </select>
+                {fieldError("inquiryType")}
               </div>
               <div>
-                <label className={labelCls}>Timeline *</label>
-                <select required name="timeline" value={form.timeline} onChange={handleChange} className={inputCls}>
+                {label("timeline", "Timeline")}
+                <select {...fieldProps("timeline")} className={fieldClass("timeline")}>
                   <option value="">Select timeline...</option>
                   <option>Immediate</option>
                   <option>30-60 days</option>
@@ -325,13 +408,15 @@ function ContactFormSection() {
                   <option>Next quarter</option>
                   <option>Exploring options</option>
                 </select>
+                {fieldError("timeline")}
               </div>
             </div>
             <div>
-              <label className={labelCls}>Message *</label>
-              <textarea required name="message" value={form.message} onChange={handleChange} rows={5} className={`${inputCls} resize-none`} />
+              {label("message", "Message")}
+              <textarea {...fieldProps("message")} rows={5} className={fieldClass("message", "resize-none")} />
+              {fieldError("message")}
             </div>
-            {error && <p className="text-sm text-destructive">{error}</p>}
+            {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
             <Button type="submit" disabled={submitting} className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
               {submitting ? "Sending..." : "Submit Inquiry"}
             </Button>

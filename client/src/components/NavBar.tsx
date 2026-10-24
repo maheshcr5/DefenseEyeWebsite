@@ -187,6 +187,13 @@ export default function NavBar({ initialMobileOpen = false, initialMobileExpande
 
   return (
     <>
+    {/* First focusable element on every page: lets keyboard users bypass the navigation. */}
+    <a
+      href="#main-content"
+      className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:rounded-sm focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-gray-900 focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary"
+    >
+      Skip to main content
+    </a>
     <header
       className="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm section-light"
       onKeyDown={(event) => {
@@ -455,6 +462,8 @@ export default function NavBar({ initialMobileOpen = false, initialMobileExpande
       </AnimatePresence>
     </header>
     <Breadcrumbs />
+    {/* Skip-link target: page content starts immediately after the navigation. */}
+    <div id="main-content" tabIndex={-1} className="outline-none" />
     </>
   );
 }
