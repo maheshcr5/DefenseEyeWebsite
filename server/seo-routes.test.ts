@@ -521,7 +521,12 @@ describe("SEO route registry", () => {
       const schemas = buildRouteSchemas(route);
       expect(() => JSON.parse(JSON.stringify(schemas))).not.toThrow();
       expect(JSON.stringify(schemas)).toContain(canonicalUrl(route.path));
-      expect(JSON.stringify(schemas)).not.toContain("FAQPage");
+      // FAQPage is allowed only when every question is visible in the page's own HTML.
+      if (JSON.stringify(schemas).includes("FAQPage")) {
+        const html = renderRouteFallbackHtml(route);
+        expect(route.faqs?.length).toBeGreaterThan(0);
+        for (const faq of route.faqs ?? []) expect(html).toContain(htmlEscaped(faq.question));
+      }
       expect(JSON.stringify(schemas)).not.toContain("aggregateRating");
       expect(JSON.stringify(schemas)).not.toContain('"@type":"Review"');
     }

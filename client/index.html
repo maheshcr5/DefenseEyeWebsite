@@ -60,6 +60,12 @@
       .de-pr li strong{color:#e8eaf0}
       .de-pr a.klink{color:#00D4FF}
       .de-pr footer{border-top:1px solid #1e2d4a;padding:2rem;max-width:1280px;margin:0 auto}
+      .de-pr .de-pr-breadcrumb ol{display:flex;flex-wrap:wrap;gap:.25rem .5rem;list-style:none;padding:0;margin:0 0 1.5rem;font-size:.85rem;color:#94a3b8}
+      .de-pr .de-pr-breadcrumb li+li:before{content:"›";margin-right:.5rem}
+      .de-pr .de-pr-breadcrumb a,.de-pr main a{color:#00D4FF}
+      .de-pr footer h2{font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;margin:1.25rem 0 .5rem}
+      .de-pr dt{color:#e8eaf0;font-weight:600;margin-top:1rem}
+      .de-pr dd{color:#94a3b8;margin:0 0 .5rem}
     </style>
 
     <!-- Google Fonts: Rajdhani + IBM Plex Sans -->
@@ -73,6 +79,7 @@
       {
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
+        "@id": "https://defenseeye.ai/#professional-service",
         "name": "DefenseEye - Secure Agentic AI Implementation",
         "url": "https://defenseeye.ai",
         "description": "DefenseEye provides secure agentic AI readiness, governance, architecture, and implementation support for FinTechs, credit unions, financial-services organizations, and other regulated teams.",
@@ -84,14 +91,16 @@
         },
         "areaServed": {"@type": "Country", "name": "United States"},
         "knowsAbout": ["Secure AI adoption", "AI governance", "Responsible AI", "NIST AI RMF", "AI governance readiness", "Microsoft Copilot readiness", "Azure OpenAI readiness", "AI security", "AttackSense", "Attack surface intelligence", "Vulnerability remediation intelligence", "Microsoft cloud security", "CMMC compliance automation", "CMMC Level 2 readiness", "NIST SP 800-171", "CMMCLens", "SSP", "POA&M", "Microsoft GCC High", "Azure Government"],
-        "sameAs": ["https://defenseeye.ai"]
+        "provider": {"@id": "https://defenseeye.ai/#organization"}
       },
       {
         "@context": "https://schema.org",
         "@type": "Organization",
+        "@id": "https://defenseeye.ai/#organization",
         "name": "DefenseEye",
         "alternateName": "DefenseEye.ai",
-        "url": "https://defenseeye.ai",
+        "url": "https://defenseeye.ai/",
+        "logo": {"@type": "ImageObject", "url": "https://defenseeye.ai/defenseeye-logo.png"},
         "description": "DefenseEye is a practitioner-led secure agentic AI, cybersecurity, responsible AI governance, Microsoft cloud, CMMC readiness, and compliance automation supplier.",
         "sameAs": ["https://www.linkedin.com/company/defenseeye"]
       }

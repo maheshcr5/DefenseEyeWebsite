@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
+import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 import { InfoTooltip } from "@/components/InfoTooltip";
 
@@ -117,6 +118,7 @@ export default function SprintGuide() {
           </div>
         </section>
       </main>
+      <Footer />
     </div>
   );
 }

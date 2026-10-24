@@ -1,6 +1,8 @@
 import { useLocation } from "wouter";
 import { useEffect } from "react";
 import { ArrowRight, FileCheck, ShieldCheck } from "lucide-react";
+import Footer from "@/components/Footer";
+import RelatedResources from "@/components/RelatedResources";
 import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
@@ -189,17 +191,7 @@ export default function CMMCArchitecturePage() {
         </div>
       </section>
       <section className="py-14 px-4 section-light border-t border-border/20">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="font-heading text-2xl font-bold text-foreground mb-5">Related DefenseEye resources</h2>
-          <div className="grid md:grid-cols-3 gap-4">
-            {page.relatedLinks.map((link) => (
-              <a key={link.href} href={link.href} className="group bg-card/50 border border-border/40 rounded-sm p-5 hover:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors">
-                <span className="text-sm font-semibold text-primary group-hover:text-primary/80">{link.label}</span>
-                <p className="text-sm text-muted-foreground leading-relaxed mt-2">{link.description}</p>
-              </a>
-            ))}
-          </div>
-        </div>
+        <RelatedResources className="max-w-6xl mx-auto" extraLinks={page.relatedLinks} />
       </section>
       <section className="py-14 px-4 section-gray">
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-5">
@@ -221,6 +213,7 @@ export default function CMMCArchitecturePage() {
           </a>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

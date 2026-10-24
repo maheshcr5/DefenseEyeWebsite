@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { ArrowRight, Target } from "lucide-react";
+import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
@@ -106,6 +107,7 @@ export default function DeliveryModel() {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

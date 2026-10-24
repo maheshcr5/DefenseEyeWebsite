@@ -9,6 +9,7 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { CMMCLENS_BOOKING_URL, GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 import { trackCmmcLensBriefingClick } from "@/lib/cmmclensAnalytics";
 
@@ -185,6 +186,7 @@ export default function NavBar({ initialMobileOpen = false, initialMobileExpande
   };
 
   return (
+    <>
     <header
       className="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm section-light"
       onKeyDown={(event) => {
@@ -452,5 +454,7 @@ export default function NavBar({ initialMobileOpen = false, initialMobileExpande
         )}
       </AnimatePresence>
     </header>
+    <Breadcrumbs />
+    </>
   );
 }

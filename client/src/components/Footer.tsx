@@ -1,15 +1,16 @@
 import DefenseEyeLogo from "@/components/DefenseEyeLogo";
 import { COMPANY } from "@/data/companyFacts";
 import { trackConversion } from "@/lib/tracking";
+import { FOOTER_NAVIGATION } from "@shared/siteArchitecture";
 
 export default function Footer() {
   return (
     <footer className="section-gray border-t border-border/30 px-4 py-12">
-      <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-4">
-        <div>
+      <div className="mx-auto grid max-w-6xl gap-8 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
+        <div className="sm:col-span-2 md:col-span-4 lg:col-span-1">
           <DefenseEyeLogo />
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-            Secure AI adoption, Microsoft cloud security, CMMC readiness, and compliance automation for regulated organizations.
+            Secure AI adoption, AI governance, cybersecurity, Microsoft cloud security, CMMC readiness, and compliance automation for regulated organizations.
           </p>
           <div className="mt-4 space-y-1 text-xs text-muted-foreground">
             <p>Redmond, WA</p>
@@ -18,15 +19,16 @@ export default function Footer() {
             <p>Product support: <a className="hover:text-primary" href={`mailto:${COMPANY.supportEmail}`} onClick={() => trackConversion("support_email_click", { location: "footer" })}>{COMPANY.supportEmail}</a></p>
           </div>
         </div>
-        <FooterLinks title="Solutions" links={[["Secure AI Adoption", "/secure-ai-adoption"], ["CMMC Automation", "/cmmc-compliance-automation"], ["Microsoft Copilot Readiness", "/solutions/microsoft-copilot-readiness"], ["Microsoft Cloud Security", "/solutions/cloud-security"]]} />
-        <FooterLinks title="Resources" links={[["CMMCLens", "/cmmclens"], ["Datasheets", "/datasheets"], ["Knowledge Hub", "/knowledge-hub"], ["Capability Statement", "/capability-statement"]]} />
-        <FooterLinks title="Company" links={[["Supplier Readiness", "/supplier-readiness"], ["Delivery Model", "/delivery-model"], ["Representative Engagements", "/representative-engagements"], ["Contact", "/contact"], ["Support", "/support"], ["Privacy Policy", "/privacy-policy"]]} />
+        {/* Shared with the server-rendered fallback so both link graphs match. */}
+        {FOOTER_NAVIGATION.map((group) => (
+          <FooterLinks key={group.title} title={group.title} links={group.links.map((link) => [link.label, link.href])} />
+        ))}
       </div>
 
       <div className="mx-auto mt-10 max-w-6xl rounded-sm border border-primary/20 bg-background/90 p-6 text-white">
-        <h4 className="font-heading text-sm font-bold uppercase tracking-widest text-white">
+        <h2 className="font-heading text-sm font-bold uppercase tracking-widest text-white">
           Government Capabilities & Diversity Credentials
-        </h4>
+        </h2>
         <div className="mt-4 flex flex-wrap gap-2 text-xs">
           {[
             "CAGE 9ZDL5",
@@ -53,7 +55,7 @@ export default function Footer() {
 function FooterLinks({ title, links }: { title: string; links: Array<[string, string]> }) {
   return (
     <div>
-      <h4 className="mb-4 font-heading text-xs font-semibold uppercase tracking-widest text-foreground">{title}</h4>
+      <h2 className="mb-4 font-heading text-xs font-semibold uppercase tracking-widest text-foreground">{title}</h2>
       <ul className="space-y-2.5">
         {links.map(([label, href]) => (
           <li key={href}>

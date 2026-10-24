@@ -6,6 +6,18 @@ import { CMMC_LEVELS_CONTENT } from "./cmmcLevelsContent";
 import { EVIDENCE_MAPPING_CONTENT } from "./evidenceMappingContent";
 import { SPRS_SCORE_CONTENT } from "./sprsScoreContent";
 import { getRouteMetadata, isNoindexRoute } from "./routeMetadata";
+import { INSIGHTS } from "./insightsContent";
+import { LANDING_PAGE_CONTENT } from "./landingPageContent";
+import { DATASHEET_CONTENT } from "./datasheetContent";
+import { SOLUTION_PAGE_CONTENT } from "./solutionPageContent";
+import {
+  FOOTER_NAVIGATION,
+  ROUTE_NAMES,
+  getBreadcrumbTrail,
+  getSectionPages,
+  type ArchitectureLink,
+} from "./siteArchitecture";
+import { getRelatedLinks } from "./relatedLinks";
 
 export const ROUTE_SCHEMA_SCRIPT_ID = "defenseeye-route-schema";
 
@@ -15,6 +27,7 @@ export type StructuredDataKind =
   | "software"
   | "collection"
   | "about"
+  | "article"
   | "page";
 
 export type SeoLink = {
@@ -43,8 +56,17 @@ export type SeoRoute = {
   lastmod: string;
   changefreq: "weekly" | "monthly";
   priority: string;
+  /** Pre-rendered article body for pages whose full content is shared with the server. */
   bodyHtml?: string;
+  /** Question-and-answer pairs visible on the page; also emitted as FAQPage schema. */
+  faqs?: SeoFaq[];
+  /** Set when bodyHtml already renders the FAQs, so they are not rendered twice. */
+  faqsInBody?: boolean;
+  /** Article metadata for schemaKind "article". */
+  article?: { author: string; datePublished?: string; dateModified?: string };
 };
+
+export type SeoFaq = { question: string; answer: string };
 
 export type SitemapEntry = {
   path: string;
@@ -1086,85 +1108,195 @@ const TIER_1_ROUTE_DEFINITIONS: SeoRoute[] = [
 // server-injected <title>, the schema, and the hydrated client title match.
 function withRouteMetadata(route: SeoRoute): SeoRoute {
   const metadata = getRouteMetadata(route.path);
-  return metadata ? { ...route, title: metadata.title, description: metadata.description } : route;
+  const solutionFaqs = SOLUTION_PAGE_CONTENT[route.path]?.faqs;
+  return {
+    ...route,
+    ...(metadata ? { title: metadata.title, description: metadata.description } : {}),
+    ...(route.faqs === undefined && solutionFaqs ? { faqs: solutionFaqs } : {}),
+  };
 }
 
 export const TIER_1_ROUTES: SeoRoute[] = TIER_1_ROUTE_DEFINITIONS.map(withRouteMetadata);
 
 export const TIER_1_PATHS = TIER_1_ROUTES.map((route) => route.path);
 
+// Routes whose full text lives in shared/ content modules (or is short enough to
+// restate here), so the server can render real, page-specific content for crawlers
+// and AI agents that do not execute JavaScript. Section headings mirror the visible
+// React page; nothing here says anything the page itself does not say.
+const BLOG_ROUTES: SeoRoute[] = blogPosts.map((post) => ({
+  path: `/blog/${post.slug}`,
+  title: `${post.title} | DefenseEye`,
+  description: post.metaDescription,
+  h1: post.title,
+  eyebrow: post.category,
+  summary: post.excerpt,
+  sections: [],
+  links: [],
+  schemaKind: "article" as const,
+  article: { author: post.author, datePublished: post.publishedAt, dateModified: post.updatedAt },
+  topics: post.tags.length > 0 ? post.tags : ["CMMC", "Defense contractor readiness"],
+  lastmod: post.updatedAt,
+  changefreq: "monthly" as const,
+  priority: "0.8",
+  bodyHtml: renderBlogContent(post.content),
+}));
+
+const KNOWLEDGE_HUB_ARTICLE_ROUTES: SeoRoute[] = KNOWLEDGE_HUB_LINKS.slice(0, 5).map((link) => ({
+  path: link.href,
+  title: link.label + " | DefenseEye Knowledge Hub",
+  description: "DefenseEye Knowledge Hub resource: " + link.label + ".",
+  h1: link.label,
+  eyebrow: "CMMC Knowledge Hub",
+  summary: "Explore DefenseEye's CMMC Knowledge Hub guidance on " + link.label + ".",
+  sections: [],
+  links: [],
+  schemaKind: "article" as const,
+  article: { author: "DefenseEye Advisory Team", dateModified: "2026-04-04" },
+  topics: ["CMMC", "NIST SP 800-171"],
+  lastmod: "2026-04-04",
+  changefreq: "monthly" as const,
+  priority: "0.8",
+  faqsInBody: true,
+  ...getKnowledgeHubContentOverride(link.href),
+}));
+
+const INSIGHT_ROUTES: SeoRoute[] = INSIGHTS.map((insight) => ({
+  path: `/insights/${insight.slug}`,
+  title: `${insight.title} | DefenseEye`,
+  description: insight.description,
+  h1: insight.title,
+  eyebrow: "Insight",
+  summary: insight.answer,
+  sections: insight.sections.map((section) => ({ heading: section.heading, items: section.points })),
+  links: [],
+  faqs: insight.faqs,
+  schemaKind: "article" as const,
+  article: { author: "DefenseEye", dateModified: "2026-06-25" },
+  topics: insight.related,
+  lastmod: "2026-06-25",
+  changefreq: "monthly" as const,
+  priority: "0.8",
+}));
+
+const SOLUTION_ROUTES: SeoRoute[] = Object.entries(SOLUTION_PAGE_CONTENT)
+  .filter(([routePath]) => !TIER_1_PATHS.includes(routePath) && getRouteMetadata(routePath) !== null)
+  .map(([routePath, page]) => ({
+    path: routePath,
+    title: page.seoTitle,
+    description: page.seoDescription,
+    h1: page.title,
+    eyebrow: page.eyebrow,
+    summary: page.description,
+    sections: [
+      { heading: "Executive Summary", body: page.summary },
+      { heading: "Business Challenge", body: page.challenge, items: page.howHelps },
+      { heading: "Key Outcomes", items: page.outcomes },
+      { heading: "Representative Engagements", items: page.engagements },
+      { heading: "Relevant Frameworks / Technologies", items: page.frameworks },
+      { heading: "Deliverables", items: page.deliverables },
+      { heading: "Why It Matters", body: page.why },
+    ],
+    links: [
+      { label: page.cta.label, href: page.cta.href },
+      ...(page.relatedLinks ?? []).map(({ label, href }) => ({ label, href })),
+    ],
+    faqs: page.faqs,
+    schemaKind: "service" as const,
+    serviceType: page.eyebrow,
+    topics: page.frameworks,
+    lastmod: "2026-06-25",
+    changefreq: "monthly" as const,
+    priority: "0.8",
+  }));
+
+const LANDING_PAGE_ROUTES: SeoRoute[] = Object.entries(LANDING_PAGE_CONTENT).map(([routePath, page]) => ({
+  path: routePath,
+  title: `${page.title} | DefenseEye`,
+  description: page.desc,
+  h1: page.title,
+  eyebrow: "DefenseEye",
+  summary: page.desc,
+  sections: [
+    { heading: "Common Pain Points", items: page.pains },
+    { heading: "How DefenseEye Helps", items: page.helps },
+    { heading: "Outcomes", items: page.outcomes },
+    { heading: "Representative Engagement", body: page.engagement },
+  ],
+  links: [],
+  schemaKind: "service" as const,
+  serviceType: page.title,
+  topics: page.helps,
+  lastmod: "2026-06-26",
+  changefreq: "monthly" as const,
+  priority: "0.7",
+}));
+
+const DATASHEET_ROUTES: SeoRoute[] = Object.values(DATASHEET_CONTENT).map((sheet) => ({
+  path: `/datasheets/${sheet.slug}`,
+  title: `${sheet.title} | DefenseEye`,
+  description: sheet.value,
+  h1: sheet.title,
+  eyebrow: "DefenseEye Datasheet",
+  summary: sheet.value,
+  sections: [
+    { heading: "Who It Is For", items: sheet.who },
+    { heading: "Problems Addressed", items: sheet.problems },
+    { heading: "How DefenseEye Helps", items: sheet.helps },
+    { heading: "Key Deliverables", items: sheet.deliverables },
+    { heading: "Business Outcomes", items: sheet.outcomes },
+    ...(sheet.credentials.length > 0 ? [{ heading: "Relevant Credentials", items: sheet.credentials }] : []),
+    ...(sheet.engagement.length > 0 ? [{ heading: "Engagement Options", items: sheet.engagement }] : []),
+  ],
+  links: [],
+  schemaKind: "page" as const,
+  topics: sheet.helps,
+  lastmod: "2026-06-26",
+  changefreq: "monthly" as const,
+  priority: "0.8",
+}));
+
+// Pages whose content is authored directly in JSX. The server fallback carries the
+// page's real H1 and lead paragraph plus its place in the site architecture; it does
+// not invent section copy. Titles and descriptions come from routeMetadata.ts.
+const SUMMARY_ROUTE_DEFINITIONS: ReadonlyArray<readonly [path: string, h1: string, eyebrow: string, lead: string | null]> = [
+  ["/services/cmmc-readiness-sprint", "Get CMMC Ready in 2-4 Weeks", "CMMC Readiness Sprint", null],
+  ["/cmmc-readiness-sprint", "CMMC readiness sprint for focused assessment preparation", "CMMC Readiness", "A focused readiness sprint helps teams identify gaps, organize evidence, clarify SSP and POA&M needs, and create a practical action plan."],
+  ["/cmmc-readiness-sprint-guide", "The 4-Week CMMC Readiness Sprint", "CMMC Readiness Guide", null],
+  ["/pricing", "Flexible, Transparent Pricing for Urgent CMMC Readiness", "CMMC Readiness Pricing", null],
+  ["/attacksense/docs", "DefenseEye AttackSense Guide", "AttackSense", "Published guidance for getting started with AttackSense, aligning the workflow to your security operations process, and moving from raw findings to prioritized remediation."],
+  ["/microsoft-ecosystem", "Microsoft Ecosystem Experience", "Microsoft Ecosystem", "DefenseEye is positioned for organizations operating in Microsoft-centered environments, including Azure, Microsoft 365, Microsoft Security, Copilot, Azure Government, and GCC High patterns."],
+  ["/delivery-model", "DefenseEye Delivery Model", "Delivery Model", "DefenseEye supports structured advisory, implementation, staff augmentation, subcontracting, and platform-enabled consulting engagements for enterprise, government, defense contractor, and regulated environments."],
+  ["/representative-engagements", "Representative Engagements", "Representative Engagements", "The examples below describe engagement types DefenseEye is positioned to support. They are not presented as completed customer case studies."],
+  ["/datasheets", "DefenseEye Datasheets", "Datasheets", "Concise one-page overviews for enterprise buyers, procurement teams, partners, and regulated organizations evaluating DefenseEye."],
+  ["/contact", "Contact DefenseEye", "Contact", null],
+  ["/terms", "Terms of Service", "Legal", null],
+];
+
+const SUMMARY_ROUTES: SeoRoute[] = SUMMARY_ROUTE_DEFINITIONS.map(([routePath, h1, eyebrow, lead]) => ({
+  path: routePath,
+  title: routePath,
+  description: routePath,
+  h1,
+  eyebrow,
+  summary: lead ?? getRouteMetadata(routePath)?.description ?? "",
+  sections: [],
+  links: [],
+  schemaKind: "page" as const,
+  topics: [ROUTE_NAMES[routePath] ?? h1],
+  lastmod: "2026-10-23",
+  changefreq: "monthly" as const,
+  priority: "0.7",
+}));
+
 const INDEXED_RESOURCE_ROUTE_DEFINITIONS: SeoRoute[] = [
-  ...blogPosts.map((post) => ({
-    path: `/blog/${post.slug}`,
-    title: `${post.title} | DefenseEye`,
-    description: post.metaDescription,
-    h1: post.title,
-    summary: post.excerpt,
-    sections: [],
-    links: [{ label: "Browse all CMMC articles", href: "/blog" }, { label: "Explore the CMMC Knowledge Hub", href: "/knowledge-hub" }],
-    schemaKind: "page" as const,
-    topics: ["CMMC", "Defense contractor readiness"],
-    lastmod: "2026-04-01",
-    changefreq: "monthly" as const,
-    priority: "0.8",
-    bodyHtml: renderBlogContent(post.content),
-  })),
-  ...KNOWLEDGE_HUB_LINKS.slice(0, 5).map((link) => ({
-    path: link.href,
-    title: link.label + " | DefenseEye Knowledge Hub",
-    description: "DefenseEye Knowledge Hub resource: " + link.label + ".",
-    h1: link.label,
-    summary: "Explore DefenseEye's CMMC Knowledge Hub guidance on " + link.label + ".",
-    sections: [{ heading: "CMMC readiness resource", body: "This resource supports practical CMMC readiness, scoping, evidence, and assessment preparation." }],
-    links: [{ label: "Explore the CMMC Knowledge Hub", href: "/knowledge-hub" }, { label: "Browse CMMC articles", href: "/blog" }],
-    schemaKind: "page" as const,
-    topics: ["CMMC", "NIST SP 800-171"],
-    lastmod: "2026-04-04",
-    changefreq: "monthly" as const,
-    priority: "0.8",
-    ...getKnowledgeHubContentOverride(link.href),
-  })),
-  ...[
-    ["/services/cmmc-readiness-sprint", "CMMC Readiness Sprint", "A focused CMMC readiness engagement for defense contractors.", ["What You Get in the Sprint", "Why DefenseEye", "CMMC Readiness FAQ"]],
-    ["/attacksense/docs", "DefenseEye AttackSense Guide", "Practical guidance for applying AttackSense cybersecurity intelligence.", ["Use This Guide For", "Need Help Applying It?"]],
-    ["/pricing", "DefenseEye Engagement Pricing", "Explore DefenseEye engagement formats and pricing guidance.", ["Choose the Right Engagement Speed", "Pricing FAQ"]],
-    ["/cmmc-readiness-sprint-guide", "CMMC Readiness Sprint Guide", "A practical guide to organizing CMMC readiness work.", ["Sprint phases", "Readiness priorities"]],
-    ["/cmmc-readiness-sprint", "CMMC Readiness Sprint", "Focused readiness and evidence support for CMMC preparation.", ["Readiness approach", "What the sprint covers"]],
-    ["/microsoft-ecosystem", "Microsoft Ecosystem Experience", "DefenseEye experience supporting Microsoft cloud, security, and AI initiatives.", ["Procurement-Safe Positioning", "Enterprise and Multi-Cloud AI Consulting"]],
-    ["/delivery-model", "DefenseEye Delivery Model", "How DefenseEye structures practical delivery engagements.", ["Engagement Formats", "Assess, design, and implement"]],
-    ["/representative-engagements", "Representative Engagements", "Representative engagement types DefenseEye is positioned to support.", ["Secure AI implementation", "CMMC readiness and automation"]],
-    ["/datasheets", "DefenseEye Datasheets", "Downloadable summaries of DefenseEye services and products.", ["Secure AI Adoption", "CMMC Compliance Automation", "CMMCLens", "Microsoft Copilot Readiness", "Supplier Readiness"]],
-    ["/datasheets/secure-ai-adoption", "Secure AI Adoption", "Secure AI adoption, governance, and implementation overview.", ["Who It Is For", "Problems Addressed", "How DefenseEye Helps"]],
-    ["/datasheets/cmmc-compliance-automation", "CMMC Compliance Automation", "CMMC readiness and evidence automation overview.", ["Who It Is For", "Problems Addressed", "How DefenseEye Helps"]],
-    ["/datasheets/cmmclens", "CMMCLens", "CMMCLens compliance evidence automation overview.", ["Who It Is For", "Problems Addressed", "How DefenseEye Helps"]],
-    ["/datasheets/microsoft-copilot-readiness", "Microsoft Copilot Readiness", "Microsoft Copilot readiness overview.", ["Who It Is For", "Problems Addressed", "How DefenseEye Helps"]],
-    ["/datasheets/supplier-readiness", "Supplier Readiness", "Supplier and partner readiness overview.", ["Who It Is For", "Supplier Facts", "Engagement Options"]],
-    ["/insights/what-is-cmmc-level-2", "What is CMMC Level 2?", "A guide to CMMC Level 2 requirements for defense contractors.", ["CMMC Level 2 requirements", "Readiness priorities"]],
-    ["/insights/what-is-rmf-readiness", "What is RMF readiness?", "A guide to preparing boundaries, controls, evidence, and risk decisions for RMF work.", ["RMF readiness", "Evidence and monitoring"]],
-    ["/insights/what-is-nist-ai-rmf", "What is NIST AI RMF?", "A guide to governing, mapping, measuring, and managing AI risk.", ["AI risk management", "Governance foundations"]],
-    ["/insights/ai-automated-evidence-collection", "How can AI automate evidence collection?", "How AI can support evidence classification, control mapping, and traceability.", ["Evidence collection", "Control mapping"]],
-    ["/insights/implement-ai-governance", "How can organizations implement AI governance?", "Practical AI governance program design guidance.", ["AI inventories and risk tiering", "Governance evidence"]],
-    ["/insights/security-copilot-cybersecurity-operations", "How can Security Copilot improve cybersecurity operations?", "How Security Copilot can support analyst workflows with governance.", ["Security operations", "Human oversight"]],
-    ["/insights/continuous-compliance-monitoring", "What is continuous compliance monitoring?", "How teams monitor controls, evidence freshness, and configuration drift.", ["Control monitoring", "Evidence freshness"]],
-    ["/insights/ai-audit-readiness", "How can AI improve audit readiness?", "How AI can organize evidence and support human-reviewed audit preparation.", ["Audit readiness", "Evidence organization"]],
-    ["/solutions/cybersecurity-risk", "Cybersecurity Risk Consulting for Regulated Environments", "Cybersecurity risk consulting for regulated organizations.", ["Business Challenge", "Key Outcomes", "Deliverables"]],
-    ["/solutions/compliance-automation", "Compliance Evidence Automation and Readiness Consulting", "Compliance evidence automation and readiness consulting.", ["Business Challenge", "Key Outcomes", "Deliverables"]],
-    ["/solutions/cloud-security", "Azure Cloud Security and GCC High Compliance Consulting", "Azure cloud security and GCC High compliance consulting.", ["Business Challenge", "Key Outcomes", "Deliverables"]],
-    ["/solutions/cmmclens-platform", "CMMCLens Compliance Automation Platform", "CMMCLens platform overview for compliance evidence automation.", ["Business Challenge", "Key Outcomes", "Deliverables"]],
-  ].map(([path, h1, description, headings]) => ({
-    path: path as string,
-    title: (h1 as string) + " | DefenseEye",
-    description: description as string,
-    h1: h1 as string,
-    summary: description as string,
-    sections: (headings as string[]).map((heading) => ({ heading, body: description as string })),
-    links: [{ label: "CMMC Knowledge Hub", href: "/knowledge-hub" }, { label: "Contact DefenseEye", href: "/contact" }],
-    schemaKind: "page" as const,
-    topics: ["Secure AI", "CMMC readiness", "Compliance automation"],
-    lastmod: "2026-09-13",
-    changefreq: "monthly" as const,
-    priority: "0.8",
-  })),
+  ...BLOG_ROUTES,
+  ...KNOWLEDGE_HUB_ARTICLE_ROUTES,
+  ...INSIGHT_ROUTES,
+  ...SOLUTION_ROUTES,
+  ...LANDING_PAGE_ROUTES,
+  ...DATASHEET_ROUTES,
+  ...SUMMARY_ROUTES,
 ];
 
 const INDEXED_RESOURCE_ROUTES: SeoRoute[] = INDEXED_RESOURCE_ROUTE_DEFINITIONS.map(withRouteMetadata);
@@ -1404,6 +1536,7 @@ function getKnowledgeHubContentOverride(path: string): Partial<SeoRoute> {
       h1: WHAT_IS_CMMC_CONTENT.h1,
       summary: WHAT_IS_CMMC_CONTENT.description,
       sections: [],
+      faqs: WHAT_IS_CMMC_CONTENT.faq.items.map(({ question, answer }) => ({ question, answer })),
       bodyHtml: renderWhatIsCmmcContent(),
     };
   }
@@ -1414,6 +1547,7 @@ function getKnowledgeHubContentOverride(path: string): Partial<SeoRoute> {
       h1: CERTIFICATION_PROCESS_CONTENT.h1,
       summary: CERTIFICATION_PROCESS_CONTENT.description,
       sections: [],
+      faqs: CERTIFICATION_PROCESS_CONTENT.faq.items.map(({ question, answer }) => ({ question, answer })),
       bodyHtml: renderCertificationProcessContent(),
     };
   }
@@ -1424,6 +1558,7 @@ function getKnowledgeHubContentOverride(path: string): Partial<SeoRoute> {
       h1: CMMC_LEVELS_CONTENT.h1,
       summary: CMMC_LEVELS_CONTENT.description,
       sections: [],
+      faqs: CMMC_LEVELS_CONTENT.faq.items.map(({ question, answer }) => ({ question, answer })),
       bodyHtml: renderCmmcLevelsContent(),
     };
   }
@@ -1434,6 +1569,7 @@ function getKnowledgeHubContentOverride(path: string): Partial<SeoRoute> {
       h1: EVIDENCE_MAPPING_CONTENT.h1,
       summary: EVIDENCE_MAPPING_CONTENT.description,
       sections: [],
+      faqs: EVIDENCE_MAPPING_CONTENT.faq.items.map(({ question, answer }) => ({ question, answer })),
       bodyHtml: renderEvidenceMappingContent(),
     };
   }
@@ -1444,6 +1580,7 @@ function getKnowledgeHubContentOverride(path: string): Partial<SeoRoute> {
       h1: SPRS_SCORE_CONTENT.h1,
       summary: SPRS_SCORE_CONTENT.description,
       sections: [],
+      faqs: SPRS_SCORE_CONTENT.faq.items.map(({ question, answer }) => ({ question, answer })),
       bodyHtml: renderSprsScoreContent(),
     };
   }
@@ -1471,16 +1608,73 @@ function renderIndexResources(route: SeoRoute) {
   return "";
 }
 
+function renderBreadcrumbs(routePath: string) {
+  if (routePath === "/") return "";
+  const trail = getBreadcrumbTrail(routePath);
+  return `<nav class="de-pr-breadcrumb" aria-label="Breadcrumb"><ol>${trail
+    .map((item, index) =>
+      index === trail.length - 1
+        ? `<li aria-current="page">${escapeHtml(item.label)}</li>`
+        : `<li><a href="${escapeAttribute(item.href)}">${escapeHtml(item.label)}</a></li>`
+    )
+    .join("")}</ol></nav>`;
+}
+
+function renderFaqs(faqs: SeoFaq[] = []) {
+  if (faqs.length === 0) return "";
+  return `<section><h2>Frequently asked questions</h2><dl>${faqs
+    .map((faq) => `<dt>${escapeHtml(faq.question)}</dt><dd>${escapeHtml(faq.answer)}</dd>`)
+    .join("")}</dl></section>`;
+}
+
+function renderDescribedLinkList(links: ArchitectureLink[]) {
+  return `<ul>${links
+    .map(
+      (link) =>
+        `<li><a href="${escapeAttribute(link.href)}">${escapeHtml(link.label)}</a>${
+          link.description ? ` — ${escapeHtml(link.description)}` : ""
+        }</li>`
+    )
+    .join("")}</ul>`;
+}
+
+function renderFooterNavigation() {
+  return `<nav class="de-pr-footer-nav" aria-label="Site directory">${FOOTER_NAVIGATION.map(
+    (group) => `<h2>${escapeHtml(group.title)}</h2>${renderLinkList(group.links)}`
+  ).join("")}</nav>`;
+}
+
+// Links a reader of this page is likely to want next: the route's own links, its
+// hub's other pages (on hubs), and curated related pages. Each destination appears
+// once, and links already present in the article body are not repeated.
+function collectContextualLinks(route: SeoRoute) {
+  const seen = new Set<string>([route.path]);
+  for (const match of (route.bodyHtml ?? "").matchAll(/href="([^"]+)"/g)) seen.add(match[1]);
+  const take = (links: ArchitectureLink[]) =>
+    links.filter((link) => {
+      if (seen.has(link.href)) return false;
+      seen.add(link.href);
+      return true;
+    });
+  const parentPath = getBreadcrumbTrail(route.path).at(-2)?.href;
+  const parent = parentPath ? [{ href: parentPath, label: `Back to ${ROUTE_NAMES[parentPath] ?? "DefenseEye"}` }] : [];
+  return {
+    section: take(getSectionPages(route.path)),
+    related: take([...route.links, ...getRelatedLinks(route.path), ...parent]),
+  };
+}
+
 export function renderRouteFallbackHtml(route: SeoRoute) {
-  const pageLinks = route.links.filter((link) => !PUBLIC_NAVIGATION_LINKS.some((navLink) => navLink.href === link.href));
+  const { section, related } = collectContextualLinks(route);
   return `
       <!-- Route-specific public content generated from the shared SEO route registry. React hydrates this route on load. -->
       <div class="de-pr" data-seo-route="${escapeAttribute(route.path)}">
         <header>
-          <a class="brand" href="${SITE_ORIGIN}">DefenseEye.ai</a>
+          <a class="brand" href="${SITE_ORIGIN}/">DefenseEye.ai</a>
           ${renderNavigation(PUBLIC_NAVIGATION_LINKS, "de-pr-nav")}
         </header>
         <main>
+          ${renderBreadcrumbs(route.path)}
           ${route.eyebrow ? `<p class="eyebrow">${escapeHtml(route.eyebrow)}</p>` : ""}
           <h1>${escapeHtml(route.h1)}</h1>
           <p class="lead">${escapeHtml(route.summary)}</p>
@@ -1495,39 +1689,63 @@ export function renderRouteFallbackHtml(route: SeoRoute) {
           </section>`
             )
             .join("")}
+          ${route.faqsInBody ? "" : renderFaqs(route.faqs)}
           ${renderIndexResources(route)}
-          <section>
-            <h2>Related DefenseEye Resources</h2>
-            ${renderLinkList(pageLinks)}
-          </section>
+          ${section.length > 0 ? `<section><h2>In this section</h2>${renderDescribedLinkList(section)}</section>` : ""}
+          ${related.length > 0 ? `<section><h2>Related DefenseEye resources</h2>${renderDescribedLinkList(related)}</section>` : ""}
         </main>
         <footer>
-          <p>DefenseEye provides secure AI adoption, Microsoft cloud security, CMMC readiness, and compliance automation for regulated organizations.</p>
-          ${renderNavigation(PUBLIC_NAVIGATION_LINKS, "de-pr-footer-nav")}
+          <p>DefenseEye helps regulated organizations adopt AI securely and stay audit-ready, combining AI governance, cybersecurity, Microsoft cloud security, CMMC readiness, and compliance automation.</p>
+          ${renderFooterNavigation()}
         </footer>
       </div>`;
 }
 
+export const ORGANIZATION_LOGO_URL = `${SITE_ORIGIN}/defenseeye-logo.png`;
+
+// One Organization entity, referenced by @id from every page. Only facts published
+// on the site (name, URL, Redmond WA location, contact email, LinkedIn) are used.
+const ORGANIZATION_ENTITY = {
+  "@type": "Organization",
+  "@id": `${SITE_ORIGIN}/#organization`,
+  name: "DefenseEye",
+  alternateName: "DefenseEye.ai",
+  url: `${SITE_ORIGIN}/`,
+  logo: { "@type": "ImageObject", url: ORGANIZATION_LOGO_URL },
+};
+
 export function buildRouteSchemas(route: SeoRoute) {
   const canonical = canonicalUrl(route.path);
-  const organization = {
-    "@type": "Organization",
-    "@id": `${SITE_ORIGIN}/#organization`,
-    name: "DefenseEye",
-    alternateName: "DefenseEye.ai",
-    url: SITE_ORIGIN,
-  };
+  const organization = ORGANIZATION_ENTITY;
 
+  const trail = route.path === "/" ? [{ href: "/", label: "Home" }] : getBreadcrumbTrail(route.path);
   const breadcrumb = {
     "@type": "BreadcrumbList",
     "@id": `${canonical}#breadcrumb`,
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: canonicalUrl("/") },
-      ...(route.path === "/"
-        ? []
-        : [{ "@type": "ListItem", position: 2, name: route.h1, item: canonical }]),
-    ],
+    itemListElement: trail.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: index === trail.length - 1 && route.path !== "/" ? route.h1 : item.label,
+      item: canonicalUrl(item.href),
+    })),
   };
+
+  // FAQPage only when the questions and answers are visible on the page itself.
+  const faqPage =
+    route.faqs && route.faqs.length > 0
+      ? [
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "@id": `${canonical}#faq`,
+            mainEntity: route.faqs.map((faq) => ({
+              "@type": "Question",
+              name: faq.question,
+              acceptedAnswer: { "@type": "Answer", text: faq.answer },
+            })),
+          },
+        ]
+      : [];
 
   if (route.schemaKind === "home") {
     return [
@@ -1536,6 +1754,8 @@ export function buildRouteSchemas(route: SeoRoute) {
         ...organization,
         description:
           "DefenseEye is a practitioner-led secure agentic AI, cybersecurity, responsible AI governance, Microsoft cloud, CMMC readiness, and compliance automation supplier.",
+        address: { "@type": "PostalAddress", addressLocality: "Redmond", addressRegion: "WA", addressCountry: "US" },
+        email: "enterprise@defenseeye.ai",
         sameAs: ["https://www.linkedin.com/company/defenseeye"],
       },
       {
@@ -1570,8 +1790,17 @@ export function buildRouteSchemas(route: SeoRoute) {
     description: route.description,
     isPartOf: { "@id": `${SITE_ORIGIN}/#website` },
     publisher: { "@id": `${SITE_ORIGIN}/#organization` },
+    breadcrumb: { "@id": `${canonical}#breadcrumb` },
     about: route.topics.map((name) => ({ "@type": "Thing", name })),
   };
+
+  // The Organization node is repeated (compactly) on every page so @id references
+  // from publisher/provider resolve within the page's own structured data.
+  const shared = [
+    { "@context": "https://schema.org", ...organization },
+    { "@context": "https://schema.org", ...breadcrumb },
+    ...faqPage,
+  ];
 
   if (route.schemaKind === "software") {
     return [
@@ -1584,11 +1813,13 @@ export function buildRouteSchemas(route: SeoRoute) {
         url: canonical,
         description: route.description,
         brand: { "@type": "Brand", name: "DefenseEye" },
-        applicationCategory:
+        publisher: { "@id": `${SITE_ORIGIN}/#organization` },
+        applicationCategory: "SecurityApplication",
+        applicationSubCategory:
           route.path === "/cmmclens" ? "Cybersecurity compliance automation" : "Cybersecurity operations",
         operatingSystem: "Web",
       },
-      { "@context": "https://schema.org", ...breadcrumb },
+      ...shared,
     ];
   }
 
@@ -1607,11 +1838,39 @@ export function buildRouteSchemas(route: SeoRoute) {
         areaServed: { "@type": "Country", name: "United States" },
         about: route.topics.map((name) => ({ "@type": "Thing", name })),
       },
-      { "@context": "https://schema.org", ...breadcrumb },
+      ...shared,
     ];
   }
 
-  return [webPage, { "@context": "https://schema.org", ...breadcrumb }];
+  if (route.schemaKind === "article" && route.article) {
+    const isBlogPost = route.path.startsWith("/blog/");
+    const author =
+      route.article.author === "DefenseEye"
+        ? { "@id": `${SITE_ORIGIN}/#organization` }
+        : { "@type": "Organization", name: route.article.author, url: `${SITE_ORIGIN}/` };
+    return [
+      webPage,
+      {
+        "@context": "https://schema.org",
+        "@type": isBlogPost ? "BlogPosting" : "Article",
+        "@id": `${canonical}#article`,
+        headline: route.h1.length > 110 ? route.h1.slice(0, 107) + "..." : route.h1,
+        description: route.description,
+        url: canonical,
+        mainEntityOfPage: { "@id": `${canonical}#webpage` },
+        image: ORGANIZATION_LOGO_URL,
+        author,
+        publisher: { "@id": `${SITE_ORIGIN}/#organization` },
+        ...(route.article.datePublished ? { datePublished: route.article.datePublished } : {}),
+        ...(route.article.dateModified ? { dateModified: route.article.dateModified } : {}),
+        about: route.topics.map((name) => ({ "@type": "Thing", name })),
+        inLanguage: "en-US",
+      },
+      ...shared,
+    ];
+  }
+
+  return [webPage, ...shared];
 }
 
 export function renderRouteSchemaScript(route: SeoRoute) {

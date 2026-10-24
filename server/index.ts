@@ -818,7 +818,9 @@ export function injectRouteSpecificHtml(html: string, routePath: string) {
     .replace(/<!-- Schema\.org:[\s\S]*?<\/script>\s*/m, "")
     .replace("</head>", `  <!-- Schema.org: Route-specific structured data -->\n${renderRouteSchemaScript(route)}\n\n  </head>`)
     .replace(
-      /<div id="root">[\s\S]*?<\/div>\s*(?=<!-- Google Analytics 4)/,
+      // The root fallback ends right before the app entry script (source template)
+      // or the GA4 block (built template, where Vite hoists the entry into <head>).
+      /<div id="root">[\s\S]*?<\/div>\s*(?=<script type="module"|<!-- Google Analytics 4)/,
       `<div id="root">${renderRouteFallbackHtml(route)}\n    </div>\n\n    `
     );
 }

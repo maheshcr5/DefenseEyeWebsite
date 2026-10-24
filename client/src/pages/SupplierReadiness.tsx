@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Award, Building2, Download, Mail, Phone, ShieldCheck } from "lucide-react";
+import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
 import { useSeo } from "@/hooks/useSeo";
@@ -143,6 +144,7 @@ export default function SupplierReadiness() {
           </div>
         </section>
       </main>
+      <Footer />
     </div>
   );
 }
