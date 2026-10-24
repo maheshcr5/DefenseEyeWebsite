@@ -1263,7 +1263,6 @@ const DATASHEET_ROUTES: SeoRoute[] = Object.values(DATASHEET_CONTENT).map((sheet
 // not invent section copy. Titles and descriptions come from routeMetadata.ts.
 const SUMMARY_ROUTE_DEFINITIONS: ReadonlyArray<readonly [path: string, h1: string, eyebrow: string, lead: string | null]> = [
   ["/services/cmmc-readiness-sprint", "Get CMMC Ready in 2-4 Weeks", "CMMC Readiness Sprint", null],
-  ["/cmmc-readiness-sprint", "CMMC readiness sprint for focused assessment preparation", "CMMC Readiness", "A focused readiness sprint helps teams identify gaps, organize evidence, clarify SSP and POA&M needs, and create a practical action plan."],
   ["/cmmc-readiness-sprint-guide", "The 4-Week CMMC Readiness Sprint", "CMMC Readiness Guide", null],
   ["/pricing", "Flexible, Transparent Pricing for Urgent CMMC Readiness", "CMMC Readiness Pricing", null],
   ["/attacksense/docs", "DefenseEye AttackSense Guide", "AttackSense", "Published guidance for getting started with AttackSense, aligning the workflow to your security operations process, and moving from raw findings to prioritized remediation."],
@@ -1921,7 +1920,6 @@ const additionalSitemapEntries: SitemapEntry[] = [
   { path: "/delivery-model", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.8" },
   { path: "/representative-engagements", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.8" },
   { path: "/microsoft-ecosystem", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.8" },
-  { path: "/cmmc-readiness-sprint", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.8" },
   { path: "/lp/ai-governance-consulting", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.7" },
   { path: "/lp/secure-ai-adoption", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.7" },
   { path: "/lp/microsoft-copilot-readiness", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.7" },

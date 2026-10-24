@@ -16,26 +16,26 @@ const template = fs.readFileSync(path.resolve(__dirname, "../client/index.html")
 const pathOf = (href: string) => href.split(/[?#]/)[0];
 const isLive = (href: string) => getRouteMeta(pathOf(href)) !== null && !LEGACY_REDIRECTS[pathOf(href)];
 
-// Indexable URLs from the Ahrefs "orphan page (has no incoming internal links)"
-// export of 2026-10-18. The ten /lp/ URLs in that export are intentionally
-// noindexed and excluded from the sitemap instead (see shared/routeMetadata.ts).
-const AHREFS_INDEXABLE_ORPHANS = [
+// The 41 URLs in the Ahrefs "orphan page (has no incoming internal links)" export
+// of 2026-10-18. /cmmc-readiness-sprint was consolidated (301) into
+// /services/cmmc-readiness-sprint; every other URL is live and indexable.
+const AHREFS_ORPHANS = [
   "/knowledge-hub/sprs-score", "/knowledge-hub/certification-process", "/blog/cmmc-consultant-red-flags",
   "/blog/cmmc-poam-guide-what-assessors-want", "/cmmc-readiness-sprint-guide", "/datasheets",
   "/blog/cmmc-level-2-small-business-guide", "/blog/what-counts-as-cui-plain-english-guide", "/pricing",
   "/privacy-policy", "/blog/gcc-high-vs-m365-commercial-cmmc", "/datasheets/microsoft-copilot-readiness",
   "/delivery-model", "/insights/implement-ai-governance", "/datasheets/cmmc-compliance-automation",
-  "/solutions/compliance-automation", "/insights/security-copilot-cybersecurity-operations",
-  "/industries/defense-industrial-base", "/datasheets/cmmclens", "/solutions/cmmclens-platform",
-  "/solutions/cloud-security", "/industries/financial-services-credit-unions", "/cmmc-readiness-sprint",
-  "/datasheets/supplier-readiness", "/insights/ai-automated-evidence-collection",
-  "/insights/continuous-compliance-monitoring", "/insights/ai-audit-readiness", "/microsoft-ecosystem",
-  "/datasheets/secure-ai-adoption", "/services/cmmc-scoping", "/insights/what-is-rmf-readiness",
+  "/lp/microsoft-supplier-ai-consulting", "/lp/ai-governance-consulting", "/solutions/compliance-automation",
+  "/insights/security-copilot-cybersecurity-operations", "/industries/defense-industrial-base", "/datasheets/cmmclens",
+  "/lp/compliance-automation", "/solutions/cmmclens-platform", "/lp/secure-ai-adoption", "/solutions/cloud-security",
+  "/industries/financial-services-credit-unions", "/lp/cmmc-evidence-automation", "/cmmc-readiness-sprint",
+  "/datasheets/supplier-readiness", "/insights/ai-automated-evidence-collection", "/lp/cmmclens-demo",
+  "/insights/continuous-compliance-monitoring", "/lp/cmmc-compliance-automation", "/lp/azure-cloud-security",
+  "/insights/ai-audit-readiness", "/lp/microsoft-copilot-readiness", "/microsoft-ecosystem",
+  "/lp/cmmc-level-2-readiness", "/datasheets/secure-ai-adoption", "/services/cmmc-scoping",
+  "/insights/what-is-rmf-readiness",
 ];
-
-// Near-duplicate of /services/cmmc-readiness-sprint awaiting a business decision on
-// consolidation; linked from its hub only, rather than reinforcing the duplicate.
-const PENDING_CONSOLIDATION = new Set(["/cmmc-readiness-sprint"]);
+const CONSOLIDATED = new Set(["/cmmc-readiness-sprint"]);
 
 function rootHtml(routePath: string) {
   const { html } = renderSpaDocument(template, routePath);
@@ -98,7 +98,8 @@ describe("server-rendered fallback HTML", () => {
     }
   });
 
-  it("gives each indexable Ahrefs orphan at least two inlinks from other pages", () => {
+  it("gives every live Ahrefs orphan at least two inlinks and redirects the consolidated one", () => {
+    expect(AHREFS_ORPHANS).toHaveLength(41);
     const inlinks = new Map<string, Set<string>>();
     for (const entry of SITEMAP_ENTRIES) {
       for (const href of internalLinks(rootHtml(entry.path))) {
@@ -108,9 +109,21 @@ describe("server-rendered fallback HTML", () => {
         inlinks.get(target)!.add(entry.path);
       }
     }
-    for (const orphan of AHREFS_INDEXABLE_ORPHANS) {
+    for (const orphan of AHREFS_ORPHANS) {
+      if (CONSOLIDATED.has(orphan)) {
+        expect(LEGACY_REDIRECTS[orphan], orphan).toBeTruthy();
+        expect(inlinks.has(orphan), `${orphan} is still linked`).toBe(false);
+        continue;
+      }
       expect(isNoindexRoute(orphan), orphan).toBe(false);
-      expect(inlinks.get(orphan)?.size ?? 0, orphan).toBeGreaterThanOrEqual(PENDING_CONSOLIDATION.has(orphan) ? 1 : 2);
+      expect(inlinks.get(orphan)?.size ?? 0, orphan).toBeGreaterThanOrEqual(2);
+    }
+  });
+
+  it("puts no pricing in structured data, since no prices are published", () => {
+    for (const entry of SITEMAP_ENTRIES) {
+      const text = JSON.stringify(buildRouteSchemas(getSeoRoute(entry.path)!));
+      expect(text, entry.path).not.toMatch(/"(price|priceRange|priceCurrency|offers|lowPrice|highPrice)"/);
     }
   });
 

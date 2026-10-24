@@ -54,10 +54,14 @@ describe("sitemap and indexability", () => {
     }
   });
 
-  it("serves noindex, follow for campaign landing pages and keeps other routes indexable", () => {
-    const landing = renderSpaDocument(template, "/lp/cmmclens-demo");
-    expect(landing.status).toBe(200);
-    expect(landing.html).toContain('<meta name="robots" content="noindex, follow"');
+  it("keeps every sitemap route indexable, including the /lp/ offer pages", () => {
+    // Campaign-only intent for /lp/ pages is unconfirmed, so they stay indexable
+    // (see shared/routeMetadata.ts for how to opt them out).
+    const sitemapPaths = new Set(SITEMAP_ENTRIES.map((entry) => entry.path));
+    for (const landingPath of Object.keys(ROUTE_METADATA).filter((routePath) => routePath.startsWith("/lp/"))) {
+      expect(sitemapPaths.has(landingPath), landingPath).toBe(true);
+      expect(isNoindexRoute(landingPath), landingPath).toBe(false);
+    }
 
     for (const entry of SITEMAP_ENTRIES) {
       const page = renderSpaDocument(template, entry.path);
@@ -92,5 +96,6 @@ describe("client routes and redirects", () => {
     }
     expect(LEGACY_REDIRECTS["/services"]).toBe("/services/cmmc-readiness-sprint");
     expect(LEGACY_REDIRECTS["/solutions/microsoft-copilot-enablement"]).toBe("/solutions/microsoft-copilot-readiness");
+    expect(LEGACY_REDIRECTS["/cmmc-readiness-sprint"]).toBe("/services/cmmc-readiness-sprint");
   });
 });

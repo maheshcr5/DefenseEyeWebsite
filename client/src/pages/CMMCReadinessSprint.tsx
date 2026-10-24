@@ -25,6 +25,10 @@ const FAQS = [
     a: "A failed readiness posture can delay contract awards and force costly remediation under pressure. A structured readiness sprint lowers this risk before formal assessment.",
   },
   {
+    q: "What does a readiness sprint produce?",
+    a: "A sprint typically produces findings, prioritized remediation actions, evidence planning, SSP/POA&M recommendations, and leadership-ready next steps.",
+  },
+  {
     q: "How much does CMMC compliance cost?",
     a: "Costs vary by current posture and environment complexity. DefenseEye starts with a fixed-price readiness sprint so teams can scope cost before full remediation.",
   },

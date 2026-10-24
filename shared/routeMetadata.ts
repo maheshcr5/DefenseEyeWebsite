@@ -16,11 +16,9 @@ export type RouteMetadata = {
   robots?: "noindex, follow";
 };
 
-// Paid-campaign landing pages under /lp/ repeat the intent of the indexable solution
-// pages with thinner content. They stay live for campaigns, but are kept out of the
-// index (and the sitemap) so they do not compete with the pages buyers should land on
-// from search. Links on them are still followed.
-const CAMPAIGN_LANDING_PAGE: Pick<RouteMetadata, "robots"> = { robots: "noindex, follow" };
+// The /lp/ landing pages are indexable. If they are confirmed to be used only for
+// paid or outbound campaigns, add `robots: "noindex, follow"` to their entries: that
+// also removes them from the sitemap (see isNoindexRoute and SITEMAP_ENTRIES).
 
 export const ROUTE_METADATA: Record<string, RouteMetadata> = {
   "/": {
@@ -109,11 +107,7 @@ export const ROUTE_METADATA: Record<string, RouteMetadata> = {
     description:
       "CMMC Level 2 readiness support for CUI scope, NIST SP 800-171 gaps, SSP, POA&M, evidence planning, SPRS, and assessment preparation.",
   },
-  "/cmmc-readiness-sprint": {
-    title: "CMMC Readiness Sprint for Assessment Preparation | DefenseEye",
-    description:
-      "A focused CMMC readiness sprint to identify gaps, organize evidence, clarify SSP and POA&M needs, and leave with a prioritized remediation plan.",
-  },
+
   "/services/cmmc-readiness-sprint": {
     title: "Fixed-Scope CMMC Readiness Sprint for DoD Contractors | DefenseEye",
     description:
@@ -363,66 +357,56 @@ export const ROUTE_METADATA: Record<string, RouteMetadata> = {
       "DefenseEye Terms of Service for the DefenseEye website, CMMCLens platform, support, and advisory services.",
   },
 
-  // ─── Campaign landing pages (kept out of the index; see note above) ────────
+  // ─── Focused offer / campaign landing pages ────────────────────────────────
   "/lp/secure-ai-adoption": {
     title: "Secure AI Adoption Consulting for Regulated Teams | DefenseEye",
     description:
       "Secure AI adoption consulting for AI governance, Microsoft Copilot readiness, data protection, NIST AI RMF alignment, and oversight workflows.",
-    ...CAMPAIGN_LANDING_PAGE,
   },
   "/lp/ai-governance-consulting": {
     title: "AI Governance Readiness Assessment | DefenseEye",
     description:
       "AI governance consulting for NIST AI RMF, responsible AI, human accountability, policy, oversight, and AI risk management.",
-    ...CAMPAIGN_LANDING_PAGE,
   },
   "/lp/microsoft-copilot-readiness": {
     title: "Microsoft Copilot Readiness Assessment | DefenseEye",
     description:
       "Microsoft Copilot readiness assessment for Microsoft 365, identity, data governance, privacy, security controls, and adoption guardrails.",
-    ...CAMPAIGN_LANDING_PAGE,
   },
   "/lp/cmmc-level-2-readiness": {
     title: "CMMC Level 2 Readiness Assessment | DefenseEye",
     description:
       "CMMC Level 2 readiness consulting for CUI scope, NIST SP 800-171 gaps, SSP, POA&M, evidence planning, SPRS, and assessment readiness.",
-    ...CAMPAIGN_LANDING_PAGE,
   },
   "/lp/cmmc-compliance-automation": {
     title: "CMMC Compliance Automation Sprint | DefenseEye",
     description:
       "CCP-led CMMC readiness and CMMCLens automation for NIST SP 800-171 evidence, SSP/POA&M workflows, remediation tracking, and dashboards.",
-    ...CAMPAIGN_LANDING_PAGE,
   },
   "/lp/cmmc-evidence-automation": {
     title: "CMMC Evidence Automation with CMMCLens | DefenseEye",
     description:
       "CMMC evidence automation and compliance traceability with CMMCLens, control mapping, readiness dashboards, and documentation workflows.",
-    ...CAMPAIGN_LANDING_PAGE,
   },
   "/lp/cmmclens-demo": {
     title: "Request a CMMCLens Demo | DefenseEye",
     description:
       "Request a CMMCLens demo for CMMC and NIST SP 800-171 evidence automation, control mapping, gap tracking, SSP/POA&M workflows, and dashboards.",
-    ...CAMPAIGN_LANDING_PAGE,
   },
   "/lp/microsoft-supplier-ai-consulting": {
     title: "Minority-Owned AI & Cybersecurity Supplier | DefenseEye",
     description:
       "Supplier-ready AI, cybersecurity, cloud security, Microsoft Copilot, and compliance automation support for Microsoft-centered environments.",
-    ...CAMPAIGN_LANDING_PAGE,
   },
   "/lp/azure-cloud-security": {
     title: "Azure Cloud Security & Compliance Review | DefenseEye",
     description:
       "Azure cloud security support for Azure, Azure Government, GCC High, Entra, Defender, Sentinel, Purview, and compliance alignment.",
-    ...CAMPAIGN_LANDING_PAGE,
   },
   "/lp/compliance-automation": {
     title: "Compliance Automation for Evidence & Reporting | DefenseEye",
     description:
       "Compliance automation for evidence collection, control mapping, documentation support, readiness workflows, and audit preparedness.",
-    ...CAMPAIGN_LANDING_PAGE,
   },
 };
 

@@ -56,29 +56,6 @@ const pages: Record<string, { title: string; desc: string; points: string[]; faq
       },
     ],
   },
-  "/cmmc-readiness-sprint": {
-    title: "CMMC readiness sprint for focused assessment preparation",
-    desc: "A focused readiness sprint helps teams identify gaps, organize evidence, clarify SSP and POA&M needs, and create a practical action plan.",
-    points: ["2-4 week readiness sprint format", "Gap assessment", "SSP and POA&M review", "Evidence plan", "Prioritized remediation roadmap"],
-    faqs: [["What does a readiness sprint produce?", "A sprint typically produces findings, prioritized remediation actions, evidence planning, SSP/POA&M recommendations, and leadership-ready next steps."]],
-    relatedLinks: [
-      {
-        label: "Review CMMC Level 2 readiness",
-        href: "/cmmc-level-2-readiness",
-        description: "Connect sprint findings to a broader readiness and assessment-preparation path.",
-      },
-      {
-        label: "Read the CMMC readiness sprint guide",
-        href: "/cmmc-readiness-sprint-guide",
-        description: "Use the guide for a practical view of scope, gaps, remediation, and evidence planning.",
-      },
-      {
-        label: "Explore CMMCLens evidence automation",
-        href: "/cmmclens",
-        description: "Evaluate whether platform-enabled evidence workflows fit the readiness plan.",
-      },
-    ],
-  },
   "/cmmc-evidence-automation": {
     title: "CMMC evidence automation and compliance traceability",
     desc: "DefenseEye uses automation and CMMCLens to support evidence collection, control mapping, documentation workflows, dashboards, and continuous readiness monitoring.",

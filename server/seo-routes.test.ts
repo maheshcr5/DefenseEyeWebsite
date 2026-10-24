@@ -660,9 +660,9 @@ describe("sitemap and robots", () => {
 
     expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
     expect(new Set(locations).size).toBe(locations.length);
-    // 73 before the 2026-10 remediation, minus the ten noindexed /lp/ campaign
-    // pages, plus /contact and /terms.
-    expect(locations).toHaveLength(65);
+    // 73 before the 2026-10 remediation, plus /contact and /terms, minus
+    // /cmmc-readiness-sprint (consolidated into /services/cmmc-readiness-sprint).
+    expect(locations).toHaveLength(74);
     for (const route of TIER_1_ROUTES) {
       expect(locations).toContain(canonicalUrl(route.path));
     }
@@ -694,11 +694,11 @@ describe("sitemap and robots", () => {
     // /capability-statement already existed in additionalSitemapEntries and was
     // merely relocated into TIER_1_ROUTES (same lastmod "2026-06-26", same URL) —
     // it does not count toward the four newly-added URLs.
-    // The 2026-10 remediation then removed the ten noindexed /lp/ campaign pages
-    // and added /contact and /terms (73 - 10 + 2 = 65).
+    // The 2026-10 remediation then added /contact and /terms and consolidated
+    // /cmmc-readiness-sprint into /services/cmmc-readiness-sprint (73 + 2 - 1 = 74).
     const xml = renderSitemapXml();
     const locations = Array.from(xml.matchAll(/<loc>(.*?)<\/loc>/g), (match) => match[1]);
-    expect(locations).toHaveLength(65);
+    expect(locations).toHaveLength(74);
 
     for (const newPath of ["/privacy-policy", "/support", "/faq", "/services/cmmc-scoping"]) {
       expect(xml).toContain(`<loc>${canonicalUrl(newPath)}</loc>`);

@@ -118,7 +118,7 @@ function Router() {
         <Route path="/solutions/cmmclens-platform" component={SolutionPage} />
         <Route path="/cmmc" component={CMMCArchitecturePage} />
         <Route path="/cmmc-level-2-readiness" component={CMMCArchitecturePage} />
-        <Route path="/cmmc-readiness-sprint" component={CMMCArchitecturePage} />
+        <Route path="/cmmc-readiness-sprint" component={LegacySprintRedirect} />
         <Route path="/cmmc-evidence-automation" component={CMMCArchitecturePage} />
         <Route path="/nist-800-171" component={CMMCArchitecturePage} />
         <Route path="/lp/ai-governance-consulting" component={LandingPage} />
@@ -141,14 +141,23 @@ function Router() {
   );
 }
 
-function LegacyRepresentativeEngagementsRedirect() {
+// Client-side fallbacks for in-app navigation; the server answers these URLs with a 301.
+function LegacyRedirect({ to }: { to: string }) {
   const [, setLocation] = useLocation();
 
   useEffect(() => {
-    setLocation("/representative-engagements", { replace: true });
-  }, [setLocation]);
+    setLocation(to, { replace: true });
+  }, [setLocation, to]);
 
   return <PageLoader />;
+}
+
+function LegacyRepresentativeEngagementsRedirect() {
+  return <LegacyRedirect to="/representative-engagements" />;
+}
+
+function LegacySprintRedirect() {
+  return <LegacyRedirect to="/services/cmmc-readiness-sprint" />;
 }
 
 function RouteAnalytics() {

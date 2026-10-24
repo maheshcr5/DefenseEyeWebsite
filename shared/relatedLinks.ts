@@ -19,17 +19,20 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
     link("/insights/implement-ai-governance", "Practical steps to implement AI governance", "AI inventories, risk tiering, roles, and governance evidence."),
     link("/insights/what-is-nist-ai-rmf", "What the NIST AI RMF asks of AI programs"),
     link("/datasheets/secure-ai-adoption", "Secure AI adoption one-page datasheet"),
+    link("/lp/secure-ai-adoption", "Secure AI adoption readiness review"),
   ],
   "/solutions/ai-governance": [
     link("/insights/implement-ai-governance", "Practical steps to implement AI governance", "AI inventories, risk tiering, roles, and governance evidence."),
     link("/insights/what-is-nist-ai-rmf", "Plain-English guide to the NIST AI RMF", "How to govern, map, measure, and manage AI risk."),
     link("/industries/financial-services-credit-unions", "AI risk management for financial institutions", "Governance and oversight for banks, credit unions, and FinTechs."),
     link("/datasheets/secure-ai-adoption", "Secure AI adoption datasheet"),
+    link("/lp/ai-governance-consulting", "AI governance readiness assessment", "A focused assessment with a governance roadmap and policy and control recommendations."),
   ],
   "/solutions/ai-transformation": [
     link("/solutions/ai-governance", "AI governance assessment", "Put oversight and accountability in place before scaling use cases."),
     link("/solutions/microsoft-copilot-readiness", "Microsoft Copilot readiness review"),
     link("/industries/financial-services-credit-unions", "Secure AI use cases in financial services"),
+    link("/lp/secure-ai-adoption", "Secure AI adoption readiness review", "Policy, control, risk, and implementation roadmap deliverables."),
   ],
   "/solutions/ai-security": [
     link("/solutions/cybersecurity-risk", "Cybersecurity risk consulting", "Prioritize remediation across the wider security program."),
@@ -40,6 +43,7 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
     link("/datasheets/microsoft-copilot-readiness", "Microsoft Copilot readiness datasheet"),
     link("/microsoft-ecosystem", "DefenseEye experience in Microsoft-centered environments"),
     link("/insights/security-copilot-cybersecurity-operations", "Security Copilot for cybersecurity operations"),
+    link("/lp/microsoft-copilot-readiness", "Copilot governance assessment", "Data exposure findings, guardrails, and a readiness roadmap."),
   ],
   "/industries/financial-services-credit-unions": [
     link("/solutions/ai-governance", "AI governance and NIST AI RMF alignment"),
@@ -50,6 +54,7 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
     link("/solutions/ai-governance", "AI governance consulting from DefenseEye"),
     link("/insights/what-is-nist-ai-rmf", "What is the NIST AI RMF?"),
     link("/industries/financial-services-credit-unions", "AI governance for financial institutions"),
+    link("/lp/ai-governance-consulting", "Start with an AI governance readiness assessment"),
   ],
   "/insights/what-is-nist-ai-rmf": [
     link("/solutions/ai-governance", "NIST AI RMF alignment support"),
@@ -74,12 +79,14 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
     link("/microsoft-ecosystem", "DefenseEye's Microsoft ecosystem experience"),
     link("/blog/gcc-high-vs-m365-commercial-cmmc", "GCC High vs M365 Commercial for CMMC"),
     link("/solutions/microsoft-copilot-readiness", "Microsoft Copilot readiness review"),
+    link("/lp/azure-cloud-security", "Azure security and compliance review", "Risk-ranked findings and a security and compliance roadmap."),
   ],
   "/microsoft-ecosystem": [
     link("/solutions/cloud-security", "Azure and GCC High cloud security consulting"),
     link("/solutions/microsoft-copilot-readiness", "Microsoft Copilot readiness consulting"),
     link("/datasheets/microsoft-copilot-readiness", "Microsoft Copilot readiness datasheet"),
     link("/insights/security-copilot-cybersecurity-operations", "Security Copilot for cybersecurity operations"),
+    link("/lp/azure-cloud-security", "Azure cloud security and compliance review"),
   ],
   "/insights/security-copilot-cybersecurity-operations": [
     link("/solutions/cybersecurity-risk", "Cybersecurity risk consulting"),
@@ -92,6 +99,7 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
     link("/knowledge-hub", "CMMC Knowledge Hub guides", "Plain-English explanations of levels, evidence, SPRS, and certification."),
     link("/blog", "CMMC articles for defense contractors"),
     link("/datasheets/cmmc-compliance-automation", "CMMC & compliance automation datasheet"),
+    link("/lp/cmmc-compliance-automation", "CMMC compliance automation sprint"),
   ],
   "/industries/defense-industrial-base": [
     link("/services/cmmc-scoping", "CMMC scoping to define your CUI boundary"),
@@ -103,22 +111,19 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
     link("/knowledge-hub/what-is-cmmc", "What is CMMC? Complete guide"),
     link("/services/cmmc-scoping", "CMMC scoping service"),
     link("/pricing", "CMMC readiness pricing and engagement options"),
+    link("/lp/cmmc-compliance-automation", "CMMC compliance automation sprint", "Evidence workflow design, gap priorities, and a CMMCLens onboarding plan."),
   ],
   "/cmmc-level-2-readiness": [
     link("/knowledge-hub/cmmc-levels", "CMMC Level 1 vs Level 2 comparison"),
     link("/blog/cmmc-level-2-compliance-checklist-2025", "CMMC Level 2 compliance checklist"),
     link("/services/cmmc-readiness-sprint", "Fixed-scope CMMC readiness sprint"),
+    link("/lp/cmmc-level-2-readiness", "CMMC Level 2 readiness assessment", "Findings, roadmap, evidence plan, and executive summary."),
   ],
   "/nist-800-171": [
     link("/knowledge-hub/evidence-mapping", "Mapping evidence to NIST 800-171 controls"),
     link("/knowledge-hub/sprs-score", "How SPRS scores are calculated"),
     link("/blog/cmmc-level-2-compliance-checklist-2025", "NIST 800-171 control checklist for CMMC Level 2"),
     link("/insights/what-is-rmf-readiness", "RMF readiness for federal systems"),
-  ],
-  "/cmmc-readiness-sprint": [
-    link("/services/cmmc-readiness-sprint", "Fixed-scope CMMC readiness sprint details and deliverables"),
-    link("/cmmc-readiness-sprint-guide", "4-week CMMC readiness sprint guide"),
-    link("/pricing", "Readiness sprint pricing guidance"),
   ],
   "/services/cmmc-readiness-sprint": [
     link("/cmmc-readiness-sprint-guide", "How a 4-week readiness sprint is organized"),
@@ -136,6 +141,7 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
     link("/knowledge-hub/evidence-mapping", "NIST 800-171 evidence mapping guide"),
     link("/insights/ai-automated-evidence-collection", "How AI can automate evidence collection"),
     link("/solutions/cmmclens-platform", "CMMCLens platform overview"),
+    link("/lp/cmmc-evidence-automation", "Evidence automation implementation with CMMCLens", "Dashboards and control mapping for compliance evidence."),
   ],
   "/cmmc-readiness-sprint-guide": [
     link("/services/cmmc-readiness-sprint", "Book a fixed-scope readiness sprint"),
@@ -148,16 +154,19 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
     link("/insights/ai-audit-readiness", "How AI can improve audit readiness"),
     link("/insights/what-is-rmf-readiness", "What RMF readiness means"),
     link("/cmmclens", "CMMCLens compliance automation platform"),
+    link("/lp/compliance-automation", "Compliance automation roadmap and CMMCLens fit assessment"),
   ],
   "/cmmclens": [
     link("/solutions/cmmclens-platform", "CMMCLens platform capabilities overview"),
     link("/datasheets/cmmclens", "CMMCLens product sheet"),
     link("/knowledge-hub/evidence-mapping", "How evidence mapping to NIST 800-171 works"),
+    link("/lp/cmmclens-demo", "CMMCLens demo and evidence automation fit review"),
   ],
   "/solutions/cmmclens-platform": [
     link("/cmmclens", "CMMCLens product page and demo"),
     link("/datasheets/cmmclens", "CMMCLens product sheet"),
     link("/cmmc-evidence-automation", "CMMC evidence automation and traceability"),
+    link("/lp/cmmclens-demo", "Request a CMMCLens demo and fit review"),
   ],
   "/pricing": [
     link("/services/cmmc-readiness-sprint", "What the fixed-scope readiness sprint includes"),
@@ -174,6 +183,7 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
     link("/solutions/compliance-automation", "Compliance evidence automation consulting"),
     link("/cmmclens", "CMMCLens evidence automation"),
     link("/insights/ai-audit-readiness", "How AI can improve audit readiness"),
+    link("/lp/cmmc-evidence-automation", "Put CMMC evidence automation in place"),
   ],
   "/insights/continuous-compliance-monitoring": [
     link("/solutions/compliance-automation", "Compliance automation consulting"),
@@ -185,6 +195,7 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
     link("/solutions/compliance-automation", "Compliance evidence automation"),
     link("/insights/continuous-compliance-monitoring", "Continuous compliance monitoring"),
     link("/solutions/ai-governance", "Governing the AI tools used in audits"),
+    link("/lp/compliance-automation", "Plan compliance automation for evidence and reporting"),
   ],
   "/insights/what-is-rmf-readiness": [
     link("/solutions/compliance-automation", "Evidence and control automation for authorization work"),
@@ -228,6 +239,7 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
     link("/knowledge-hub/cmmc-levels", "CMMC Level 1 vs Level 2 in depth"),
     link("/cmmc-level-2-readiness", "CMMC Level 2 readiness consulting"),
     link("/blog/cmmc-level-2-compliance-checklist-2025", "CMMC Level 2 compliance checklist"),
+    link("/lp/cmmc-level-2-readiness", "Assess your CMMC Level 2 readiness"),
   ],
 
   // CMMC blog
@@ -277,6 +289,7 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
   "/supplier-readiness": [
     link("/datasheets/supplier-readiness", "Supplier readiness datasheet"),
     link("/microsoft-ecosystem", "Microsoft ecosystem experience"),
+    link("/lp/microsoft-supplier-ai-consulting", "Minority-owned supplier support for Microsoft-centered programs"),
   ],
   "/why-defenseeye": [
     link("/delivery-model", "How DefenseEye delivers engagements"),
@@ -314,10 +327,12 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
   "/datasheets/microsoft-copilot-readiness": [
     link("/solutions/microsoft-copilot-readiness", "Microsoft Copilot readiness consulting"),
     link("/microsoft-ecosystem", "Microsoft ecosystem experience"),
+    link("/lp/microsoft-copilot-readiness", "Microsoft Copilot readiness assessment"),
   ],
   "/datasheets/supplier-readiness": [
     link("/supplier-readiness", "Supplier readiness overview"),
     link("/capability-statement", "Capability statement"),
+    link("/lp/microsoft-supplier-ai-consulting", "Supplier capability review for Microsoft-centered environments"),
   ],
   "/contact": [
     link("/secure-ai-adoption", "Secure AI readiness consultation"),

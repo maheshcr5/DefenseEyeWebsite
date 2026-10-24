@@ -8,14 +8,9 @@ import { ChevronRight } from "lucide-react";
 import { useLocation } from "wouter";
 import { getBreadcrumbTrail, getRouteName } from "@shared/siteArchitecture";
 
-// These pages render their own breadcrumb; campaign landing pages stay focused.
+// These pages render their own breadcrumb.
 function hasOwnBreadcrumb(path: string) {
-  return (
-    path === "/" ||
-    path.startsWith("/knowledge-hub") ||
-    path.startsWith("/blog") ||
-    path.startsWith("/lp/")
-  );
+  return path === "/" || path.startsWith("/knowledge-hub") || path.startsWith("/blog");
 }
 
 export default function Breadcrumbs() {

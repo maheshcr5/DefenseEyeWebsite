@@ -900,6 +900,10 @@ export const LEGACY_REDIRECTS: Record<string, string> = {
   "/services/": "/services/cmmc-readiness-sprint",
   "/solutions/microsoft-copilot-enablement": "/solutions/microsoft-copilot-readiness",
   "/solutions/microsoft-copilot-enablement/": "/solutions/microsoft-copilot-readiness",
+  // Thin template page competing with the full fixed-scope sprint offer for the same
+  // intent; its one unique FAQ now lives on the target page.
+  "/cmmc-readiness-sprint": "/services/cmmc-readiness-sprint",
+  "/cmmc-readiness-sprint/": "/services/cmmc-readiness-sprint",
 };
 
 // Confirmed-retired URLs with no legitimate replacement: author archives from a
