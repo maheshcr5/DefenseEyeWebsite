@@ -35,7 +35,7 @@ export interface BlogPost {
 // ─────────────────────────────────────────────────────────────────────────────
 const post1: BlogPost = {
   slug: "cmmc-level-2-compliance-checklist-2025",
-  title: "CMMC Level 2 Compliance Checklist for DoD Contractors (2025 Complete Guide)",
+  title: "CMMC Level 2 Compliance Checklist for DoD Contractors (Complete Guide)",
   excerpt:
     "A practitioner-built checklist for DoD contractors pursuing CMMC Level 2 certification — covering all 110 NIST SP 800-171 Rev. 2 practices, SSP evidence requirements, POA&M guidance, and C3PAO assessment preparation. Updated for the CMMC 2.0 final rule (32 CFR Part 170, effective December 16, 2024).",
   author: "DefenseEye Advisory Team",
@@ -287,12 +287,12 @@ const post1: BlogPost = {
     {
       type: "p",
       content:
-        "Selecting the right C3PAO significantly impacts your assessment experience and timeline. All C3PAOs must be authorized by the CMMC Accreditation Body (CMMC-AB), but quality, specialization, and availability vary considerably.",
+        "Selecting the right C3PAO significantly impacts your assessment experience and timeline. All C3PAOs must be authorized by the Cyber AB (the CMMC Accreditation Body, formerly CMMC-AB), but quality, specialization, and availability vary considerably.",
     },
     {
       type: "ul",
       content: [
-        "Verify C3PAO is listed as Authorized on the official CMMC-AB Marketplace (marketplace.cmmcab.org)",
+        "Verify C3PAO is listed as Authorized on the official Cyber AB Marketplace (marketplace.cmmcab.org)",
         "Confirm C3PAO has experience with your industry sector (defense manufacturing, IT services, aerospace, etc.)",
         "Request references from organizations of similar size and scope that the C3PAO has assessed",
         "Confirm the specific Lead Assessor who will conduct your assessment is a Certified Lead Assessor (CLA)",
@@ -300,7 +300,7 @@ const post1: BlogPost = {
         "Get a clear Statement of Work defining assessment scope, timeline, deliverables, and fees",
         "Clarify what constitutes the 'assessment scope' — is the C3PAO including cloud services, MSPs, or subsidiaries?",
         "Understand their findings process: How are preliminary findings communicated? Is there a review period before the final report?",
-        "Confirm CMMC-AB Marketplace listing shows no open complaints or disciplinary actions",
+        "Confirm Cyber AB Marketplace listing shows no open complaints or disciplinary actions",
         "Obtain written confirmation that the C3PAO will submit findings to CMMC-AB's eMASS/CMMC Portal upon completion",
       ],
     },
@@ -627,20 +627,20 @@ const post3: BlogPost = {
     {
       type: "p",
       content:
-        "A Certified Third-Party Assessment Organization (C3PAO) is a company that has been vetted, trained, and authorized by the CMMC Accreditation Body to conduct official CMMC Level 2 assessments. C3PAOs employ Certified CMMC Assessors (CCAs) who are individually credentialed to perform assessments. The Lead Assessor on your engagement must hold a Certified Lead Assessor (CLA) designation. C3PAOs are subject to quality oversight by the CMMC-AB and can lose their authorization for assessment quality failures or ethical violations.",
+        "A Certified Third-Party Assessment Organization (C3PAO) is a company that has been vetted, trained, and authorized by the Cyber AB to conduct official CMMC Level 2 assessments. C3PAOs employ Certified CMMC Assessors (CCAs) who are individually credentialed to perform assessments. The Lead Assessor on your engagement must hold a Certified Lead Assessor (CLA) designation. C3PAOs are subject to quality oversight by the Cyber AB and can lose their authorization for assessment quality failures or ethical violations.",
     },
     {
       type: "h3",
-      content: "How to Find a C3PAO on the CMMC-AB Marketplace",
+      content: "How to Find a C3PAO on the Cyber AB Marketplace",
     },
     {
       type: "ul",
       content: [
-        "Navigate to the official CMMC-AB Marketplace at marketplace.cmmcab.org",
+        "Navigate to the official Cyber AB Marketplace at marketplace.cmmcab.org",
         "Filter by 'Authorized C3PAO' — only engage organizations with this specific designation",
         "Review the C3PAO's listed assessment team members and verify their individual CCA/CLA credentials",
         "Request proposal from 2–3 C3PAOs: compare scope, timeline, methodology, and pricing",
-        "Check the CMMC-AB for any disciplinary actions or open complaints against the C3PAO",
+        "Check the Cyber AB for any disciplinary actions or open complaints against the C3PAO",
         "Confirm the C3PAO has experience with your industry vertical and company size",
         "Note: CMMC consultants and Registered Practitioner Organizations (RPOs) cannot conduct formal assessments — only C3PAOs can",
       ],
@@ -799,7 +799,7 @@ const post3: BlogPost = {
     {
       type: "p",
       content:
-        "For a well-prepared organization, the total timeline from signing an engagement letter with a C3PAO to receiving formal CMMC Level 2 certification from the CMMC-AB is typically 3–5 months. Organizations that begin the assessment process without adequate preparation often spend an additional 3–6 months in remediation before re-assessment, effectively doubling the timeline and cost. The investment in pre-assessment readiness pays dividends in reduced assessment time, fewer findings, and a cleaner path to certification.",
+        "For a well-prepared organization, the total timeline from signing an engagement letter with a C3PAO to receiving a final CMMC Level 2 certification decision is typically 3–5 months. Organizations that begin the assessment process without adequate preparation often spend an additional 3–6 months in remediation before re-assessment, effectively doubling the timeline and cost. The investment in pre-assessment readiness pays dividends in reduced assessment time, fewer findings, and a cleaner path to certification.",
     },
     {
       type: "p",
@@ -1108,7 +1108,7 @@ const post5: BlogPost = {
         rows: [
           ["M365 GCC High E3 licenses (20 users)", "$3,600–$4,800/yr", "Required for proper CUI handling environment"],
           ["Microsoft Defender for Endpoint P2", "Included in E5 or ~$84/user/yr", "EDR capability for CMMC SI domain"],
-          ["CMMC Lens — Level 2 automation", "$499/month", "Automates evidence collection, SSP, SPRS score"],
+          ["CMMCLens — Level 2 automation", "$499/month", "Automates evidence collection, SSP, SPRS score"],
           ["Gap assessment (pre-assessment)", "$3,000–$8,000", "One-time consultant engagement to identify gaps"],
           ["C3PAO formal assessment", "$30,000–$60,000", "For a 10–50 person company"],
           ["Remediation (varies widely)", "$5,000–$30,000", "Depends on gap size — bigger gaps cost more"],
@@ -1146,7 +1146,7 @@ const post5: BlogPost = {
     {
       type: "p",
       content:
-        "Every technical control needs a corresponding policy or procedure document AND evidence that the control is operating as documented. CMMC Lens generates the documentation framework automatically from your M365 configuration — mapping what's actually deployed to the relevant NIST 800-171 controls and generating SSP language for each — so your documentation matches reality.",
+        "Every technical control needs a corresponding policy or procedure document AND evidence that the control is operating as documented. CMMCLens generates the documentation framework automatically from your M365 configuration — mapping what's actually deployed to the relevant NIST 800-171 controls and generating SSP language for each — so your documentation matches reality.",
     },
     {
       type: "h2",
@@ -1156,7 +1156,7 @@ const post5: BlogPost = {
       type: "ul",
       content: [
         "Month 1–2: Gap assessment, M365 GCC High tenant configuration, MFA enforcement",
-        "Month 3–4: Write SSP, policies, and procedures; set up CMMC Lens for automated evidence collection",
+        "Month 3–4: Write SSP, policies, and procedures; set up CMMCLens for automated evidence collection",
         "Month 5–6: Remediate identified gaps; conduct annual risk assessment and tabletop IR exercise",
         "Month 7–8: Submit SPRS score; select and engage C3PAO",
         "Month 9–12: C3PAO pre-assessment review, formal assessment, receive CMMC Level 2 certificate",
@@ -1293,7 +1293,7 @@ const post6: BlogPost = {
     {
       type: "p",
       content:
-        "CMMC Lens integrates with Azure Commercial (for non-CUI workloads), Azure Government (GCC), Microsoft 365 Commercial (for baseline scanning only), and M365 GCC High. Our evidence collection engine connects via read-only APIs to pull configuration data from each environment and automatically maps what's deployed to the relevant NIST 800-171 controls — giving you an accurate assessment boundary and SSP without manual configuration inventories.",
+        "CMMCLens integrates with Azure Commercial (for non-CUI workloads), Azure Government (GCC), Microsoft 365 Commercial (for baseline scanning only), and M365 GCC High. Our evidence collection engine connects via read-only APIs to pull configuration data from each environment and automatically maps what's deployed to the relevant NIST 800-171 controls — giving you an accurate assessment boundary and SSP without manual configuration inventories.",
     },
     {
       type: "h2",
@@ -1517,17 +1517,17 @@ const post8: BlogPost = {
     },
     {
       type: "h2",
-      content: "Red Flag 1: No Verifiable CMMC-AB Credentials",
+      content: "Red Flag 1: No Verifiable Cyber AB Credentials",
     },
     {
       type: "p",
       content:
-        "The CMMC Accreditation Body (CMMC-AB) certifies individual assessors and organizations through a defined credentialing program. Legitimate CMMC consulting firms will have staff with one or more of these credentials: Registered Practitioner (RP), Registered Practitioner Advanced (RPA), Certified CMMC Professional (CCP), or Certified CMMC Assessor (CCA). You can verify individual credentials at the official CMMC-AB Marketplace at marketplace.cmmcab.org.",
+        "The Cyber AB (the CMMC Accreditation Body, formerly CMMC-AB) certifies individual assessors and organizations through a defined credentialing program. Legitimate CMMC consulting firms will have staff with one or more of these credentials: Registered Practitioner (RP), Registered Practitioner Advanced (RPA), Certified CMMC Professional (CCP), or Certified CMMC Assessor (CCA). You can verify individual credentials at the official CMMC-AB Marketplace at marketplace.cmmcab.org.",
     },
     {
       type: "p",
       content:
-        "Red flag: The firm can't name specific staff with verifiable CMMC-AB credentials and their credentials aren't publicly listed in the CMMC-AB ecosystem. 'We have extensive cybersecurity experience' and 'our team has DoD backgrounds' are not substitutes for the actual CMMC credential program.",
+        "Red flag: The firm can't name specific staff with verifiable Cyber AB credentials and their credentials aren't publicly listed in the CMMC-AB ecosystem. 'We have extensive cybersecurity experience' and 'our team has DoD backgrounds' are not substitutes for the actual CMMC credential program.",
     },
     {
       type: "h2",
@@ -1545,7 +1545,7 @@ const post8: BlogPost = {
     {
       type: "p",
       content:
-        "A Registered Practitioner Organization (RPO) and associated CPs/CCPs can help you prepare for CMMC — gap assessments, policy writing, remediation support, SSP development, and pre-assessment readiness reviews. They cannot conduct the formal CMMC Level 2 assessment. Only C3PAOs can do that. If a firm presents itself as both your advisor AND your assessor for the same engagement — be very careful. CMMC-AB has strict conflict-of-interest rules preventing firms that have consulting relationships with a contractor from assessing the same contractor.",
+        "A Registered Practitioner Organization (RPO) and associated CPs/CCPs can help you prepare for CMMC — gap assessments, policy writing, remediation support, SSP development, and pre-assessment readiness reviews. They cannot conduct the formal CMMC Level 2 assessment. Only C3PAOs can do that. If a firm presents itself as both your advisor AND your assessor for the same engagement — be very careful. The Cyber AB has strict conflict-of-interest rules preventing firms that have consulting relationships with a contractor from assessing the same contractor.",
     },
     {
       type: "h2",
@@ -1592,9 +1592,9 @@ const post8: BlogPost = {
       content: [
         "They begin with a detailed gap assessment against all 110 NIST 800-171 controls, specific to your environment",
         "They clearly delineate consulting (preparation) from assessment (C3PAO) and explain neither can be done by the same firm",
-        "They provide verifiable staff credentials from the CMMC-AB marketplace",
+        "They provide verifiable staff credentials from the Cyber AB Marketplace",
         "They give you a realistic timeline — not a 90-day guarantee",
-        "They speak fluently about SPRS scores, DFARS clauses, CMMC-AB marketplace mechanics, and the specific NIST 800-171A assessment procedures",
+        "They speak fluently about SPRS scores, DFARS clauses, Cyber AB Marketplace mechanics, and the specific NIST 800-171A assessment procedures",
         "They have references from contractors who have actually passed C3PAO assessments, not just from contractors they've 'prepared'",
         "Their pricing reflects the actual scope — lower for well-postured organizations, higher for complex environments with significant gaps",
       ],

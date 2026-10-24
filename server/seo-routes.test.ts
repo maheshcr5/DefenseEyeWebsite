@@ -174,7 +174,7 @@ describe("SEO route registry", () => {
     expect(html).toContain("<strong>CMMC (Cybersecurity Maturity Model Certification)</strong>");
     expect(html).toContain("<strong>Federal Contract Information (FCI)</strong>");
     expect(html).toContain("<strong>Controlled Unclassified Information (CUI)</strong>");
-    expect(html).toContain("<strong>CMMC Lens by DefenseEye</strong>");
+    expect(html).toContain("<strong>CMMCLens by DefenseEye</strong>");
     expect(html).toContain("15 requirements (FAR 52.204-21)");
     expect(html).toContain("maps to three separate NIST requirements");
     expect(html).toContain("CMMC Proposed Rule");
@@ -214,7 +214,7 @@ describe("SEO route registry", () => {
       "Receiving and Affirming Your CMMC Status",
       "Maintaining CMMC Compliance Post-Certification",
       "Timeline and Cost Expectations",
-      "How CMMC Lens Accelerates Each Step",
+      "How CMMCLens Accelerates Each Step",
       "Frequently Asked Questions",
     ];
     let previousIndex = -1;
@@ -270,7 +270,7 @@ describe("SEO route registry", () => {
       "How to Determine Your Required CMMC Level",
       "CMMC Level 2 Requirement-Family Breakdown",
       "The Role of SPRS Score in CMMC Level 2",
-      "How CMMC Lens Supports Both Levels",
+      "How CMMCLens Supports Both Levels",
       "Frequently Asked Questions",
     ];
     let previousIndex = -1;

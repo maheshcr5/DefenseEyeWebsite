@@ -159,16 +159,16 @@ function CTABox({ variant = "inline" }: { variant?: "inline" | "bottom" }) {
         <Bot className="w-8 h-8 text-primary shrink-0 mt-0.5" />
         <div className="flex-1">
           <h3 className="font-heading text-lg md:text-xl font-bold text-foreground mb-2">
-            Automate Your CMMC Readiness with CMMC Lens
+            Automate Your CMMC Readiness with CMMCLens
           </h3>
           <p className="text-muted-foreground text-sm md:text-base mb-4 leading-relaxed">
-            Stop managing compliance in spreadsheets. CMMC Lens maps all 110 NIST 800-171
+            Stop managing compliance in spreadsheets. CMMCLens maps all 110 NIST 800-171
             controls to your environment, calculates your live SPRS score, generates your SSP,
             and tracks POA&M items — all in one platform built for defense contractors.
           </p>
           <Link href="/#contact">
             <Button className="bg-accent text-background hover:bg-accent/90 font-heading font-bold">
-              Start Free Trial — CMMC Lens
+              Start Free Trial — CMMCLens
               <ArrowRight className="w-4 h-4 ml-1.5" />
             </Button>
           </Link>

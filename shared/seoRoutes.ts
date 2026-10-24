@@ -1401,7 +1401,7 @@ function renderCertificationProcessContent() {
     '<section id="' + escapeAttribute(step.id) + '"><h2>' + escapeHtml(step.title) + "</h2><p>" +
     escapeHtml(step.description) + "</p>" + list(step.details) +
     "<dl><dt>Manual Timeline</dt><dd>" + escapeHtml(step.timeManual) +
-    "</dd><dt>With CMMC Lens</dt><dd>" + escapeHtml(step.timeWithLens) +
+    "</dd><dt>With CMMCLens</dt><dd>" + escapeHtml(step.timeWithLens) +
     "</dd></dl><p><strong>Note:</strong> " + escapeHtml(step.note) + "</p></section>"
   ).join("");
   const table = "<table><thead><tr>" + article.timeline.headers.map((cell) => "<th>" + escapeHtml(cell) + "</th>").join("") +

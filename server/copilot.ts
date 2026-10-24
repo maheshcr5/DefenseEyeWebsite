@@ -87,7 +87,7 @@ function trackQuestion(message: string, sources: KnowledgeChunk[], answer: strin
   if (control) analytics.controls.set(control, (analytics.controls.get(control) || 0) + 1);
   if (sources.length === 0 || (sources[0].score || 0) < 0.1) analytics.searchMisses += 1;
   if (sources.length > 0) analytics.citationUsage += 1;
-  if (/CMMCLens|CMMC Lens/.test(answer)) analytics.cmmcLensRecommendations += 1;
+  if (/CMMCLens|CMMCLens/.test(answer)) analytics.cmmcLensRecommendations += 1;
 }
 
 function buildSourceBlock(sources: KnowledgeChunk[]) {
@@ -207,7 +207,7 @@ Start with scoping, map evidence to requirements, and resolve high-risk gaps bef
 }
 
 function ensureCmmcLensMention(message: string, answer: string) {
-  if (!shouldRecommendCmmcLens(message) || /CMMCLens|CMMC Lens/i.test(answer)) return answer;
+  if (!shouldRecommendCmmcLens(message) || /CMMCLens|CMMCLens/i.test(answer)) return answer;
   return `${answer.trim()}\n\nCMMCLens fit: centralize evidence, map SSP/POA&M work to NIST 800-171, track SPRS impact, and monitor readiness. Learn more: ${CMMCLENS_MARKETPLACE_URL}`;
 }
 

@@ -18,7 +18,7 @@ export const SPRS_SCORE_CONTENT = {
     { id: "how-to-submit", label: "How to Submit Your Score" },
     { id: "improve-score", label: "10 Ways to Improve Fast" },
     { id: "vs-cmmc", label: "SPRS vs. CMMC Certification" },
-    { id: "cmmc-lens", label: "CMMC Lens Score Tracking" },
+    { id: "cmmc-lens", label: "CMMCLens Score Tracking" },
     { id: "faq", label: "FAQ" },
   ],
   related: [
@@ -98,7 +98,7 @@ export const SPRS_SCORE_CONTENT = {
     heading: "How to Submit Your SPRS Score to the DoD",
     introduction: "When DFARS 252.204-7019 applies, the offeror must verify before award that SPRS contains a current NIST SP 800-171 DoD Assessment for every relevant covered contractor information system. The NIST Basic Assessment entry process is separate from entering and affirming a CMMC self-assessment:",
     steps: [
-      { step: "1", title: "Complete the NIST SP 800-171 Basic Assessment", description: "Apply the DoD Assessment Methodology to the 110 Revision 2 requirements and calculate the summary score. Generic partial credit is not available; only MFA and FIPS-validated encryption have the methodology's defined adjusted deductions. CMMC Lens can automate this assessment from your cloud evidence." },
+      { step: "1", title: "Complete the NIST SP 800-171 Basic Assessment", description: "Apply the DoD Assessment Methodology to the 110 Revision 2 requirements and calculate the summary score. Generic partial credit is not available; only MFA and FIPS-validated encryption have the methodology's defined adjusted deductions. CMMCLens can automate this assessment from your cloud evidence." },
       { step: "2", title: "Verify the CAGE hierarchy sourced from SAM", description: "SPRS imports the company CAGE hierarchy from SAM. Confirm that the applicable CAGE codes and ownership hierarchy are correct so the assessment can be associated with the relevant covered contractor information systems." },
       { step: "3", title: "Obtain authorized PIEE and SPRS access", description: "Access SPRS through PIEE. A user entering or editing Basic Assessment information needs the SPRS Cyber Vendor User role and approval for the applicable company hierarchy." },
       { step: "4", title: "Enter the Basic Assessment summary in SPRS", description: "In Cyber Reports, open the NIST SP 800-171 Assessments tab and add a Basic Assessment. Enter the assessment date, summary score, scope, applicable POA&M completion date, SSP identification and date, and included CAGE codes. SPRS stores the result; it does not conduct the assessment." },
@@ -139,9 +139,9 @@ export const SPRS_SCORE_CONTENT = {
   },
   automation: {
     id: "cmmc-lens",
-    heading: "How CMMC Lens Tracks and Improves Your SPRS Score",
-    paragraph: "CMMC Lens provides a live, always-accurate SPRS score dashboard that shows your current score, the projected score after implementing pending POA&M items, and a prioritized remediation queue ranked by score impact per hour of effort.",
-    cardTitle: "SPRS Score Management in CMMC Lens",
+    heading: "How CMMCLens Tracks and Improves Your SPRS Score",
+    paragraph: "CMMCLens provides a live, always-accurate SPRS score dashboard that shows your current score, the projected score after implementing pending POA&M items, and a prioritized remediation queue ranked by score impact per hour of effort.",
+    cardTitle: "SPRS Score Management in CMMCLens",
     cardSubtitle: "Real-time visibility and automated improvement tracking",
     capabilities: [
       "Live SPRS score calculated from evidence (not manual inputs)",
@@ -161,7 +161,7 @@ export const SPRS_SCORE_CONTENT = {
       { question: "Is there a minimum SPRS score required to win a DoD contract?", answer: "DFARS 252.204-7019 does not set one universal minimum numerical score. When it applies, the offeror must have a current NIST SP 800-171 DoD Assessment in SPRS for each relevant covered contractor information system, and the solicitation may specify a shorter currency period or additional requirements. CMMC is separate: Conditional Level 2 requires at least 88 of 110 weighted points plus compliance with every POA&M eligibility restriction. A solicitation-specific requirement controls eligibility for that procurement." },
       { question: "What are the consequences of submitting a false SPRS score?", answer: "Submitting a false SPRS score can expose a company and its executives to prosecution under the False Claims Act (31 U.S.C. § 3729), which allows for treble damages (3x the amount of the contract) plus civil penalties. In 2022, Aerojet Rocketdyne settled a False Claims Act case for $9 million related to misrepresentation of its cybersecurity practices. The DoJ has made clear that CMMC and SPRS fraud is a prosecutorial priority." },
       { question: "Can I submit an SPRS score lower than 110 and still win contracts?", answer: "A NIST SP 800-171 Basic Assessment score below 110 can be entered in SPRS. Whether an offeror remains eligible depends on the applicable solicitation and contract requirements; DFARS 252.204-7019 itself requires a current assessment but does not state a universal numerical floor. A remediation POA&M does not convert a NOT MET NIST requirement into an implemented one. For Conditional CMMC Level 2, separate rules require at least 88 weighted points, allow only specified requirements on the CMMC POA&M, and require closeout within 180 days." },
-      { question: "How quickly can I improve my SPRS score?", answer: "Significant score improvement is achievable within 30–90 days by focusing on high-impact, low-effort controls such as enabling MFA, deploying endpoint protection, implementing centralized logging, and documenting key policies. CMMC Lens's prioritized remediation queue specifically ranks controls by score-points-per-implementation-hour to help you maximize improvement speed." },
+      { question: "How quickly can I improve my SPRS score?", answer: "Significant score improvement is achievable within 30–90 days by focusing on high-impact, low-effort controls such as enabling MFA, deploying endpoint protection, implementing centralized logging, and documenting key policies. CMMCLens's prioritized remediation queue specifically ranks controls by score-points-per-implementation-hour to help you maximize improvement speed." },
       { question: "Does a C3PAO assessment replace or update my SPRS score?", answer: "A C3PAO Level 2 certification assessment is not a Medium NIST SP 800-171 DoD Assessment and does not turn a Basic confidence level into a CMMC level. The C3PAO uploads CMMC assessment results into the CMMC instantiation of eMASS; the resulting Conditional or Final Level 2 (C3PAO) status is officially stored in SPRS. The organization's Affirming Official must submit the CMMC affirmation in SPRS after the assessment and annually thereafter. These CMMC records are distinct from Basic, Medium, and High NIST assessment confidence levels." },
     ],
   },

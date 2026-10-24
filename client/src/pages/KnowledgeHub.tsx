@@ -389,7 +389,7 @@ export default function KnowledgeHub() {
                 <FileCheck className="w-8 h-8 text-primary mx-auto mb-3" />
                 <h3 className="font-heading font-semibold text-foreground mb-2">Ready to Move Faster?</h3>
                 <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-                  Let CMMC Lens handle evidence collection, NIST mapping, and SSP/POA&M workflow automation.
+                  Let CMMCLens handle evidence collection, NIST mapping, and SSP/POA&M workflow automation.
                 </p>
                 <Link href="/#contact">
                   <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">

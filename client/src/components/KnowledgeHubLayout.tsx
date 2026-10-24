@@ -258,7 +258,7 @@ export default function KnowledgeHubLayout({
                   Automate your CMMC readiness
                 </p>
                 <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-                  CMMC Lens reduces documentation time by up to 80%.
+                  CMMCLens reduces documentation time by up to 80%.
                 </p>
                 <Button
                   size="sm"
@@ -299,7 +299,7 @@ export default function KnowledgeHubLayout({
               </h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: "CMMC Lens", href: "/#features" },
+                  { label: "CMMCLens", href: "/#features" },
                   { label: "Evidence Collection", href: "/#features" },
                   { label: "SSP Generation", href: "/#features" },
                   { label: "SPRS Monitoring", href: "/#features" },
@@ -381,7 +381,7 @@ export default function KnowledgeHubLayout({
           <div className="border-t border-border/30 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-xs text-muted-foreground">
               &copy; {new Date().getFullYear()} DefenseEye, Inc. All rights
-              reserved. CMMC Lens is a trademark of DefenseEye.
+              reserved. CMMCLens is a trademark of DefenseEye.
             </p>
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
               <span>CAGE Code: Available</span>
