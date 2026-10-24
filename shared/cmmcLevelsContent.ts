@@ -1,7 +1,7 @@
 export const CMMC_LEVELS_CONTENT = {
   title: "CMMC Level 1 vs Level 2: Complete Comparison Guide for DoD Contractors",
   description: "Understand the difference between CMMC Level 1 (15 FAR requirements, FCI) and CMMC Level 2 (110 NIST SP 800-171 requirements, CUI), including assessment pathways, timing, and how solicitations identify the required CMMC status.",
-  h1: "CMMC Level 1 vs Level 2: Which Do You Need? (2026 Guide)",
+  h1: "CMMC Level 1 vs Level 2: Which Do You Need?",
   lastUpdated: "September 2026",
   quickAnswer: [
     { text: "CMMC Level 1", strong: true },

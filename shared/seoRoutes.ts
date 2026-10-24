@@ -1154,7 +1154,7 @@ const KNOWLEDGE_HUB_ARTICLE_ROUTES: SeoRoute[] = KNOWLEDGE_HUB_LINKS.slice(0, 5)
   sections: [],
   links: [],
   schemaKind: "article" as const,
-  article: { author: "DefenseEye Advisory Team", dateModified: "2026-04-04" },
+  article: { author: "DefenseEye Advisory Team" },
   topics: ["CMMC", "NIST SP 800-171"],
   lastmod: "2026-04-04",
   changefreq: "monthly" as const,
@@ -1174,7 +1174,8 @@ const INSIGHT_ROUTES: SeoRoute[] = INSIGHTS.map((insight) => ({
   links: [],
   faqs: insight.faqs,
   schemaKind: "article" as const,
-  article: { author: "DefenseEye", dateModified: "2026-06-25" },
+  // Insight pages show no publication or update date, so their schema carries none.
+  article: { author: "DefenseEye" },
   topics: insight.related,
   lastmod: "2026-06-25",
   changefreq: "monthly" as const,
@@ -1529,6 +1530,15 @@ function renderSprsScoreContent() {
   ].join("");
 }
 
+// Converts the visible "Last updated" label (e.g. "September 2026") into an ISO 8601
+// year-month, so Article schema states exactly what the page shows and no more.
+export function monthYearToIsoMonth(label: string): string | undefined {
+  const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const match = label.match(/^([A-Z][a-z]+) (\d{4})$/);
+  const month = match ? MONTHS.indexOf(match[1]) + 1 : 0;
+  return match && month > 0 ? `${match[2]}-${String(month).padStart(2, "0")}` : undefined;
+}
+
 function getKnowledgeHubContentOverride(path: string): Partial<SeoRoute> {
   if (path === "/knowledge-hub/what-is-cmmc") {
     return {
@@ -1538,6 +1548,7 @@ function getKnowledgeHubContentOverride(path: string): Partial<SeoRoute> {
       summary: WHAT_IS_CMMC_CONTENT.description,
       sections: [],
       faqs: WHAT_IS_CMMC_CONTENT.faq.items.map(({ question, answer }) => ({ question, answer })),
+      article: { author: "DefenseEye Advisory Team", dateModified: monthYearToIsoMonth(WHAT_IS_CMMC_CONTENT.lastUpdated) },
       bodyHtml: renderWhatIsCmmcContent(),
     };
   }
@@ -1549,6 +1560,7 @@ function getKnowledgeHubContentOverride(path: string): Partial<SeoRoute> {
       summary: CERTIFICATION_PROCESS_CONTENT.description,
       sections: [],
       faqs: CERTIFICATION_PROCESS_CONTENT.faq.items.map(({ question, answer }) => ({ question, answer })),
+      article: { author: "DefenseEye Advisory Team", dateModified: monthYearToIsoMonth(CERTIFICATION_PROCESS_CONTENT.lastUpdated) },
       bodyHtml: renderCertificationProcessContent(),
     };
   }
@@ -1560,6 +1572,7 @@ function getKnowledgeHubContentOverride(path: string): Partial<SeoRoute> {
       summary: CMMC_LEVELS_CONTENT.description,
       sections: [],
       faqs: CMMC_LEVELS_CONTENT.faq.items.map(({ question, answer }) => ({ question, answer })),
+      article: { author: "DefenseEye Advisory Team", dateModified: monthYearToIsoMonth(CMMC_LEVELS_CONTENT.lastUpdated) },
       bodyHtml: renderCmmcLevelsContent(),
     };
   }
@@ -1571,6 +1584,7 @@ function getKnowledgeHubContentOverride(path: string): Partial<SeoRoute> {
       summary: EVIDENCE_MAPPING_CONTENT.description,
       sections: [],
       faqs: EVIDENCE_MAPPING_CONTENT.faq.items.map(({ question, answer }) => ({ question, answer })),
+      article: { author: "DefenseEye Advisory Team", dateModified: monthYearToIsoMonth(EVIDENCE_MAPPING_CONTENT.lastUpdated) },
       bodyHtml: renderEvidenceMappingContent(),
     };
   }
@@ -1582,6 +1596,7 @@ function getKnowledgeHubContentOverride(path: string): Partial<SeoRoute> {
       summary: SPRS_SCORE_CONTENT.description,
       sections: [],
       faqs: SPRS_SCORE_CONTENT.faq.items.map(({ question, answer }) => ({ question, answer })),
+      article: { author: "DefenseEye Advisory Team", dateModified: monthYearToIsoMonth(SPRS_SCORE_CONTENT.lastUpdated) },
       bodyHtml: renderSprsScoreContent(),
     };
   }
@@ -1935,7 +1950,8 @@ const additionalSitemapEntries: SitemapEntry[] = [
   { path: "/lp/azure-cloud-security", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.7" },
   { path: "/lp/compliance-automation", lastmod: "2026-06-26", changefreq: "monthly", priority: "0.7" },
   { path: "/contact", lastmod: "2026-10-23", changefreq: "monthly", priority: "0.7" },
-  { path: "/terms", lastmod: "2026-10-23", changefreq: "monthly", priority: "0.3" },
+  // Matches the "Last updated" date shown on the Terms of Service page.
+  { path: "/terms", lastmod: "2026-04-01", changefreq: "monthly", priority: "0.3" },
 ];
 
 // Routes marked noindex in shared/routeMetadata.ts are excluded: a sitemap should

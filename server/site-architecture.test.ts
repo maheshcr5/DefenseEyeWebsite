@@ -173,3 +173,34 @@ describe("social sharing metadata", () => {
     expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630]);
   });
 });
+
+describe("article dates", () => {
+  it("only states dates that the page itself shows", async () => {
+    const { blogPosts } = await import("../client/src/data/blogPosts");
+    const { monthYearToIsoMonth } = await import("../shared/seoRoutes");
+    const contents = await Promise.all([
+      import("../shared/whatIsCmmcContent").then((m) => ["/knowledge-hub/what-is-cmmc", m.WHAT_IS_CMMC_CONTENT.lastUpdated]),
+      import("../shared/cmmcLevelsContent").then((m) => ["/knowledge-hub/cmmc-levels", m.CMMC_LEVELS_CONTENT.lastUpdated]),
+      import("../shared/evidenceMappingContent").then((m) => ["/knowledge-hub/evidence-mapping", m.EVIDENCE_MAPPING_CONTENT.lastUpdated]),
+      import("../shared/sprsScoreContent").then((m) => ["/knowledge-hub/sprs-score", m.SPRS_SCORE_CONTENT.lastUpdated]),
+      import("../shared/certificationProcessContent").then((m) => ["/knowledge-hub/certification-process", m.CERTIFICATION_PROCESS_CONTENT.lastUpdated]),
+    ]);
+    const article = (routePath: string) =>
+      (buildRouteSchemas(getSeoRoute(routePath)!) as Array<Record<string, string>>).find((n) => /Article|BlogPosting/.test(n["@type"]))!;
+
+    for (const [routePath, visible] of contents) {
+      expect(article(routePath).dateModified, routePath).toBe(monthYearToIsoMonth(visible));
+      expect(article(routePath).datePublished, routePath).toBeUndefined();
+      expect(getSeoRoute(routePath)!.h1, routePath).not.toMatch(/\(20\d\d/);
+    }
+    for (const post of blogPosts) {
+      const node = article(`/blog/${post.slug}`);
+      expect(node.datePublished).toBe(post.publishedAt);
+      expect(node.dateModified).toBe(post.updatedAt);
+    }
+    for (const entry of SITEMAP_ENTRIES.filter((e) => e.path.startsWith("/insights/"))) {
+      expect(article(entry.path).dateModified, entry.path).toBeUndefined();
+      expect(article(entry.path).datePublished, entry.path).toBeUndefined();
+    }
+  });
+});

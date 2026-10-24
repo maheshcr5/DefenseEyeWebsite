@@ -1,7 +1,7 @@
 export const CERTIFICATION_PROCESS_CONTENT = {
-  title: "CMMC Level 2 C3PAO Assessment Process Step-by-Step (2026)",
+  title: "CMMC Level 2 C3PAO Assessment Process Step by Step",
   description: "A walkthrough of the CMMC Level 2 C3PAO assessment pathway — from initial gap assessment through assessment results and affirmation, with timeline and cost expectations at each phase.",
-  h1: "CMMC Level 2 C3PAO Assessment Process Step-by-Step (2026)",
+  h1: "CMMC Level 2 C3PAO Assessment Process Step by Step",
   lastUpdated: "September 2026",
   quickAnswer: "This seven-step roadmap covers the regulatory Level 2 C3PAO assessment pathway: gap assessment, SSP and permitted POA&M planning, requirement remediation, C3PAO selection, pre-assessment preparation, the formal C3PAO assessment, and assessment-result and affirmation steps. The regulations also define a Level 2 self-assessment pathway. The applicable solicitation identifies the required CMMC status. Current rollout policy is separate: implementation is paused in Phase I, which may require only self-assessments. The full C3PAO-readiness process takes 6–18 months manually. Using CMMCLens reduces the documentation-heavy phases by up to 80%, but hands-on remediation still requires dedicated security engineering effort.",
   toc: [

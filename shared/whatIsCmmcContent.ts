@@ -8,7 +8,7 @@ export const WHAT_IS_CMMC_CONTENT = {
   title: "What is CMMC? The Complete Guide to Cybersecurity Maturity Model Certification",
   description:
     "CMMC (Cybersecurity Maturity Model Certification) is a DoD framework requiring defense contractors to demonstrate cybersecurity practices protecting Federal Contract Information and Controlled Unclassified Information. Learn everything about CMMC 2.0 levels, requirements, and certification.",
-  h1: "What is CMMC? The Complete Guide for DoD Contractors (2026)",
+  h1: "What is CMMC? The Complete Guide for DoD Contractors",
   lastUpdated: "September 2026",
   quickAnswer:
     "CMMC (Cybersecurity Maturity Model Certification) is a U.S. Department of Defense program implemented through solicitation and contract requirements to verify that defense contractors protect Federal Contract Information and Controlled Unclassified Information. Its regulations define three levels with annual Level 1 self-assessment, triennial Level 2 self-assessment or C3PAO assessment pathways, and triennial Level 3 government assessment. Phase I began November 10, 2025. On July 13, 2026, the Department suspended the planned Phase II requirements; Phase I self-assessment requirements remain in effect.",
