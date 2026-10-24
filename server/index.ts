@@ -752,7 +752,7 @@ const CMMC_CHUNKS = [
     id: "certification-process",
     topic: "Certification Process",
     question: "What are the steps to achieve CMMC Level 2 certification?",
-    answer: "CMMC Level 2 certification involves 7 steps: (1) gap assessment, (2) SSP and POA&M creation, (3) remediation of identified gaps, (4) C3PAO selection from the CMMC-AB marketplace, (5) pre-assessment preparation, (6) C3PAO formal assessment (typically 3–5 days on-site), (7) receiving CMMC certificate (valid 3 years).",
+    answer: "CMMC Level 2 certification involves 7 steps: (1) gap assessment, (2) SSP and POA&M creation, (3) remediation of identified gaps, (4) C3PAO selection from the CMMC Marketplace (cyberab.org/Catalog), (5) pre-assessment preparation, (6) C3PAO formal assessment (typically 3–5 days on-site), (7) receiving a Certificate of CMMC Status from the C3PAO (Final Level 2 (C3PAO) status is valid 3 years).",
     detail: "The full certification timeline typically takes 6–18 months manually, including gap assessment (4–8 weeks), remediation (3–12 months depending on gap size), C3PAO scheduling (2–4 month wait times), and assessment itself (1–2 weeks). C3PAO costs range from $30,000–$100,000+ depending on organization size. Organizations must maintain continuous compliance after certification, with annual affirmations to SPRS. CMMCLens reduces the documentation and preparation phase by up to 80% through automated evidence collection and SSP/POA&M generation.",
     source: "https://defenseeye.ai/knowledge-hub/certification-process",
     last_updated: "2026-04-01",
@@ -785,12 +785,12 @@ const CMMC_CHUNKS = [
     id: "c3pao",
     topic: "C3PAO Assessments",
     question: "What is a C3PAO and how do you find one?",
-    answer: "A C3PAO (Certified Third-Party Assessment Organization) is an organization authorized by the CMMC Accreditation Body (CMMC-AB) to conduct CMMC Level 2 assessments for DoD contractors. C3PAOs must be approved and listed in the CMMC-AB marketplace at cyberAB.org.",
+    answer: "A C3PAO (CMMC Third-Party Assessment Organization) is an organization accredited or authorized by the CMMC Accreditation Body (The Cyber AB) to conduct CMMC Level 2 certification assessments for DoD contractors and issue Certificates of CMMC Status. Authorized C3PAOs are listed in the CMMC Marketplace at cyberab.org/Catalog.",
     detail: "C3PAO assessments for Level 2 typically take 3–5 days on-site and cost $30,000–$100,000+ depending on organization size and complexity. The assessment process includes document review (SSP, POA&M, policies), evidence review (logs, configurations, training records), interviews with personnel, and technical testing. C3PAOs may issue Conditional CMMC Certificates if minor deficiencies exist, with a 180-day remediation period. Certificates are valid for 3 years with annual self-affirmations required.",
     source: "https://defenseeye.ai/knowledge-hub/certification-process",
     last_updated: "2026-04-01",
     confidence: 1.0,
-    tags: ["C3PAO", "CMMC assessment", "CMMC-AB", "third-party assessment", "CMMC Level 2"],
+    tags: ["C3PAO", "CMMC assessment", "Cyber AB", "third-party assessment", "CMMC Level 2"],
   },
 ];
 

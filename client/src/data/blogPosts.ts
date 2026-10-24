@@ -41,7 +41,7 @@ const post1: BlogPost = {
   author: "DefenseEye Advisory Team",
   authorTitle: "CMMC 2.0 Compliance Research",
   publishedAt: "2025-04-01",
-  updatedAt: "2026-04-01",
+  updatedAt: "2026-10-23",
   readTime: "12 min read",
   category: "CMMC Compliance",
   tags: ["CMMC Level 2", "NIST 800-171", "DoD contractors", "compliance checklist", "CMMC 2.0"],
@@ -287,21 +287,21 @@ const post1: BlogPost = {
     {
       type: "p",
       content:
-        "Selecting the right C3PAO significantly impacts your assessment experience and timeline. All C3PAOs must be authorized by the Cyber AB (the CMMC Accreditation Body, formerly CMMC-AB), but quality, specialization, and availability vary considerably.",
+        "Selecting the right C3PAO significantly impacts your assessment experience and timeline. All C3PAOs must be accredited or authorized by the CMMC Accreditation Body (The Cyber AB), but quality, specialization, and availability vary considerably.",
     },
     {
       type: "ul",
       content: [
-        "Verify C3PAO is listed as Authorized on the official Cyber AB Marketplace (marketplace.cmmcab.org)",
+        "Verify the C3PAO is listed as authorized on the official CMMC Marketplace (cyberab.org/Catalog)",
         "Confirm C3PAO has experience with your industry sector (defense manufacturing, IT services, aerospace, etc.)",
         "Request references from organizations of similar size and scope that the C3PAO has assessed",
-        "Confirm the specific Lead Assessor who will conduct your assessment is a Certified Lead Assessor (CLA)",
+        "Confirm who will lead your assessment and verify that assessor's CCA certification",
         "Review proposed assessment team composition — verify all members hold current CCP or CCA credentials",
         "Get a clear Statement of Work defining assessment scope, timeline, deliverables, and fees",
         "Clarify what constitutes the 'assessment scope' — is the C3PAO including cloud services, MSPs, or subsidiaries?",
         "Understand their findings process: How are preliminary findings communicated? Is there a review period before the final report?",
         "Confirm Cyber AB Marketplace listing shows no open complaints or disciplinary actions",
-        "Obtain written confirmation that the C3PAO will submit findings to CMMC-AB's eMASS/CMMC Portal upon completion",
+        "Confirm the C3PAO will submit the assessment results to CMMC eMASS (the DoD system) on completion",
       ],
     },
     {
@@ -395,7 +395,7 @@ const post1: BlogPost = {
         "CMMC 2.0 Final Rule: Federal Register Vol. 89, No. 199 (October 15, 2024), 32 CFR Part 170 — the legally binding CMMC program requirements",
         "NIST SP 800-171 Rev. 2: csrc.nist.gov — 'Protecting Controlled Unclassified Information in Nonfederal Systems' — the 110-control baseline for CMMC Level 2",
         "NIST SP 800-171A: csrc.nist.gov — 'Assessing Security Requirements for CUI' — the assessment procedures C3PAOs use",
-        "DoD CMMC-AB (Cyber AB): cyberaccreditation.us — official accreditation body for C3PAOs, CCAs, and RPOs",
+        "CMMC Accreditation Body (The Cyber AB): cyberab.org — accredits C3PAOs and hosts the CMMC Marketplace",
         "CISA CMMC Resources: cisa.gov/cmmc — cybersecurity resources for defense industrial base organizations",
         "DFARS 252.204-7012: acquisition.gov — the DFARS clause requiring NIST 800-171 compliance for CUI contracts",
         "DFARS 252.204-7019/7020/7021: acquisition.gov — SPRS score requirements, assessment obligations, and CMMC flow-down clauses",
@@ -599,11 +599,11 @@ const post3: BlogPost = {
   slug: "what-to-expect-c3pao-assessment",
   title: "What to Expect During a C3PAO Assessment: A Step-by-Step Walkthrough",
   excerpt:
-    "A practitioner walkthrough of the CMMC Level 2 C3PAO assessment process — from selecting an authorized assessor on the Cyber AB Marketplace to receiving your final DoD certification. Covers all nine assessment phases, what assessors evaluate using NIST SP 800-171A procedures, common failure points, and how to respond to findings.",
+    "A practitioner walkthrough of the CMMC Level 2 C3PAO assessment process — from selecting an authorized C3PAO on the CMMC Marketplace to receiving your Certificate of CMMC Status. Covers all nine assessment phases, what assessors evaluate using NIST SP 800-171A procedures, common failure points, and how to respond to findings.",
   author: "DefenseEye Advisory Team",
   authorTitle: "CMMC 2.0 Compliance Research",
   publishedAt: "2025-04-01",
-  updatedAt: "2026-04-01",
+  updatedAt: "2026-10-23",
   readTime: "10 min read",
   category: "C3PAO Assessment",
   tags: ["C3PAO", "CMMC assessment", "third-party assessment", "CMMC Level 2", "audit preparation"],
@@ -613,7 +613,7 @@ const post3: BlogPost = {
     {
       type: "p",
       content:
-        "A CMMC Level 2 C3PAO assessment is not an audit in the traditional sense — it is a formal government-recognized evaluation conducted under the oversight of the Cyber AB (formerly CMMC-AB) using the assessment procedures in NIST SP 800-171A. The result is submitted to the DoD's eMASS system and directly determines whether your organization may hold contracts requiring CUI protection under DFARS 252.204-7021. A passing result grants CMMC Level 2 certification valid for three years. A failed or conditional result triggers a remediation and re-assessment cycle that typically costs more than the original assessment.",
+        "A CMMC Level 2 C3PAO assessment is not an audit in the traditional sense — it is a formal certification assessment performed by a C3PAO accredited by the CMMC Accreditation Body (The Cyber AB), using the assessment procedures in NIST SP 800-171A. The C3PAO submits the results to the CMMC instantiation of eMASS, a DoD system, and your resulting CMMC Status is stored in SPRS, which determines whether your organization may hold contracts requiring CUI protection under DFARS 252.204-7021. A passing result earns a Final Level 2 (C3PAO) status, valid for three years and documented on a Certificate of CMMC Status issued by the C3PAO. A Conditional Level 2 (C3PAO) status means open POA&M items must still be closed out, and a failed result triggers a remediation and re-assessment cycle that typically costs more than the original assessment.",
     },
     {
       type: "p",
@@ -627,22 +627,22 @@ const post3: BlogPost = {
     {
       type: "p",
       content:
-        "A Certified Third-Party Assessment Organization (C3PAO) is a company that has been vetted, trained, and authorized by the Cyber AB to conduct official CMMC Level 2 assessments. C3PAOs employ Certified CMMC Assessors (CCAs) who are individually credentialed to perform assessments. The Lead Assessor on your engagement must hold a Certified Lead Assessor (CLA) designation. C3PAOs are subject to quality oversight by the Cyber AB and can lose their authorization for assessment quality failures or ethical violations.",
+        "A CMMC Third-Party Assessment Organization (C3PAO) is an organization accredited or authorized by the CMMC Accreditation Body (The Cyber AB) to conduct Level 2 certification assessments and issue Certificates of CMMC Status. C3PAOs use Certified CMMC Assessors (CCAs), who are individually certified by a separate organization, the CMMC Assessors and Instructors Certification Organization (CAICO). C3PAOs must maintain their accreditation and can lose their authorization for assessment quality failures or ethical violations.",
     },
     {
       type: "h3",
-      content: "How to Find a C3PAO on the Cyber AB Marketplace",
+      content: "How to Find a C3PAO on the CMMC Marketplace",
     },
     {
       type: "ul",
       content: [
-        "Navigate to the official Cyber AB Marketplace at marketplace.cmmcab.org",
-        "Filter by 'Authorized C3PAO' — only engage organizations with this specific designation",
-        "Review the C3PAO's listed assessment team members and verify their individual CCA/CLA credentials",
+        "Navigate to the official CMMC Marketplace on the Cyber AB website (cyberab.org/Catalog)",
+        "Confirm the organization is listed as an authorized C3PAO — only engage organizations with that status",
+        "Review the C3PAO's assessment team and verify their individual CCA certifications",
         "Request proposal from 2–3 C3PAOs: compare scope, timeline, methodology, and pricing",
         "Check the Cyber AB for any disciplinary actions or open complaints against the C3PAO",
         "Confirm the C3PAO has experience with your industry vertical and company size",
-        "Note: CMMC consultants and Registered Practitioner Organizations (RPOs) cannot conduct formal assessments — only C3PAOs can",
+        "Note: CMMC consultants and Registered Practitioner Organizations (RPOs) — including readiness advisors such as DefenseEye — can support gap assessments, SSP and documentation work, and remediation, but cannot conduct the formal certification assessment or issue a Certificate of CMMC Status. Only an accredited C3PAO can, and contract eligibility decisions remain with DoD",
       ],
     },
     {
@@ -704,14 +704,14 @@ const post3: BlogPost = {
           [
             "8. Final Report & Submission",
             "1–2 weeks",
-            "C3PAO prepares final report; submits to CMMC-AB eMASS",
+            "C3PAO prepares the final report and submits the results to CMMC eMASS (a DoD system)",
             "Review and acknowledge final report; address any conditional findings",
           ],
           [
             "9. Certification Decision",
             "2–4 weeks",
-            "CMMC-AB reviews submission; issues CMMC Level 2 certification",
-            "Monitor CMMC-AB portal; update SPRS score upon certification",
+            "C3PAO issues the Certificate of CMMC Status; the CMMC Status (Final or Conditional Level 2 (C3PAO)) is stored in SPRS",
+            "Confirm your CMMC Status in SPRS and submit the required affirmation of compliance in SPRS",
           ],
         ],
       },
@@ -789,7 +789,7 @@ const post3: BlogPost = {
         "Respond professionally and specifically — vague responses to POFAM items signal poor program management",
         "If you believe a finding is factually incorrect, provide specific technical evidence countering the assessor's observation",
         "Conditional certification may be available if POFAMs can be closed within 180 days with an approved remediation plan",
-        "Once POFAMs are resolved and verified, the C3PAO submits the updated findings to CMMC-AB",
+        "Once POFAMs are resolved and verified, the C3PAO submits the updated results to CMMC eMASS",
       ],
     },
     {
@@ -822,12 +822,13 @@ const post3: BlogPost = {
     {
       type: "ul",
       content: [
-        "CMMC Assessment Process (CAP) — cyberaccreditation.us: the Cyber AB's official document governing how C3PAOs must conduct CMMC assessments",
+        "CMMC Assessment Process (CAP) — cyberab.org: the Cyber AB's document governing how C3PAOs conduct CMMC assessments",
         "NIST SP 800-171A — csrc.nist.gov: 'Assessing Security Requirements for Controlled Unclassified Information' — the assessment procedures (Examine, Interview, Test) C3PAOs apply",
         "CMMC 2.0 Final Rule (32 CFR Part 170) — federalregister.gov: the DoD's legally binding CMMC program requirements effective December 16, 2024",
-        "Cyber AB Marketplace — cyberaccreditation.us/marketplace: the only authoritative source to verify C3PAO authorization and individual CCA/CLA credentials",
+        "CMMC Marketplace — cyberab.org/Catalog: the Cyber AB's official directory for verifying C3PAO authorization",
+        "32 CFR Part 170 — ecfr.gov: §170.8 (Accreditation Body), §170.9 (C3PAOs, including eMASS submission and Certificates of CMMC Status), §170.10 (CAICO certification of assessors)",
         "DFARS 252.204-7021 — acquisition.gov: 'Cybersecurity Maturity Model Certification Requirements' — the contract clause triggering C3PAO assessment obligations",
-        "DoD eMASS System: the DoD repository where C3PAO assessment results and CMMC certifications are recorded and visible to contracting officers",
+        "CMMC eMASS: the government-owned system where C3PAOs submit assessment reports and Certificates of CMMC Status; the resulting CMMC Status is stored in SPRS (Supplier Performance Risk System)",
       ],
     },
   ],
@@ -1179,7 +1180,7 @@ const post5: BlogPost = {
         "NIST SP 800-171 Rev. 2 — csrc.nist.gov: the 110-control framework that defines CMMC Level 2 requirements",
         "DoD CMMC Small Business FAQ — dodcio.defense.gov/CMMC: the CMMC program office's official guidance for small business contractors",
         "SBA Office of Advocacy — sba.gov/advocacy: resources on regulatory impact assessments for small businesses in federal contracting",
-        "Cyber AB C3PAO Marketplace — cyberaccreditation.us: find authorized C3PAOs and their assessment pricing ranges",
+        "CMMC Marketplace — cyberab.org/Catalog: the Cyber AB's official directory of authorized C3PAOs",
       ],
     },
   ],
@@ -1481,7 +1482,7 @@ const post7: BlogPost = {
         "NIST SP 800-171 DoD Assessment Methodology — dodcio.defense.gov: defines how unimplemented controls affect SPRS score and POA&M treatment during assessment",
         "NIST SP 800-171A — csrc.nist.gov: assessment procedures assessors use to verify each control — understanding 171A shows you what evidence to provide for each POA&M item",
         "OMB Circular A-130 — whitehouse.gov/omb: 'Managing Information as a Strategic Resource' — the foundational federal policy requirement for POA&Ms across all federal information systems",
-        "Cyber AB CMMC Assessment Process (CAP) — cyberaccreditation.us: defines how C3PAOs formally handle POA&M items during assessment, including conditional certification criteria",
+        "Cyber AB CMMC Assessment Process (CAP) — cyberab.org: defines how C3PAOs formally handle POA&M items during assessment, including conditional certification criteria",
       ],
     },
   ],
@@ -1498,7 +1499,7 @@ const post8: BlogPost = {
   author: "DefenseEye Advisory Team",
   authorTitle: "CMMC 2.0 Compliance Research",
   publishedAt: "2025-04-01",
-  updatedAt: "2026-04-01",
+  updatedAt: "2026-10-23",
   readTime: "7 min read",
   category: "CMMC Compliance",
   tags: ["CMMC consultant", "C3PAO", "CMMC compliance", "DoD contractors", "CMMC assessment"],
@@ -1508,7 +1509,7 @@ const post8: BlogPost = {
     {
       type: "p",
       content:
-        "The CMMC consulting market expanded rapidly following the CMMC 2.0 final rule — and not all expansion was driven by genuine expertise. The Cyber AB (formerly CMMC-AB) has published a defined credentialing program precisely to help contractors distinguish qualified advisors from opportunists. The credential hierarchy — Registered Practitioner (RP), Registered Practitioner Advanced (RPA), Certified CMMC Professional (CCP), and Certified CMMC Assessor (CCA) — is publicly verifiable through the Cyber AB Marketplace at cyberaccreditation.us. Any advisor who cannot point you to their listing there should be viewed with skepticism.",
+        "The CMMC consulting market expanded rapidly following the CMMC 2.0 final rule — and not all expansion was driven by genuine expertise. The CMMC ecosystem has a defined credentialing program that helps contractors distinguish qualified advisors from opportunists. The credentials — Registered Practitioner (RP), Registered Practitioner Advanced (RPA), Certified CMMC Professional (CCP), and Certified CMMC Assessor (CCA) — can be checked through the official CMMC Marketplace on the Cyber AB website (cyberab.org/Catalog). Any advisor who cannot point you to their listing there should be viewed with skepticism.",
     },
     {
       type: "p",
@@ -1517,17 +1518,17 @@ const post8: BlogPost = {
     },
     {
       type: "h2",
-      content: "Red Flag 1: No Verifiable Cyber AB Credentials",
+      content: "Red Flag 1: No Verifiable CMMC Credentials",
     },
     {
       type: "p",
       content:
-        "The Cyber AB (the CMMC Accreditation Body, formerly CMMC-AB) certifies individual assessors and organizations through a defined credentialing program. Legitimate CMMC consulting firms will have staff with one or more of these credentials: Registered Practitioner (RP), Registered Practitioner Advanced (RPA), Certified CMMC Professional (CCP), or Certified CMMC Assessor (CCA). You can verify individual credentials at the official CMMC-AB Marketplace at marketplace.cmmcab.org.",
+        "Under 32 CFR Part 170, the CMMC Accreditation Body (The Cyber AB) accredits C3PAOs, and a separate organization, the CMMC Assessors and Instructors Certification Organization (CAICO), certifies individual assessors. Legitimate CMMC consulting firms will have staff with one or more of these credentials: Registered Practitioner (RP), Registered Practitioner Advanced (RPA), Certified CMMC Professional (CCP), or Certified CMMC Assessor (CCA). You can check credentials through the official CMMC Marketplace on the Cyber AB website (cyberab.org/Catalog).",
     },
     {
       type: "p",
       content:
-        "Red flag: The firm can't name specific staff with verifiable Cyber AB credentials and their credentials aren't publicly listed in the CMMC-AB ecosystem. 'We have extensive cybersecurity experience' and 'our team has DoD backgrounds' are not substitutes for the actual CMMC credential program.",
+        "Red flag: The firm can't name specific staff with verifiable CMMC credentials, and those credentials aren't listed in the CMMC Marketplace. 'We have extensive cybersecurity experience' and 'our team has DoD backgrounds' are not substitutes for the actual CMMC credential program.",
     },
     {
       type: "h2",
@@ -1536,7 +1537,7 @@ const post8: BlogPost = {
     {
       type: "p",
       content:
-        "No legitimate CMMC consultant can guarantee that you'll pass a C3PAO assessment. The assessment is conducted by an independent third party (the C3PAO) that has no financial relationship with your consultant. If a firm promises guaranteed certification, they either don't understand how the process works, or they have an undisclosed relationship with a C3PAO — which creates a serious conflict of interest prohibited by CMMC-AB rules. Walk away.",
+        "No legitimate CMMC consultant can guarantee that you'll pass a C3PAO assessment. The assessment is conducted by an independent third party (the C3PAO) that has no financial relationship with your consultant. If a firm promises guaranteed certification, they either don't understand how the process works, or they have an undisclosed relationship with a C3PAO — which creates a serious conflict of interest under CMMC conflict-of-interest rules. Walk away.",
     },
     {
       type: "h2",
@@ -1545,7 +1546,7 @@ const post8: BlogPost = {
     {
       type: "p",
       content:
-        "A Registered Practitioner Organization (RPO) and associated CPs/CCPs can help you prepare for CMMC — gap assessments, policy writing, remediation support, SSP development, and pre-assessment readiness reviews. They cannot conduct the formal CMMC Level 2 assessment. Only C3PAOs can do that. If a firm presents itself as both your advisor AND your assessor for the same engagement — be very careful. The Cyber AB has strict conflict-of-interest rules preventing firms that have consulting relationships with a contractor from assessing the same contractor.",
+        "A Registered Practitioner Organization (RPO) and associated CPs/CCPs can help you prepare for CMMC — gap assessments, policy writing, remediation support, SSP development, and pre-assessment readiness reviews. They cannot conduct the formal CMMC Level 2 assessment. Only C3PAOs can do that. If a firm presents itself as both your advisor AND your assessor for the same engagement — be very careful. CMMC conflict-of-interest rules prevent firms that have consulting relationships with a contractor from assessing the same contractor.",
     },
     {
       type: "h2",
@@ -1592,9 +1593,9 @@ const post8: BlogPost = {
       content: [
         "They begin with a detailed gap assessment against all 110 NIST 800-171 controls, specific to your environment",
         "They clearly delineate consulting (preparation) from assessment (C3PAO) and explain neither can be done by the same firm",
-        "They provide verifiable staff credentials from the Cyber AB Marketplace",
+        "They provide staff credentials you can verify in the CMMC Marketplace",
         "They give you a realistic timeline — not a 90-day guarantee",
-        "They speak fluently about SPRS scores, DFARS clauses, Cyber AB Marketplace mechanics, and the specific NIST 800-171A assessment procedures",
+        "They speak fluently about SPRS scores, DFARS clauses, CMMC Marketplace mechanics, and the specific NIST 800-171A assessment procedures",
         "They have references from contractors who have actually passed C3PAO assessments, not just from contractors they've 'prepared'",
         "Their pricing reflects the actual scope — lower for well-postured organizations, higher for complex environments with significant gaps",
       ],
@@ -1602,7 +1603,7 @@ const post8: BlogPost = {
     {
       type: "p",
       content:
-        "A qualified CMMC advisor will actively help you understand the Cyber AB credential system, explain the role separation between consulting and assessment, provide verifiable references from contractors who have achieved CMMC certification, and engage in a detailed scoping conversation before proposing any price. If an advisor skips these steps, they either lack the expertise or the professional discipline to guide your program to certification.",
+        "A qualified CMMC advisor will actively help you understand the CMMC credential system, explain the role separation between consulting and assessment, provide verifiable references from contractors who have achieved CMMC certification, and engage in a detailed scoping conversation before proposing any price. If an advisor skips these steps, they either lack the expertise or the professional discipline to guide your program to certification.",
     },
     {
       type: "h2",
@@ -1611,8 +1612,9 @@ const post8: BlogPost = {
     {
       type: "ul",
       content: [
-        "Cyber AB Marketplace — cyberaccreditation.us: the only authoritative source for verifying C3PAO authorization, RPO status, and individual CCA/CLA/CCP/RP credentials",
-        "Cyber AB Code of Professional Conduct — cyberaccreditation.us: the ethics rules governing CMMC consultants and assessors, including conflict-of-interest requirements",
+        "CMMC Marketplace — cyberab.org/Catalog: the Cyber AB's official directory for verifying C3PAO authorization and ecosystem credentials",
+        "32 CFR Part 170 — ecfr.gov: §170.8 (Accreditation Body accredits C3PAOs), §170.10 (CAICO certifies assessors)",
+        "Cyber AB Code of Professional Conduct — cyberab.org: the ethics rules governing CMMC consultants and assessors, including conflict-of-interest requirements",
         "DODCIO CMMC FAQs — dodcio.defense.gov/CMMC: official DoD answers to contractor questions about engaging CMMC advisors and assessors",
         "DoJ Civil Cyber-Fraud Initiative — justice.gov: DoJ enforcement actions against contractors who misrepresented their CMMC or NIST 800-171 compliance posture",
         "Federal Acquisition Regulation Part 9 — acquisition.gov: contractor responsibility standards that apply when evaluating advisor credentials for federal work",
