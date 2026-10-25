@@ -13,6 +13,15 @@
 - `window.loadGA4` loads gtag.js at most once per page load. Client-side route changes send one `page_view` through `trackGA4PageView`, which skips repeat calls for the same path. The app uses `createRoot`, not hydration, so there is no hydration double-fire.
 - Every event goes through `sendGa4Event` in `client/src/lib/analytics.ts`. That function checks consent, gtag, and the ID, and forwards only allowlisted parameters. It drops any value that looks like an email address or phone number.
 
+### Other third-party scripts
+
+- **Ahrefs Web Analytics** uses the same analytics consent purpose as GA4; no new consent category was added. The inline block in `client/index.html` defines `window.loadAhrefs`, which injects `analytics.ahrefs.com/analytics.js` at most once per page. `window.loadOptionalAnalytics` calls `loadGA4` and `loadAhrefs`. It is the only entry point, and runs on "Accept All" (`CookieConsent.tsx`) or on page load for a visitor who already accepted.
+  - Ahrefs is cookieless, and it does not receive the site's GA4 events.
+  - It records its own page views, including the page URL with any UTM parameters, the referrer, screen size, and language. These are separate from GA4 `page_view`, so there are no duplicates within GA4.
+  - Before consent, nothing is loaded.
+- **Instantly / RB2B visitor identification** (`r2.leadsy.ai/tag.js`, which injected a `cloudfront.net` tracker) was removed on 2026-10-24. Do not add visitor-identification tools without a separate consent purpose and privacy-policy update.
+- **Umami** has a loader in `client/index.html` that runs without consent. It is dormant: production's `VITE_ANALYTICS_WEBSITE_ID` is the `.env.example` placeholder, so the loader exits. Before configuring Umami, decide whether it needs consent and update the privacy policy.
+
 ## Events
 
 | Event | When | Parameters | Lead? |

@@ -28,12 +28,6 @@
     <meta name="twitter:image" content="https://defenseeye.ai/og-default.png" />
     <meta name="twitter:image:alt" content="DefenseEye: secure AI adoption, cybersecurity, and compliance automation for regulated organizations" />
 
-    <!-- Ahrefs Web Analytics -->
-    <script src="https://analytics.ahrefs.com/analytics.js" data-key="786lkxTSXuIYlPtbOUNBUQ" async></script>
-
-    <!-- Instantly.ai Visitor Tracking -->
-    <script id="vtag-ai-js" async src="https://r2.leadsy.ai/tag.js" data-pid="5wlSztNnUlqGdlfn" data-version="062024"></script>
-
     <title>DefenseEye | Secure Agentic AI Implementation</title>
 
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -211,6 +205,8 @@
     <script type="module" src="/src/main.tsx"></script>
 
     <!-- Google Analytics 4 — loads only after cookie consent granted -->
+    <!-- The server finds the end of the root fallback by the comment above (server/index.ts injectRouteSpecificHtml); keep it first. -->
+    <!-- This block also loads Ahrefs Web Analytics under the same optional-analytics consent. -->
     <!-- The ID comes only from VITE_GA4_MEASUREMENT_ID; production builds fail without a valid one (vite.config.ts). -->
     <script>
       window.__gaId = "%VITE_GA4_MEASUREMENT_ID%";
@@ -255,9 +251,25 @@
           return false;
         }
       }
+      // Ahrefs Web Analytics (cookieless). Same consent gate as GA4; loads at most once per page.
+      window.__ahrefsLoaded = false;
+      window.loadAhrefs = function() {
+        if (window.__ahrefsLoaded) return;
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://analytics.ahrefs.com/analytics.js';
+        s.setAttribute('data-key', '786lkxTSXuIYlPtbOUNBUQ');
+        document.head.appendChild(s);
+        window.__ahrefsLoaded = true;
+      };
+      // Single entry point for everything that needs optional analytics consent.
+      window.loadOptionalAnalytics = function() {
+        window.loadGA4();
+        window.loadAhrefs();
+      };
       // Auto-load if user already consented in a prior session
       if (hasGA4Consent()) {
-        window.addEventListener('load', window.loadGA4);
+        window.addEventListener('load', window.loadOptionalAnalytics);
       }
     </script>
 

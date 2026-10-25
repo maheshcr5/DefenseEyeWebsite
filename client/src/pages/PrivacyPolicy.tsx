@@ -4,7 +4,7 @@ import { useSeo } from "@/hooks/useSeo";
 
 const SUPPORT_EMAIL = "privacy@defenseeye.ai";
 const EFFECTIVE_DATE = "April 1, 2026";
-const LAST_UPDATED = "August 29, 2026";
+const LAST_UPDATED = "October 24, 2026";
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
@@ -110,9 +110,10 @@ export default function PrivacyPolicy() {
             <p>We use the following categories of cookies:</p>
             <ul className="list-disc pl-5 space-y-1.5">
               <li><strong className="text-foreground">Strictly necessary:</strong> Required for the website and platform to function (session tokens, CSRF protection). Cannot be disabled.</li>
-              <li><strong className="text-foreground">Analytics:</strong> Aggregate usage data to improve the site. You may opt out by declining cookies via our cookie consent banner or using browser privacy settings.</li>
+              <li><strong className="text-foreground">Analytics (optional):</strong> Only if you choose "Accept All" in our cookie banner, this website loads Google Analytics 4 and Ahrefs Web Analytics to measure aggregate site usage. Google Analytics sets first-party analytics cookies; Ahrefs Web Analytics does not set cookies. If you choose "Essential Only" or close the banner, neither is loaded. You can also limit analytics through your browser privacy settings.</li>
               <li><strong className="text-foreground">Advertising measurement:</strong> With your consent, DefenseEye uses the OpenAI Ads Measurement Pixel to determine whether interactions with DefenseEye advertisements lead to website actions such as consultation requests. The Pixel may use a first-party attribution cookie and securely hashed information when supported matching is enabled. Inquiry-message contents are not sent through the conversion event.</li>
             </ul>
+            <p>This website does not use visitor-identification services that attempt to identify individual visitors or their employers from their website visits.</p>
             <p>You can manage cookies through your browser settings; note that disabling certain cookies may affect site functionality.</p>
           </Section>
 

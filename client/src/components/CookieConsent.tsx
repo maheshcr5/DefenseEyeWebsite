@@ -19,9 +19,11 @@ export default function CookieConsent() {
   function accept() {
     setMeasurementConsent("accepted");
     setVisible(false);
-    if (typeof window !== "undefined" && typeof (window as any).loadGA4 === "function") {
-      (window as any).loadGA4();
-    }
+    // Optional analytics (GA4 and Ahrefs) load only from here or, for returning visitors who
+    // already accepted, from the inline consent check in index.html.
+    const optional = typeof window !== "undefined" ? (window as any) : null;
+    if (typeof optional?.loadOptionalAnalytics === "function") optional.loadOptionalAnalytics();
+    else if (typeof optional?.loadGA4 === "function") optional.loadGA4();
   }
 
   function decline() {

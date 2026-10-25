@@ -99,3 +99,19 @@ describe("client routes and redirects", () => {
     expect(LEGACY_REDIRECTS["/cmmc-readiness-sprint"]).toBe("/services/cmmc-readiness-sprint");
   });
 });
+
+describe("route fallback injection in the built template", () => {
+  // Vite moves the entry script into <head>, so in production the server finds the end of the
+  // root fallback by the "<!-- Google Analytics 4" comment that follows it.
+  const entry = '<script type="module" src="/src/main.tsx"></script>';
+  const builtTemplate = template.replace(entry, "").replace("</head>", `  ${entry}
+  </head>`);
+
+  it("injects every sitemap route's crawlable fallback into the built-style template", () => {
+    expect(builtTemplate).not.toMatch(/<\/div>\s*<script type="module"/);
+    for (const sitemapEntry of SITEMAP_ENTRIES) {
+      const page = renderSpaDocument(builtTemplate, sitemapEntry.path);
+      expect(page.html, sitemapEntry.path).toContain(`data-seo-route="${getSeoRoute(sitemapEntry.path)!.path}"`);
+    }
+  });
+});
