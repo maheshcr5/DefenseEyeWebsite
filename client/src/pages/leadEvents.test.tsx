@@ -276,6 +276,13 @@ describe("banking AI-agent risk page", () => {
       "Unclear ownership and approval gaps",
       "Unsafe remediation",
     ]);
+    // Owners, permissions, tools, and data-path review is a DefenseEye service, never a DefyAIRisk product claim.
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.solutionIntro);
+    expect(BANKING_AI_RISK_CONTENT.solutionIntro).toMatch(/^DefenseEye consulting and assessment services/);
+    expect(BANKING_AI_RISK_CONTENT.faqs[1].answer).toContain("This review is a DefenseEye service, not a DefyAIRisk product capability.");
+    for (const productCopy of [BANKING_AI_RISK_CONTENT.productText, BANKING_AI_RISK_CONTENT.faqs[5].answer, BANKING_AI_RISK_CONTENT.trustPoints[1].text]) {
+      expect(productCopy).not.toMatch(/permission|data path|tools/i);
+    }
     expect(BANKING_AI_RISK_CONTENT.engagementIntro).toMatch(/We will discuss/);
     expect(BANKING_AI_RISK_CONTENT.engagementClose).toBe("Together, we will determine the most useful next step for your organization.");
     expect(JSON.stringify(BANKING_AI_RISK_CONTENT.engagementTopics)).not.toMatch(/inventory|exposure map|risk register|report|backlog|pilot plan/i);

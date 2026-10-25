@@ -325,6 +325,7 @@ const TIER_1_ROUTE_DEFINITIONS: SeoRoute[] = [
       },
       {
         heading: BANKING_AI_RISK_CONTENT.solutionHeading,
+        body: BANKING_AI_RISK_CONTENT.solutionIntro,
         items: BANKING_AI_RISK_CONTENT.capabilities.map((capability) => `${capability.title}: ${capability.text}`),
       },
       {

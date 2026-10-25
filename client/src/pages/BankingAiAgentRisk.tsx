@@ -84,7 +84,8 @@ export default function BankingAiAgentRisk() {
         </section>
 
         <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-solution-heading">
-          <h2 id="banking-solution-heading" className="mb-8 font-heading text-2xl font-bold text-foreground">{content.solutionHeading}</h2>
+          <h2 id="banking-solution-heading" className="mb-3 font-heading text-2xl font-bold text-foreground">{content.solutionHeading}</h2>
+          <p className="mb-8 max-w-3xl leading-relaxed text-muted-foreground">{content.solutionIntro}</p>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {content.capabilities.map((capability, index) => {
               const Icon = CAPABILITY_ICONS[index];

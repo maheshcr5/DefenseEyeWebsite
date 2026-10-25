@@ -40,6 +40,9 @@ export const BANKING_AI_RISK_CONTENT = {
     },
   ],
   solutionHeading: "From agent visibility to accountable action.",
+  // Owners, permissions, tools, and data-path review is an approved DefenseEye service claim, not a DefyAIRisk product claim.
+  solutionIntro:
+    "DefenseEye consulting and assessment services can help review AI-agent owners, permissions, tools, and data paths, and turn the findings into governed next steps.",
   capabilities: [
     { title: "Discover", text: "Create visibility into AI agents, use cases, owners, permissions, tools, models, and data paths." },
     { title: "Prioritize", text: "Translate technical findings into business-oriented risk so teams can focus on the issues that matter most." },
@@ -103,7 +106,7 @@ export const BANKING_AI_RISK_CONTENT = {
     {
       question: "Can DefenseEye help us understand which agents, tools, permissions, and data paths are involved?",
       answer:
-        "Yes. Discovery covers AI agents, use cases, owners, permissions, tools, models, and data paths, so teams can see what each agent can reach and who is accountable for it.",
+        "Yes. As part of its consulting and assessment services, DefenseEye can help review AI-agent owners, permissions, tools, and data paths, so teams can see what each agent can reach and who is accountable for it. This review is a DefenseEye service, not a DefyAIRisk product capability.",
     },
     {
       question: "Does DefenseEye make changes automatically?",
