@@ -7,7 +7,7 @@ const PRODUCTION_ID = "G-H22Q6LRNWC";
 const RETIRED_ID = ["G", "KTK7M073CH"].join("-");
 const root = path.resolve(__dirname, "..");
 const sourceHtml = readFileSync(path.join(root, "client/index.html"), "utf8");
-const builtFrom = (id: string) => sourceHtml.replace("%VITE_GA4_MEASUREMENT_ID%", id).replace(/%VITE_ANALYTICS_[A-Z_]+%/g, "configured");
+const builtFrom = (id: string) => sourceHtml.replace("%VITE_GA4_MEASUREMENT_ID%", id);
 
 describe("GA4 Measurement ID validation", () => {
   it("accepts the approved production Measurement ID", () => {
@@ -50,11 +50,11 @@ describe("built index.html checks", () => {
     expect(errors.join(" ")).toContain("unresolved %VITE_GA4_MEASUREMENT_ID% placeholder");
   });
 
-  it("only warns about optional unresolved placeholders such as Umami", () => {
-    const html = sourceHtml.replace("%VITE_GA4_MEASUREMENT_ID%", PRODUCTION_ID);
+  it("only warns about other (optional) unresolved placeholders", () => {
+    const html = sourceHtml.replace("%VITE_GA4_MEASUREMENT_ID%", PRODUCTION_ID).replace("</body>", "<!-- %VITE_OPTIONAL_FEATURE% --></body>");
     const result = checkBuiltIndexHtml(html, PRODUCTION_ID);
     expect(result.errors).toEqual([]);
-    expect(result.warnings.join(" ")).toContain("%VITE_ANALYTICS_ENDPOINT%");
+    expect(result.warnings.join(" ")).toContain("%VITE_OPTIONAL_FEATURE%");
     expect(findUnresolvedEnvPlaceholders(html)).not.toContain("%VITE_GA4_MEASUREMENT_ID%");
   });
 

@@ -13,6 +13,20 @@
 - `window.loadGA4` loads gtag.js at most once per page load. Client-side route changes send one `page_view` through `trackGA4PageView`, which skips repeat calls for the same path. The app uses `createRoot`, not hydration, so there is no hydration double-fire.
 - Every event goes through `sendGa4Event` in `client/src/lib/analytics.ts`. That function checks consent, gtag, and the ID, and forwards only allowlisted parameters. It drops any value that looks like an email address or phone number.
 
+### Other third-party scripts
+
+- **Ahrefs Web Analytics** uses the same analytics consent purpose as GA4; no new consent category was added. The inline block in `client/index.html` defines `window.loadAhrefs`, which injects `analytics.ahrefs.com/analytics.js` at most once per page. `window.loadOptionalAnalytics` calls `loadGA4` and `loadAhrefs`. It is the only entry point, and runs on "Accept All" (`CookieConsent.tsx`) or on page load for a visitor who already accepted.
+  - Ahrefs is cookieless, and it does not receive the site's GA4 events.
+  - It records its own page views, including the page URL with any UTM parameters, the referrer, screen size, and language. These are separate from GA4 `page_view`, so there are no duplicates within GA4.
+  - Before consent, nothing is loaded.
+- **OpenAI Ads Measurement Pixel** (`client/src/lib/openaiAds.ts`, added in `4bb14b7`) measures whether DefenseEye's OpenAI ads lead to consultation requests. It is an intentional, advertising-measurement integration, and it is not needed for any site feature.
+  - **When it loads:** only with current consent ("Accept All" sets `purposes.openaiAdsMeasurement: true`). `loadOpenAiAdsPixelIfConsented` then loads `bzrcdn.openai.com/sdk/oaiq.min.js` at most once. Before consent, and after "Essential Only" or dismissing the banner, there are no requests and no cookies (browser test 2026-10-25; unit tests in `client/src/lib/openaiAds.test.ts`).
+  - **Cookies, set by OpenAI's SDK after consent:** `__oaiq_consent` and `__obref` on defenseeye.ai.
+  - **What it sends:** to `bzr.openai.com/v1/sdk/events`. Every page load sends SDK `openai::sdk_init` and `oai::diagnostic` events, with fields `id`, `type`, `timestamp_ms`, `source_url` (the page URL, including UTM parameters), `test_session_id`, and `data`. After a successful contact or Secure AI submission, it sends one `lead_created` with only `{ type: "customer_action" }`.
+  - **Personal data:** none of the form's name, email, company, phone, or message text was found in its requests. The site never passes user data to the SDK, so no hashed matching is enabled.
+- **Instantly / RB2B visitor identification** (`r2.leadsy.ai/tag.js`, which injected the `ddwl4m2hdecbv.cloudfront.net` RB2B tracker) was removed on 2026-10-24. The site no longer loads any visitor-identification or CloudFront tracking script. Do not add visitor-identification tools without a separate consent purpose and privacy-policy update.
+- **Umami** is not used. The site had a dormant Umami loader in `client/index.html` that would have run without consent if `VITE_ANALYTICS_*` were ever configured. On 2026-10-25 it was confirmed unconfigured (the website ID was the template placeholder, `analytics.defenseeye.ai` has no DNS record, and nothing runs Umami on the VPS). It was then removed along with its `.env.example` and DEPLOY.md entries. `/umami` on the site still returns 410 Gone. The production `.env` still has two unused `VITE_ANALYTICS_*` placeholder lines, which nothing reads; removing them is optional server cleanup.
+
 ## Events
 
 | Event | When | Parameters | Lead? |
@@ -52,13 +66,33 @@ Click IDs, landing page, and referrer are not sent as event parameters. They go 
 
 GA4 never receives names, email addresses, phone numbers, organizations, job titles, or message text. Tests enforce this in `client/src/lib/analytics.test.ts` and `client/src/pages/leadEvents.test.tsx`.
 
+### Open business and legal confirmations
+
+The repository does not establish these facts; they need business or legal confirmation.
+
+- **Cookie retention:** how long `_ga`, `_ga_H22Q6LRNWC`, `__oaiq_consent`, and `__obref` persist. Google's and OpenAI's scripts set these lifetimes, and the privacy policy does not state them.
+- **Historical pre-consent activity:** Ahrefs Web Analytics (from 2026-04-04) and the Instantly/RB2B tag (from 2026-04-07) loaded before consent until this change is deployed. Decide whether any follow-up is needed, for example closing the Instantly account or pixel, or a vendor data-deletion request.
+- **Privacy policy detail:** whether the policy should list cookie names, lifetimes, and each vendor's role in more detail than §6 does now.
+
+## Lead events: who sends what
+
+- **`form_start` is application-controlled.** The site sends it once per form instance, on the first edit (`trackFormStartOnce` in `client/src/lib/analytics.ts`). It always carries `form_name`.
+- **`form_submit` fires only after a successful submission.** It is sent only after `/api/contact` returns OK. Validation errors, 4xx/5xx responses, and network failures send nothing.
+- **`form_start` is not a lead key event.** It measures intent to fill in a form.
+- **`form_submit` is the intended lead key event.**
+- GA4's own automatic form events (Enhanced Measurement → Form interactions) duplicate these names. They must be off; see step 1 below. Automatic events can be recognised by `form_id` / `form_destination` with no `form_name`.
+
 ## Manual GA4 Admin steps
 
-These steps can't be configured from the codebase.
+These steps can't be done from the codebase. As of 2026-10-25 they have **not been verified**: the available Google login has no Analytics scope (`ACCESS_TOKEN_SCOPE_INSUFFICIENT`), so the setting couldn't be read or changed.
 
-1. **Turn off Enhanced Measurement → Form interactions.** Path: Admin → Data streams → (web stream) → Enhanced measurement → gear icon. With it on, gtag.js sends its own automatic `form_start` and `form_submit`, which share names with the site's events. Those automatic events carry `form_id` and `form_destination` and no `form_name`. A local test on 2026-10-24 recorded an automatic `form_start` next to the site's. Leave Page views, Scrolls, and the other options as they are. A browser test showed one `page_view` per route with the current settings.
-2. **Mark `form_submit` as a key event.** Path: Admin → Data display → Events (or Key events). Do this after step 1. The event appears in the list after its first occurrence; you can also add it by name under Key events. Do not mark `cta_click`, `form_start`, `newsletter_fallback_click`, `page_view`, or `scroll`.
+1. **Turn off only Enhanced Measurement → Form interactions** in the active web stream for **Measurement ID `G-H22Q6LRNWC`**. Path: Admin → Data collection and modification → Data streams → the web stream with Measurement ID `G-H22Q6LRNWC` → Enhanced measurement → gear icon → switch off **Form interactions** → Save.
+   - **Do not turn off Enhanced measurement as a whole.** Keep **Page views, Scrolls, Outbound clicks, Site search, Video engagement, and File downloads** on.
+   - **Why:** with Form interactions on, gtag.js sends its own `form_start` and `form_submit`. A browser test on 2026-10-25 recorded GA's automatic `form_start` next to the site's on every form. Its automatic `form_submit` would be counted as a lead once `form_submit` is a key event.
+   - **Confirm:** in Realtime or DebugView, start typing in the /contact form after accepting cookies. Only one `form_start` should appear, and it should carry `form_name`.
+2. **Mark `form_submit` as a key event.** Path: Admin → Data display → Key events → New key event → `form_submit`. Do this after step 1. Do not mark `cta_click`, `form_start`, `newsletter_fallback_click`, `page_view`, or `scroll`. Do not create custom or duplicate events for leads; the site already sends `form_submit`.
 3. **Optional: register custom dimensions** (Admin → Custom definitions, event scope) for reporting: `cta_name`, `cta_location`, `intent`, `form_name`, `form_intent`, `lead_source`, `lead_medium`, `lead_campaign`.
+4. **Leave the Internal Traffic filter in Testing** unless someone decides otherwise. This codebase does not change it.
 
 ## Verifying after a deployment
 

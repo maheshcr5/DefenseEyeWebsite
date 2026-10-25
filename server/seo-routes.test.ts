@@ -842,8 +842,7 @@ describe("historical URL, trailing-slash, and retired-WordPress remediation", ()
   });
 
   it("returns 410 Gone for /umami because it is not a live analytics endpoint on the apex site", () => {
-    // The real Umami integration loads from a separate analytics.* subdomain
-    // (VITE_ANALYTICS_ENDPOINT), never from a defenseeye.ai/umami path.
+    // The site does not use Umami (its dormant loader was removed), so this probe path stays gone.
     expect(resolve("/umami")).toEqual({ kind: "gone" });
     expect(resolve("/umami/")).toEqual({ kind: "gone" });
   });

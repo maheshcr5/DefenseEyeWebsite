@@ -101,8 +101,6 @@ Fill in `.env` with your real values:
 PORT=3000
 NODE_ENV=production
 VITE_GA4_MEASUREMENT_ID=G-H22Q6LRNWC
-VITE_ANALYTICS_ENDPOINT=https://analytics.defenseeye.ai
-VITE_ANALYTICS_WEBSITE_ID=your-umami-id
 VITE_SITE_URL=https://defenseeye.ai
 ```
 
@@ -294,8 +292,6 @@ The update script: pulls latest code → reinstalls deps → rebuilds → reload
 | `PORT` | Yes | Express server port (3000, Nginx proxies to this) |
 | `NODE_ENV` | Yes | Must be `production` on VPS |
 | `VITE_GA4_MEASUREMENT_ID` | Yes (build) | Google Analytics 4 Measurement ID. Production: `G-H22Q6LRNWC`. `pnpm build` fails if it is missing, malformed, the `.env.example` placeholder, or a retired ID. Set `GA4_ALLOW_MISSING=true` only for local builds that will not be deployed. |
-| `VITE_ANALYTICS_ENDPOINT` | Optional | Umami instance URL |
-| `VITE_ANALYTICS_WEBSITE_ID` | Optional | Umami website ID |
 | `VITE_SITE_URL` | Optional | Canonical site URL for SEO |
 | `GOOGLE_GENERATIVE_AI_API_KEY` | For Copilot | Gemini key. **Server-only.** Read only by `lib/ai/gemini.ts`. |
 | `SMTP_PASS` | For the contact form | SMTP password. **Server-only.** |

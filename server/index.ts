@@ -908,8 +908,7 @@ export const LEGACY_REDIRECTS: Record<string, string> = {
 
 // Confirmed-retired URLs with no legitimate replacement: author archives from a
 // removed blog-author taxonomy, a removed careers page, an unused analytics-proxy
-// probe path (Umami itself is hosted on a separate analytics.* subdomain — see
-// VITE_ANALYTICS_ENDPOINT — so "/umami" on the apex site is not a live integration),
+// probe path ("/umami": the site does not use Umami; its dormant loader was removed),
 // a literal "/$" template-artifact probe, an unverifiable historical SaaS landing
 // page, a historical blog URL with no substantially equivalent current post, and a
 // historical ISO 42001 readiness landing page: no ISO 42001 content exists anywhere
