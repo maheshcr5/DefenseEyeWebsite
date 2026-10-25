@@ -314,7 +314,7 @@ const TIER_1_ROUTE_DEFINITIONS: SeoRoute[] = [
     path: BANKING_AI_RISK_PATH,
     title: "AI-Agent Risk Management for Banks and Fintechs | DefenseEye",
     description:
-      "DefenseEye helps banks and fintechs discover AI-agent exposure, prioritize business risk, govern approvals, monitor behavior, and guide remediation.",
+      "DefenseEye helps banks and fintechs discover AI-agent exposure, prioritize business risk, govern approvals, and coordinate guided remediation.",
     h1: BANKING_AI_RISK_CONTENT.h1,
     eyebrow: BANKING_AI_RISK_CONTENT.eyebrow,
     summary: BANKING_AI_RISK_CONTENT.intro,
@@ -327,8 +327,22 @@ const TIER_1_ROUTE_DEFINITIONS: SeoRoute[] = [
         heading: BANKING_AI_RISK_CONTENT.solutionHeading,
         items: BANKING_AI_RISK_CONTENT.capabilities.map((capability) => `${capability.title}: ${capability.text}`),
       },
+      {
+        heading: BANKING_AI_RISK_CONTENT.workflowHeading,
+        body: BANKING_AI_RISK_CONTENT.workflowIntro,
+        items: BANKING_AI_RISK_CONTENT.workflow.map((step, index) => `${index + 1}. ${step.title}: ${step.text}`),
+      },
       { heading: BANKING_AI_RISK_CONTENT.audienceHeading, items: [...BANKING_AI_RISK_CONTENT.audiences] },
       { heading: BANKING_AI_RISK_CONTENT.productHeading, body: BANKING_AI_RISK_CONTENT.productText },
+      {
+        heading: BANKING_AI_RISK_CONTENT.engagementHeading,
+        body: `${BANKING_AI_RISK_CONTENT.engagementIntro} ${BANKING_AI_RISK_CONTENT.engagementTopicsIntro}`,
+        items: [...BANKING_AI_RISK_CONTENT.engagementTopics],
+      },
+      {
+        heading: BANKING_AI_RISK_CONTENT.trustHeading,
+        items: BANKING_AI_RISK_CONTENT.trustPoints.map((point) => `${point.title}: ${point.text}`),
+      },
       { heading: BANKING_AI_RISK_CONTENT.offerHeading, body: `${BANKING_AI_RISK_CONTENT.offerText} ${BANKING_AI_RISK_CONTENT.trustText}` },
     ],
     links: [
@@ -337,9 +351,10 @@ const TIER_1_ROUTE_DEFINITIONS: SeoRoute[] = [
       { label: "Secure AI for financial services and credit unions", href: "/industries/financial-services-credit-unions" },
       { label: "Review AI governance consulting", href: "/solutions/ai-governance" },
     ],
+    faqs: BANKING_AI_RISK_CONTENT.faqs.map((faq) => ({ question: faq.question, answer: faq.answer })),
     schemaKind: "service",
     serviceType: "AI-agent risk management for banks and fintechs",
-    topics: ["AI-agent risk management", "Banking AI governance", "Fintech AI risk", "AI-agent monitoring", "Guided remediation"],
+    topics: ["AI-agent risk management", "Banking AI governance", "Fintech AI risk", "AI-agent risk register", "Guided remediation"],
     lastmod: "2026-10-25",
     changefreq: "monthly",
     priority: "0.8",

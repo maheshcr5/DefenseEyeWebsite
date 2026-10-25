@@ -93,7 +93,7 @@ export const INDUSTRY_PAGES: Record<string, IndustryPageConfig> = {
     ],
     links: [
       { label: "Secure AI adoption", href: "/secure-ai-adoption", description: "Explore the Secure AI readiness and implementation funnel." },
-      { label: "AI-agent risk management for banks and fintechs", href: "/solutions/banking-ai-agent-risk", description: "Discover, monitor, govern, and guide remediation of AI-agent risk." },
+      { label: "AI-agent risk management for banks and fintechs", href: "/solutions/banking-ai-agent-risk", description: "Discover, prioritize, govern, and guide remediation of AI-agent risk." },
       { label: "AI governance", href: "/solutions/ai-governance", description: "Define responsible AI oversight, policy, accountability, and review practices." },
       { label: "AI security", href: "/solutions/ai-security", description: "Assess identity, data, model, agent, prompt, logging, and monitoring risks." },
       { label: "AI transformation", href: "/solutions/ai-transformation", description: "Prioritize AI use cases and adoption roadmaps with governance built in." },

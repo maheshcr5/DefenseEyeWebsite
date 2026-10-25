@@ -10,11 +10,11 @@ import { BANKING_AI_RISK_CONTENT, BANKING_AI_RISK_PATH, BANKING_DISCOVERY_HREF, 
 const template = fs.readFileSync(path.resolve(__dirname, "../client/index.html"), "utf-8");
 const TITLE = "AI-Agent Risk Management for Banks and Fintechs | DefenseEye";
 const DESCRIPTION =
-  "DefenseEye helps banks and fintechs discover AI-agent exposure, prioritize business risk, govern approvals, monitor behavior, and guide remediation.";
+  "DefenseEye helps banks and fintechs discover AI-agent exposure, prioritize business risk, govern approvals, and coordinate guided remediation.";
 
 describe("/solutions/banking-ai-agent-risk", () => {
   const page = renderSpaDocument(template, BANKING_AI_RISK_PATH);
-  const root = page.html.slice(page.html.indexOf('<div id="root">'));
+  const root = page.html.slice(page.html.indexOf('<div id="root">')).replace(/&#39;/g, "'");
 
   it("renders with a unique title, description, Open Graph tags, canonical URL, and robots", () => {
     expect(page.status).toBe(200);
@@ -38,7 +38,7 @@ describe("/solutions/banking-ai-agent-risk", () => {
     expect(root).toContain(`href="${DEFY_AI_RISK_URL}"`);
   });
 
-  it("emits WebPage and Service structured data only (no offers, ratings, or reviews)", () => {
+  it("emits WebPage, Service, and FAQPage structured data only (no offers, ratings, or reviews)", () => {
     const blocks = Array.from(page.html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g), (match) => JSON.parse(match[1]));
     const nodes = blocks.flat(2).flatMap((node) => (node["@graph"] ? node["@graph"] : [node]));
     const types = nodes.map((node) => node["@type"]);
@@ -47,6 +47,11 @@ describe("/solutions/banking-ai-agent-risk", () => {
     const service = nodes.find((node) => node["@type"] === "Service");
     expect(service.name).toBe(BANKING_AI_RISK_CONTENT.h1);
     expect(service.url).toBe("https://defenseeye.ai/solutions/banking-ai-agent-risk");
+    expect(types).not.toContain("Product");
+    expect(types).not.toContain("SoftwareApplication");
+    const faqPage = nodes.find((node) => node["@type"] === "FAQPage");
+    expect(faqPage.mainEntity.map((question: { name: string }) => question.name)).toEqual(BANKING_AI_RISK_CONTENT.faqs.map((faq) => faq.question));
+    for (const faq of BANKING_AI_RISK_CONTENT.faqs) expect(root).toContain(faq.question);
     expect(JSON.stringify(blocks)).not.toMatch(/"(offers|aggregateRating|review|price)"/);
   });
 

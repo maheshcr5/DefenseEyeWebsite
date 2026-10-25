@@ -217,10 +217,17 @@ describe("banking AI-agent risk page", () => {
     expect(text).toContain(BANKING_AI_RISK_CONTENT.intro);
   });
 
-  it("renders the four pain points, four capabilities, the audience list, the Defy section, and the discovery offer", () => {
+  it("renders the pain points, capabilities, workflow, audience, DefyAIRisk section, first engagement, trust points, FAQ, and next step", () => {
     for (const pain of BANKING_AI_RISK_CONTENT.pains) expect(text).toContain(`${pain.title} ${pain.text}`);
     for (const capability of BANKING_AI_RISK_CONTENT.capabilities) expect(text).toContain(`${capability.title} ${capability.text}`);
     for (const audience of BANKING_AI_RISK_CONTENT.audiences) expect(text).toContain(audience);
+    BANKING_AI_RISK_CONTENT.workflow.forEach((step, index) => expect(text).toContain(`${index + 1} ${step.title} ${step.text}`));
+    expect(html.match(/<ol[\s>]/g)).toHaveLength(1);
+    for (const topic of BANKING_AI_RISK_CONTENT.engagementTopics) expect(text).toContain(topic);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.engagementIntro);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.engagementTopicsIntro);
+    for (const point of BANKING_AI_RISK_CONTENT.trustPoints) expect(text).toContain(`${point.title} ${point.text}`);
+    for (const faq of BANKING_AI_RISK_CONTENT.faqs) expect(text).toContain(`${faq.question} ${faq.answer}`);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.productText);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.offerHeading);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.offerText);
@@ -228,7 +235,7 @@ describe("banking AI-agent risk page", () => {
   });
 
   it("explains the problem before the solution, the audience, and the product", () => {
-    const order = ["painHeading", "solutionHeading", "audienceHeading", "productHeading", "offerHeading"] as const;
+    const order = ["painHeading", "solutionHeading", "workflowHeading", "audienceHeading", "productHeading", "engagementHeading", "trustHeading", "faqHeading", "offerHeading"] as const;
     const positions = order.map((key) => html.indexOf(`>${BANKING_AI_RISK_CONTENT[key]}</h2>`));
     expect(positions.every((position) => position > 0)).toBe(true);
     expect([...positions].sort((a, b) => a - b)).toEqual(positions);
@@ -247,9 +254,17 @@ describe("banking AI-agent risk page", () => {
   });
 
   it("makes no unsupported claims", () => {
-    expect(text).not.toMatch(/guarantee|certified|certification|zero[- ]risk|first abu dhabi|\bFAB\b|autonomous|fully automated|pricing|\$\d|case stud|our customers|trusted by|\bSOC ?2\b|\bISO\b|\bcompliant\b|prevents? all/i);
+    // The disclaimers deny certification and regulator status; check they are present, then check everything else.
+    const disclaimers = [BANKING_AI_RISK_CONTENT.trustPoints[2].text, BANKING_AI_RISK_CONTENT.faqs[4].question, BANKING_AI_RISK_CONTENT.faqs[4].answer];
+    for (const disclaimer of disclaimers) expect(text).toContain(disclaimer);
+    const claims = disclaimers.reduce((rest, disclaimer) => rest.split(disclaimer).join(" "), text);
+    expect(claims).not.toMatch(/guarantee|certified|certification|zero[- ]risk|first abu dhabi|\bFAB\b|autonomous|fully automated|pricing|\$\d|case stud|our customers|trusted by|\bSOC ?2\b|\bISO\b|\bcompliant\b|prevents? all/i);
     expect(text).toContain("guided remediation with human review before any change");
-    expect(text).not.toMatch(/monitor changes/i); // not stated on the public Defy page
+    // Monitoring is not stated on the public DefyAIRisk page, so the page makes no monitoring claim.
+    expect(text).not.toMatch(/monitor/i);
+    // "DefyAIRisk" is the only approved product name.
+    expect(text).not.toMatch(/\bDefy\b(?!AIRisk)/);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.productCta);
   });
 
   it("sends exactly one cta_click per CTA interaction with banking intent and no personal data", () => {
