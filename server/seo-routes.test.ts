@@ -664,8 +664,9 @@ describe("sitemap and robots", () => {
     expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
     expect(new Set(locations).size).toBe(locations.length);
     // 73 before the 2026-10 remediation, plus /contact and /terms, minus
-    // /cmmc-readiness-sprint (consolidated into /services/cmmc-readiness-sprint).
-    expect(locations).toHaveLength(74);
+    // /cmmc-readiness-sprint (consolidated into /services/cmmc-readiness-sprint) = 74,
+    // plus /solutions/banking-ai-agent-risk (2026-10-25) = 75.
+    expect(locations).toHaveLength(75);
     for (const route of TIER_1_ROUTES) {
       expect(locations).toContain(canonicalUrl(route.path));
     }
@@ -699,9 +700,11 @@ describe("sitemap and robots", () => {
     // it does not count toward the four newly-added URLs.
     // The 2026-10 remediation then added /contact and /terms and consolidated
     // /cmmc-readiness-sprint into /services/cmmc-readiness-sprint (73 + 2 - 1 = 74).
+    // 2026-10-25 added /solutions/banking-ai-agent-risk (74 + 1 = 75).
     const xml = renderSitemapXml();
     const locations = Array.from(xml.matchAll(/<loc>(.*?)<\/loc>/g), (match) => match[1]);
-    expect(locations).toHaveLength(74);
+    expect(locations).toHaveLength(75);
+    expect(xml).toContain(`<loc>${canonicalUrl("/solutions/banking-ai-agent-risk")}</loc>`);
 
     for (const newPath of ["/privacy-policy", "/support", "/faq", "/services/cmmc-scoping"]) {
       expect(xml).toContain(`<loc>${canonicalUrl(newPath)}</loc>`);

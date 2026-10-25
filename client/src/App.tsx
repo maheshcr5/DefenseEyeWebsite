@@ -48,6 +48,7 @@ const MicrosoftEcosystem = lazy(() => import("./pages/MicrosoftEcosystem"));
 const CMMCArchitecturePage = lazy(() => import("./pages/CMMCArchitecturePage"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const IndustryPage = lazy(() => import("./pages/IndustryPage"));
+const BankingAiAgentRisk = lazy(() => import("./pages/BankingAiAgentRisk"));
 
 // Minimal loading fallback that matches the dark theme
 function PageLoader() {
@@ -107,6 +108,7 @@ function Router() {
         <Route path="/delivery-model" component={DeliveryModel} />
         <Route path="/representative-engagements" component={RepresentativeEngagements} />
         <Route path="/microsoft-ecosystem" component={MicrosoftEcosystem} />
+        <Route path="/solutions/banking-ai-agent-risk" component={BankingAiAgentRisk} />
         <Route path="/solutions/ai-governance" component={SolutionPage} />
         <Route path="/solutions/ai-transformation" component={SolutionPage} />
         <Route path="/solutions/ai-security" component={SolutionPage} />

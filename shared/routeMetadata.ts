@@ -33,6 +33,11 @@ export const ROUTE_METADATA: Record<string, RouteMetadata> = {
     description:
       "DefenseEye helps regulated organizations implement agentic AI with secure architecture, responsible governance, risk controls, and hands-on delivery support.",
   },
+  "/solutions/banking-ai-agent-risk": {
+    title: "AI-Agent Risk Management for Banks and Fintechs | DefenseEye",
+    description:
+      "DefenseEye helps banks and fintechs discover, govern, monitor, and guide remediation of AI-agent risk across sensitive data, tools, and workflows.",
+  },
   "/solutions/ai-governance": {
     title: "AI Governance & NIST AI RMF Consulting | DefenseEye",
     description:

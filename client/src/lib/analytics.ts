@@ -31,7 +31,7 @@ export type Ga4EventName =
   | "cmmclens_marketplace_click";
 
 /** Coarse visitor intent, set only by CTAs and forms that are specific to that topic. */
-export type LeadIntent = "secure_ai" | "ai_governance" | "cmmc" | "supplier" | "attacksense" | "microsoft" | "contact";
+export type LeadIntent = "secure_ai" | "ai_governance" | "cmmc" | "supplier" | "attacksense" | "microsoft" | "banking" | "contact";
 
 const ALLOWED_PARAMS = new Set([
   "cta_name",

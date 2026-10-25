@@ -33,6 +33,7 @@ export const ROUTE_NAMES: Record<string, string> = {
   "/solutions/ai-security": "AI Security",
   "/solutions/microsoft-copilot-readiness": "Microsoft Copilot Readiness",
   "/industries/financial-services-credit-unions": "Financial Services & Credit Unions",
+  "/solutions/banking-ai-agent-risk": "Banking AI-Agent Risk",
   "/solutions/cybersecurity-risk": "Cybersecurity Risk",
   "/attacksense": "AttackSense",
   "/attacksense/docs": "AttackSense Quick Start Guide",
@@ -122,6 +123,7 @@ export const ROUTE_PARENTS: Record<string, string> = {
   "/solutions/ai-security": "/secure-ai-adoption",
   "/solutions/microsoft-copilot-readiness": "/secure-ai-adoption",
   "/industries/financial-services-credit-unions": "/secure-ai-adoption",
+  "/solutions/banking-ai-agent-risk": "/industries/financial-services-credit-unions",
   "/insights/implement-ai-governance": "/solutions/ai-governance",
   "/insights/what-is-nist-ai-rmf": "/solutions/ai-governance",
 

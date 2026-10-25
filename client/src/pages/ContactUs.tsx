@@ -52,6 +52,7 @@ export const CONTACT_INQUIRY_TYPES = [
   "Staff augmentation",
   "CMMCLens demo",
   "Product support",
+  "Banking AI risk discovery",
   "Other",
 ] as const;
 
@@ -246,6 +247,7 @@ export const INQUIRY_PARAM_MAP: Record<string, string> = {
   "staff-augmentation": "Staff augmentation",
   cmmclens: "CMMCLens demo",
   support: "Product support",
+  "banking-ai-risk-discovery": "Banking AI risk discovery",
 };
 
 export function inquiryTypeFromParam(param: string | null): string | null {

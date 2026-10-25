@@ -23,6 +23,7 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
   ],
   "/solutions/ai-governance": [
     link("/insights/implement-ai-governance", "Practical steps to implement AI governance", "AI inventories, risk tiering, roles, and governance evidence."),
+    link("/solutions/banking-ai-agent-risk", "AI-agent risk management for banks and fintechs", "Discover, monitor, govern, and guide remediation of AI-agent risk."),
     link("/insights/what-is-nist-ai-rmf", "Plain-English guide to the NIST AI RMF", "How to govern, map, measure, and manage AI risk."),
     link("/industries/financial-services-credit-unions", "AI risk management for financial institutions", "Governance and oversight for banks, credit unions, and FinTechs."),
     link("/datasheets/secure-ai-adoption", "Secure AI adoption datasheet"),
@@ -36,6 +37,7 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
   ],
   "/solutions/ai-security": [
     link("/solutions/cybersecurity-risk", "Cybersecurity risk consulting", "Prioritize remediation across the wider security program."),
+    link("/solutions/banking-ai-agent-risk", "AI-agent permissions and data-access risk in banking"),
     link("/insights/security-copilot-cybersecurity-operations", "Using Security Copilot in security operations"),
     link("/solutions/microsoft-copilot-readiness", "Copilot data-exposure and permissions review"),
   ],
@@ -46,8 +48,15 @@ export const RELATED_LINKS: Record<string, ArchitectureLink[]> = {
     link("/lp/microsoft-copilot-readiness", "Copilot governance assessment", "Data exposure findings, guardrails, and a readiness roadmap."),
   ],
   "/industries/financial-services-credit-unions": [
+    link("/solutions/banking-ai-agent-risk", "AI-agent risk management for banks and fintechs", "Discover, monitor, govern, and guide remediation of AI-agent risk."),
     link("/solutions/ai-governance", "AI governance and NIST AI RMF alignment"),
     link("/solutions/ai-security", "AI security for sensitive financial data"),
+    link("/insights/implement-ai-governance", "How to implement AI governance in practice"),
+  ],
+  "/solutions/banking-ai-agent-risk": [
+    link("/industries/financial-services-credit-unions", "Secure AI for financial services and credit unions"),
+    link("/solutions/ai-governance", "AI governance and NIST AI RMF alignment"),
+    link("/solutions/ai-security", "AI security for agents, data access, and permissions"),
     link("/insights/implement-ai-governance", "How to implement AI governance in practice"),
   ],
   "/insights/implement-ai-governance": [
