@@ -35,10 +35,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Check tracked files for secrets
+        run: node scripts/check-secrets.mjs --repo
+
       - name: Type check
         run: pnpm run check
 
+      # pnpm build ends with scripts/check-secrets.mjs --build (no secret values or
+      # environment files in dist/). CI has no .env: production builds run on the VPS.
       - name: Build
+        env:
+          GA4_ALLOW_MISSING: "true"
         run: pnpm run build
 
       - name: Skip deploy until VPS secrets are configured

@@ -1,0 +1,46 @@
+name: Security checks
+
+# Runs on pull requests without repository secrets, so it can never deploy.
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  secrets:
+    name: Secret leak checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Set up pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.4.1 --activate
+
+      - name: Check tracked files for secrets
+        run: node scripts/check-secrets.mjs --repo
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The build runs scripts/check-secrets.mjs --build on dist/. CI has no .env, so the
+      # GA4 ID check is relaxed here; production builds run on the VPS with the real .env.
+      - name: Build and scan output
+        env:
+          GA4_ALLOW_MISSING: "true"
+        run: pnpm run build
+
+      - name: Secret tests
+        run: npx vitest run --root . scripts/check-secrets.test.ts
