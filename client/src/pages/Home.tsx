@@ -126,14 +126,14 @@ export default function Home() {
         <div className="mx-auto max-w-6xl">
           <div className="max-w-4xl">
             <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-primary">SECURE AGENTIC AI FOR REGULATED ORGANIZATIONS</p>
-            <h1 className="font-heading text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl">Implement Agentic AI Securely</h1>
+            <h1 className="font-heading text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl">Adopt AI securely. Govern risk confidently.</h1>
             <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-              DefenseEye helps FinTechs, credit unions, and other regulated organizations implement AI agents with secure data access, responsible governance, human oversight, and practical delivery support.
+              DefenseEye helps regulated organizations assess AI and cybersecurity risk, implement practical governance controls, and move toward secure, accountable AI adoption.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
               <a href="/secure-ai-adoption#secure-ai-consultation" onClick={() => trackConversion("consultation_click", { location: "home_hero_secure_ai" })}>
                 <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-auto">
-                  Request a Secure AI Readiness Consultation <ArrowRight className="ml-2 size-4" />
+                  Request an AI Risk & Governance Assessment <ArrowRight className="ml-2 size-4" />
                 </Button>
               </a>
               <a
@@ -141,7 +141,7 @@ export default function Home() {
                 onClick={() => trackConversion("portfolio_ai_click", { location: "home_hero_text_link" })}
                 className="text-sm font-semibold text-primary underline-offset-4 hover:underline"
               >
-                Explore Secure AI Services
+                See How DefenseEye Helps
               </a>
             </div>
           </div>

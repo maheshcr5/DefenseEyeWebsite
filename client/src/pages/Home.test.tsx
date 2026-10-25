@@ -15,8 +15,8 @@ describe("DefenseEye homepage positioning", () => {
     const html = renderToStaticMarkup(<Home />);
 
     expect(html).toContain("SECURE AGENTIC AI FOR REGULATED ORGANIZATIONS");
-    expect(html).toContain("Implement Agentic AI Securely</h1>");
-    expect(html).toContain("DefenseEye helps FinTechs, credit unions, and other regulated organizations implement AI agents");
+    expect(html).toContain("Adopt AI securely. Govern risk confidently.</h1>");
+    expect(html).toContain("DefenseEye helps regulated organizations assess AI and cybersecurity risk, implement practical governance controls, and move toward secure, accountable AI adoption.");
     expect(html).not.toContain("Operationalize Secure AI Adoption and CMMC Readiness");
     expect(html).not.toContain("Secure AI Adoption and CMMC Compliance Automation");
   });
@@ -25,8 +25,8 @@ describe("DefenseEye homepage positioning", () => {
     const html = renderToStaticMarkup(<Home />);
 
     expect(html).toContain('href="/secure-ai-adoption#secure-ai-consultation"');
-    expect(html).toContain("Request a Secure AI Readiness Consultation");
-    expect(html).toContain("Explore Secure AI Services");
+    expect(html).toContain("Request an AI Risk &amp; Governance Assessment");
+    expect(html).toContain("See How DefenseEye Helps");
     expect(html).toContain("The initial conversation can clarify priority use cases");
     expect(html).not.toContain("Explore CMMC Readiness");
     expect(html).not.toContain("Achieve CMMC Level 2");
@@ -64,7 +64,7 @@ describe("DefenseEye homepage positioning", () => {
     const html = renderToStaticMarkup(<Home />);
 
     expect(html.match(/<h1[^>]*>/g)).toHaveLength(1);
-    expect(html).toContain(">Implement Agentic AI Securely</h1>");
+    expect(html).toContain(">Adopt AI securely. Govern risk confidently.</h1>");
   });
 
   it("keeps CMMC, CMMCLens, AttackSense, and supplier readiness as secondary portfolio paths", () => {

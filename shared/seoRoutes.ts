@@ -134,10 +134,10 @@ const TIER_1_ROUTE_DEFINITIONS: SeoRoute[] = [
     title: "DefenseEye | Secure Agentic AI Implementation",
     description:
       "DefenseEye helps FinTechs, credit unions, and regulated organizations implement agentic AI with secure architecture, responsible governance, human oversight, and hands-on delivery support.",
-    h1: "Implement Agentic AI Securely",
+    h1: "Adopt AI securely. Govern risk confidently.",
     eyebrow: "Secure Agentic AI for Regulated Organizations",
     summary:
-      "DefenseEye helps regulated organizations move from AI exploration to governed agentic AI implementation while keeping CMMC, CMMCLens, AttackSense, and supplier readiness available as focused portfolio paths.",
+      "DefenseEye helps regulated organizations assess AI and cybersecurity risk, implement practical governance controls, and move toward secure, accountable AI adoption.",
     sections: [
       {
         heading: "Secure AI Implementation Focus",
@@ -155,7 +155,7 @@ const TIER_1_ROUTE_DEFINITIONS: SeoRoute[] = [
       },
     ],
     links: [
-      { label: "Request a Secure AI Readiness Consultation", href: "/secure-ai-adoption#secure-ai-consultation" },
+      { label: "Request an AI Risk & Governance Assessment", href: "/secure-ai-adoption#secure-ai-consultation" },
       { label: "Explore CMMC readiness and automation", href: "/cmmc" },
       { label: "Review the CMMCLens compliance automation platform", href: "/cmmclens" },
       { label: "View AttackSense attack surface intelligence", href: "/attacksense" },
