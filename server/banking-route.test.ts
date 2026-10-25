@@ -10,7 +10,7 @@ import { BANKING_AI_RISK_CONTENT, BANKING_AI_RISK_PATH, BANKING_DISCOVERY_HREF, 
 const template = fs.readFileSync(path.resolve(__dirname, "../client/index.html"), "utf-8");
 const TITLE = "AI-Agent Risk Management for Banks and Fintechs | DefenseEye";
 const DESCRIPTION =
-  "DefenseEye helps banks and fintechs discover, govern, monitor, and guide remediation of AI-agent risk across sensitive data, tools, and workflows.";
+  "DefenseEye helps banks and fintechs discover AI-agent exposure, prioritize business risk, govern approvals, monitor behavior, and guide remediation.";
 
 describe("/solutions/banking-ai-agent-risk", () => {
   const page = renderSpaDocument(template, BANKING_AI_RISK_PATH);

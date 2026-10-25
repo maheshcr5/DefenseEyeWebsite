@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, ExternalLink, Eye, KeyRound, Search, ShieldCheck, Timer, Users, Wrench } from "lucide-react";
+import { Activity, ArrowRight, BarChart3, CheckCircle2, ExternalLink, Eye, KeyRound, Search, ShieldAlert, ShieldCheck, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
@@ -19,8 +19,8 @@ export function trackBankingCta(target: "discovery" | "platform", location: Bank
   );
 }
 
-const PAIN_ICONS = [Eye, KeyRound, Users, Timer];
-const CAPABILITY_ICONS = [Search, Activity, ShieldCheck, Wrench];
+const PAIN_ICONS = [Eye, KeyRound, Activity, ShieldAlert];
+const CAPABILITY_ICONS = [Search, BarChart3, ShieldCheck, Wrench];
 
 function DiscoveryCta({ location, className = "" }: { location: BankingCtaLocation; className?: string }) {
   return (
@@ -32,11 +32,11 @@ function DiscoveryCta({ location, className = "" }: { location: BankingCtaLocati
   );
 }
 
-function PlatformCta({ location }: { location: BankingCtaLocation }) {
+function PlatformCta({ location, label }: { location: BankingCtaLocation; label: string }) {
   return (
     <a href={DEFY_AI_RISK_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackBankingCta("platform", location)}>
       <Button size="lg" variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10 sm:w-auto">
-        {content.secondaryCta} <ExternalLink className="ml-2 size-4" aria-hidden="true" />
+        {label} <ExternalLink className="ml-2 size-4" aria-hidden="true" />
         <span className="sr-only"> (opens in a new tab)</span>
       </Button>
     </a>
@@ -62,13 +62,12 @@ export default function BankingAiAgentRisk() {
           <p className="mb-8 max-w-3xl text-lg leading-relaxed text-muted-foreground">{content.intro}</p>
           <div className="flex flex-col gap-3 sm:flex-row">
             <DiscoveryCta location="banking_hero" />
-            <PlatformCta location="banking_hero" />
+            <PlatformCta location="banking_hero" label={content.secondaryCta} />
           </div>
         </section>
 
         <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-pain-heading">
-          <h2 id="banking-pain-heading" className="mb-3 font-heading text-2xl font-bold text-foreground">{content.painHeading}</h2>
-          <p className="mb-8 max-w-3xl leading-relaxed text-muted-foreground">{content.painIntro}</p>
+          <h2 id="banking-pain-heading" className="mb-8 font-heading text-2xl font-bold text-foreground">{content.painHeading}</h2>
           <ul className="grid gap-4 sm:grid-cols-2">
             {content.pains.map((pain, index) => {
               const Icon = PAIN_ICONS[index];
@@ -99,12 +98,24 @@ export default function BankingAiAgentRisk() {
           </ul>
         </section>
 
+        <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-audience-heading">
+          <h2 id="banking-audience-heading" className="mb-6 font-heading text-2xl font-bold text-foreground">{content.audienceHeading}</h2>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {content.audiences.map((audience) => (
+              <li key={audience} className="flex items-start gap-3 text-foreground">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+                <span className="leading-relaxed">{audience}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
         <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-product-heading">
           <div className="rounded-sm border border-primary/20 bg-primary/5 p-6 md:p-8">
             <h2 id="banking-product-heading" className="mb-3 font-heading text-2xl font-bold text-foreground">{content.productHeading}</h2>
             <p className="mb-6 max-w-3xl leading-relaxed text-foreground">{content.productText}</p>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <PlatformCta location="banking_product" />
+              <PlatformCta location="banking_product" label={content.productCta} />
               <DiscoveryCta location="banking_product" />
             </div>
           </div>
@@ -114,6 +125,7 @@ export default function BankingAiAgentRisk() {
           <div className="mx-auto max-w-4xl text-center">
             <h2 id="banking-offer-heading" className="font-heading text-3xl font-bold md:text-4xl">{content.offerHeading}</h2>
             <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-muted-foreground">{content.offerText}</p>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{content.trustText}</p>
             <DiscoveryCta location="banking_offer" className="mt-8 inline-block" />
           </div>
         </section>

@@ -314,26 +314,26 @@ const TIER_1_ROUTE_DEFINITIONS: SeoRoute[] = [
     path: BANKING_AI_RISK_PATH,
     title: "AI-Agent Risk Management for Banks and Fintechs | DefenseEye",
     description:
-      "DefenseEye helps banks and fintechs discover, govern, monitor, and guide remediation of AI-agent risk across sensitive data, tools, and workflows.",
+      "DefenseEye helps banks and fintechs discover AI-agent exposure, prioritize business risk, govern approvals, monitor behavior, and guide remediation.",
     h1: BANKING_AI_RISK_CONTENT.h1,
     eyebrow: BANKING_AI_RISK_CONTENT.eyebrow,
     summary: BANKING_AI_RISK_CONTENT.intro,
     sections: [
       {
         heading: BANKING_AI_RISK_CONTENT.painHeading,
-        body: BANKING_AI_RISK_CONTENT.painIntro,
         items: BANKING_AI_RISK_CONTENT.pains.map((pain) => `${pain.title}: ${pain.text}`),
       },
       {
         heading: BANKING_AI_RISK_CONTENT.solutionHeading,
         items: BANKING_AI_RISK_CONTENT.capabilities.map((capability) => `${capability.title}: ${capability.text}`),
       },
+      { heading: BANKING_AI_RISK_CONTENT.audienceHeading, items: [...BANKING_AI_RISK_CONTENT.audiences] },
       { heading: BANKING_AI_RISK_CONTENT.productHeading, body: BANKING_AI_RISK_CONTENT.productText },
-      { heading: BANKING_AI_RISK_CONTENT.offerHeading, body: BANKING_AI_RISK_CONTENT.offerText },
+      { heading: BANKING_AI_RISK_CONTENT.offerHeading, body: `${BANKING_AI_RISK_CONTENT.offerText} ${BANKING_AI_RISK_CONTENT.trustText}` },
     ],
     links: [
       { label: BANKING_AI_RISK_CONTENT.primaryCta, href: BANKING_DISCOVERY_HREF },
-      { label: BANKING_AI_RISK_CONTENT.secondaryCta, href: DEFY_AI_RISK_URL },
+      { label: BANKING_AI_RISK_CONTENT.productCta, href: DEFY_AI_RISK_URL },
       { label: "Secure AI for financial services and credit unions", href: "/industries/financial-services-credit-unions" },
       { label: "Review AI governance consulting", href: "/solutions/ai-governance" },
     ],

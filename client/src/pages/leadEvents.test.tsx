@@ -217,12 +217,21 @@ describe("banking AI-agent risk page", () => {
     expect(text).toContain(BANKING_AI_RISK_CONTENT.intro);
   });
 
-  it("renders the four pain points, four capabilities, the DefyAIRisk section, and the discovery offer", () => {
-    for (const pain of BANKING_AI_RISK_CONTENT.pains) expect(text).toContain(pain.title);
+  it("renders the four pain points, four capabilities, the audience list, the Defy section, and the discovery offer", () => {
+    for (const pain of BANKING_AI_RISK_CONTENT.pains) expect(text).toContain(`${pain.title} ${pain.text}`);
     for (const capability of BANKING_AI_RISK_CONTENT.capabilities) expect(text).toContain(`${capability.title} ${capability.text}`);
+    for (const audience of BANKING_AI_RISK_CONTENT.audiences) expect(text).toContain(audience);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.productText);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.offerHeading);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.offerText);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.trustText);
+  });
+
+  it("explains the problem before the solution, the audience, and the product", () => {
+    const order = ["painHeading", "solutionHeading", "audienceHeading", "productHeading", "offerHeading"] as const;
+    const positions = order.map((key) => html.indexOf(`>${BANKING_AI_RISK_CONTENT[key]}</h2>`));
+    expect(positions.every((position) => position > 0)).toBe(true);
+    expect([...positions].sort((a, b) => a - b)).toEqual(positions);
   });
 
   it("links the discovery CTAs to the existing contact form and the platform CTAs to DefyAIRisk", () => {
@@ -231,6 +240,8 @@ describe("banking AI-agent risk page", () => {
     expect(text.match(new RegExp(BANKING_AI_RISK_CONTENT.primaryCta, "g"))).toHaveLength(3);
     const platform = html.match(/href="https:\/\/defy\.defenseeye\.ai" target="_blank" rel="noopener noreferrer"/g) ?? [];
     expect(platform).toHaveLength(2); // hero and product section
+    expect(text).toContain(`${BANKING_AI_RISK_CONTENT.secondaryCta} (opens in a new tab)`);
+    expect(text).toContain(`${BANKING_AI_RISK_CONTENT.productCta} (opens in a new tab)`);
     expect(DEFY_AI_RISK_URL).toBe("https://defy.defenseeye.ai");
     expect(text).toContain("(opens in a new tab)");
   });
@@ -238,6 +249,7 @@ describe("banking AI-agent risk page", () => {
   it("makes no unsupported claims", () => {
     expect(text).not.toMatch(/guarantee|certified|certification|zero[- ]risk|first abu dhabi|\bFAB\b|autonomous|fully automated|pricing|\$\d|case stud|our customers|trusted by|\bSOC ?2\b|\bISO\b|\bcompliant\b|prevents? all/i);
     expect(text).toContain("guided remediation with human review before any change");
+    expect(text).not.toMatch(/monitor changes/i); // not stated on the public Defy page
   });
 
   it("sends exactly one cta_click per CTA interaction with banking intent and no personal data", () => {

@@ -1,6 +1,7 @@
 // Content for /solutions/banking-ai-agent-risk, shared by the React page
 // (client/src/pages/BankingAiAgentRisk.tsx) and the server-rendered fallback (shared/seoRoutes.ts).
-// Product language for DefyAIRisk is limited to what https://defy.defenseeye.ai states publicly.
+// Product language for DefyAIRisk is limited to what https://defy.defenseeye.ai states publicly
+// (one register of AI agents, risk ranked in business terms, guided remediation with human review).
 // Do not add customers, certifications, integrations, pricing, results, or regulatory guarantees.
 
 export const BANKING_AI_RISK_PATH = "/solutions/banking-ai-agent-risk";
@@ -9,43 +10,53 @@ export const DEFY_AI_RISK_URL = "https://defy.defenseeye.ai";
 export const BANKING_DISCOVERY_HREF = "/contact?inquiry=banking-ai-risk-discovery";
 
 export const BANKING_AI_RISK_CONTENT = {
-  eyebrow: "AI-agent risk management for financial institutions",
-  h1: "Adopt AI without losing control of risk.",
+  eyebrow: "AI-agent risk management for banks and regulated financial institutions",
+  h1: "Know which AI agents put your bank at risk.",
   intro:
-    "DefenseEye helps banks and fintechs discover, monitor, govern, and remediate AI-agent risk across sensitive data, tools, workflows, and third-party systems.",
+    "DefenseEye helps banks and regulated financial institutions discover AI agents, rank their risk in business terms, monitor behavior, govern ownership and approvals, and support guided remediation with human review.",
   primaryCta: "Request a Banking AI Risk Discovery Call",
   secondaryCta: "See the DefenseEye AI-Agent Risk Platform",
-  painHeading: "Where AI-agent risk builds up",
-  painIntro: "As AI agents reach customer data, internal tools, and third-party systems, these are common sources of risk.",
+  painHeading: "AI adoption is moving faster than risk visibility.",
   pains: [
     {
-      title: "Unknown AI-agent exposure",
-      text: "Agents and automations can be adopted faster than they are inventoried, leaving gaps in what is running and what it can reach.",
+      title: "Unknown exposure",
+      text: "AI agents can be embedded in copilots, workflows, SaaS tools, cloud services, and internal applications. Teams may not have one reliable view of which agents exist, who owns them, what tools they can call, or what data they can access.",
     },
     {
-      title: "Excessive permissions and sensitive-data access",
-      text: "Agents can inherit broader access to data, systems, and tools than their tasks require.",
+      title: "Excessive access",
+      text: "Permissions, connectors, APIs, and tool access can expand faster than governance reviews. Security and risk teams need to know whether an agent's access is still justified.",
     },
     {
-      title: "Fragmented ownership across security, risk, compliance, and technology",
-      text: "Each team may see part of the picture, with no single owner accountable for an agent's risk.",
+      title: "Behavior outside the approved purpose",
+      text: "Point-in-time reviews do not show whether an agent later accesses unusual data, uses an unexpected tool, violates policy, or behaves outside its approved workflow.",
     },
     {
-      title: "Slow or undocumented remediation",
-      text: "Fixes can stall, or be made without the review and evidence that oversight requires.",
+      title: "Unsafe remediation",
+      text: "Banks need to reduce risk without allowing uncontrolled changes to production systems. Remediation requires ownership, approval, evidence, and review before consequential changes are made.",
     },
   ],
-  solutionHeading: "How DefenseEye helps",
+  solutionHeading: "From agent visibility to accountable action.",
   capabilities: [
-    { title: "Discover", text: "Maintain visibility into agents, tools, permissions, owners, and data paths." },
-    { title: "Detect", text: "Identify risky behavior, control gaps, anomalous activity, and potential exposure." },
-    { title: "Govern", text: "Establish policies, approval gates, ownership, evidence, and audit trails." },
-    { title: "Remediate", text: "Support guided remediation with human review before any change." },
+    { title: "Discover", text: "Create visibility into AI agents, use cases, owners, permissions, tools, models, and data paths." },
+    { title: "Prioritize", text: "Translate technical findings into business-oriented risk so teams can focus on the issues that matter most." },
+    { title: "Govern", text: "Support policies, approval gates, ownership, exceptions, evidence, and audit trails across the AI-agent lifecycle." },
+    { title: "Guide remediation", text: "Prioritize corrective actions and support remediation with human review before consequential changes are made." },
   ],
-  productHeading: "DefyAIRisk by DefenseEye",
+  audienceHeading: "Built for teams responsible for safe AI adoption.",
+  audiences: [
+    "Banks and digital banks",
+    "Fintech and payments companies",
+    "Lending, fraud, AML, customer-service, and operations teams",
+    "CIO, CTO, CISO, enterprise-risk, compliance, model-risk, and AI-governance leaders",
+  ],
+  productHeading: "See AI-agent risk in one operational view.",
+  // The requested copy also said "monitor changes"; the public Defy page does not state that, so it is omitted.
   productText:
-    "DefyAIRisk by DefenseEye provides one register of AI agents, ranks risks in business terms, and supports guided remediation with human review before any change.",
-  offerHeading: "Start with a focused banking AI risk discovery call.",
+    "Defy helps teams maintain an AI-agent risk register, understand exposure in business terms, and coordinate guided remediation with human review before any change.",
+  productCta: "Explore the Defy Platform",
+  offerHeading: "Start with a focused banking AI-agent risk discovery call.",
   offerText:
-    "Map current AI-agent use cases, identify priority exposure, and define practical next steps for monitoring, governance, and guided remediation.",
+    "We will discuss your AI-agent use cases, access paths, ownership model, monitoring needs, and practical next steps for governed remediation.",
+  trustText:
+    "DefenseEye combines AI governance, cybersecurity, risk management, and implementation support for organizations operating in sensitive environments.",
 } as const;
