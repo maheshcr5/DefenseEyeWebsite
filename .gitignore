@@ -16,6 +16,9 @@ build/
 .env.development.local
 .env.test.local
 .env.production.local
+# Copies such as .env.backup.<date> hold the same secrets as .env.
+.env.*
+!.env.example
 
 # IDE and editor files
 .vscode/

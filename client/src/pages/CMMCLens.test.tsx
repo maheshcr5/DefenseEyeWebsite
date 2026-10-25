@@ -229,6 +229,7 @@ describe("CMMCLens GA4 buyer-intent click measurement", () => {
     expect(gtag).toHaveBeenCalledWith("event", "cmmclens_briefing_click", {
       cta_location: "hero",
       page_path: "/cmmclens",
+      send_to: "G-H22Q6LRNWC",
     });
   });
 
@@ -241,6 +242,7 @@ describe("CMMCLens GA4 buyer-intent click measurement", () => {
     expect(gtag).toHaveBeenCalledWith("event", "cmmclens_briefing_click", {
       cta_location: "closing",
       page_path: "/cmmclens",
+      send_to: "G-H22Q6LRNWC",
     });
   });
 
@@ -253,6 +255,7 @@ describe("CMMCLens GA4 buyer-intent click measurement", () => {
     expect(gtag).toHaveBeenCalledWith("event", "cmmclens_briefing_click", {
       cta_location: "header",
       page_path: "/cmmclens",
+      send_to: "G-H22Q6LRNWC",
     });
   });
 
@@ -278,6 +281,7 @@ describe("CMMCLens GA4 buyer-intent click measurement", () => {
     expect(gtag).toHaveBeenCalledWith("event", "cmmclens_marketplace_click", {
       cta_location: "hero",
       page_path: "/cmmclens",
+      send_to: "G-H22Q6LRNWC",
     });
   });
 
@@ -347,7 +351,7 @@ describe("CMMCLens GA4 buyer-intent click measurement", () => {
     expect(() => trackCmmcLensMarketplaceClick()).not.toThrow();
   });
 
-  it("includes only cta_location and page_path, with no personal or customer-entered fields", () => {
+  it("includes only cta_location, page_path, and send_to, with no personal or customer-entered fields", () => {
     const { gtag } = installGa4Window(acceptedAnalyticsConsent());
 
     trackCmmcLensBriefingClick("hero");
@@ -355,7 +359,7 @@ describe("CMMCLens GA4 buyer-intent click measurement", () => {
 
     for (const call of gtag.mock.calls) {
       const params = call[2] as Record<string, unknown>;
-      expect(Object.keys(params).sort()).toEqual(["cta_location", "page_path"]);
+      expect(Object.keys(params).sort()).toEqual(["cta_location", "page_path", "send_to"]);
     }
 
     const payload = JSON.stringify(gtag.mock.calls);

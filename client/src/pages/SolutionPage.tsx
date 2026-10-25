@@ -7,11 +7,22 @@ import RelatedResources from "@/components/RelatedResources";
 import NavBar from "@/components/NavBar";
 import { useSeo } from "@/hooks/useSeo";
 import { GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
+import { trackCtaClick } from "@/lib/analytics";
+import { intentFromCtaContext } from "@/lib/tracking";
 import { SOLUTION_PAGE_CONTENT } from "@shared/solutionPageContent";
 
 const MARKETPLACE_URL = "https://marketplace.microsoft.com/en-us/product/cmmc.defenseeye-cmmc-l2-continuous-compliance?tab=Overview";
 
 const pages = SOLUTION_PAGE_CONTENT;
+
+/** cta_click for a solution page; intent comes from the page or CTA destination when it is topic-specific. */
+export function trackSolutionCta(pagePath: string, ctaHref: string, name: string, location: "solution_hero" | "solution_supplier") {
+  trackCtaClick({
+    name,
+    location,
+    intent: location === "solution_supplier" || name === "capability_statement" ? "supplier" : intentFromCtaContext(pagePath, ctaHref),
+  });
+}
 
 const SOLUTION_ICONS: Record<string, typeof Bot> = {
   "/solutions/ai-transformation": Network,
@@ -83,12 +94,12 @@ export default function SolutionPage() {
           <h1 className="font-heading text-4xl md:text-5xl font-bold leading-tight mb-5 max-w-4xl">{config.title}</h1>
           <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed mb-8">{config.description}</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href={config.cta.href}>
+            <a href={config.cta.href} onClick={() => trackSolutionCta(location, config.cta.href, "solution_primary", "solution_hero")}>
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
                 {config.cta.label} <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </a>
-            <a href="/capability-statement">
+            <a href="/capability-statement" onClick={() => trackSolutionCta(location, "/capability-statement", "capability_statement", "solution_hero")}>
               <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
                 Request Capability Statement
               </Button>
@@ -165,7 +176,7 @@ export default function SolutionPage() {
                 DefenseEye supports advisory, implementation, subcontracting, staff augmentation, and platform-enabled consulting opportunities.
               </p>
             </div>
-            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackSolutionCta(location, GENERAL_DISCOVERY_BOOKING_URL, "supplier_opportunities", "solution_supplier")}>
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
                 Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
               </Button>

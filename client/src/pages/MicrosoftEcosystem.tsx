@@ -83,7 +83,7 @@ export default function MicrosoftEcosystem() {
             DefenseEye is positioned for organizations operating in Microsoft-centered environments, including Azure, Microsoft 365, Microsoft Security, Copilot, Azure Government, and GCC High patterns.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8">
-            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("microsoft_ecosystem_view", { action: "discuss_support" })}>
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "microsoft_ecosystem_hero" })}>
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">Discuss Microsoft Ecosystem Support <ArrowRight className="w-4 h-4 ml-2" /></Button>
             </a>
             <a href={CAPABILITY_STATEMENT_URL}>

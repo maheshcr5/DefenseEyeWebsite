@@ -7,6 +7,7 @@ import { useSeo } from "@/hooks/useSeo";
 import { CAPABILITY_STATEMENT_URL, COMPANY, GENERAL_DISCOVERY_BOOKING_URL } from "@/data/companyFacts";
 import { getStoredAttribution, trackConversion } from "@/lib/tracking";
 import { reportOpenAiAdsLeadCreated } from "@/lib/openaiAds";
+import { formIntentFromInquiryType, trackFormStartOnce, trackLeadFormSubmit } from "@/lib/analytics";
 
 export type ContactFormValues = {
   firstName: string;
@@ -39,19 +40,41 @@ export function releaseContactSubmission(guard: ContactSubmissionGuard) {
   if (!guard.completed) guard.inFlight = false;
 }
 
+export const CONTACT_INQUIRY_TYPES = [
+  "General inquiry",
+  "Supplier / procurement inquiry",
+  "Partnership / subcontracting",
+  "AI governance consulting",
+  "Microsoft Copilot readiness",
+  "CMMC readiness",
+  "Compliance automation",
+  "Cloud security",
+  "Staff augmentation",
+  "CMMCLens demo",
+  "Product support",
+  "Other",
+] as const;
+
+export function contactFormIntent(inquiryType: string) {
+  return formIntentFromInquiryType(inquiryType, CONTACT_INQUIRY_TYPES);
+}
+
 export async function submitContactInquiry(form: ContactFormValues) {
   if (!form.firstName || !form.lastName || !form.email || !form.company || !form.title || !form.inquiryType || !form.timeline || !form.message) {
     throw new Error("Contact form validation failed");
   }
 
+  const attribution = getStoredAttribution();
   const response = await fetch("/api/contact", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...form, attribution: getStoredAttribution() }),
+    body: JSON.stringify({ ...form, attribution }),
   });
   if (!response.ok) throw new Error("Contact form failed");
+  // Lead events fire only after the server has accepted the inquiry.
   reportOpenAiAdsLeadCreated();
   trackConversion("contact_form_submit", { form: "contact_page", inquiryType: form.inquiryType });
+  trackLeadFormSubmit("contact_page", contactFormIntent(form.inquiryType), attribution);
 }
 
 export default function ContactUs() {
@@ -261,6 +284,7 @@ function ContactFormSection() {
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<ContactFormErrors>({});
   const submissionGuardRef = useRef<ContactSubmissionGuard>({ inFlight: false, completed: false });
+  const formStartedRef = useRef(false);
   const formRef = useRef<HTMLFormElement>(null);
   const successRef = useRef<HTMLDivElement>(null);
   const [form, setForm] = useState<ContactFormValues>({
@@ -341,6 +365,7 @@ function ContactFormSection() {
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     const name = event.target.name as ContactField;
+    trackFormStartOnce(formStartedRef, "contact_page", contactFormIntent(name === "inquiryType" ? event.target.value : form.inquiryType));
     setForm((current) => ({ ...current, [name]: event.target.value }));
     if (fieldErrors[name]) setFieldErrors((current) => ({ ...current, [name]: undefined }));
   }
@@ -392,18 +417,9 @@ function ContactFormSection() {
                 {label("inquiryType", "Inquiry Type")}
                 <select {...fieldProps("inquiryType")} className={fieldClass("inquiryType")}>
                   <option value="">Select inquiry type...</option>
-                  <option>General inquiry</option>
-                  <option>Supplier / procurement inquiry</option>
-                  <option>Partnership / subcontracting</option>
-                  <option>AI governance consulting</option>
-                  <option>Microsoft Copilot readiness</option>
-                  <option>CMMC readiness</option>
-                  <option>Compliance automation</option>
-                  <option>Cloud security</option>
-                  <option>Staff augmentation</option>
-                  <option>CMMCLens demo</option>
-                  <option>Product support</option>
-                  <option>Other</option>
+                  {CONTACT_INQUIRY_TYPES.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
                 </select>
                 {fieldError("inquiryType")}
               </div>

@@ -45,6 +45,8 @@ export type HomePath = {
   description: string;
   cta: string;
   href: string;
+  /** Analytics intent recorded when a visitor chooses this path (see client/src/lib/analytics.ts). */
+  intent?: "secure_ai" | "cmmc" | "supplier";
 };
 
 // Starting points for the buyer groups the site has dedicated content for.
@@ -54,12 +56,14 @@ export const HOME_PATHS: HomePath[] = [
     description: "Evaluate AI use cases with data-access controls, traceability, monitoring, and human oversight.",
     cta: "See the financial services path",
     href: "/industries/financial-services-credit-unions",
+    intent: "secure_ai",
   },
   {
     audience: "Regulated teams adopting AI or Copilot",
     description: "Prioritize use cases and put governance, secure architecture, and oversight in place before agents go live.",
     cta: "Plan secure AI adoption",
     href: "/secure-ai-adoption",
+    intent: "secure_ai",
   },
   {
     audience: "Security and risk leaders",
@@ -72,11 +76,13 @@ export const HOME_PATHS: HomePath[] = [
     description: "Scope CUI, close NIST SP 800-171 gaps, and organize evidence with CCP-led support and CMMCLens.",
     cta: "Prepare for CMMC",
     href: "/industries/defense-industrial-base",
+    intent: "cmmc",
   },
   {
     audience: "Procurement teams and partners",
     description: "Review supplier identifiers, certifications, delivery models, and capability materials.",
     cta: "Review supplier facts",
     href: "/supplier-readiness",
+    intent: "supplier",
   },
 ];

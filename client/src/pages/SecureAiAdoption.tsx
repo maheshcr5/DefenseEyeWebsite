@@ -27,11 +27,10 @@ import { useSeo } from "@/hooks/useSeo";
 import { cn } from "@/lib/utils";
 import { getStoredAttribution, trackConversion } from "@/lib/tracking";
 import { reportOpenAiAdsLeadCreated } from "@/lib/openaiAds";
+import { hasAnalyticsConsent, sendGa4Event, trackCtaClick, trackFormStartOnce, trackLeadFormSubmit } from "@/lib/analytics";
 import { beginContactSubmission, completeContactSubmission, releaseContactSubmission, type ContactSubmissionGuard } from "./ContactUs";
 
 export const SECURE_AI_INQUIRY_TYPE = "Secure AI Adoption";
-const CONSENT_KEY = "de_cookie_consent";
-const CONSENT_VERSION = 2;
 
 export type SecureAiFunnelEventName =
   | "secure_ai_primary_cta_click"
@@ -103,43 +102,24 @@ export const DESIRED_TIMELINE_OPTIONS = [
 
 const WORK_EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-declare global {
-  interface Window {
-    __gaId?: string;
-    gtag?: (...args: unknown[]) => void;
-  }
-}
-
 export function hasSecureAiAnalyticsConsent() {
-  if (typeof window === "undefined") return false;
-  try {
-    const parsed = JSON.parse(window.localStorage.getItem(CONSENT_KEY) || "{}") as {
-      status?: string;
-      version?: number;
-      purposes?: { analytics?: boolean };
-    };
-
-    return parsed.status === "accepted" && parsed.version === CONSENT_VERSION && parsed.purposes?.analytics === true;
-  } catch {
-    return false;
-  }
+  return hasAnalyticsConsent();
 }
 
+/** Secure AI funnel events, kept alongside the site-wide cta_click / form_start / form_submit events. */
 export function trackSecureAiFunnelEvent(name: SecureAiFunnelEventName, detail: Record<string, string> = {}) {
-  if (!hasSecureAiAnalyticsConsent()) return;
-  if (typeof window.gtag !== "function" || !window.__gaId) return;
-
-  window.gtag("event", name, {
-    send_to: window.__gaId,
-    event_category: "secure_ai_funnel",
-    ...detail,
-  });
+  sendGa4Event(name, { event_category: "secure_ai_funnel", ...detail });
 }
 
 export function trackSecureAiFormStartOnce(startedRef: { current: boolean }) {
   if (startedRef.current) return;
-  startedRef.current = true;
+  trackFormStartOnce(startedRef, "secure_ai_adoption", "secure_ai");
   trackSecureAiFunnelEvent("secure_ai_form_start", { funnel_step: "form_start" });
+}
+
+export function trackSecureAiCta(name: "secure_ai_primary_cta_click" | "secure_ai_pilot_cta_click", ctaLocation: string, funnelStep: string) {
+  trackSecureAiFunnelEvent(name, { cta_location: ctaLocation, funnel_step: funnelStep });
+  trackCtaClick({ name: name.replace(/_click$/, ""), location: ctaLocation, intent: "secure_ai" });
 }
 
 export function validateSecureAiForm(form: SecureAiFormValues): SecureAiFormErrors {
@@ -163,6 +143,7 @@ export async function submitSecureAiInquiry(form: SecureAiFormValues) {
     throw new Error("Secure AI form validation failed");
   }
 
+  const attribution = getStoredAttribution();
   const response = await fetch("/api/contact", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -176,7 +157,7 @@ export async function submitSecureAiInquiry(form: SecureAiFormValues) {
       need: form.need,
       timeline: form.timeline,
       message: form.message || "Secure AI adoption inquiry",
-      attribution: getStoredAttribution(),
+      attribution,
     }),
   });
 
@@ -184,6 +165,7 @@ export async function submitSecureAiInquiry(form: SecureAiFormValues) {
   reportOpenAiAdsLeadCreated();
   trackConversion("contact_form_submit", { form: "secure_ai_adoption", inquiryType: SECURE_AI_INQUIRY_TYPE });
   trackSecureAiFunnelEvent("secure_ai_form_submit_success", { funnel_step: "submit_success" });
+  trackLeadFormSubmit("secure_ai_adoption", "secure_ai", attribution);
 }
 
 export default function SecureAiAdoption() {
@@ -218,7 +200,7 @@ export default function SecureAiAdoption() {
   }, []);
 
   const scrollToForm = () => {
-    trackSecureAiFunnelEvent("secure_ai_primary_cta_click", { cta_location: "hero", funnel_step: "primary_cta" });
+    trackSecureAiCta("secure_ai_primary_cta_click", "hero", "primary_cta");
     document.getElementById("secure-ai-consultation")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
@@ -384,7 +366,7 @@ export default function SecureAiAdoption() {
             </p>
             <a
               href="#secure-ai-consultation"
-              onClick={() => trackSecureAiFunnelEvent("secure_ai_pilot_cta_click", { cta_location: "readiness_sprint", funnel_step: "pilot_cta" })}
+              onClick={() => trackSecureAiCta("secure_ai_pilot_cta_click", "readiness_sprint", "pilot_cta")}
               className="mt-6 inline-flex items-center text-sm font-semibold text-primary underline-offset-4 hover:underline"
             >
               Request a Pilot Scoping Call <ArrowRight className="ml-2 size-4" />

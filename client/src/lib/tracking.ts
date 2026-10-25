@@ -1,3 +1,5 @@
+import { trackCtaClick, trackNewsletterFallback, type LeadIntent } from "@/lib/analytics";
+
 const UTM_KEYS = [
   "utm_source",
   "utm_medium",
@@ -44,6 +46,8 @@ export type ConversionName =
   | "cmmc_readiness_view"
   | "ai_governance_view"
   | "attacksense_view"
+  | "attacksense_click"
+  | "supplier_readiness_click"
   | "attacksense_docs_view"
   | "attacksense_docs_click"
   | "attacksense_guide_open"
@@ -74,11 +78,14 @@ export function captureUtmParameters() {
 
   // A full page load from another page on this site (for example following a plain
   // link to /contact) keeps the session's landing page and external referrer.
-  // Campaign values on the new URL are merged in; only an arrival from another
-  // site, or a first visit, starts a fresh record.
+  // Campaign values on the new URL are merged in. A direct load with no referrer and
+  // no campaign values (typed URL, bookmark, reload) also keeps the record, as GA4
+  // does for direct traffic. Only an arrival from another site, a new campaign link,
+  // or a first visit starts a fresh record.
   const referrer = document.referrer;
   const stored = sessionStorage.getItem("defenseeye_utm");
-  if (stored && isSameSiteReferrer(referrer)) {
+  const directWithoutCampaign = !referrer && Object.keys(captured).length === 0;
+  if (stored && (isSameSiteReferrer(referrer) || directWithoutCampaign)) {
     if (Object.keys(captured).length === 0) return;
     let previous: Record<string, string> = {};
     try {
@@ -117,6 +124,63 @@ export function getStoredAttribution() {
   }
 }
 
+// Conversions that are deliberate CTA clicks, forwarded to GA4 as cta_click. A fixed
+// intent applies only where the CTA itself is topic-specific; generic CTAs (consultation,
+// landing page, home path, datasheet) take their intent from where they sit or lead.
+// Page-view style conversions are not forwarded: GA4 already records page_view.
+const CTA_CONVERSIONS: Partial<Record<ConversionName, { intent?: LeadIntent; product?: string }>> = {
+  home_path_click: {},
+  consultation_click: {},
+  landing_page_cta_click: {},
+  datasheet_download: {},
+  portfolio_ai_click: { intent: "secure_ai" },
+  portfolio_cmmc_click: { intent: "cmmc" },
+  cmmclens_click: { intent: "cmmc", product: "cmmclens" },
+  cmmclens_demo_click: { intent: "cmmc", product: "cmmclens" },
+  attacksense_click: { intent: "attacksense", product: "attacksense" },
+  attacksense_docs_click: { intent: "attacksense", product: "attacksense" },
+  attacksense_guide_open: { intent: "attacksense", product: "attacksense" },
+  attacksense_guide_download: { intent: "attacksense", product: "attacksense" },
+  supplier_readiness_click: { intent: "supplier" },
+  supplier_inquiry_click: { intent: "supplier" },
+  partners_email_click: { intent: "supplier" },
+  capability_statement_download: { intent: "supplier" },
+  enterprise_email_click: { intent: "contact" },
+  email_click: { intent: "contact" },
+  phone_click: { intent: "contact" },
+  support_email_click: {},
+};
+
+/** Intent implied by a CTA's location or destination, for CTAs that are not topic-specific themselves. */
+export function intentFromCtaContext(...hints: unknown[]): LeadIntent | undefined {
+  const text = hints.filter((hint): hint is string => typeof hint === "string").join(" ").toLowerCase();
+  if (/cmmc/.test(text)) return "cmmc";
+  if (/secure[-_]ai/.test(text)) return "secure_ai";
+  if (/ai[-_]governance/.test(text)) return "ai_governance";
+  if (/attacksense/.test(text)) return "attacksense";
+  if (/supplier/.test(text)) return "supplier";
+  if (/microsoft/.test(text)) return "microsoft";
+  return undefined;
+}
+
+function forwardToGa4(name: ConversionName, detail: Record<string, unknown>) {
+  if (name === "newsletter_unavailable_cta_click") {
+    trackNewsletterFallback(typeof detail.location === "string" ? detail.location : "unspecified");
+    return;
+  }
+  const cta = CTA_CONVERSIONS[name];
+  if (!cta) return;
+  const datasheet = typeof detail.datasheet === "string" ? detail.datasheet : undefined;
+  const location = typeof detail.location === "string" ? detail.location : datasheet ? `datasheet_${datasheet}` : "unspecified";
+  trackCtaClick({
+    name: typeof detail.cta === "string" ? detail.cta : name.replace(/_click$/, ""),
+    location,
+    intent: (detail.intent as LeadIntent | undefined) ?? cta.intent ?? intentFromCtaContext(detail.path, location, datasheet),
+    audience: typeof detail.audience === "string" ? detail.audience : undefined,
+    product: cta.product ?? (datasheet === "cmmclens" ? "cmmclens" : undefined),
+  });
+}
+
 export function trackConversion(name: ConversionName, detail: Record<string, unknown> = {}) {
   if (typeof window === "undefined") return;
   const payload = {
@@ -127,6 +191,8 @@ export function trackConversion(name: ConversionName, detail: Record<string, unk
     path: window.location.pathname,
   };
 
+  // In-page hook for integrations. It is not pushed to the GA4 dataLayer: gtag.js ignores
+  // plain dataLayer objects, so GA4 receives only the explicit events sent below.
   window.dispatchEvent(new CustomEvent("defenseeye:conversion", { detail: payload }));
-  (window as unknown as { dataLayer?: unknown[] }).dataLayer?.push(payload);
+  forwardToGa4(name, detail);
 }
