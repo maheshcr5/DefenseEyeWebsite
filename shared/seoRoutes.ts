@@ -314,7 +314,7 @@ const TIER_1_ROUTE_DEFINITIONS: SeoRoute[] = [
     path: BANKING_AI_RISK_PATH,
     title: "AI-Agent Risk Management for Banks and Fintechs | DefenseEye",
     description:
-      "DefenseEye helps banks and fintechs discover AI-agent exposure, prioritize business risk, govern approvals, and coordinate guided remediation.",
+      "DefenseEye helps banks and fintechs discover AI-agent exposure, prioritize business risk, govern approvals, and coordinate guided remediation with human review.",
     h1: BANKING_AI_RISK_CONTENT.h1,
     eyebrow: BANKING_AI_RISK_CONTENT.eyebrow,
     summary: BANKING_AI_RISK_CONTENT.intro,
@@ -336,8 +336,8 @@ const TIER_1_ROUTE_DEFINITIONS: SeoRoute[] = [
       { heading: BANKING_AI_RISK_CONTENT.productHeading, body: BANKING_AI_RISK_CONTENT.productText },
       {
         heading: BANKING_AI_RISK_CONTENT.engagementHeading,
-        body: `${BANKING_AI_RISK_CONTENT.engagementIntro} ${BANKING_AI_RISK_CONTENT.engagementTopicsIntro}`,
-        items: [...BANKING_AI_RISK_CONTENT.engagementTopics],
+        body: BANKING_AI_RISK_CONTENT.engagementIntro,
+        items: [...BANKING_AI_RISK_CONTENT.engagementTopics, BANKING_AI_RISK_CONTENT.engagementClose],
       },
       {
         heading: BANKING_AI_RISK_CONTENT.trustHeading,

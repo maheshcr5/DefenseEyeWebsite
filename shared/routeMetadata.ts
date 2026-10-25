@@ -36,7 +36,7 @@ export const ROUTE_METADATA: Record<string, RouteMetadata> = {
   "/solutions/banking-ai-agent-risk": {
     title: "AI-Agent Risk Management for Banks and Fintechs | DefenseEye",
     description:
-      "DefenseEye helps banks and fintechs discover AI-agent exposure, prioritize business risk, govern approvals, and coordinate guided remediation.",
+      "DefenseEye helps banks and fintechs discover AI-agent exposure, prioritize business risk, govern approvals, and coordinate guided remediation with human review.",
   },
   "/solutions/ai-governance": {
     title: "AI Governance & NIST AI RMF Consulting | DefenseEye",

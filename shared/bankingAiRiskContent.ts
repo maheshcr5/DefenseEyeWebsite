@@ -4,7 +4,8 @@
 // (one register of AI agents, risk ranked in business terms, guided remediation with human review,
 // sign-in with Microsoft or Google and administrator-approved access).
 // "DefyAIRisk" is the public product name; no shorter name is approved. Monitoring is not claimed
-// because the public product page does not state it.
+// because the public product page does not state it. Production readiness is not approved, so
+// DefyAIRisk is not called a platform or described as production-ready, operational, or continuous.
 // Do not add customers, certifications, integrations, pricing, results, or regulatory guarantees.
 
 export const BANKING_AI_RISK_PATH = "/solutions/banking-ai-agent-risk";
@@ -18,7 +19,7 @@ export const BANKING_AI_RISK_CONTENT = {
   intro:
     "DefenseEye helps banks and regulated financial institutions discover AI agents, rank their risk in business terms, govern ownership and approvals, and support guided remediation with human review.",
   primaryCta: "Request a Banking AI Risk Discovery Call",
-  secondaryCta: "See the DefenseEye AI-Agent Risk Platform",
+  secondaryCta: "Explore DefyAIRisk",
   painHeading: "AI adoption is moving faster than risk visibility.",
   pains: [
     {
@@ -30,8 +31,8 @@ export const BANKING_AI_RISK_CONTENT = {
       text: "Permissions, connectors, APIs, and tool access can expand faster than governance reviews. Security and risk teams need to know whether an agent's access is still justified.",
     },
     {
-      title: "Behavior outside the approved purpose",
-      text: "Point-in-time reviews do not show whether an agent later accesses unusual data, uses an unexpected tool, violates policy, or behaves outside its approved workflow.",
+      title: "Unclear ownership and approval gaps",
+      text: "Risk, security, compliance, and technology teams may not share one current view of who owns each agent, which decisions were approved, or what evidence supports them.",
     },
     {
       title: "Unsafe remediation",
@@ -63,36 +64,33 @@ export const BANKING_AI_RISK_CONTENT = {
     "Lending, fraud, AML, customer-service, and operations teams",
     "CIO, CTO, CISO, enterprise-risk, compliance, model-risk, and AI-governance leaders",
   ],
-  productHeading: "See AI-agent risk in one operational view.",
+  productHeading: "See AI-agent risk in one view.",
   productText:
-    "DefyAIRisk is DefenseEye's AI-agent risk platform. It helps teams maintain an up-to-date view of AI-agent risk in one register, understand exposure in business terms, and coordinate guided remediation with human review before any change.",
-  productCta: "Explore the DefyAIRisk Platform",
+    "DefyAIRisk is DefenseEye's AI-agent risk product. It is designed to help teams keep one register of AI agents, understand exposure in business terms, and coordinate guided remediation with human review before any change.",
+  productCta: "Explore DefyAIRisk",
   engagementHeading: "Know what you will leave with.",
-  engagementIntro:
-    "You will leave the discovery call with a recommended next step for your highest-risk AI use cases: a focused assessment, a pilot, or a product demonstration.",
-  engagementTopicsIntro:
-    "If a focused assessment is the right fit, we will agree its scope and outputs with you. Topics to scope together include:",
+  engagementIntro: "The discovery call is a conversation about your situation. We will discuss:",
   engagementTopics: [
-    "AI-agent and use-case inventory",
-    "Review of owners, permissions, tools, and data paths",
-    "Business-oriented risk and control-gap summary",
-    "Governance and approval-gap findings",
-    "Prioritized remediation backlog",
-    "Recommended pilot or implementation path",
+    "Current AI-agent use cases",
+    "Ownership and approval questions",
+    "Access, tools, and data-path concerns where relevant",
+    "Governance and evidence needs",
+    "Whether a focused assessment, pilot, or product discussion is appropriate",
   ],
+  engagementClose: "Together, we will determine the most useful next step for your organization.",
   trustHeading: "Evaluate DefenseEye with confidence.",
   trustPoints: [
     {
-      title: "People stay in control",
-      text: "Guided remediation keeps consequential changes subject to human review and approval before they are made.",
+      title: "Human review before change",
+      text: "Consequential changes receive human review before they are made.",
     },
     {
-      title: "Controlled platform access",
-      text: "DefyAIRisk users sign in with a Microsoft or Google work account, and an administrator approves each new user's access request.",
+      title: "Controlled access",
+      text: "DefyAIRisk access uses Microsoft or Google sign-in, and an administrator approves each new user.",
     },
     {
-      title: "What we do not claim",
-      text: "DefenseEye is not a certification body or regulator. It does not grant regulatory approval, promise specific outcomes, or make uncontrolled changes to your systems.",
+      title: "Not a certification body",
+      text: "DefenseEye is not a certification body or regulator, and it does not grant regulatory approval.",
     },
   ],
   faqHeading: "Questions banking teams ask",
@@ -115,7 +113,7 @@ export const BANKING_AI_RISK_CONTENT = {
     {
       question: "What happens during the first banking AI-agent risk discovery call?",
       answer:
-        "We discuss where AI agents are being used, what access and ownership questions matter most, and whether a focused assessment, pilot, or product demonstration is the right next step.",
+        "We discuss where AI agents are being used, what access and ownership questions matter most, and whether a focused assessment, pilot, or product discussion is the right next step.",
     },
     {
       question: "Is DefenseEye a certification body or regulator?",
@@ -125,12 +123,12 @@ export const BANKING_AI_RISK_CONTENT = {
     {
       question: "How does DefenseEye relate to DefyAIRisk?",
       answer:
-        "DefyAIRisk is DefenseEye's AI-agent risk platform. It provides one register of AI agents, ranks risks in business terms, and supports guided remediation with human review before any change. DefenseEye also provides advisory and implementation support for AI governance, cybersecurity, and risk management.",
+        "DefyAIRisk is DefenseEye's AI-agent risk product. It is designed to provide one register of AI agents, rank risks in business terms, and support guided remediation with human review before any change. DefenseEye also provides advisory and implementation support for AI governance, cybersecurity, and risk management.",
     },
   ],
   offerHeading: "Start with a focused conversation about your highest-risk AI use cases.",
   offerText:
-    "We will discuss where AI agents are being used, what access and ownership questions matter most, and whether a focused assessment, pilot, or product demonstration is the right next step.",
+    "We will discuss where AI agents are being used, what access and ownership questions matter most, and whether a focused assessment, pilot, or product discussion is the right next step.",
   trustText:
     "DefenseEye combines AI governance, cybersecurity, risk management, and implementation support for organizations operating in sensitive environments.",
 } as const;

@@ -44,7 +44,7 @@ Existing funnel events stay unchanged alongside these: `secure_ai_primary_cta_cl
 
 **CTA `intent`** values are `secure_ai`, `ai_governance`, `cmmc`, `supplier`, `attacksense`, `microsoft`, `banking`, and `contact`. Intent is set only when the CTA itself is topic-specific, or when its location or destination is. For example:
 - **`cmmc`:** "Assess CMMC Readiness", CMMCLens CTAs, the homepage CMMC path card, and CTAs on CMMC landing pages.
-- **`banking`:** CTAs on `/solutions/banking-ai-agent-risk`. The discovery CTA (`cta_name=banking_ai_risk_discovery_call`) opens the contact form with `form_intent=banking_ai_risk_discovery`. The DefyAIRisk platform CTAs (`cta_name=defyairisk_platform`) also send `product=defyairisk`.
+- **`banking`:** CTAs on `/solutions/banking-ai-agent-risk`. The discovery CTA (`cta_name=banking_ai_risk_discovery_call`) opens the contact form with `form_intent=banking_ai_risk_discovery`. The "Explore DefyAIRisk" CTAs (`cta_name=defyairisk_platform`, a name kept for reporting continuity) also send `product=defyairisk`.
 - **No intent:** visiting a CMMC page alone sets no intent.
 
 Page-view style conversions (`*_view`) are not sent to GA4, because GA4 already records `page_view`.

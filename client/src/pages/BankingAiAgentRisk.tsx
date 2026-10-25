@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, BarChart3, CheckCircle2, ExternalLink, Eye, KeyRound, LockKeyhole, Search, ShieldAlert, ShieldCheck, UserCheck, Wrench } from "lucide-react";
+import { ArrowRight, BarChart3, CheckCircle2, ExternalLink, Eye, KeyRound, LockKeyhole, Search, ShieldAlert, ShieldCheck, UserCheck, Users, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
@@ -19,7 +19,7 @@ export function trackBankingCta(target: "discovery" | "platform", location: Bank
   );
 }
 
-const PAIN_ICONS = [Eye, KeyRound, Activity, ShieldAlert];
+const PAIN_ICONS = [Eye, KeyRound, Users, ShieldAlert];
 const CAPABILITY_ICONS = [Search, BarChart3, ShieldCheck, Wrench];
 const TRUST_ICONS = [UserCheck, LockKeyhole, ShieldCheck];
 
@@ -142,9 +142,8 @@ export default function BankingAiAgentRisk() {
 
         <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-engagement-heading">
           <h2 id="banking-engagement-heading" className="mb-3 font-heading text-2xl font-bold text-foreground">{content.engagementHeading}</h2>
-          <p className="mb-4 max-w-3xl leading-relaxed text-foreground">{content.engagementIntro}</p>
-          <p className="mb-5 max-w-3xl leading-relaxed text-muted-foreground">{content.engagementTopicsIntro}</p>
-          <ul className="grid gap-3 sm:grid-cols-2">
+          <p className="mb-5 max-w-3xl leading-relaxed text-muted-foreground">{content.engagementIntro}</p>
+          <ul className="mb-6 grid gap-3 sm:grid-cols-2">
             {content.engagementTopics.map((topic) => (
               <li key={topic} className="flex items-start gap-3 text-foreground">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
@@ -152,6 +151,7 @@ export default function BankingAiAgentRisk() {
               </li>
             ))}
           </ul>
+          <p className="max-w-3xl font-medium leading-relaxed text-foreground">{content.engagementClose}</p>
         </section>
 
         <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-trust-heading">

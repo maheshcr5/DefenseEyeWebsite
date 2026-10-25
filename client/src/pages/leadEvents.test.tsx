@@ -225,7 +225,7 @@ describe("banking AI-agent risk page", () => {
     expect(html.match(/<ol[\s>]/g)).toHaveLength(1);
     for (const topic of BANKING_AI_RISK_CONTENT.engagementTopics) expect(text).toContain(topic);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.engagementIntro);
-    expect(text).toContain(BANKING_AI_RISK_CONTENT.engagementTopicsIntro);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.engagementClose);
     for (const point of BANKING_AI_RISK_CONTENT.trustPoints) expect(text).toContain(`${point.title} ${point.text}`);
     for (const faq of BANKING_AI_RISK_CONTENT.faqs) expect(text).toContain(`${faq.question} ${faq.answer}`);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.productText);
@@ -255,7 +255,7 @@ describe("banking AI-agent risk page", () => {
 
   it("makes no unsupported claims", () => {
     // The disclaimers deny certification and regulator status; check they are present, then check everything else.
-    const disclaimers = [BANKING_AI_RISK_CONTENT.trustPoints[2].text, BANKING_AI_RISK_CONTENT.faqs[4].question, BANKING_AI_RISK_CONTENT.faqs[4].answer];
+    const disclaimers = [BANKING_AI_RISK_CONTENT.trustPoints[2].title, BANKING_AI_RISK_CONTENT.trustPoints[2].text,BANKING_AI_RISK_CONTENT.faqs[4].question, BANKING_AI_RISK_CONTENT.faqs[4].answer];
     for (const disclaimer of disclaimers) expect(text).toContain(disclaimer);
     const claims = disclaimers.reduce((rest, disclaimer) => rest.split(disclaimer).join(" "), text);
     expect(claims).not.toMatch(/guarantee|certified|certification|zero[- ]risk|first abu dhabi|\bFAB\b|autonomous|fully automated|pricing|\$\d|case stud|our customers|trusted by|\bSOC ?2\b|\bISO\b|\bcompliant\b|prevents? all/i);
@@ -265,6 +265,25 @@ describe("banking AI-agent risk page", () => {
     // "DefyAIRisk" is the only approved product name.
     expect(text).not.toMatch(/\bDefy\b(?!AIRisk)/);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.productCta);
+    // Production readiness is not approved: no "platform", monitoring, detection, or readiness language in the page copy.
+    expect(JSON.stringify(BANKING_AI_RISK_CONTENT)).not.toMatch(/platform|monitor|behavio|detect|anomal|real[- ]time|continuous|production[- ]ready|enterprise[- ]ready|operational|demonstration/i);
+  });
+
+  it("maps every pain point to a verified capability and keeps the first engagement to discussion topics", () => {
+    expect(BANKING_AI_RISK_CONTENT.pains.map((pain) => pain.title)).toEqual([
+      "Unknown exposure",
+      "Excessive access",
+      "Unclear ownership and approval gaps",
+      "Unsafe remediation",
+    ]);
+    expect(BANKING_AI_RISK_CONTENT.engagementIntro).toMatch(/We will discuss/);
+    expect(BANKING_AI_RISK_CONTENT.engagementClose).toBe("Together, we will determine the most useful next step for your organization.");
+    expect(JSON.stringify(BANKING_AI_RISK_CONTENT.engagementTopics)).not.toMatch(/inventory|exposure map|risk register|report|backlog|pilot plan/i);
+    expect(BANKING_AI_RISK_CONTENT.trustPoints.map((point) => point.text)).toEqual([
+      "Consequential changes receive human review before they are made.",
+      "DefyAIRisk access uses Microsoft or Google sign-in, and an administrator approves each new user.",
+      "DefenseEye is not a certification body or regulator, and it does not grant regulatory approval.",
+    ]);
   });
 
   it("sends exactly one cta_click per CTA interaction with banking intent and no personal data", () => {
