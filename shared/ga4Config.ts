@@ -34,7 +34,7 @@ export function findUnresolvedEnvPlaceholders(html: string): string[] {
 /**
  * Checks a built index.html. The GA4 placeholder must be resolved to the configured ID,
  * which must appear in exactly one loader assignment. Other unresolved placeholders are
- * returned as warnings because those integrations (for example Umami) are optional.
+ * returned as warnings because they belong to optional integrations, not GA4.
  */
 export function checkBuiltIndexHtml(html: string, expectedId: string): { errors: string[]; warnings: string[] } {
   const errors: string[] = [];

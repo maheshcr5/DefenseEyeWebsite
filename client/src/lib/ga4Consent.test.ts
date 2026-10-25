@@ -244,6 +244,11 @@ describe("third-party trackers in the page source", () => {
     expect(html.match(/analytics\.ahrefs\.com\/analytics\.js/g)).toHaveLength(1);
   });
 
+  it("has no Umami or other analytics loader outside the consent-gated block", () => {
+    expect(html).not.toMatch(/umami/i);
+    expect(html).not.toMatch(/VITE_ANALYTICS_/);
+  });
+
   it("contains no Instantly/RB2B visitor-identification tracker in source or build output", () => {
     expect(html).not.toMatch(VISITOR_ID_PATTERN);
     const roots = ["client/src", "dist/public"].map((dir) => path.resolve(process.cwd(), dir)).filter((dir) => existsSync(dir));

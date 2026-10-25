@@ -24,8 +24,8 @@
   - **Cookies, set by OpenAI's SDK after consent:** `__oaiq_consent` and `__obref` on defenseeye.ai.
   - **What it sends:** to `bzr.openai.com/v1/sdk/events`. Every page load sends SDK `openai::sdk_init` and `oai::diagnostic` events, with fields `id`, `type`, `timestamp_ms`, `source_url` (the page URL, including UTM parameters), `test_session_id`, and `data`. After a successful contact or Secure AI submission, it sends one `lead_created` with only `{ type: "customer_action" }`.
   - **Personal data:** none of the form's name, email, company, phone, or message text was found in its requests. The site never passes user data to the SDK, so no hashed matching is enabled.
-- **Instantly / RB2B visitor identification** (`r2.leadsy.ai/tag.js`, which injected a `cloudfront.net` tracker) was removed on 2026-10-24. Do not add visitor-identification tools without a separate consent purpose and privacy-policy update.
-- **Umami** has a loader in `client/index.html` that runs without consent. It is dormant: production's `VITE_ANALYTICS_WEBSITE_ID` is the `.env.example` placeholder, so the loader exits. Before configuring Umami, decide whether it needs consent and update the privacy policy.
+- **Instantly / RB2B visitor identification** (`r2.leadsy.ai/tag.js`, which injected the `ddwl4m2hdecbv.cloudfront.net` RB2B tracker) was removed on 2026-10-24. The site no longer loads any visitor-identification or CloudFront tracking script. Do not add visitor-identification tools without a separate consent purpose and privacy-policy update.
+- **Umami** is not used. The site had a dormant Umami loader in `client/index.html` that would have run without consent if `VITE_ANALYTICS_*` were ever configured. On 2026-10-25 it was confirmed unconfigured (the website ID was the template placeholder, `analytics.defenseeye.ai` has no DNS record, and nothing runs Umami on the VPS). It was then removed along with its `.env.example` and DEPLOY.md entries. `/umami` on the site still returns 410 Gone. The production `.env` still has two unused `VITE_ANALYTICS_*` placeholder lines, which nothing reads; removing them is optional server cleanup.
 
 ## Events
 
@@ -65,6 +65,14 @@ Click IDs, landing page, and referrer are not sent as event parameters. They go 
 ## Personal data
 
 GA4 never receives names, email addresses, phone numbers, organizations, job titles, or message text. Tests enforce this in `client/src/lib/analytics.test.ts` and `client/src/pages/leadEvents.test.tsx`.
+
+### Open business and legal confirmations
+
+The repository does not establish these facts; they need business or legal confirmation.
+
+- **Cookie retention:** how long `_ga`, `_ga_H22Q6LRNWC`, `__oaiq_consent`, and `__obref` persist. Google's and OpenAI's scripts set these lifetimes, and the privacy policy does not state them.
+- **Historical pre-consent activity:** Ahrefs Web Analytics (from 2026-04-04) and the Instantly/RB2B tag (from 2026-04-07) loaded before consent until this change is deployed. Decide whether any follow-up is needed, for example closing the Instantly account or pixel, or a vendor data-deletion request.
+- **Privacy policy detail:** whether the policy should list cookie names, lifetimes, and each vendor's role in more detail than §6 does now.
 
 ## Lead events: who sends what
 
