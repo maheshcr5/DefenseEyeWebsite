@@ -298,7 +298,7 @@ export default function Home() {
           </p>
           <a href="/secure-ai-adoption#secure-ai-consultation" onClick={() => trackConversion("consultation_click", { location: "home_midpage_secure_ai" })}>
             <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
-              Request a Secure AI Readiness Consultation <ArrowRight className="ml-2 size-4" />
+              Request an AI Risk & Governance Assessment <ArrowRight className="ml-2 size-4" />
             </Button>
           </a>
         </div>

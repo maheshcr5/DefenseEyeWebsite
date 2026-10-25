@@ -25,7 +25,9 @@ describe("DefenseEye homepage positioning", () => {
     const html = renderToStaticMarkup(<Home />);
 
     expect(html).toContain('href="/secure-ai-adoption#secure-ai-consultation"');
-    expect(html).toContain("Request an AI Risk &amp; Governance Assessment");
+    // Hero and mid-page ("Start with the use case, data, and controls") CTAs use the same assessment label.
+    expect(html.match(/Request an AI Risk &amp; Governance Assessment/g)).toHaveLength(2);
+    expect(html).not.toContain("Request a Secure AI Readiness Consultation");
     expect(html).toContain("See How DefenseEye Helps");
     expect(html).toContain("The initial conversation can clarify priority use cases");
     expect(html).not.toContain("Explore CMMC Readiness");
