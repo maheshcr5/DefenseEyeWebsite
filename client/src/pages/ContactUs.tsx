@@ -8,6 +8,7 @@ import { CAPABILITY_STATEMENT_URL, COMPANY, GENERAL_DISCOVERY_BOOKING_URL } from
 import { getStoredAttribution, trackConversion } from "@/lib/tracking";
 import { reportOpenAiAdsLeadCreated } from "@/lib/openaiAds";
 import { formIntentFromInquiryType, trackFormStartOnce, trackLeadFormSubmit } from "@/lib/analytics";
+import { BANKING_FORM_CONTENT } from "@shared/bankingAiRiskContent";
 
 export type ContactFormValues = {
   firstName: string;
@@ -254,6 +255,19 @@ export function inquiryTypeFromParam(param: string | null): string | null {
   return param ? INQUIRY_PARAM_MAP[param] ?? null : null;
 }
 
+/** Form heading, helper, and success copy; visitors arriving from the banking discovery CTA see banking-specific copy. */
+export function contactFormCopy(presetInquiry: string | null) {
+  if (presetInquiry === BANKING_FORM_CONTENT.inquiryType) {
+    return { heading: BANKING_FORM_CONTENT.heading, helper: BANKING_FORM_CONTENT.helper, success: BANKING_FORM_CONTENT.success };
+  }
+  return {
+    heading: "Tell us what you need",
+    helper:
+      "Use this form for supplier, partnership, subcontracting, AI governance, Microsoft Copilot, cybersecurity, cloud security, CMMC, compliance automation, product support, or CMMCLens inquiries.",
+    success: "DefenseEye will review your inquiry and respond through the appropriate enterprise or partner channel.",
+  };
+}
+
 type ContactField = keyof ContactFormValues;
 export type ContactFormErrors = Partial<Record<ContactField, string>>;
 
@@ -301,9 +315,18 @@ function ContactFormSection() {
     phone: "",
   });
 
+  // The inquiry preset from the link (?inquiry=...). The banking discovery CTA lands directly on the form.
+  const [presetInquiry, setPresetInquiry] = useState<string | null>(null);
+  const copy = contactFormCopy(presetInquiry);
+
   useEffect(() => {
     const inquiryType = inquiryTypeFromParam(new URLSearchParams(window.location.search).get("inquiry"));
-    if (inquiryType) setForm((current) => ({ ...current, inquiryType }));
+    if (!inquiryType) return;
+    setForm((current) => ({ ...current, inquiryType }));
+    setPresetInquiry(inquiryType);
+    if (inquiryType === BANKING_FORM_CONTENT.inquiryType) {
+      requestAnimationFrame(() => document.getElementById("inquiry-form")?.scrollIntoView({ block: "start" }));
+    }
   }, []);
 
   // Move focus to the confirmation so keyboard and screen-reader users know the form was sent.
@@ -375,14 +398,13 @@ function ContactFormSection() {
   const errorCount = Object.values(fieldErrors).filter(Boolean).length;
 
   return (
-    <section className="py-16 px-4 section-light">
+    <section id="inquiry-form" className="py-16 px-4 section-light scroll-mt-16">
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
-          <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-3">Inquiry Form</p>
-          <h2 className="font-heading text-3xl font-bold mb-3">Tell us what you need</h2>
-          <p className="text-muted-foreground leading-relaxed">
-            Use this form for supplier, partnership, subcontracting, AI governance, Microsoft Copilot, cybersecurity, cloud security, CMMC, compliance automation, product support, or CMMCLens inquiries.
-          </p>
+          {/* Same darker brand green as the industry-page link list: text-primary is 3.68:1 on this light section. */}
+          <p className="text-xs uppercase tracking-widest text-[oklch(0.50_0.16_140)] font-semibold mb-3">Inquiry Form</p>
+          <h2 className="font-heading text-3xl font-bold mb-3">{copy.heading}</h2>
+          <p className="text-muted-foreground leading-relaxed">{copy.helper}</p>
         </div>
         {submitted ? (
           <div
@@ -392,7 +414,7 @@ function ContactFormSection() {
             className="bg-card/50 border border-border/40 rounded-sm p-8 text-center focus:outline-none focus:ring-2 focus:ring-primary/50"
           >
             <h3 className="font-heading text-xl font-bold mb-2">Thank you.</h3>
-            <p className="text-sm text-muted-foreground">DefenseEye will review your inquiry and respond through the appropriate enterprise or partner channel.</p>
+            <p className="text-sm text-muted-foreground">{copy.success}</p>
           </div>
         ) : (
           <form ref={formRef} onSubmit={handleSubmit} noValidate className="bg-card/50 border border-border/40 rounded-sm p-6 space-y-5">

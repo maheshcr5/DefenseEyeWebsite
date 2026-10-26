@@ -13,12 +13,22 @@ export const DEFY_AI_RISK_URL = "https://defy.defenseeye.ai";
 /** Existing contact form, preset to the banking discovery inquiry (see ContactUs INQUIRY_PARAM_MAP). */
 export const BANKING_DISCOVERY_HREF = "/contact?inquiry=banking-ai-risk-discovery";
 
+/** Contact-form copy shown when a visitor arrives from a banking discovery CTA. No response time or outcome is promised. */
+export const BANKING_FORM_CONTENT = {
+  inquiryType: "Banking AI risk discovery",
+  heading: "Request a Banking AI-Agent Risk Discovery Call",
+  helper: "Tell us where AI agents are being used and which risk, governance, ownership, or approval questions you need to answer.",
+  success: "Your request was submitted successfully. We will review the information provided and determine the most useful next conversation.",
+} as const;
+
 export const BANKING_AI_RISK_CONTENT = {
   eyebrow: "AI-agent risk management for banks and regulated financial institutions",
   h1: "Know which AI agents put your bank at risk.",
   intro:
-    "DefenseEye helps banks and regulated financial institutions discover AI agents, rank their risk in business terms, govern ownership and approvals, and support guided remediation with human review.",
+    "DefenseEye helps banks and regulated financial institutions discover AI agents, rank their risk in business terms, review governance gaps, and coordinate practical next steps with appropriate human oversight.",
   primaryCta: "Request a Banking AI Risk Discovery Call",
+  primaryCtaSupport:
+    "Discuss your current AI-agent use cases, ownership questions, access concerns, and governance priorities with a DefenseEye specialist.",
   secondaryCta: "Explore DefyAIRisk",
   painHeading: "AI adoption is moving faster than risk visibility.",
   pains: [
@@ -71,16 +81,14 @@ export const BANKING_AI_RISK_CONTENT = {
   productText:
     "DefyAIRisk is DefenseEye's AI-agent risk product. It is designed to help teams keep one register of AI agents, understand exposure in business terms, and coordinate guided remediation with human review before any change.",
   productCta: "Explore DefyAIRisk",
-  engagementHeading: "Know what you will leave with.",
-  engagementIntro: "The discovery call is a conversation about your situation. We will discuss:",
-  engagementTopics: [
-    "Current AI-agent use cases",
-    "Ownership and approval questions",
-    "Access, tools, and data-path concerns where relevant",
-    "Governance and evidence needs",
-    "Whether a focused assessment, pilot, or product discussion is appropriate",
+  // The discovery call is a conversation: no report, inventory, register, roadmap, timeline, or other deliverable is promised.
+  discoveryCallHeading: "What happens in the discovery call?",
+  discoveryCallSteps: [
+    "Discuss your current AI-agent use cases and highest-priority concerns.",
+    "Identify ownership, approval, access, governance, and evidence questions.",
+    "Determine whether a focused assessment, implementation engagement, or DefyAIRisk discussion is appropriate.",
   ],
-  engagementClose: "Together, we will determine the most useful next step for your organization.",
+  discoveryCallReassurance: "No production changes are made during the discovery conversation.",
   trustHeading: "Evaluate DefenseEye with confidence.",
   trustPoints: [
     {
@@ -116,7 +124,7 @@ export const BANKING_AI_RISK_CONTENT = {
     {
       question: "What happens during the first banking AI-agent risk discovery call?",
       answer:
-        "We discuss where AI agents are being used, what access and ownership questions matter most, and whether a focused assessment, pilot, or product discussion is the right next step.",
+        "We discuss your current AI-agent use cases and highest-priority concerns, identify ownership, approval, access, governance, and evidence questions, and determine whether a focused assessment, implementation engagement, or DefyAIRisk discussion is appropriate. No production changes are made during the discovery conversation.",
     },
     {
       question: "Is DefenseEye a certification body or regulator?",
@@ -131,7 +139,7 @@ export const BANKING_AI_RISK_CONTENT = {
   ],
   offerHeading: "Start with a focused conversation about your highest-risk AI use cases.",
   offerText:
-    "We will discuss where AI agents are being used, what access and ownership questions matter most, and whether a focused assessment, pilot, or product discussion is the right next step.",
+    "We will discuss where AI agents are being used, what access and ownership questions matter most, and whether a focused assessment, implementation engagement, or DefyAIRisk discussion is the right next step.",
   trustText:
     "DefenseEye combines AI governance, cybersecurity, risk management, and implementation support for organizations operating in sensitive environments.",
 } as const;
