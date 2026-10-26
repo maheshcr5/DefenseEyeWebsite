@@ -17,8 +17,8 @@ import { trackSolutionCta } from "./SolutionPage";
 import { trackCtaClick, trackFormStartOnce } from "@/lib/analytics";
 import { renderToStaticMarkup } from "react-dom/server";
 import BankingAiAgentRisk, { trackBankingCta } from "./BankingAiAgentRisk";
-import { inquiryTypeFromParam } from "./ContactUs";
-import { BANKING_AI_RISK_CONTENT, BANKING_DISCOVERY_HREF, DEFY_AI_RISK_URL } from "@shared/bankingAiRiskContent";
+import { contactFormCopy, inquiryTypeFromParam } from "./ContactUs";
+import { BANKING_AI_RISK_CONTENT, BANKING_DISCOVERY_HREF, BANKING_FORM_CONTENT, DEFY_AI_RISK_URL } from "@shared/bankingAiRiskContent";
 
 const GA_ID = "G-H22Q6LRNWC";
 
@@ -215,17 +215,17 @@ describe("banking AI-agent risk page", () => {
     expect(html).toContain(`>${BANKING_AI_RISK_CONTENT.h1}</h1>`);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.eyebrow);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.intro);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.primaryCtaSupport);
   });
 
-  it("renders the pain points, capabilities, workflow, audience, DefyAIRisk section, first engagement, trust points, FAQ, and next step", () => {
+  it("renders the pain points, discovery-call steps, capabilities, workflow, audience, DefyAIRisk section, trust points, FAQ, and next step", () => {
     for (const pain of BANKING_AI_RISK_CONTENT.pains) expect(text).toContain(`${pain.title} ${pain.text}`);
     for (const capability of BANKING_AI_RISK_CONTENT.capabilities) expect(text).toContain(`${capability.title} ${capability.text}`);
     for (const audience of BANKING_AI_RISK_CONTENT.audiences) expect(text).toContain(audience);
     BANKING_AI_RISK_CONTENT.workflow.forEach((step, index) => expect(text).toContain(`${index + 1} ${step.title} ${step.text}`));
-    expect(html.match(/<ol[\s>]/g)).toHaveLength(1);
-    for (const topic of BANKING_AI_RISK_CONTENT.engagementTopics) expect(text).toContain(topic);
-    expect(text).toContain(BANKING_AI_RISK_CONTENT.engagementIntro);
-    expect(text).toContain(BANKING_AI_RISK_CONTENT.engagementClose);
+    expect(html.match(/<ol[\s>]/g)).toHaveLength(2); // discovery-call steps and workflow
+    BANKING_AI_RISK_CONTENT.discoveryCallSteps.forEach((step, index) => expect(text).toContain(`${index + 1} ${step}`));
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.discoveryCallReassurance);
     for (const point of BANKING_AI_RISK_CONTENT.trustPoints) expect(text).toContain(`${point.title} ${point.text}`);
     for (const faq of BANKING_AI_RISK_CONTENT.faqs) expect(text).toContain(`${faq.question} ${faq.answer}`);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.productText);
@@ -235,7 +235,7 @@ describe("banking AI-agent risk page", () => {
   });
 
   it("explains the problem before the solution, the audience, and the product", () => {
-    const order = ["painHeading", "solutionHeading", "workflowHeading", "audienceHeading", "productHeading", "engagementHeading", "trustHeading", "faqHeading", "offerHeading"] as const;
+    const order = ["painHeading", "discoveryCallHeading", "solutionHeading", "workflowHeading", "audienceHeading", "productHeading", "trustHeading", "faqHeading", "offerHeading"] as const;
     const positions = order.map((key) => html.indexOf(`>${BANKING_AI_RISK_CONTENT[key]}</h2>`));
     expect(positions.every((position) => position > 0)).toBe(true);
     expect([...positions].sort((a, b) => a - b)).toEqual(positions);
@@ -243,8 +243,16 @@ describe("banking AI-agent risk page", () => {
 
   it("links the discovery CTAs to the existing contact form and the platform CTAs to DefyAIRisk", () => {
     const discoveryLinks = html.split(`href="${BANKING_DISCOVERY_HREF}"`).length - 1;
-    expect(discoveryLinks).toBe(3); // hero, product section, offer
+    expect(discoveryLinks).toBe(3); // hero, after the pain points (discovery-call steps), and the closing offer
     expect(text.match(new RegExp(BANKING_AI_RISK_CONTENT.primaryCta, "g"))).toHaveLength(3);
+    // The discovery CTAs follow the hero copy, the discovery-call steps, and the closing offer, in that order.
+    const anchors = [`>${BANKING_AI_RISK_CONTENT.h1}</h1>`, `>${BANKING_AI_RISK_CONTENT.discoveryCallHeading}</h2>`, `>${BANKING_AI_RISK_CONTENT.offerHeading}</h2>`];
+    const ctaPositions = [...html.matchAll(new RegExp(`href="${BANKING_DISCOVERY_HREF.replace(/[?]/g, "\\?")}"`, "g"))].map((match) => match.index ?? 0);
+    anchors.forEach((anchor, i) => expect(html.indexOf(anchor)).toBeLessThan(ctaPositions[i]));
+    expect(ctaPositions[1]).toBeLessThan(html.indexOf(`>${BANKING_AI_RISK_CONTENT.solutionHeading}</h2>`));
+    // The DefyAIRisk section links only to DefyAIRisk, so the discovery call stays the single primary action.
+    const product = html.slice(html.indexOf(`>${BANKING_AI_RISK_CONTENT.productHeading}</h2>`), html.indexOf(`>${BANKING_AI_RISK_CONTENT.trustHeading}</h2>`));
+    expect(product).not.toContain(BANKING_DISCOVERY_HREF);
     const platform = html.match(/href="https:\/\/defy\.defenseeye\.ai" target="_blank" rel="noopener noreferrer"/g) ?? [];
     expect(platform).toHaveLength(2); // hero and product section
     expect(text).toContain(`${BANKING_AI_RISK_CONTENT.secondaryCta} (opens in a new tab)`);
@@ -269,7 +277,7 @@ describe("banking AI-agent risk page", () => {
     expect(JSON.stringify(BANKING_AI_RISK_CONTENT)).not.toMatch(/platform|monitor|behavio|detect|anomal|real[- ]time|continuous|production[- ]ready|enterprise[- ]ready|operational|demonstration/i);
   });
 
-  it("maps every pain point to a verified capability and keeps the first engagement to discussion topics", () => {
+  it("maps every pain point to a verified capability and keeps the discovery call free of promised deliverables", () => {
     expect(BANKING_AI_RISK_CONTENT.pains.map((pain) => pain.title)).toEqual([
       "Unknown exposure",
       "Excessive access",
@@ -283,9 +291,11 @@ describe("banking AI-agent risk page", () => {
     for (const productCopy of [BANKING_AI_RISK_CONTENT.productText, BANKING_AI_RISK_CONTENT.faqs[5].answer, BANKING_AI_RISK_CONTENT.trustPoints[1].text]) {
       expect(productCopy).not.toMatch(/permission|data path|tools/i);
     }
-    expect(BANKING_AI_RISK_CONTENT.engagementIntro).toMatch(/We will discuss/);
-    expect(BANKING_AI_RISK_CONTENT.engagementClose).toBe("Together, we will determine the most useful next step for your organization.");
-    expect(JSON.stringify(BANKING_AI_RISK_CONTENT.engagementTopics)).not.toMatch(/inventory|exposure map|risk register|report|backlog|pilot plan/i);
+    expect(BANKING_AI_RISK_CONTENT.discoveryCallSteps).toHaveLength(3);
+    expect(BANKING_AI_RISK_CONTENT.discoveryCallReassurance).toBe("No production changes are made during the discovery conversation.");
+    // No report, inventory, register, roadmap, timeline, or other deliverable is promised for the discovery call or the form.
+    const callCopy = JSON.stringify([BANKING_AI_RISK_CONTENT.discoveryCallSteps, BANKING_AI_RISK_CONTENT.primaryCtaSupport, BANKING_AI_RISK_CONTENT.faqs[3].answer, BANKING_FORM_CONTENT]);
+    expect(callCopy).not.toMatch(/inventory|exposure map|risk register|report|backlog|roadmap|pilot plan|deliverable|within \d|business day|\bhours?\b|\bweeks?\b|guarantee|certif|complian/i);
     expect(BANKING_AI_RISK_CONTENT.trustPoints.map((point) => point.text)).toEqual([
       "Consequential changes receive human review before they are made.",
       "DefyAIRisk access uses Microsoft or Google sign-in, and an administrator approves each new user.",
@@ -318,6 +328,19 @@ describe("banking AI risk discovery inquiry option", () => {
     expect(inquiryTypeFromParam("banking-ai-risk-discovery")).toBe("Banking AI risk discovery");
     expect(contactFormIntent("Banking AI risk discovery")).toBe("banking_ai_risk_discovery");
     expect(BANKING_DISCOVERY_HREF).toBe("/contact?inquiry=banking-ai-risk-discovery");
+  });
+
+  it("shows banking form copy only for the banking preset, without promising a response time or outcome", () => {
+    const banking = contactFormCopy(inquiryTypeFromParam("banking-ai-risk-discovery"));
+    expect(banking).toEqual({
+      heading: "Request a Banking AI-Agent Risk Discovery Call",
+      helper: "Tell us where AI agents are being used and which risk, governance, ownership, or approval questions you need to answer.",
+      success: "Your request was submitted successfully. We will review the information provided and determine the most useful next conversation.",
+    });
+    expect(BANKING_FORM_CONTENT.inquiryType).toBe(inquiryTypeFromParam("banking-ai-risk-discovery"));
+    for (const preset of [null, inquiryTypeFromParam("cmmc"), inquiryTypeFromParam("ai-governance"), "Banking AI risk discovery typo"]) {
+      expect(contactFormCopy(preset).heading).toBe("Tell us what you need");
+    }
   });
 
   it("keeps every existing option and preset unchanged", () => {

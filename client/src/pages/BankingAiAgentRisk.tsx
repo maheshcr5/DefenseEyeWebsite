@@ -8,7 +8,7 @@ import { trackCtaClick } from "@/lib/analytics";
 import { getRouteMetadata } from "@shared/routeMetadata";
 import { BANKING_AI_RISK_CONTENT as content, BANKING_AI_RISK_PATH, BANKING_DISCOVERY_HREF, DEFY_AI_RISK_URL } from "@shared/bankingAiRiskContent";
 
-export type BankingCtaLocation = "banking_hero" | "banking_product" | "banking_offer";
+export type BankingCtaLocation = "banking_hero" | "banking_call_steps" | "banking_product" | "banking_offer";
 
 /** One cta_click per CTA interaction; banking intent is set only by this page's CTAs. */
 export function trackBankingCta(target: "discovery" | "platform", location: BankingCtaLocation) {
@@ -65,6 +65,7 @@ export default function BankingAiAgentRisk() {
             <DiscoveryCta location="banking_hero" />
             <PlatformCta location="banking_hero" label={content.secondaryCta} />
           </div>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">{content.primaryCtaSupport}</p>
         </section>
 
         <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-pain-heading">
@@ -81,6 +82,25 @@ export default function BankingAiAgentRisk() {
               );
             })}
           </ul>
+        </section>
+
+        <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-call-heading">
+          <h2 id="banking-call-heading" className="mb-8 font-heading text-2xl font-bold text-foreground">{content.discoveryCallHeading}</h2>
+          <ol className="mb-6 grid gap-4 md:grid-cols-3">
+            {content.discoveryCallSteps.map((step, index) => (
+              <li key={step} className="flex gap-4 rounded-sm border border-border/40 bg-card/50 p-5">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary/40 text-sm font-semibold text-primary" aria-hidden="true">
+                  {index + 1}
+                </span>
+                <p className="text-sm leading-relaxed text-foreground">{step}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="mb-8 flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+            <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+            {content.discoveryCallReassurance}
+          </p>
+          <DiscoveryCta location="banking_call_steps" />
         </section>
 
         <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-solution-heading">
@@ -136,23 +156,8 @@ export default function BankingAiAgentRisk() {
             <p className="mb-6 max-w-3xl leading-relaxed text-foreground">{content.productText}</p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <PlatformCta location="banking_product" label={content.productCta} />
-              <DiscoveryCta location="banking_product" />
             </div>
           </div>
-        </section>
-
-        <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-engagement-heading">
-          <h2 id="banking-engagement-heading" className="mb-3 font-heading text-2xl font-bold text-foreground">{content.engagementHeading}</h2>
-          <p className="mb-5 max-w-3xl leading-relaxed text-muted-foreground">{content.engagementIntro}</p>
-          <ul className="mb-6 grid gap-3 sm:grid-cols-2">
-            {content.engagementTopics.map((topic) => (
-              <li key={topic} className="flex items-start gap-3 text-foreground">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
-                <span className="leading-relaxed">{topic}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="max-w-3xl font-medium leading-relaxed text-foreground">{content.engagementClose}</p>
         </section>
 
         <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-trust-heading">

@@ -317,11 +317,15 @@ const TIER_1_ROUTE_DEFINITIONS: SeoRoute[] = [
       "DefenseEye helps banks and fintechs discover AI-agent exposure, prioritize business risk, govern approvals, and coordinate guided remediation with human review.",
     h1: BANKING_AI_RISK_CONTENT.h1,
     eyebrow: BANKING_AI_RISK_CONTENT.eyebrow,
-    summary: BANKING_AI_RISK_CONTENT.intro,
+    summary: `${BANKING_AI_RISK_CONTENT.intro} ${BANKING_AI_RISK_CONTENT.primaryCtaSupport}`,
     sections: [
       {
         heading: BANKING_AI_RISK_CONTENT.painHeading,
         items: BANKING_AI_RISK_CONTENT.pains.map((pain) => `${pain.title}: ${pain.text}`),
+      },
+      {
+        heading: BANKING_AI_RISK_CONTENT.discoveryCallHeading,
+        items: [...BANKING_AI_RISK_CONTENT.discoveryCallSteps.map((step, index) => `${index + 1}. ${step}`), BANKING_AI_RISK_CONTENT.discoveryCallReassurance],
       },
       {
         heading: BANKING_AI_RISK_CONTENT.solutionHeading,
@@ -335,11 +339,6 @@ const TIER_1_ROUTE_DEFINITIONS: SeoRoute[] = [
       },
       { heading: BANKING_AI_RISK_CONTENT.audienceHeading, items: [...BANKING_AI_RISK_CONTENT.audiences] },
       { heading: BANKING_AI_RISK_CONTENT.productHeading, body: BANKING_AI_RISK_CONTENT.productText },
-      {
-        heading: BANKING_AI_RISK_CONTENT.engagementHeading,
-        body: BANKING_AI_RISK_CONTENT.engagementIntro,
-        items: [...BANKING_AI_RISK_CONTENT.engagementTopics, BANKING_AI_RISK_CONTENT.engagementClose],
-      },
       {
         heading: BANKING_AI_RISK_CONTENT.trustHeading,
         items: BANKING_AI_RISK_CONTENT.trustPoints.map((point) => `${point.title}: ${point.text}`),
