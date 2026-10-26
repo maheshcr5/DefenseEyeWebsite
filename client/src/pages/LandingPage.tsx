@@ -71,12 +71,12 @@ export default function LandingPage() {
           <h1 className="font-heading text-4xl sm:text-5xl font-bold leading-tight mb-5">{config.title}</h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">{config.desc}</p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8">
-            <a href={bookingUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("landing_page_cta_click", { location, cta: config.cta })}>
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">{config.cta} <ArrowRight className="w-4 h-4 ml-2" /></Button>
-            </a>
-            <a href={CAPABILITY_STATEMENT_URL} onClick={() => trackConversion("landing_page_cta_click", { location, cta: "capability_statement" })}>
-              <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">Request Capability Statement</Button>
-            </a>
+            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold self-start sm:self-auto">
+              <a href={bookingUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("landing_page_cta_click", { location, cta: config.cta })}>{config.cta} <ArrowRight className="w-4 h-4 ml-2" /></a>
+            </Button>
+            <Button asChild variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 self-start sm:self-auto">
+              <a href={CAPABILITY_STATEMENT_URL} onClick={() => trackConversion("landing_page_cta_click", { location, cta: "capability_statement" })}>Request Capability Statement</a>
+            </Button>
           </div>
         </div>
       </section>

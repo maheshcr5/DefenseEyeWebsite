@@ -83,11 +83,11 @@ export default function CapabilityStatement() {
               AI, cybersecurity, Microsoft cloud, CMMC, and compliance automation capability for enterprise, government, defense contractor, and regulated environments.
             </p>
             {/* TODO: Publish a corrected PDF only after confirming it contains no residential street address or personal email. */}
-            <a href="/contact?inquiry=supplier" onClick={() => trackConversion("capability_statement_download", { location: "capability_statement_page_request" })}>
-              <Button className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+            <Button asChild className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+              <a href="/contact?inquiry=supplier" onClick={() => trackConversion("capability_statement_download", { location: "capability_statement_page_request" })}>
                 Request PDF Capability Statement <Download className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </section>
 

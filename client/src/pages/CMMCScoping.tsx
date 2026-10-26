@@ -186,16 +186,16 @@ export default function CMMCScoping() {
             CMMC scoping defines your CUI environment boundary — which systems, people, and networks actually need to meet CMMC Level 2 controls. Skip this step and you'll document, remediate, and pay for controls you don't need.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8">
+            <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 self-center sm:self-auto">
+              <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
                 Book a Scoping Call <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
-            <a href="/services/cmmc-readiness-sprint">
-              <Button variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10 px-8">
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10 px-8 self-center sm:self-auto">
+              <a href="/services/cmmc-readiness-sprint">
                 View CMMC Readiness Sprint
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </div>
       </section>
@@ -332,16 +332,16 @@ export default function CMMCScoping() {
             Contractors who scope correctly before their gap assessment can reduce rework and focus remediation. Book a 30-minute call to start defining your CUI boundary.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8">
+            <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 self-center sm:self-auto">
+              <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
                 Book a Scoping Call <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
-            <a href="/services/cmmc-readiness-sprint">
-              <Button variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10 px-8">
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10 px-8 self-center sm:self-auto">
+              <a href="/services/cmmc-readiness-sprint">
                 View the Full Readiness Sprint
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </div>
       </section>

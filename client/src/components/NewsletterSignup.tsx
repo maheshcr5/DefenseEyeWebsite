@@ -81,18 +81,18 @@ export default function NewsletterSignup({
           Email updates aren't available yet. To ask a question or talk about your goals, contact our team, or keep reading our free guides.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <a
-            href={buildNewsletterContactHref()}
-            onClick={(event) => {
-              // Carry the current page's query parameters (campaign attribution) forward.
-              event.currentTarget.href = buildNewsletterContactHref(window.location.search);
-              trackNewsletterFallbackClick(location);
-            }}
-          >
-            <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+          <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+            <a
+              href={buildNewsletterContactHref()}
+              onClick={(event) => {
+                // Carry the current page's query parameters (campaign attribution) forward.
+                event.currentTarget.href = buildNewsletterContactHref(window.location.search);
+                trackNewsletterFallbackClick(location);
+              }}
+            >
               Contact Our Team <ArrowRight className="w-4 h-4 ml-1.5" aria-hidden="true" />
-            </Button>
-          </a>
+            </a>
+          </Button>
           <a href={resourcesLink.href} className="text-sm font-semibold text-primary hover:underline">
             {resourcesLink.label}
           </a>

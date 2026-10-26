@@ -85,16 +85,16 @@ export default function SupplierReadiness() {
               DefenseEye is a Redmond, WA-based minority-owned AI governance, cybersecurity, Microsoft cloud, CMMC, and compliance automation firm available for enterprise supplier, subcontracting, advisory, implementation, and staff augmentation opportunities.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 mt-8">
-              <a href={CAPABILITY_STATEMENT_URL} onClick={() => trackConversion("capability_statement_download", { location: "supplier_readiness_hero" })}>
-                <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+              <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold self-start sm:self-auto">
+                <a href={CAPABILITY_STATEMENT_URL} onClick={() => trackConversion("capability_statement_download", { location: "supplier_readiness_hero" })}>
                   Request Capability Statement <Download className="w-4 h-4 ml-2" />
-                </Button>
-              </a>
-              <a href="/contact?inquiry=supplier" onClick={() => trackConversion("partners_email_click", { location: "supplier_readiness_cta" })}>
-                <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
+                </a>
+              </Button>
+              <Button asChild variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 self-start sm:self-auto">
+                <a href="/contact?inquiry=supplier" onClick={() => trackConversion("partners_email_click", { location: "supplier_readiness_cta" })}>
                   Discuss Supplier Opportunities
-                </Button>
-              </a>
+                </a>
+              </Button>
             </div>
           </div>
         </section>

@@ -186,11 +186,11 @@ export default function WhyDefenseEye() {
             The linked examples describe representative experience and capabilities DefenseEye is positioned to
             support. They are not presented as named customer case studies.
           </p>
-          <a href="/representative-engagements">
-            <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 font-semibold px-8">
+          <Button asChild variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 font-semibold px-8">
+            <a href="/representative-engagements">
               View Representative Engagements <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          </a>
+            </a>
+          </Button>
         </div>
       </section>
 
@@ -226,16 +226,16 @@ export default function WhyDefenseEye() {
             Discuss your Secure AI, CMMC readiness, CMMCLens, or supplier opportunity with DefenseEye.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact">
-              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8">
+            <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 self-center sm:self-auto">
+              <a href="/contact">
                 Start a Conversation <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
-            <a href="/representative-engagements">
-              <Button variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10 px-8">
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10 px-8 self-center sm:self-auto">
+              <a href="/representative-engagements">
                 View Representative Engagements
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </div>
       </section>

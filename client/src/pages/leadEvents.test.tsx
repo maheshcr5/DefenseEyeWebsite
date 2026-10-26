@@ -217,12 +217,28 @@ describe("banking AI-agent risk page", () => {
     expect(text).toContain(BANKING_AI_RISK_CONTENT.intro);
   });
 
-  it("renders the four pain points, four capabilities, the DefyAIRisk section, and the discovery offer", () => {
-    for (const pain of BANKING_AI_RISK_CONTENT.pains) expect(text).toContain(pain.title);
+  it("renders the pain points, capabilities, workflow, audience, DefyAIRisk section, first engagement, trust points, FAQ, and next step", () => {
+    for (const pain of BANKING_AI_RISK_CONTENT.pains) expect(text).toContain(`${pain.title} ${pain.text}`);
     for (const capability of BANKING_AI_RISK_CONTENT.capabilities) expect(text).toContain(`${capability.title} ${capability.text}`);
+    for (const audience of BANKING_AI_RISK_CONTENT.audiences) expect(text).toContain(audience);
+    BANKING_AI_RISK_CONTENT.workflow.forEach((step, index) => expect(text).toContain(`${index + 1} ${step.title} ${step.text}`));
+    expect(html.match(/<ol[\s>]/g)).toHaveLength(1);
+    for (const topic of BANKING_AI_RISK_CONTENT.engagementTopics) expect(text).toContain(topic);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.engagementIntro);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.engagementClose);
+    for (const point of BANKING_AI_RISK_CONTENT.trustPoints) expect(text).toContain(`${point.title} ${point.text}`);
+    for (const faq of BANKING_AI_RISK_CONTENT.faqs) expect(text).toContain(`${faq.question} ${faq.answer}`);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.productText);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.offerHeading);
     expect(text).toContain(BANKING_AI_RISK_CONTENT.offerText);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.trustText);
+  });
+
+  it("explains the problem before the solution, the audience, and the product", () => {
+    const order = ["painHeading", "solutionHeading", "workflowHeading", "audienceHeading", "productHeading", "engagementHeading", "trustHeading", "faqHeading", "offerHeading"] as const;
+    const positions = order.map((key) => html.indexOf(`>${BANKING_AI_RISK_CONTENT[key]}</h2>`));
+    expect(positions.every((position) => position > 0)).toBe(true);
+    expect([...positions].sort((a, b) => a - b)).toEqual(positions);
   });
 
   it("links the discovery CTAs to the existing contact form and the platform CTAs to DefyAIRisk", () => {
@@ -231,13 +247,50 @@ describe("banking AI-agent risk page", () => {
     expect(text.match(new RegExp(BANKING_AI_RISK_CONTENT.primaryCta, "g"))).toHaveLength(3);
     const platform = html.match(/href="https:\/\/defy\.defenseeye\.ai" target="_blank" rel="noopener noreferrer"/g) ?? [];
     expect(platform).toHaveLength(2); // hero and product section
+    expect(text).toContain(`${BANKING_AI_RISK_CONTENT.secondaryCta} (opens in a new tab)`);
+    expect(text).toContain(`${BANKING_AI_RISK_CONTENT.productCta} (opens in a new tab)`);
     expect(DEFY_AI_RISK_URL).toBe("https://defy.defenseeye.ai");
     expect(text).toContain("(opens in a new tab)");
   });
 
   it("makes no unsupported claims", () => {
-    expect(text).not.toMatch(/guarantee|certified|certification|zero[- ]risk|first abu dhabi|\bFAB\b|autonomous|fully automated|pricing|\$\d|case stud|our customers|trusted by|\bSOC ?2\b|\bISO\b|\bcompliant\b|prevents? all/i);
+    // The disclaimers deny certification and regulator status; check they are present, then check everything else.
+    const disclaimers = [BANKING_AI_RISK_CONTENT.trustPoints[2].title, BANKING_AI_RISK_CONTENT.trustPoints[2].text,BANKING_AI_RISK_CONTENT.faqs[4].question, BANKING_AI_RISK_CONTENT.faqs[4].answer];
+    for (const disclaimer of disclaimers) expect(text).toContain(disclaimer);
+    const claims = disclaimers.reduce((rest, disclaimer) => rest.split(disclaimer).join(" "), text);
+    expect(claims).not.toMatch(/guarantee|certified|certification|zero[- ]risk|first abu dhabi|\bFAB\b|autonomous|fully automated|pricing|\$\d|case stud|our customers|trusted by|\bSOC ?2\b|\bISO\b|\bcompliant\b|prevents? all/i);
     expect(text).toContain("guided remediation with human review before any change");
+    // Monitoring is not stated on the public DefyAIRisk page, so the page makes no monitoring claim.
+    expect(text).not.toMatch(/monitor/i);
+    // "DefyAIRisk" is the only approved product name.
+    expect(text).not.toMatch(/\bDefy\b(?!AIRisk)/);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.productCta);
+    // Production readiness is not approved: no "platform", monitoring, detection, or readiness language in the page copy.
+    expect(JSON.stringify(BANKING_AI_RISK_CONTENT)).not.toMatch(/platform|monitor|behavio|detect|anomal|real[- ]time|continuous|production[- ]ready|enterprise[- ]ready|operational|demonstration/i);
+  });
+
+  it("maps every pain point to a verified capability and keeps the first engagement to discussion topics", () => {
+    expect(BANKING_AI_RISK_CONTENT.pains.map((pain) => pain.title)).toEqual([
+      "Unknown exposure",
+      "Excessive access",
+      "Unclear ownership and approval gaps",
+      "Unsafe remediation",
+    ]);
+    // Owners, permissions, tools, and data-path review is a DefenseEye service, never a DefyAIRisk product claim.
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.solutionIntro);
+    expect(BANKING_AI_RISK_CONTENT.solutionIntro).toMatch(/^DefenseEye consulting and assessment services/);
+    expect(BANKING_AI_RISK_CONTENT.faqs[1].answer).toContain("This review is a DefenseEye service, not a DefyAIRisk product capability.");
+    for (const productCopy of [BANKING_AI_RISK_CONTENT.productText, BANKING_AI_RISK_CONTENT.faqs[5].answer, BANKING_AI_RISK_CONTENT.trustPoints[1].text]) {
+      expect(productCopy).not.toMatch(/permission|data path|tools/i);
+    }
+    expect(BANKING_AI_RISK_CONTENT.engagementIntro).toMatch(/We will discuss/);
+    expect(BANKING_AI_RISK_CONTENT.engagementClose).toBe("Together, we will determine the most useful next step for your organization.");
+    expect(JSON.stringify(BANKING_AI_RISK_CONTENT.engagementTopics)).not.toMatch(/inventory|exposure map|risk register|report|backlog|pilot plan/i);
+    expect(BANKING_AI_RISK_CONTENT.trustPoints.map((point) => point.text)).toEqual([
+      "Consequential changes receive human review before they are made.",
+      "DefyAIRisk access uses Microsoft or Google sign-in, and an administrator approves each new user.",
+      "DefenseEye is not a certification body or regulator, and it does not grant regulatory approval.",
+    ]);
   });
 
   it("sends exactly one cta_click per CTA interaction with banking intent and no personal data", () => {

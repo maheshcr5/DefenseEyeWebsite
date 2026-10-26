@@ -138,11 +138,12 @@ describe("CMMCLens page booking and Marketplace CTAs", () => {
   });
 
   it("keeps the booking CTA styled as the primary (filled accent) action and Marketplace as secondary (outline)", () => {
+    // Each CTA is a single link styled as a button (Button asChild), not a link wrapped around a button.
     const briefingAnchorMatch = html.match(
-      /<a[^>]*href="[^"]*cal\.com[^"]*"[^>]*>\s*<button[^>]*class="([^"]*)"[^>]*>\s*Book a 30-Minute CMMCLens Briefing/
+      /<a(?=[^>]*href="[^"]*cal\.com[^"]*")(?=[^>]*class="([^"]*)")[^>]*>\s*Book a 30-Minute CMMCLens Briefing/
     );
     const marketplaceAnchorMatch = html.match(
-      /<a[^>]*href="[^"]*marketplace\.microsoft\.com[^"]*"[^>]*>\s*<button[^>]*class="([^"]*)"[^>]*>\s*View CMMCLens on Microsoft Marketplace/
+      /<a(?=[^>]*href="[^"]*marketplace\.microsoft\.com[^"]*")(?=[^>]*class="([^"]*)")[^>]*>\s*View CMMCLens on Microsoft Marketplace/
     );
     expect(briefingAnchorMatch?.[1]).toContain("bg-accent");
     expect(marketplaceAnchorMatch?.[1]).toContain("border-primary/40");

@@ -260,15 +260,15 @@ export default function KnowledgeHubLayout({
                 <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
                   CMMCLens supports evidence automation, control mapping, and SSP and POA&amp;M workflows.
                 </p>
-                <a href="/contact?inquiry=cmmc">
-                  <Button
+                <Button asChild
                     size="sm"
                     className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full text-xs"
                   >
+                  <a href="/contact?inquiry=cmmc">
                     Request a Free Consultation
                     <ArrowRight className="w-3 h-3 ml-1.5" aria-hidden="true" />
-                  </Button>
-                </a>
+                  </a>
+                </Button>
               </div>
             </div>
           </aside>

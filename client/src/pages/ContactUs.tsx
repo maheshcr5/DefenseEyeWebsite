@@ -112,11 +112,11 @@ export default function ContactUs() {
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
               Schedule a 60-minute discussion on AI, cybersecurity, governance, compliance automation, subcontracting, staff augmentation, or CMMCLens fit.
             </p>
-            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
+            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
+              <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
                 Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
 
           <div className="bg-card/50 border border-border/40 rounded-sm p-7 flex flex-col">
@@ -125,11 +125,11 @@ export default function ContactUs() {
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
               Review DefenseEye's supplier capability statement for identifiers, certifications, engagement models, and core competencies.
             </p>
-            <a href={CAPABILITY_STATEMENT_URL} onClick={() => trackConversion("capability_statement_download", { location: "contact_page" })}>
-              <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 font-semibold w-full">
+            <Button asChild variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 font-semibold w-full">
+              <a href={CAPABILITY_STATEMENT_URL} onClick={() => trackConversion("capability_statement_download", { location: "contact_page" })}>
                 Open
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
 
           {/* Email */}
@@ -139,11 +139,11 @@ export default function ContactUs() {
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
               Use this mailbox for enterprise AI consulting, AI governance, Copilot readiness, cybersecurity, and compliance automation inquiries.
             </p>
-            <a href={`mailto:${COMPANY.enterpriseEmail}`} onClick={() => trackConversion("enterprise_email_click", { location: "contact_enterprise" })}>
-              <Button variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
+            <Button asChild variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
+              <a href={`mailto:${COMPANY.enterpriseEmail}`} onClick={() => trackConversion("enterprise_email_click", { location: "contact_enterprise" })}>
                 {COMPANY.enterpriseEmail}
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
 
           <div className="bg-card/50 border border-border/40 rounded-sm p-7 flex flex-col">
@@ -152,11 +152,11 @@ export default function ContactUs() {
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
               For marketplace, SaaS, CMMCLens customer support, billing, cancellation, or product issue reporting, use the support mailbox.
             </p>
-            <a href={`mailto:${COMPANY.supportEmail}?subject=DefenseEye Support Request`} onClick={() => trackConversion("support_email_click", { location: "contact_support" })}>
-              <Button variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
+            <Button asChild variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
+              <a href={`mailto:${COMPANY.supportEmail}?subject=DefenseEye Support Request`} onClick={() => trackConversion("support_email_click", { location: "contact_support" })}>
                 {COMPANY.supportEmail}
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
 
           {/* CMMCLens Support */}
@@ -166,11 +166,11 @@ export default function ContactUs() {
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
               For supplier, partnership, subcontracting, prime contractor, Microsoft, Google, or Meta procurement outreach, use the partnerships mailbox.
             </p>
-            <a href={`mailto:${COMPANY.partnersEmail}?subject=DefenseEye Supplier or Partner Inquiry`} onClick={() => trackConversion("partners_email_click", { location: "contact_partners" })}>
-              <Button variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
+            <Button asChild variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
+              <a href={`mailto:${COMPANY.partnersEmail}?subject=DefenseEye Supplier or Partner Inquiry`} onClick={() => trackConversion("partners_email_click", { location: "contact_partners" })}>
                 {COMPANY.partnersEmail}
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </div>
       </section>

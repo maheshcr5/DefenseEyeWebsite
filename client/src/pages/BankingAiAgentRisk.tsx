@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, ExternalLink, Eye, KeyRound, Search, ShieldCheck, Timer, Users, Wrench } from "lucide-react";
+import { ArrowRight, BarChart3, CheckCircle2, ExternalLink, Eye, KeyRound, LockKeyhole, Search, ShieldAlert, ShieldCheck, UserCheck, Users, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
@@ -19,27 +19,28 @@ export function trackBankingCta(target: "discovery" | "platform", location: Bank
   );
 }
 
-const PAIN_ICONS = [Eye, KeyRound, Users, Timer];
-const CAPABILITY_ICONS = [Search, Activity, ShieldCheck, Wrench];
+const PAIN_ICONS = [Eye, KeyRound, Users, ShieldAlert];
+const CAPABILITY_ICONS = [Search, BarChart3, ShieldCheck, Wrench];
+const TRUST_ICONS = [UserCheck, LockKeyhole, ShieldCheck];
 
 function DiscoveryCta({ location, className = "" }: { location: BankingCtaLocation; className?: string }) {
   return (
-    <a href={BANKING_DISCOVERY_HREF} onClick={() => trackBankingCta("discovery", location)} className={className}>
-      <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold sm:w-auto">
+    <Button asChild size="lg" className={`w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold sm:w-auto ${className}`}>
+      <a href={BANKING_DISCOVERY_HREF} onClick={() => trackBankingCta("discovery", location)}>
         {content.primaryCta} <ArrowRight className="ml-2 size-4" aria-hidden="true" />
-      </Button>
-    </a>
+      </a>
+    </Button>
   );
 }
 
-function PlatformCta({ location }: { location: BankingCtaLocation }) {
+function PlatformCta({ location, label }: { location: BankingCtaLocation; label: string }) {
   return (
-    <a href={DEFY_AI_RISK_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackBankingCta("platform", location)}>
-      <Button size="lg" variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10 sm:w-auto">
-        {content.secondaryCta} <ExternalLink className="ml-2 size-4" aria-hidden="true" />
+    <Button asChild size="lg" variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10 sm:w-auto">
+      <a href={DEFY_AI_RISK_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackBankingCta("platform", location)}>
+        {label} <ExternalLink className="ml-2 size-4" aria-hidden="true" />
         <span className="sr-only"> (opens in a new tab)</span>
-      </Button>
-    </a>
+      </a>
+    </Button>
   );
 }
 
@@ -62,13 +63,12 @@ export default function BankingAiAgentRisk() {
           <p className="mb-8 max-w-3xl text-lg leading-relaxed text-muted-foreground">{content.intro}</p>
           <div className="flex flex-col gap-3 sm:flex-row">
             <DiscoveryCta location="banking_hero" />
-            <PlatformCta location="banking_hero" />
+            <PlatformCta location="banking_hero" label={content.secondaryCta} />
           </div>
         </section>
 
         <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-pain-heading">
-          <h2 id="banking-pain-heading" className="mb-3 font-heading text-2xl font-bold text-foreground">{content.painHeading}</h2>
-          <p className="mb-8 max-w-3xl leading-relaxed text-muted-foreground">{content.painIntro}</p>
+          <h2 id="banking-pain-heading" className="mb-8 font-heading text-2xl font-bold text-foreground">{content.painHeading}</h2>
           <ul className="grid gap-4 sm:grid-cols-2">
             {content.pains.map((pain, index) => {
               const Icon = PAIN_ICONS[index];
@@ -84,7 +84,8 @@ export default function BankingAiAgentRisk() {
         </section>
 
         <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-solution-heading">
-          <h2 id="banking-solution-heading" className="mb-8 font-heading text-2xl font-bold text-foreground">{content.solutionHeading}</h2>
+          <h2 id="banking-solution-heading" className="mb-3 font-heading text-2xl font-bold text-foreground">{content.solutionHeading}</h2>
+          <p className="mb-8 max-w-3xl leading-relaxed text-muted-foreground">{content.solutionIntro}</p>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {content.capabilities.map((capability, index) => {
               const Icon = CAPABILITY_ICONS[index];
@@ -99,14 +100,86 @@ export default function BankingAiAgentRisk() {
           </ul>
         </section>
 
+        <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-workflow-heading">
+          <h2 id="banking-workflow-heading" className="mb-3 font-heading text-2xl font-bold text-foreground">{content.workflowHeading}</h2>
+          <p className="mb-8 max-w-3xl leading-relaxed text-muted-foreground">{content.workflowIntro}</p>
+          <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {content.workflow.map((step, index) => (
+              <li key={step.title} className="flex gap-4 rounded-sm border border-border/40 bg-card/50 p-5">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary/40 text-sm font-semibold text-primary" aria-hidden="true">
+                  {index + 1}
+                </span>
+                <div>
+                  <h3 className="mb-1 font-heading text-base font-semibold text-foreground">{step.title}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{step.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-audience-heading">
+          <h2 id="banking-audience-heading" className="mb-6 font-heading text-2xl font-bold text-foreground">{content.audienceHeading}</h2>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {content.audiences.map((audience) => (
+              <li key={audience} className="flex items-start gap-3 text-foreground">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+                <span className="leading-relaxed">{audience}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
         <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-product-heading">
           <div className="rounded-sm border border-primary/20 bg-primary/5 p-6 md:p-8">
             <h2 id="banking-product-heading" className="mb-3 font-heading text-2xl font-bold text-foreground">{content.productHeading}</h2>
             <p className="mb-6 max-w-3xl leading-relaxed text-foreground">{content.productText}</p>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <PlatformCta location="banking_product" />
+              <PlatformCta location="banking_product" label={content.productCta} />
               <DiscoveryCta location="banking_product" />
             </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-engagement-heading">
+          <h2 id="banking-engagement-heading" className="mb-3 font-heading text-2xl font-bold text-foreground">{content.engagementHeading}</h2>
+          <p className="mb-5 max-w-3xl leading-relaxed text-muted-foreground">{content.engagementIntro}</p>
+          <ul className="mb-6 grid gap-3 sm:grid-cols-2">
+            {content.engagementTopics.map((topic) => (
+              <li key={topic} className="flex items-start gap-3 text-foreground">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+                <span className="leading-relaxed">{topic}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="max-w-3xl font-medium leading-relaxed text-foreground">{content.engagementClose}</p>
+        </section>
+
+        <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-trust-heading">
+          <h2 id="banking-trust-heading" className="mb-8 font-heading text-2xl font-bold text-foreground">{content.trustHeading}</h2>
+          <ul className="grid gap-4 md:grid-cols-3">
+            {content.trustPoints.map((point, index) => {
+              const Icon = TRUST_ICONS[index];
+              return (
+                <li key={point.title} className="rounded-sm border border-border/40 bg-card/50 p-5">
+                  <Icon className="mb-3 h-5 w-5 text-primary" aria-hidden="true" />
+                  <h3 className="mb-2 font-heading text-lg font-semibold text-foreground">{point.title}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{point.text}</p>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        <section className="mx-auto max-w-6xl border-t border-border/30 py-14" aria-labelledby="banking-faq-heading">
+          <h2 id="banking-faq-heading" className="mb-8 font-heading text-2xl font-bold text-foreground">{content.faqHeading}</h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            {content.faqs.map((faq) => (
+              <div key={faq.question} className="rounded-sm border border-border/40 bg-card/40 p-5">
+                <h3 className="mb-2 font-heading font-semibold text-foreground">{faq.question}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">{faq.answer}</p>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -114,7 +187,8 @@ export default function BankingAiAgentRisk() {
           <div className="mx-auto max-w-4xl text-center">
             <h2 id="banking-offer-heading" className="font-heading text-3xl font-bold md:text-4xl">{content.offerHeading}</h2>
             <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-muted-foreground">{content.offerText}</p>
-            <DiscoveryCta location="banking_offer" className="mt-8 inline-block" />
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{content.trustText}</p>
+            <DiscoveryCta location="banking_offer" className="mt-8 w-auto" />
           </div>
         </section>
 

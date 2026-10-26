@@ -106,11 +106,11 @@ export default function ThoughtLeadership() {
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:items-end">
-                <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "insight_cta", insight: page.slug })}>
-                  <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+                <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold self-start sm:self-auto">
+                  <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "insight_cta", insight: page.slug })}>
                     Book a Consultation <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </a>
+                  </a>
+                </Button>
                 {parentPath && (
                   <a href={parentPath} className="text-sm font-semibold text-primary hover:underline">
                     Or explore {getRouteName(parentPath)}

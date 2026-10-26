@@ -93,11 +93,11 @@ export default function RepresentativeEngagements() {
           ))}
         </div>
         <div className="max-w-4xl mx-auto text-center mt-12">
-          <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "representative_engagements" })}>
-            <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+          <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "representative_engagements" })}>
               Book a 30-Minute Discovery Call <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          </a>
+            </a>
+          </Button>
         </div>
       </section>
       <Footer />
