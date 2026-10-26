@@ -8,7 +8,7 @@ Destination for every call to action: the banking discovery page, <https://defen
 
 - **Lead with the question, not a failure.** Talk about uncertainty over AI-agent exposure, ownership, access, approvals, evidence, and remediation. Never imply that the recipient's bank has a specific security problem.
 - **Services first.** DefenseEye consulting and assessment services are the initial help. They can review AI-agent owners, permissions, tools, and data paths.
-- **DefyAIRisk carefully.** Mention it only as a product experience or direction worth discussing. Do not describe it as production-ready, monitoring, detecting, or remediating on its own.
+- **DefyAIRisk carefully.** Mention it only as a product experience worth discussing, using the approved description: "DefyAIRisk helps teams organize AI-agent risk, understand exposure in business terms, and coordinate governed next steps with appropriate human review." Do not describe it as production-ready, monitoring, detecting, or remediating on its own.
 - **Do not claim:** monitoring, detection, production readiness, autonomous remediation, certifications, regulatory approval, customers, guaranteed results, statistics, or response times.
 - **Tone:** credible, specific, executive-level, without fear-based language.
 
@@ -69,7 +69,7 @@ Many organizations are adopting AI agents faster than they can keep a clear view
 - Who is accountable for each one?
 - How is a change reviewed before it is made?
 
-DefenseEye helps banks and regulated financial institutions review these questions through consulting and assessment work, and decide on governed, practical next steps. We are also developing DefyAIRisk, a product experience for keeping one register of AI agents and discussing risk in business terms. It is worth a conversation, but we don't overstate it; the starting point is understanding your situation.
+DefenseEye helps banks and regulated financial institutions review these questions through consulting and assessment work, and decide on governed, practical next steps. We can also discuss DefyAIRisk: DefyAIRisk helps teams organize AI-agent risk, understand exposure in business terms, and coordinate governed next steps with appropriate human review. The starting point, though, is understanding your situation.
 
 Would a short conversation about your highest-priority AI-agent risk questions be useful? An overview is here: https://defenseeye.ai/solutions/banking-ai-agent-risk
 
@@ -99,7 +99,7 @@ DefenseEye
 
 1. AI-agent ownership and access questions
 2. A practical view of AI-agent risk in banking
-3. Who owns your AI agents? A short conversation
+3. Who owns your AI agents? (approved)
 
 ## 7. Short call to action
 
@@ -107,7 +107,10 @@ DefenseEye
 
 ---
 
-## Claims in these drafts that need approval before use
+## Approved wording (PR #26 decisions)
 
-- DefyAIRisk described as a product DefenseEye "is developing", with "one register of AI agents" and risk "in business terms". This matches the public DefyAIRisk sign-in page but should be confirmed as the approved external description.
-- Subject line 3 is phrased as a question about ownership. Confirm the tone is acceptable for senior bank recipients.
+- **DefyAIRisk description:** "DefyAIRisk helps teams organize AI-agent risk, understand exposure in business terms, and coordinate governed next steps with appropriate human review."
+- **Subject line:** "Who owns your AI agents?"
+- **Discovery call:** "No production changes are made during the discovery conversation." The call can lead to a focused assessment, an implementation engagement, or a DefyAIRisk discussion.
+
+The drafts remain unsent. Review the remaining copy before each use.
