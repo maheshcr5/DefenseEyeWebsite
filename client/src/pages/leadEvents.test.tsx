@@ -14,7 +14,11 @@ vi.mock("@/components/DefenseEyeLogo", () => ({ default: () => null }));
 import { CONTACT_INQUIRY_TYPES, contactFormIntent, submitContactInquiry, type ContactFormValues } from "./ContactUs";
 import { submitSecureAiInquiry, trackSecureAiCta, type SecureAiFormValues } from "./SecureAiAdoption";
 import { trackSolutionCta } from "./SolutionPage";
-import { trackCtaClick } from "@/lib/analytics";
+import { trackCtaClick, trackFormStartOnce } from "@/lib/analytics";
+import { renderToStaticMarkup } from "react-dom/server";
+import BankingAiAgentRisk, { trackBankingCta } from "./BankingAiAgentRisk";
+import { inquiryTypeFromParam } from "./ContactUs";
+import { BANKING_AI_RISK_CONTENT, BANKING_DISCOVERY_HREF, DEFY_AI_RISK_URL } from "@shared/bankingAiRiskContent";
 
 const GA_ID = "G-H22Q6LRNWC";
 
@@ -124,6 +128,7 @@ describe("contact page form_submit", () => {
       "staff_augmentation",
       "cmmclens_demo",
       "product_support",
+      "banking_ai_risk_discovery",
       "other",
     ]);
   });
@@ -197,5 +202,104 @@ describe("AI governance and other solution-page CTAs", () => {
     trackSolutionCta("/solutions/cloud-security", "https://cal.com/defenseeye", "supplier_opportunities", "solution_supplier");
     trackSolutionCta("/solutions/cloud-security", "/contact?inquiry=cloud-security", "solution_primary", "solution_hero");
     expect(sent(gtag, "cta_click").map((params) => params.intent)).toEqual(["supplier", "supplier", undefined]);
+  });
+});
+
+describe("banking AI-agent risk page", () => {
+  afterEach(() => vi.unstubAllGlobals());
+  const html = renderToStaticMarkup(<BankingAiAgentRisk />);
+  const text = html.replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/&#x27;/g, "'").replace(/\s+/g, " ");
+
+  it("renders one H1 with the approved hero, eyebrow, and supporting copy", () => {
+    expect(html.match(/<h1[\s>]/g)).toHaveLength(1);
+    expect(html).toContain(`>${BANKING_AI_RISK_CONTENT.h1}</h1>`);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.eyebrow);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.intro);
+  });
+
+  it("renders the four pain points, four capabilities, the DefyAIRisk section, and the discovery offer", () => {
+    for (const pain of BANKING_AI_RISK_CONTENT.pains) expect(text).toContain(pain.title);
+    for (const capability of BANKING_AI_RISK_CONTENT.capabilities) expect(text).toContain(`${capability.title} ${capability.text}`);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.productText);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.offerHeading);
+    expect(text).toContain(BANKING_AI_RISK_CONTENT.offerText);
+  });
+
+  it("links the discovery CTAs to the existing contact form and the platform CTAs to DefyAIRisk", () => {
+    const discoveryLinks = html.split(`href="${BANKING_DISCOVERY_HREF}"`).length - 1;
+    expect(discoveryLinks).toBe(3); // hero, product section, offer
+    expect(text.match(new RegExp(BANKING_AI_RISK_CONTENT.primaryCta, "g"))).toHaveLength(3);
+    const platform = html.match(/href="https:\/\/defy\.defenseeye\.ai" target="_blank" rel="noopener noreferrer"/g) ?? [];
+    expect(platform).toHaveLength(2); // hero and product section
+    expect(DEFY_AI_RISK_URL).toBe("https://defy.defenseeye.ai");
+    expect(text).toContain("(opens in a new tab)");
+  });
+
+  it("makes no unsupported claims", () => {
+    expect(text).not.toMatch(/guarantee|certified|certification|zero[- ]risk|first abu dhabi|\bFAB\b|autonomous|fully automated|pricing|\$\d|case stud|our customers|trusted by|\bSOC ?2\b|\bISO\b|\bcompliant\b|prevents? all/i);
+    expect(text).toContain("guided remediation with human review before any change");
+  });
+
+  it("sends exactly one cta_click per CTA interaction with banking intent and no personal data", () => {
+    const gtag = installBrowser("/solutions/banking-ai-agent-risk");
+    trackBankingCta("discovery", "banking_hero");
+    expect(sent(gtag, "cta_click")).toEqual([
+      { cta_name: "banking_ai_risk_discovery_call", cta_location: "banking_hero", page_path: "/solutions/banking-ai-agent-risk", intent: "banking", send_to: GA_ID },
+    ]);
+    trackBankingCta("platform", "banking_product");
+    expect(sent(gtag, "cta_click")).toHaveLength(2);
+    expect(sent(gtag, "cta_click")[1]).toEqual({ cta_name: "defyairisk_platform", cta_location: "banking_product", page_path: "/solutions/banking-ai-agent-risk", intent: "banking", product: "defyairisk", send_to: GA_ID });
+  });
+
+  it("sends nothing to GA4 without analytics consent", () => {
+    const gtag = installBrowser("/solutions/banking-ai-agent-risk", false);
+    trackBankingCta("discovery", "banking_offer");
+    expect(gtag).not.toHaveBeenCalled();
+  });
+});
+
+describe("banking AI risk discovery inquiry option", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("presets the new option from ?inquiry=banking-ai-risk-discovery and maps to banking_ai_risk_discovery", () => {
+    expect(inquiryTypeFromParam("banking-ai-risk-discovery")).toBe("Banking AI risk discovery");
+    expect(contactFormIntent("Banking AI risk discovery")).toBe("banking_ai_risk_discovery");
+    expect(BANKING_DISCOVERY_HREF).toBe("/contact?inquiry=banking-ai-risk-discovery");
+  });
+
+  it("keeps every existing option and preset unchanged", () => {
+    expect(CONTACT_INQUIRY_TYPES.filter((option) => option !== "Banking AI risk discovery")).toEqual([
+      "General inquiry", "Supplier / procurement inquiry", "Partnership / subcontracting", "AI governance consulting", "Microsoft Copilot readiness",
+      "CMMC readiness", "Compliance automation", "Cloud security", "Staff augmentation", "CMMCLens demo", "Product support", "Other",
+    ]);
+    expect(inquiryTypeFromParam("cmmc")).toBe("CMMC readiness");
+    expect(inquiryTypeFromParam("newsletter")).toBe("General inquiry");
+    expect(inquiryTypeFromParam("ai-governance")).toBe("AI governance consulting");
+  });
+
+  it("sends form_submit with form_intent=banking_ai_risk_discovery only after success, without personal data", async () => {
+    const gtag = installBrowser("/contact");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true }));
+    const bankingForm = { ...contactForm, inquiryType: "Banking AI risk discovery" };
+    await submitContactInquiry(bankingForm);
+    expect(sent(gtag, "form_submit")).toEqual([
+      { form_name: "contact_page", form_intent: "banking_ai_risk_discovery", page_path: "/contact", lead_source: "linkedin", lead_medium: "social", lead_campaign: "q4", send_to: GA_ID },
+    ]);
+    expectNoPersonalData(gtag, Object.values(bankingForm).filter((value) => value !== "Banking AI risk discovery"));
+  });
+
+  it("sends no form_submit when the banking inquiry fails", async () => {
+    const gtag = installBrowser("/contact");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 500 }));
+    await expect(submitContactInquiry({ ...contactForm, inquiryType: "Banking AI risk discovery" })).rejects.toThrow();
+    expect(gtag).not.toHaveBeenCalled();
+  });
+
+  it("starts form_start with the banking intent once when the form is preset", () => {
+    const gtag = installBrowser("/contact");
+    const started = { current: false };
+    trackFormStartOnce(started, "contact_page", contactFormIntent("Banking AI risk discovery"));
+    trackFormStartOnce(started, "contact_page", contactFormIntent("Banking AI risk discovery"));
+    expect(sent(gtag, "form_start")).toEqual([{ form_name: "contact_page", form_intent: "banking_ai_risk_discovery", page_path: "/contact", send_to: GA_ID }]);
   });
 });

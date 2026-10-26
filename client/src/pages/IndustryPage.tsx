@@ -93,6 +93,7 @@ export const INDUSTRY_PAGES: Record<string, IndustryPageConfig> = {
     ],
     links: [
       { label: "Secure AI adoption", href: "/secure-ai-adoption", description: "Explore the Secure AI readiness and implementation funnel." },
+      { label: "AI-agent risk management for banks and fintechs", href: "/solutions/banking-ai-agent-risk", description: "Discover, monitor, govern, and guide remediation of AI-agent risk." },
       { label: "AI governance", href: "/solutions/ai-governance", description: "Define responsible AI oversight, policy, accountability, and review practices." },
       { label: "AI security", href: "/solutions/ai-security", description: "Assess identity, data, model, agent, prompt, logging, and monitoring risks." },
       { label: "AI transformation", href: "/solutions/ai-transformation", description: "Prioritize AI use cases and adoption roadmaps with governance built in." },
@@ -272,7 +273,8 @@ export default function IndustryPage() {
                   href={link.href}
                   className="group border border-border/60 bg-card p-5 transition-colors hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50"
                 >
-                  <span className="text-sm font-semibold text-primary group-hover:text-primary/80">{link.label}</span>
+                  {/* Darker shade of the light-section brand green: 5.66:1 on the white card (text-primary is 3.68:1). Hover darkens to 8.02:1 and underlines. */}
+                  <span className="text-sm font-semibold text-[oklch(0.50_0.16_140)] group-hover:text-[oklch(0.42_0.13_140)] group-hover:underline">{link.label}</span>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{link.description}</p>
                 </a>
               ))}
