@@ -111,12 +111,12 @@ export default function PortfolioPage() {
           <h1 className="max-w-4xl font-heading text-5xl font-bold leading-tight sm:text-6xl">{config.title}</h1>
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground">{config.opening}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion(config.event, { location: "portfolio_hero", path: config.path })}>
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90">{config.cta} <ArrowRight className="ml-2 size-4" /></Button>
-            </a>
-            <a href="/datasheets" onClick={() => trackConversion("datasheet_view", { location: config.path })}>
-              <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">View Datasheets</Button>
-            </a>
+            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+              <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion(config.event, { location: "portfolio_hero", path: config.path })}>{config.cta} <ArrowRight className="ml-2 size-4" /></a>
+            </Button>
+            <Button asChild variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
+              <a href="/datasheets" onClick={() => trackConversion("datasheet_view", { location: config.path })}>View Datasheets</a>
+            </Button>
           </div>
         </div>
       </section>
@@ -147,9 +147,9 @@ export default function PortfolioPage() {
           <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
             DefenseEye can help translate governance, compliance, security, and evidence needs into practical workflows and readiness plans.
           </p>
-          <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "portfolio_final", path: config.path })}>
-            <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">{config.cta}</Button>
-          </a>
+          <Button asChild size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "portfolio_final", path: config.path })}>{config.cta}</a>
+          </Button>
         </div>
       </section>
     </div>

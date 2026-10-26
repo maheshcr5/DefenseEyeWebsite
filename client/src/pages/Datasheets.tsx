@@ -111,9 +111,9 @@ function DatasheetDetail({ sheet }: { sheet: Sheet }) {
           <h1 className="font-heading text-5xl font-bold">{sheet.title}</h1>
           <p className="mt-5 max-w-3xl text-lg leading-relaxed text-muted-foreground">{sheet.value}</p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <a href={BOOKING_URLS[sheet.booking]} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion(sheet.slug === "cmmclens" ? "cmmclens_demo_click" : "consultation_click", { datasheet: sheet.slug })}>
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90">{sheet.cta} <ArrowRight className="ml-2 size-4" /></Button>
-            </a>
+            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 self-start sm:self-auto">
+              <a href={BOOKING_URLS[sheet.booking]} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion(sheet.slug === "cmmclens" ? "cmmclens_demo_click" : "consultation_click", { datasheet: sheet.slug })}>{sheet.cta} <ArrowRight className="ml-2 size-4" /></a>
+            </Button>
             <button type="button" onClick={() => { window.print(); trackConversion("datasheet_download", { datasheet: sheet.slug, format: "print_pdf" }); }}>
               <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10"><Download className="mr-2 size-4" /> Export / Print PDF</Button>
             </button>

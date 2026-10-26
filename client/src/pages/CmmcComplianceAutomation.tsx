@@ -58,16 +58,16 @@ export default function CmmcComplianceAutomation() {
             DefenseEye provides CCP-led CMMC Level 1 and Level 2 readiness support, NIST SP 800-171 gap assessments, System Security Plan (SSP) execution, and compliance evidence automation for U.S. Defense Contractors.
           </p>
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "cmmc_hero" })}>
-              <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-auto">
+            <Button asChild size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-auto">
+              <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "cmmc_hero" })}>
                 Assess CMMC Readiness <ArrowRight className="ml-2 size-4" />
-              </Button>
-            </a>
-            <a href="/cmmclens" onClick={() => trackConversion("cmmclens_click", { location: "cmmc_hero" })}>
-              <Button size="lg" variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10 sm:w-auto">
+              </a>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10 sm:w-auto">
+              <a href="/cmmclens" onClick={() => trackConversion("cmmclens_click", { location: "cmmc_hero" })}>
                 Explore CMMCLens Platform
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
             {["Multiple CMMC Certified Professionals", "CAGE 9ZDL5", "UEI E4DYPCKN7YN8"].map((badge) => (
@@ -200,11 +200,11 @@ export default function CmmcComplianceAutomation() {
             Contact DefenseEye to schedule a CCP-led readiness gap assessment and discuss CMMCLens evidence automation.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "cmmc_footer" })}>
-              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+            <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 self-center sm:self-auto">
+              <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "cmmc_footer" })}>
                 Assess CMMC Readiness <ArrowRight className="ml-2 size-4" />
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </div>
       </section>

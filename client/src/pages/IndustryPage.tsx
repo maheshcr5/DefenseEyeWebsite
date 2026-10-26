@@ -220,16 +220,16 @@ export default function IndustryPage() {
             <h1 className="max-w-4xl font-heading text-4xl font-bold leading-tight sm:text-5xl">{config.h1}</h1>
             <p className="mt-5 max-w-3xl text-lg leading-relaxed text-muted-foreground">{config.intro}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <a href={config.cta.href}>
-                <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
+              <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 self-start sm:self-auto">
+                <a href={config.cta.href}>
                   {config.cta.label} <ArrowRight className="ml-2 size-4" />
-                </Button>
-              </a>
-              <a href={config.secondaryCta.href}>
-                <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
+                </a>
+              </Button>
+              <Button asChild variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 self-start sm:self-auto">
+                <a href={config.secondaryCta.href}>
                   {config.secondaryCta.label}
-                </Button>
-              </a>
+                </a>
+              </Button>
             </div>
             <div className="mt-3">
               <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">{config.cta.note}</p>

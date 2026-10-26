@@ -225,16 +225,16 @@ export default function FAQPage() {
             Every contractor's CUI environment is different. Book a free 30-minute call and get answers specific to your contracts, IT setup, and timeline.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8">
+            <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 self-center sm:self-auto">
+              <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
                 Book a Free CMMC Call <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
-            <a href="/cmmclens">
-              <Button variant="outline" size="lg" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 px-8">
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 px-8 self-center sm:self-auto">
+              <a href="/cmmclens">
                 Explore CMMCLens FAQ
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </div>
       </section>

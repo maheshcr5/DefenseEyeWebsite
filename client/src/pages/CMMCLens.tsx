@@ -142,32 +142,32 @@ export default function CMMCLens() {
             CMMCLens is DefenseEye's flagship compliance automation platform for CMMC and NIST 800-171 readiness. It supports evidence automation, control mapping, gap tracking, SSP/POA&M workflows, policy support, and readiness visibility.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a
-              href={BOOKING_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {
-                trackConversion("cmmclens_click", { location: "cmmclens_hero_briefing" });
-                trackCmmcLensBriefingClick("hero");
-              }}
-            >
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold self-start sm:self-auto">
+              <a
+                href={BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  trackConversion("cmmclens_click", { location: "cmmclens_hero_briefing" });
+                  trackCmmcLensBriefingClick("hero");
+                }}
+              >
                 Book a 30-Minute CMMCLens Briefing <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
-            <a
-              href={MARKETPLACE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {
-                trackConversion("cmmclens_click", { location: "cmmclens_marketplace" });
-                trackCmmcLensMarketplaceClick();
-              }}
-            >
-              <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
+              </a>
+            </Button>
+            <Button asChild variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 self-start sm:self-auto">
+              <a
+                href={MARKETPLACE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  trackConversion("cmmclens_click", { location: "cmmclens_marketplace" });
+                  trackCmmcLensMarketplaceClick();
+                }}
+              >
                 View CMMCLens on Microsoft Marketplace
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             Learn how DefenseEye combines CMMC readiness experience with practical evidence and remediation workflows.{" "}
@@ -267,19 +267,19 @@ export default function CMMCLens() {
             <p className="text-muted-foreground text-sm mb-6 max-w-md mx-auto">
               Discuss evidence sources, Microsoft integrations, readiness objectives, and the best path for a pilot or advisory engagement.
             </p>
-            <a
-              href={BOOKING_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {
-                trackConversion("cmmclens_click", { location: "cmmclens_final_briefing" });
-                trackCmmcLensBriefingClick("closing");
-              }}
-            >
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8">
+            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8">
+              <a
+                href={BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  trackConversion("cmmclens_click", { location: "cmmclens_final_briefing" });
+                  trackCmmcLensBriefingClick("closing");
+                }}
+              >
                 Book a 30-Minute CMMCLens Briefing <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </section>
       </main>

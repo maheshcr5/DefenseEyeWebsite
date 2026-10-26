@@ -166,12 +166,12 @@ function CTABox({ variant = "inline" }: { variant?: "inline" | "bottom" }) {
             requirements, gap tracking, SSP and POA&M workflows, and readiness dashboards for
             defense contractors.
           </p>
-          <Link href="/lp/cmmclens-demo">
-            <Button className="bg-accent text-background hover:bg-accent/90 font-heading font-bold">
+          <Button asChild className="bg-accent text-background hover:bg-accent/90 font-heading font-bold">
+            <Link href="/lp/cmmclens-demo">
               Request a CMMCLens Demo
               <ArrowRight className="w-4 h-4 ml-1.5" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </div>
     </div>
@@ -254,12 +254,12 @@ function PostNotFound() {
         <p className="text-muted-foreground mb-8">
           The article you're looking for doesn't exist or may have been moved.
         </p>
-        <Link href="/blog">
-          <Button className="bg-primary text-background hover:bg-primary/90 font-heading font-semibold">
+        <Button asChild className="bg-primary text-background hover:bg-primary/90 font-heading font-semibold">
+          <Link href="/blog">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
     </div>
   );
@@ -499,12 +499,12 @@ export default function BlogPostPage() {
 
         {/* Share again at bottom */}
         <div className="mt-10 pt-6 border-t border-border/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <Link href="/blog">
-            <Button variant="outline" size="sm" className="border-border/60 text-muted-foreground hover:text-foreground">
+          <Button asChild variant="outline" size="sm" className="border-border/60 text-muted-foreground hover:text-foreground">
+            <Link href="/blog">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Blog
-            </Button>
-          </Link>
+            </Link>
+          </Button>
           <SocialShareButtons title={post.title} slug={post.slug} />
         </div>
       </article>

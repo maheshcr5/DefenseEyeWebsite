@@ -110,11 +110,11 @@ export default function SprintGuide() {
           </div>
 
           <div className="mt-10 text-center">
-            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+              <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
                 Start My CMMC Sprint Plan <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </section>
       </main>

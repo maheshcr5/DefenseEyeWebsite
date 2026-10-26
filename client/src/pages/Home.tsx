@@ -131,11 +131,11 @@ export default function Home() {
               DefenseEye helps FinTechs, credit unions, and other regulated organizations implement AI agents with secure data access, responsible governance, human oversight, and practical delivery support.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-              <a href="/secure-ai-adoption#secure-ai-consultation" onClick={() => trackConversion("consultation_click", { location: "home_hero_secure_ai" })}>
-                <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-auto">
+              <Button asChild size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-auto">
+                <a href="/secure-ai-adoption#secure-ai-consultation" onClick={() => trackConversion("consultation_click", { location: "home_hero_secure_ai" })}>
                   Request a Secure AI Readiness Consultation <ArrowRight className="ml-2 size-4" />
-                </Button>
-              </a>
+                </a>
+              </Button>
               <a
                 href="/secure-ai-adoption"
                 onClick={() => trackConversion("portfolio_ai_click", { location: "home_hero_text_link" })}
@@ -296,11 +296,11 @@ export default function Home() {
           <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-muted-foreground">
             The initial conversation can clarify priority use cases, security and governance risks, architecture and implementation options, and practical next steps.
           </p>
-          <a href="/secure-ai-adoption#secure-ai-consultation" onClick={() => trackConversion("consultation_click", { location: "home_midpage_secure_ai" })}>
-            <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
+          <Button asChild size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
+            <a href="/secure-ai-adoption#secure-ai-consultation" onClick={() => trackConversion("consultation_click", { location: "home_midpage_secure_ai" })}>
               Request a Secure AI Readiness Consultation <ArrowRight className="ml-2 size-4" />
-            </Button>
-          </a>
+            </a>
+          </Button>
         </div>
       </section>
 

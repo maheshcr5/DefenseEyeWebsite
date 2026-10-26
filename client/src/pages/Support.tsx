@@ -42,11 +42,11 @@ export default function Support() {
               <p className="text-sm text-muted-foreground leading-relaxed mb-5 flex-1">
                 For CMMCLens platform issues, billing questions, advisory service follow-up, or any other request — email us and we'll respond within one business day.
               </p>
-              <a href={`mailto:${SUPPORT_EMAIL}`} onClick={() => trackConversion("support_email_click", { location: "support_hero" })}>
-                <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
+              <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
+                <a href={`mailto:${SUPPORT_EMAIL}`} onClick={() => trackConversion("support_email_click", { location: "support_hero" })}>
                   <Mail className="w-4 h-4 mr-2" /> {SUPPORT_EMAIL}
-                </Button>
-              </a>
+                </a>
+              </Button>
             </div>
 
             <div className="bg-card/50 border border-border/40 rounded-sm p-7 flex flex-col">
@@ -55,11 +55,11 @@ export default function Support() {
               <p className="text-sm text-muted-foreground leading-relaxed mb-5 flex-1">
                 For time-sensitive contract deadlines, governance needs, security concerns, or critical platform issues, email our team directly. We prioritize active subscribers and clients under deadline pressure.
               </p>
-              <a href={`mailto:${SUPPORT_EMAIL}?subject=Urgent Support Request`}>
-                <Button variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
+              <Button asChild variant="outline" className="border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 font-semibold w-full">
+                <a href={`mailto:${SUPPORT_EMAIL}?subject=Urgent Support Request`}>
                   Email Urgent Support <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              </a>
+                </a>
+              </Button>
             </div>
           </div>
 
@@ -114,11 +114,11 @@ export default function Support() {
                     <li key={item} className="text-xs text-muted-foreground">&bull; {item}</li>
                   ))}
                 </ul>
-                <a href={group.cta.href}>
-                  <Button variant="outline" size="sm" className="border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/40 text-xs w-full">
+                <Button asChild variant="outline" size="sm" className="border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/40 text-xs w-full">
+                  <a href={group.cta.href}>
                     {group.cta.label} <ArrowRight className="w-3 h-3 ml-1.5" />
-                  </Button>
-                </a>
+                  </a>
+                </Button>
               </div>
             ))}
           </div>

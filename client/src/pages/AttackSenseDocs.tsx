@@ -61,16 +61,16 @@ export default function AttackSenseDocs() {
             Published guidance for getting started with AttackSense, aligning the workflow to your security operations process, and moving from raw findings to prioritized remediation.
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <a href={GUIDE_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("attacksense_guide_open", { location: "docs_hero" })}>
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90">
+            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 self-start sm:self-auto">
+              <a href={GUIDE_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("attacksense_guide_open", { location: "docs_hero" })}>
                 Open PDF <ExternalLink className="ml-2 size-4" />
-              </Button>
-            </a>
-            <a href={GUIDE_URL} download onClick={() => trackConversion("attacksense_guide_download", { location: "docs_hero" })}>
-              <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
+              </a>
+            </Button>
+            <Button asChild variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 self-start sm:self-auto">
+              <a href={GUIDE_URL} download onClick={() => trackConversion("attacksense_guide_download", { location: "docs_hero" })}>
                 <Download className="mr-2 size-4" /> Download Guide
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </div>
       </section>
@@ -107,11 +107,11 @@ export default function AttackSenseDocs() {
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 DefenseEye can help map AttackSense to your current vulnerability, attack surface, cloud security, and remediation workflows.
               </p>
-              <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "attacksense_docs_sidebar" })}>
-                <Button className="mt-5 w-full bg-accent text-accent-foreground hover:bg-accent/90">
+              <Button asChild className="mt-5 w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "attacksense_docs_sidebar" })}>
                   Discuss AttackSense <ArrowRight className="ml-2 size-4" />
-                </Button>
-              </a>
+                </a>
+              </Button>
             </div>
           </aside>
         </div>

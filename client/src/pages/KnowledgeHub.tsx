@@ -386,11 +386,11 @@ export default function KnowledgeHub() {
                 <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
                   Let CMMCLens handle evidence collection, NIST mapping, and SSP/POA&M workflow automation.
                 </p>
-                <Link href="/contact?inquiry=cmmc">
-                  <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
+                <Button asChild size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold w-full">
+                  <Link href="/contact?inquiry=cmmc">
                     Request a Free Consultation <ArrowRight className="w-3.5 h-3.5 ml-1.5" aria-hidden="true" />
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
               </div>
             </aside>
           </div>

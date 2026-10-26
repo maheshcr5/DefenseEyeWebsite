@@ -94,16 +94,16 @@ export default function SolutionPage() {
           <h1 className="font-heading text-4xl md:text-5xl font-bold leading-tight mb-5 max-w-4xl">{config.title}</h1>
           <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed mb-8">{config.description}</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href={config.cta.href} onClick={() => trackSolutionCta(location, config.cta.href, "solution_primary", "solution_hero")}>
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold self-start sm:self-auto">
+              <a href={config.cta.href} onClick={() => trackSolutionCta(location, config.cta.href, "solution_primary", "solution_hero")}>
                 {config.cta.label} <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
-            <a href="/capability-statement" onClick={() => trackSolutionCta(location, "/capability-statement", "capability_statement", "solution_hero")}>
-              <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
+              </a>
+            </Button>
+            <Button asChild variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 self-start sm:self-auto">
+              <a href="/capability-statement" onClick={() => trackSolutionCta(location, "/capability-statement", "capability_statement", "solution_hero")}>
                 Request Capability Statement
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </section>
 
@@ -176,11 +176,11 @@ export default function SolutionPage() {
                 DefenseEye supports advisory, implementation, subcontracting, staff augmentation, and platform-enabled consulting opportunities.
               </p>
             </div>
-            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackSolutionCta(location, GENERAL_DISCOVERY_BOOKING_URL, "supplier_opportunities", "solution_supplier")}>
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold self-start md:self-auto">
+              <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackSolutionCta(location, GENERAL_DISCOVERY_BOOKING_URL, "supplier_opportunities", "solution_supplier")}>
                 Discuss Supplier Opportunities <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </section>
       </main>

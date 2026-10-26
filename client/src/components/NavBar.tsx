@@ -333,11 +333,11 @@ export default function NavBar({ initialMobileOpen = false, initialMobileExpande
 
         {/* Desktop CTA */}
         <div className="hidden lg:flex">
-          <a href={headerCta.href} {...headerCtaLinkProps} onClick={handleHeaderCtaClick}>
-            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-5">
+          <Button asChild size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-5">
+            <a href={headerCta.href} {...headerCtaLinkProps} onClick={handleHeaderCtaClick}>
               {headerCta.label}
-            </Button>
-          </a>
+            </a>
+          </Button>
         </div>
 
         {/* Mobile toggle */}
@@ -453,18 +453,18 @@ export default function NavBar({ initialMobileOpen = false, initialMobileExpande
               </a>
 
               <div className="pt-2 border-t border-gray-100 mt-1">
-                <a
-                  href={headerCta.href}
-                  {...headerCtaLinkProps}
-                  onClick={() => {
-                    handleHeaderCtaClick();
-                    setMobileOpen(false);
-                  }}
-                >
-                  <Button className="bg-accent text-accent-foreground font-semibold w-full">
+                <Button asChild className="bg-accent text-accent-foreground font-semibold w-full">
+                  <a
+                    href={headerCta.href}
+                    {...headerCtaLinkProps}
+                    onClick={() => {
+                      handleHeaderCtaClick();
+                      setMobileOpen(false);
+                    }}
+                  >
                     {headerCta.label}
-                  </Button>
-                </a>
+                  </a>
+                </Button>
               </div>
             </div>
           </motion.div>

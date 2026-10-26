@@ -99,11 +99,11 @@ export default function DeliveryModel() {
             ))}
           </div>
           <div className="text-center">
-            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "delivery_model" })}>
-              <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+              <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("consultation_click", { location: "delivery_model" })}>
                 Discuss an Engagement Model <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </div>
       </section>

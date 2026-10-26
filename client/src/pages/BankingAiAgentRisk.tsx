@@ -25,22 +25,22 @@ const TRUST_ICONS = [UserCheck, LockKeyhole, ShieldCheck];
 
 function DiscoveryCta({ location, className = "" }: { location: BankingCtaLocation; className?: string }) {
   return (
-    <a href={BANKING_DISCOVERY_HREF} onClick={() => trackBankingCta("discovery", location)} className={className}>
-      <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold sm:w-auto">
+    <Button asChild size="lg" className={`w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold sm:w-auto ${className}`}>
+      <a href={BANKING_DISCOVERY_HREF} onClick={() => trackBankingCta("discovery", location)}>
         {content.primaryCta} <ArrowRight className="ml-2 size-4" aria-hidden="true" />
-      </Button>
-    </a>
+      </a>
+    </Button>
   );
 }
 
 function PlatformCta({ location, label }: { location: BankingCtaLocation; label: string }) {
   return (
-    <a href={DEFY_AI_RISK_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackBankingCta("platform", location)}>
-      <Button size="lg" variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10 sm:w-auto">
+    <Button asChild size="lg" variant="outline" className="w-full border-primary/40 text-primary hover:bg-primary/10 sm:w-auto">
+      <a href={DEFY_AI_RISK_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackBankingCta("platform", location)}>
         {label} <ExternalLink className="ml-2 size-4" aria-hidden="true" />
         <span className="sr-only"> (opens in a new tab)</span>
-      </Button>
-    </a>
+      </a>
+    </Button>
   );
 }
 
@@ -188,7 +188,7 @@ export default function BankingAiAgentRisk() {
             <h2 id="banking-offer-heading" className="font-heading text-3xl font-bold md:text-4xl">{content.offerHeading}</h2>
             <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-muted-foreground">{content.offerText}</p>
             <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{content.trustText}</p>
-            <DiscoveryCta location="banking_offer" className="mt-8 inline-block" />
+            <DiscoveryCta location="banking_offer" className="mt-8 w-auto" />
           </div>
         </section>
 

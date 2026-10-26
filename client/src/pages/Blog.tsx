@@ -135,15 +135,15 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
             </div>
           </div>
 
-          <Link href={`/blog/${post.slug}`}>
-            <Button
+          <Button asChild
               size="sm"
               className="w-full bg-primary text-background hover:bg-primary/90 font-heading font-semibold group/btn"
             >
+            <Link href={`/blog/${post.slug}`}>
               Read Article
               <ArrowRight className="w-4 h-4 ml-1.5 group-hover/btn:translate-x-1 transition-transform" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </div>
     </motion.article>
@@ -432,12 +432,12 @@ export default function Blog() {
             DefenseEye combines advisory and CMMCLens automation to prioritize remediation,
             generate clean evidence, and shorten the cycle from "we might fail" to "we are ready."
           </p>
-          <Link href="/lp/cmmclens-demo">
-            <Button className="bg-accent text-background hover:bg-accent/90 font-heading font-bold text-base px-8 py-3">
+          <Button asChild className="bg-accent text-background hover:bg-accent/90 font-heading font-bold text-base px-8 py-3">
+            <Link href="/lp/cmmclens-demo">
               Request a CMMCLens Demo
               <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </Section>
 

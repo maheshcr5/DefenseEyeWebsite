@@ -83,12 +83,12 @@ export default function Pricing() {
             </a>
             . Quick 20-30 minute triage for teams handling CUI.
           </p>
-          <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-            <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-8">
+          <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-8">
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
               Book your urgent 30-min CMMC readiness call to get your tailored quote
               <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          </a>
+            </a>
+          </Button>
         </div>
       </section>
 
@@ -185,11 +185,11 @@ export default function Pricing() {
           <p className="text-white/70 mb-8">
             Book now to get a tailored CMMC readiness quote and clear next steps.
           </p>
-          <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-            <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-8">
+          <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-8">
+            <a href={GENERAL_DISCOVERY_BOOKING_URL} target="_blank" rel="noopener noreferrer">
               Schedule a Fast 30-Min Assessment Call <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          </a>
+            </a>
+          </Button>
         </div>
       </section>
 
